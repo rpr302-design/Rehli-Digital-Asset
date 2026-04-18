@@ -2,7 +2,9 @@ name: Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - main  # या अगर आपकी ब्रांच का नाम master है तो वो लिखें
+      - main
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # यह वार्निंग को ठीक कर देगा
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
