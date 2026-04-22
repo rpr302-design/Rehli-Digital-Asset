@@ -1,269 +1,137 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YASK | Super Smart Admin Panel</title>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <style>
-        :root { --primary: #0052cc; --gold: #ff9900; --slate: #f1f5f9; --navy: #0f172a; }
-        body { font-family: 'Inter', sans-serif; background: #0f172a; background: radial-gradient(circle at top, #1e293b, #0f172a); color: #333; margin: 0; padding: 20px; min-height: 100vh; }
-        
-        .admin-card { max-width: 1250px; margin: auto; background: white; padding: 30px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
-        h2 { text-align: center; color: var(--navy); margin-bottom: 30px; font-weight: 800; border-bottom: 2px solid var(--slate); padding-bottom: 15px; }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" />
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
 
-        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; background: var(--slate); padding: 25px; border-radius: 18px; margin-bottom: 25px; }
-        label.box-label { font-size: 11px; font-weight: 800; color: #64748b; margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+<style>
+    #quiz-app {
+        max-width: 650px;
+        margin: 20px auto;
+        padding: 25px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        font-family: sans-serif;
+    }
+    .q-text { font-size: 1.25rem; margin-bottom: 20px; line-height: 1.5; color: #1a202c; }
+    .opt-list { display: flex; flex-direction: column; gap: 10px; }
+    .opt-item {
+        padding: 12px 15px;
+        border: 2px solid #edf2f7;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+        text-align: left;
+        background: #f8fafc;
+    }
+    .opt-item:hover { border-color: #4299e1; background: #ebf8ff; }
+    .opt-item.active { border-color: #4299e1; background: #bee3f8; font-weight: bold; }
+    .controls { margin-top: 25px; text-align: right; }
+    #next-btn {
+        background: #3182ce; color: white; border: none;
+        padding: 10px 25px; border-radius: 5px; cursor: pointer;
+    }
+    #next-btn:disabled { background: #cbd5e0; cursor: not-allowed; }
+    #score-page { display: none; text-align: center; }
+</style>
 
-        .ms-container { position: relative; width: 100%; }
-        .ms-btn { background: white; padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; transition: 0.2s; }
-        .ms-btn:hover { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 82, 204, 0.1); }
-        
-        .ms-content { display: none; position: absolute; background: white; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000; max-height: 300px; overflow-y: auto; border-radius: 12px; padding: 12px; border: 1px solid #e2e8f0; margin-top: 5px; }
-        .search-inner { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; outline: none; }
-        
-        .item-row { display: flex; align-items: center; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: 0.2s; }
-        .item-row:hover { background: #eff6ff; }
-        .item-row input { margin-right: 12px; width: 16px; height: 16px; accent-color: var(--primary); }
-
-        .search-action { display: flex; align-items: flex-end; }
-        .btn-main { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
-        .btn-main:hover { background: #003d99; transform: translateY(-2px); }
-        .btn-main:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
-
-        .spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; display: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .results-box { margin-top: 30px; display: none; animation: slideUp 0.4s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .stats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 5px; }
-        .count-pill { background: var(--gold); color: #000; padding: 4px 15px; border-radius: 20px; font-weight: 800; font-size: 14px; }
-        
-        .table-container { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 16px; background: white; }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { background: #f8fafc; color: var(--navy); padding: 15px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        td { padding: 14px 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #475569; }
-    </style>
-</head>
-<body>
-
-<div class="admin-card">
-    <h2>व्हाट्सएप एडमिन पैनल</h2>
-
-    <div class="filter-grid">
-        <div class="ms-container">
-            <label class="box-label">संभाग (Divisions)</label>
-            <div class="ms-btn" onclick="toggle('divD')"><span id="divL">All</span> ▾</div>
-            <div id="divD" class="ms-content">
-                <input type="text" class="search-inner" placeholder="खोजें..." onkeyup="filterList(this, 'divD')">
-                <div id="divItems"></div>
-            </div>
-        </div>
-
-        <div class="ms-container">
-            <label class="box-label">जिला (Districts)</label>
-            <div class="ms-btn" onclick="toggle('distD')"><span id="distL">All</span> ▾</div>
-            <div id="distD" class="ms-content">
-                <input type="text" class="search-inner" placeholder="खोजें..." onkeyup="filterList(this, 'distD')">
-                <div id="distItems"></div>
-            </div>
-        </div>
-
-        <div class="ms-container">
-            <label class="box-label">विभाग (Departments)</label>
-            <div class="ms-btn" onclick="toggle('deptD')"><span id="deptL">All</span> ▾</div>
-            <div id="deptD" class="ms-content">
-                <input type="text" class="search-inner" placeholder="खोजें..." onkeyup="filterList(this, 'deptD')">
-                <div id="deptItems"></div>
-            </div>
-        </div>
-
-        <div class="ms-container">
-            <label class="box-label">पद (Designations)</label>
-            <div class="ms-btn" onclick="toggle('postD')"><span id="postL">All</span> ▾</div>
-            <div id="postD" class="ms-content">
-                <input type="text" class="search-inner" placeholder="खोजें..." onkeyup="filterList(this, 'postD')">
-                <div id="postItems"></div>
-            </div>
-        </div>
-
-        <div class="search-action">
-            <button id="searchBtn" class="btn-main" onclick="runSearch()">
-                <div id="spinner" class="spinner"></div>
-                <span id="btnTxt">SEARCH DATA</span>
-            </button>
+<div id="quiz-app">
+    <div id="quiz-screen">
+        <div id="info" style="font-size: 0.8rem; color: #718096; margin-bottom: 10px;"></div>
+        <div id="q-box" class="q-text">प्रश्नावली लोड हो रही है...</div>
+        <div id="o-box" class="opt-list"></div>
+        <div class="controls">
+            <button id="next-btn" onclick="goNext()" disabled>अगला प्रश्न</button>
         </div>
     </div>
-
-    <div id="resultsArea" class="results-box">
-        <div class="stats-header">
-            <span>कुल सदस्य मिले: <span id="recordCount" class="count-pill">0</span></span>
-            <button onclick="exportCSV()" style="background:#059669; color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:700;">📥 DOWNLOAD GOOGLE CSV</button>
-        </div>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>विभाग</th>
-                        <th>यूजर का नाम</th>
-                        <th>पद</th>
-                        <th>जिला / संभाग</th>
-                        <th>मोबाइल / व्हाट्सएप</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        </div>
+    <div id="score-page">
+        <h2>क्विज़ पूरा हुआ!</h2>
+        <div id="final-score" style="font-size: 2.5rem; color: #3182ce; margin: 20px 0;"></div>
+        <button onclick="location.reload()" style="padding: 10px; cursor:pointer;">फिर से खेलें</button>
     </div>
 </div>
 
 <script>
-// --- FIREBASE CONFIGURATION ---
-const firebaseConfig = {
-    apiKey: "AIzaSyA2vOu2jSdEglMhYpDRlVQfAutkkk9SvM0",
-    authDomain: "outsource-all-department.firebaseapp.com",
-    projectId: "outsource-all-department",
-    storageBucket: "outsource-all-department.firebasestorage.app",
-    messagingSenderId: "235888397796",
-    appId: "1:235888397796:web:0bac93b541f600db944bf1"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// <![CDATA[
+const myQuestions = [
+    {
+        q: "यदि समीकरण $x^2 - 5x + 6 = 0$ है, तो $x$ के मूल (roots) क्या होंगे?",
+        o: ["$2, 3$", "$-2, -3$", "$1, 6$", "$0, 5$"],
+        a: "$2, 3$"
+    },
+    {
+        q: "त्रिकोणमिति सूत्र: $\\sin^2 \\theta + \\cos^2 \\theta$ का मान क्या है?",
+        o: ["$0$", "$1$", "$-1$", "$\\infty$"],
+        a: "$1$"
+    },
+    {
+        q: "सर्कल का क्षेत्रफल क्या होता है?",
+        o: ["$2 \\pi r$", "$\\pi r^2$", "$2 \\pi d$", "$\\frac{1}{2} \\pi r$"],
+        a: "$\\pi r^2$"
+    }
+];
 
-let masterData = [];
+let currentQ = 0;
+let myScore = 0;
+let picked = null;
 
-function toggle(id) {
-    const el = document.getElementById(id);
-    const isOpen = el.style.display === "block";
-    document.querySelectorAll('.ms-content').forEach(c => c.style.display = "none");
-    el.style.display = isOpen ? "none" : "block";
-}
-
-function filterList(input, parentId) {
-    const filter = input.value.toLowerCase();
-    const rows = document.getElementById(parentId).querySelectorAll('.item-row');
-    rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(filter) ? "flex" : "none";
-    });
-}
-
-async function load() {
-    setLoading(true, "Syncing...");
-    try {
-        const snap = await db.collection("users").get();
-        masterData = [];
-        snap.forEach(doc => masterData.push(doc.data()));
-        rebuildFilters();
-    } catch (e) { console.error("Error loading data: ", e); }
-    setLoading(false, "SEARCH DATA");
-}
-
-function rebuildFilters() {
-    fill('divItems', 'div', 'divL', 'divD');
-    fill('distItems', 'dist', 'distL', 'distD');
-    fill('deptItems', 'dept', 'deptL', 'deptD');
-    fill('postItems', 'post', 'postL', 'postD');
-}
-
-function fill(id, field, labelId, dropId) {
-    const vals = [...new Set(masterData.map(u => u[field]))].sort();
-    const container = document.getElementById(id);
-    let html = `<label class="item-row"><input type="checkbox" checked onchange="selectAll('${dropId}', this)"> <b>Select All</b></label><hr style="border:0; border-top:1px solid #eee">`;
-    vals.forEach(v => {
-        if(v) html += `<label class="item-row"><input type="checkbox" checked class="${dropId}-check" value="${v}" onchange="updateLabel('${dropId}', '${labelId}')"> ${v}</label>`;
-    });
-    container.innerHTML = html;
-    updateLabel(dropId, labelId);
-}
-
-function selectAll(dropId, master) {
-    document.querySelectorAll(`.${dropId}-check`).forEach(c => c.checked = master.checked);
-    updateLabel(dropId, dropId.replace("D", "L"));
-}
-
-function updateLabel(dropId, labelId) {
-    const checked = document.querySelectorAll(`.${dropId}-check:checked`);
-    const total = document.querySelectorAll(`.${dropId}-check`);
-    document.getElementById(labelId).innerText = checked.length === total.length ? "All Selected" : `${checked.length} Selected`;
-}
-
-function setLoading(show, text) {
-    document.getElementById("spinner").style.display = show ? "block" : "none";
-    document.getElementById("btnTxt").innerText = show ? "Processing..." : text;
-    document.getElementById("searchBtn").disabled = show;
-}
-
-function runSearch() {
-    setLoading(true);
-    setTimeout(() => {
-        const selDivs = Array.from(document.querySelectorAll('.divD-check:checked')).map(c => c.value);
-        const selDists = Array.from(document.querySelectorAll('.distD-check:checked')).map(c => c.value);
-        const selDepts = Array.from(document.querySelectorAll('.deptD-check:checked')).map(c => c.value);
-        const selPosts = Array.from(document.querySelectorAll('.postD-check:checked')).map(c => c.value);
-
-        const filtered = masterData.filter(u => 
-            selDivs.includes(u.div) && 
-            selDists.includes(u.dist) && 
-            selDepts.includes(u.dept) && 
-            selPosts.includes(u.post)
-        );
-
-        const tbody = document.getElementById("tableBody");
-        tbody.innerHTML = "";
-        document.getElementById("recordCount").innerText = filtered.length;
-
-        filtered.forEach(u => {
-            // वेब टेबल का क्रम: विभाग | नाम | पद | जिला/संभाग | मोबाइल
-            tbody.innerHTML += `<tr>
-                <td>${u.dept}</td>
-                <td><b>${u.name}</b></td>
-                <td>${u.post}</td>
-                <td>${u.dist} / ${u.div}</td>
-                <td>${u.wha || u.mob}</td>
-            </tr>`;
+function renderMathNow() {
+    if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.getElementById('quiz-app'), {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false}
+            ],
+            throwOnError: false
         });
-
-        document.getElementById("resultsArea").style.display = "block";
-        window.filteredSet = filtered;
-        setLoading(false, "SEARCH DATA");
-    }, 300);
-}
-
-function exportCSV() {
-    if(!window.filteredSet) return;
-    
-    // गूगल कॉन्टैक्ट्स के लिए स्टैंडर्ड हेडर
-    let csv = "Name,Given Name,Family Name,Organization 1 - Name,Organization 1 - Title,Phone 1 - Value\n";
-    
-    window.filteredSet.forEach(u => {
-        // गूगल कॉन्टैक्ट्स में नाम का फॉर्मेट: "विभाग का नाम - यूजर का नाम"
-        let contactDisplayTitle = `${u.dept} - ${u.name}`; 
-        let userName = u.name;
-        let department = u.dept;
-        let designation = u.post;
-        let phoneNumber = u.wha || u.mob;
-
-        csv += `"${contactDisplayTitle}","${userName}","","${department}","${designation}","${phoneNumber}"\n`;
-    });
-
-    // हिंदी फॉन्ट सही दिखाने के लिए UTF-8 BOM का उपयोग
-    const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `YASK_Google_Contacts.csv`;
-    link.click();
-}
-
-window.onclick = (e) => {
-    if(!e.target.closest('.ms-container')) {
-        document.querySelectorAll('.ms-content').forEach(c => c.style.display = "none");
+    } else {
+        // अगर लाइब्रेरी लोड नहीं हुई, तो 300ms बाद फिर कोशिश करें
+        setTimeout(renderMathNow, 300);
     }
 }
 
-window.onload = load;
+function displayQ() {
+    const data = myQuestions[currentQ];
+    document.getElementById('info').innerText = `प्रश्न ${currentQ + 1} / ${myQuestions.length}`;
+    document.getElementById('q-box').innerHTML = data.q;
+    
+    const oBox = document.getElementById('o-box');
+    oBox.innerHTML = "";
+    
+    data.o.forEach(opt => {
+        const div = document.createElement('div');
+        div.className = 'opt-item';
+        div.innerHTML = opt;
+        div.onclick = function() {
+            picked = opt;
+            document.querySelectorAll('.opt-item').forEach(el => el.classList.remove('active'));
+            div.classList.add('active');
+            document.getElementById('next-btn').disabled = false;
+        };
+        oBox.appendChild(div);
+    });
+
+    renderMathNow();
+}
+
+function goNext() {
+    if (picked === myQuestions[currentQ].a) myScore++;
+    
+    if (currentQ < myQuestions.length - 1) {
+        currentQ++;
+        picked = null;
+        document.getElementById('next-btn').disabled = true;
+        displayQ();
+    } else {
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('score-page').style.display = 'block';
+        document.getElementById('final-score').innerText = `${myScore} / ${myQuestions.length}`;
+    }
+}
+
+// शुरू करने के लिए थोड़ा डिले ताकि KaTeX तैयार हो जाए
+window.addEventListener('load', function() {
+    setTimeout(displayQ, 500);
+});
+// ]]>
 </script>
-</body>
-</html>
