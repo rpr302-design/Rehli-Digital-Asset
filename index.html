@@ -3,230 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maths Pro Quiz Portal</title>
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" />
-
+    <title>रहली डिजिटल एसेट - होम</title>
     <style>
-        :root {
-            --primary-color: #2563eb;
-            --bg-color: #f8fafc;
-            --text-color: #1e293b;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f4f7f6;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
+            height: 100vh;
+            color: #333;
         }
-
-        #quiz-container {
-            width: 95%;
-            max-width: 650px;
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #64748b;
-        }
-
-        .question-text {
-            font-size: 1.4rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .options-list {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .option-item {
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 1.1rem;
-        }
-
-        .option-item:hover {
-            border-color: var(--primary-color);
-            background-color: #eff6ff;
-        }
-
-        .option-item.selected {
-            border-color: var(--primary-color);
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .footer {
-            margin-top: 2rem;
-            text-align: right;
-        }
-
-        #next-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        #next-btn:disabled {
-            background-color: #cbd5e1;
-            cursor: not-allowed;
-        }
-
-        #result-screen {
-            display: none;
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
             text-align: center;
         }
-
-        .score-display {
-            font-size: 4rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin: 1rem 0;
+        h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
         }
-
-        .retry-btn {
-            background: #10b981;
+        .profile-box {
+            display: none;
+            margin-bottom: 20px;
+        }
+        .profile-box span {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            outline: none;
+            transition: border 0.3s;
+        }
+        input:focus {
+            border-color: #3498db;
+        }
+        button {
+            width: 100%;
+            padding: 11px;
+            background-color: #3498db;
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            border-radius: 6px;
+            font-size: 1em;
             cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .alert {
+            margin-top: 15px;
+            font-size: 0.85em;
+            color: #c0392b;
+            display: none;
+        }
+        .success {
+            margin-top: 15px;
+            font-size: 0.85em;
+            color: #27ae60;
+            display: none;
         }
     </style>
 </head>
 <body>
 
-    <div id="quiz-container">
-        <div id="quiz-active">
-            <div class="header">
-                <span id="q-count">प्रश्न 1 / 3</span>
-            </div>
-            <div id="question-box" class="question-text">लोड हो रहा है...</div>
-            <div id="options-box" class="options-list"></div>
-            <div class="footer">
-                <button id="next-btn" onclick="handleNext()" disabled>अगला प्रश्न</button>
-            </div>
+    <div class="container">
+        <div id="profileSection" class="profile-box">
+            <h2>स्वागत है! 👋</h2>
+            <p>मोबाइल नंबर: <span id="userMobile"></span></p>
+            <p style="font-size: 0.8em; color: #7f8c8d; margin-top: 5px;">IP एड्रेस: <span id="userIp"></span></p>
+            <button onclick="logout()" style="margin-top: 15px; background-color: #e74c3c;">लॉग आउट</button>
         </div>
 
-        <div id="result-screen">
-            <h2>आपका परिणाम</h2>
-            <div class="score-display" id="final-score">0</div>
-            <p id="feedback-msg"></p>
-            <button class="retry-btn" onclick="location.reload()">दोबारा प्रयास करें</button>
+        <div id="formSection">
+            <h2>रहली डिजिटल एसेट</h2>
+            <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">कृपया अपना मोबाइल नंबर सही दर्ज करें।</p>
+            
+            <form id="mobileForm">
+                <div class="form-group">
+                    <label for="phone">मोबाइल नंबर (+91 के साथ):</label>
+                    <input type="tel" id="phone" placeholder="9876543210" pattern="[6-9][0-9]{9}" required>
+                </div>
+                <button type="submit" id="submitBtn">प्रवेश करें</button>
+            </form>
+            
+            <p id="alertMsg" class="alert">चेतावनी: इस IP एड्रेस से पहले ही एक अकाउंट बन चुका है या एक IP से दो अकाउंट चलाना प्रतिबंधित है।</p>
+            <p id="successMsg" class="success">सफलतापूर्वक रजिस्टर किया गया!</p>
         </div>
     </div>
 
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+    <script type="module">
+        // Firebase SDKs 
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
-    <script>
-        const quizData = [
-            {
-                q: "यदि $x^2 - 5x + 6 = 0$ है, तो $x$ के मूल ज्ञात करें:",
-                o: ["$2, 3$", "$-2, -3$", "$1, 6$", "$0, 5$"],
-                a: "$2, 3$"
-            },
-            {
-                q: "त्रिकोणमिति सूत्र: $\\sin^2 \\theta + \\cos^2 \\theta$ का मान क्या है?",
-                o: ["$0$", "$1$", "$-1$", "$\\infty$"],
-                a: "$1$"
-            },
-            {
-                q: "पाइथागोरस प्रमेय का सही रूप क्या है?",
-                o: ["$a^2 + b^2 = c^2$", "$a + b = c$", "$a^2 - b^2 = c^2$", "$\\sqrt{a+b} = c$"],
-                a: "$a^2 + b^2 = c^2$"
-            }
-        ];
-
-        let currentIdx = 0;
-        let score = 0;
-        let selectedOption = null;
-
-        function loadQuestion() {
-            const data = quizData[currentIdx];
-            document.getElementById('q-count').innerText = `प्रश्न ${currentIdx + 1} / ${quizData.length}`;
-            document.getElementById('question-box').innerHTML = data.q;
-            
-            const oBox = document.getElementById('options-box');
-            oBox.innerHTML = "";
-            
-            data.o.forEach(opt => {
-                const div = document.createElement('div');
-                div.className = 'option-item';
-                div.innerHTML = opt;
-                div.onclick = function() {
-                    selectedOption = opt;
-                    document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
-                    div.classList.add('selected');
-                    document.getElementById('next-btn').disabled = false;
-                };
-                oBox.appendChild(div);
-            });
-
-            renderMath();
-        }
-
-        function renderMath() {
-            // KaTeX rendering with a slight delay to ensure DOM is ready
-            setTimeout(() => {
-                if (window.renderMathInElement) {
-                    renderMathInElement(document.getElementById('quiz-container'), {
-                        delimiters: [
-                            {left: "$$", right: "$$", display: true},
-                            {left: "$", right: "$", display: false}
-                        ],
-                        throwOnError: false
-                    });
-                }
-            }, 50);
-        }
-
-        function handleNext() {
-            if (selectedOption === quizData[currentIdx].a) score++;
-            
-            if (currentIdx < quizData.length - 1) {
-                currentIdx++;
-                selectedOption = null;
-                document.getElementById('next-btn').disabled = true;
-                loadQuestion();
-            } else {
-                showResults();
-            }
-        }
-
-        function showResults() {
-            document.getElementById('quiz-active').style.display = 'none';
-            document.getElementById('result-screen').style.display = 'block';
-            document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
-            document.getElementById('feedback-msg').innerText = score === quizData.length ? "शानदार प्रदर्शन!" : "अच्छा प्रयास, और सुधार करें।";
-            renderMath();
-        }
-
-        window.onload = () => {
-            setTimeout(loadQuestion, 500);
+        // Firebase कॉन्फिगरेशन
+        const firebaseConfig = {
+            apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
+            authDomain: "rehli-digital-asset.firebaseapp.com",
+            projectId: "rehli-digital-asset",
+            storageBucket: "rehli-digital-asset.firebasestorage.app",
+            messagingSenderId: "779415089179",
+            appId: "1:779415089179:web:4f6654088af999ed7ac8be",
+            measurementId: "G-1KR9GT1MT6"
         };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // IP API का उपयोग करके IP एड्रेस प्राप्त करना
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error("IP प्राप्त करने में त्रुटि:", error);
+                return "Unknown_IP";
+            }
+        }
+
+        // पेज लोड होने पर चेक करना
+        document.addEventListener("DOMContentLoaded", async () => {
+            const storedMobile = localStorage.getItem("userMobile");
+            const storedIp = localStorage.getItem("userIp");
+
+            if (storedMobile && storedIp) {
+                document.getElementById("formSection").style.display = "none";
+                document.getElementById("profileSection").style.display = "block";
+                document.getElementById("userMobile").innerText = storedMobile;
+                document.getElementById("userIp").innerText = storedIp;
+            } else {
+                window.currentIp = await getUserIP();
+                console.log("Current IP:", window.currentIp);
+            }
+        });
+
+        // फॉर्म सबमिट होने पर प्रक्रिया
+        document.getElementById("mobileForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const phoneInput = document.getElementById("phone").value;
+            const alertMsg = document.getElementById("alertMsg");
+            const successMsg = document.getElementById("successMsg");
+            
+            alertMsg.style.display = "none";
+            successMsg.style.display = "none";
+
+            const ipAddress = window.currentIp || await getUserIP();
+
+            // 1. जांचें कि क्या यह IP पहले से डेटाबेस में मौजूद है
+            const q = query(collection(db, "users"), where("ip", "==", ipAddress));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                alertMsg.style.display = "block";
+                return;
+            }
+
+            // 2. यदि IP नहीं है, तो नया रिकॉर्ड सेव करें
+            try {
+                await addDoc(collection(db, "users"), {
+                    mobile: phoneInput,
+                    ip: ipAddress,
+                    timestamp: new Date()
+                });
+
+                // लोकल स्टोरेज में सेव करें
+                localStorage.setItem("userMobile", phoneInput);
+                localStorage.setItem("userIp", ipAddress);
+
+                successMsg.style.display = "block";
+                
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+
+            } catch (e) {
+                console.error("डेटा जोड़ने में त्रुटि: ", e);
+            }
+        });
+
+        // लॉगआउट फंक्शन 
+        window.logout = function() {
+            localStorage.clear();
+            location.reload();
+        }
     </script>
 </body>
 </html>
