@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>प्रोफाइल सेटअप - रहली डिजिटल एसेट</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Eye Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-bg: #667eea;
             --secondary-bg: #764ba2;
-            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-bg: #ffffff;
+            --accent-color: #764ba2;
         }
 
         body {
@@ -27,41 +27,46 @@
 
         .container {
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             background: var(--glass-bg);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            padding: 35px 25px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             box-sizing: border-box;
         }
 
         .project-name {
             text-align: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 600;
-            color: #764ba2;
+            color: var(--accent-color);
             margin-bottom: 5px;
-            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        h3 { text-align: center; color: #333; margin-bottom: 25px; font-weight: 400; }
+        h3 { text-align: center; color: #444; margin-bottom: 30px; font-weight: 400; font-size: 16px; }
 
-        .input-group { margin-bottom: 15px; position: relative; }
+        .input-group { margin-bottom: 20px; position: relative; }
 
-        label { display: block; margin-bottom: 5px; font-size: 14px; color: #555; }
+        label { display: block; margin-bottom: 8px; font-size: 13px; color: #666; font-weight: 600; margin-left: 5px; }
 
         input, select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 14px 15px;
+            border: 1.5px solid #eee;
+            border-radius: 15px;
             font-size: 15px;
             outline: none;
             transition: 0.3s;
             box-sizing: border-box;
+            background: #f9f9fb;
+            color: #333;
         }
 
-        input:focus { border-color: var(--primary-bg); }
+        input:focus { border-color: var(--primary-bg); background: #fff; box-shadow: 0 0 10px rgba(102, 126, 234, 0.1); }
+
+        /* नाम को ऑटोमैटिक बड़ा दिखाने के लिए CSS भी मदद करती है */
+        #userName { text-transform: uppercase; }
 
         .pin-container { position: relative; }
         
@@ -71,74 +76,78 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #777;
+            color: #aaa;
+            padding: 5px;
         }
 
         .btn-submit {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: linear-gradient(to right, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 17px;
+            border-radius: 15px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+            margin-top: 15px;
+            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+            transition: 0.3s;
         }
 
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
         .btn-submit:active { transform: scale(0.98); }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 360px) {
+            .container { padding: 25px 20px; }
+            .project-name { font-size: 18px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="project-name">रहली डिजिटल एसेट</div>
-    <h3>यूजर प्रोफाइल सेटअप</h3>
+    <h3>प्रोफाइल सेटअप करें</h3>
 
-    <!-- यूजर का नाम -->
     <div class="input-group">
         <label>आपका नाम</label>
-        <input type="text" id="userName" placeholder="पूरा नाम दर्ज करें">
+        <input type="text" id="userName" placeholder="पूरा नाम दर्ज करें" oninput="this.value = this.value.toUpperCase()">
     </div>
 
-    <!-- लिंग -->
     <div class="input-group">
         <label>लिंग (Gender)</label>
         <select id="userGender">
             <option value="">चुनें</option>
-            <option value="Male">पुरुष</option>
-            <option value="Female">महिला</option>
-            <option value="Other">अन्य</option>
+            <option value="Male">पुरुष (Male)</option>
+            <option value="Female">महिला (Female)</option>
+            <option value="Other">अन्य (Other)</option>
         </select>
     </div>
 
-    <!-- मोबाइल नंबर -->
     <div class="input-group">
         <label>मोबाइल नंबर</label>
-        <input type="number" id="userMobile" placeholder="10 अंकों का नंबर">
+        <input type="number" id="userMobile" placeholder="10 अंकों का मोबाइल नंबर">
     </div>
 
-    <!-- 4 अंकों का पिन -->
     <div class="input-group">
         <label>सुरक्षा पिन (4 अंक)</label>
         <div class="pin-container">
-            <input type="password" id="userPin" placeholder="0 0 0 0" maxlength="4" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
+            <input type="password" id="userPin" placeholder="यूनिक पिन चुनें" maxlength="4" pattern="\d*" inputmode="numeric" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
             <i class="fa-solid fa-eye toggle-pin" onclick="togglePin('userPin')"></i>
         </div>
     </div>
 
-    <!-- पिन पुनः दर्ज करें -->
     <div class="input-group">
         <label>पिन पुनः दर्ज करें</label>
         <div class="pin-container">
-            <input type="password" id="confirmPin" placeholder="0 0 0 0" maxlength="4">
+            <input type="password" id="confirmPin" placeholder="पिन कन्फर्म करें" maxlength="4" pattern="\d*" inputmode="numeric">
             <i class="fa-solid fa-eye toggle-pin" onclick="togglePin('confirmPin')"></i>
         </div>
     </div>
 
-    <button class="btn-submit" onclick="registerUser()">सबमिट करें</button>
+    <button class="btn-submit" onclick="registerUser()">प्रोफाइल सुरक्षित करें</button>
 </div>
 
 <script type="module">
@@ -157,7 +166,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // पिन दिखाने/छुपाने का फंक्शन
     window.togglePin = (id) => {
         const input = document.getElementById(id);
         const icon = input.nextElementSibling;
@@ -170,16 +178,23 @@
         }
     };
 
-    // रजिस्ट्रेशन फंक्शन
     window.registerUser = async () => {
-        const name = document.getElementById('userName').value;
+        const name = document.getElementById('userName').value.trim().toUpperCase();
         const gender = document.getElementById('userGender').value;
-        const mobile = document.getElementById('userMobile').value;
+        const mobile = document.getElementById('userMobile').value.trim();
         const pin = document.getElementById('userPin').value;
         const cPin = document.getElementById('confirmPin').value;
 
+        // कमजोर पिन की लिस्ट
+        const weakPins = ["1234", "1111", "2222", "3333", "4444", "5555", "6666", "7777", "8888", "9999", "0000", "4321", "2580"];
+
         if (!name || !gender || mobile.length < 10 || pin.length !== 4) {
-            alert("कृपया सभी जानकारी सही से भरें।");
+            alert("कृपया सभी जानकारी सही से भरें (मोबाइल 10 अंक और पिन 4 अंक)।");
+            return;
+        }
+
+        if (weakPins.includes(pin)) {
+            alert("यह पिन बहुत साधारण है! सुरक्षा के लिए कृपया कोई यूनिक पिन चुनें (जैसे 5821)।");
             return;
         }
 
@@ -189,7 +204,6 @@
         }
 
         try {
-            // मोबाइल नंबर को आईडी बनाकर Firestore में सेव करना
             await setDoc(doc(db, "users", mobile), {
                 userName: name,
                 gender: gender,
@@ -198,11 +212,8 @@
                 regDate: new Date().toISOString()
             });
 
-            // ब्राउज़र में मोबाइल नंबर सेव करें ताकि दोबारा लॉगिन न करना पड़े
             localStorage.setItem('userMobile', mobile);
-            
-            alert("प्रोफाइल सफलतापूर्वक बन गई! ✅");
-            // मुख्य पेज पर भेजें
+            alert("बधाई हो " + name + "! आपकी प्रोफाइल सुरक्षित कर दी गई है। ✅");
             window.location.href = "index.html"; 
 
         } catch (error) {
