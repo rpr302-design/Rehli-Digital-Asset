@@ -6,98 +6,104 @@
     <title>रहली डिजिटल एसेट - रिवॉर्ड्स</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --gold: #FFD700;
+            --glass: rgba(255, 255, 255, 0.15);
+        }
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            color: #fff;
-            padding: 15px;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            margin: 0; display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; color: #fff; padding: 15px; overflow: hidden;
         }
 
         .container {
-            width: 100%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(15px);
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.2);
+            width: 100%; max-width: 400px; background: var(--glass);
+            padding: 30px; border-radius: 30px; backdrop-filter: blur(20px);
+            text-align: center; border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        h2 { font-weight: 600; margin-bottom: 20px; }
-        p { font-size: 14px; opacity: 0.9; margin-bottom: 25px; }
+        h2 { font-weight: 600; margin-bottom: 10px; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .lang-en { font-size: 12px; opacity: 0.8; display: block; margin-bottom: 5px; }
 
         input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            box-sizing: border-box;
-            outline: none;
-            text-align: center;
+            width: 100%; padding: 15px; margin: 20px 0; border: none;
+            border-radius: 15px; font-size: 18px; outline: none;
+            text-align: center; background: white; color: #333; font-weight: 600;
         }
 
         .btn-action {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            background: #00d2ff;
-            background: linear-gradient(to right, #3a7bd5, #00d2ff);
-            color: white;
-            transition: 0.3s;
+            width: 100%; padding: 16px; border: none; border-radius: 15px;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: white; box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
         }
 
-        .btn-action:hover { transform: scale(1.02); }
+        /* तिजोरी और कॉइन सेक्शन */
+        #rewardSection { display: none; }
+        .safe-img { width: 100%; max-width: 200px; margin: 20px auto; animation: pop 0.5s ease; }
+        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
 
-        .profile-card { display: none; } /* शुरू में छुपा रहेगा */
-        .key-section { display: none; }
-        
-        .user-info {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 10px;
+        .coin-display {
+            font-size: 45px; font-weight: 600; color: var(--gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 2px 2px 2px #000;
+            margin: 10px 0; display: block;
         }
+        .shiny { animation: shine 2s infinite; }
+        @keyframes shine { 0% { opacity: 0.8; } 50% { opacity: 1; text-shadow: 0 0 40px var(--gold); } 100% { opacity: 0.8; } }
+
+        .btn-add { background: linear-gradient(45deg, #27ae60, #2ecc71); margin-top: 20px; }
+
+        /* मोबाइल इनपुट बॉक्स */
+        #mobileBox { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- सेक्शन 1: चाबी दर्ज करें (नए यूजर के लिए) -->
-    <div id="keySection" class="key-section">
-        <h2>स्वागत है! 🎁</h2>
-        <p>कृपया यूट्यूब वीडियो से प्राप्त 5 अंकों की सीक्रेट चाबी यहाँ दर्ज करें।</p>
-        <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-        <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें</button>
+    <!-- सेक्शन 1: चाबी एंट्री -->
+    <div id="keySection">
+        <h2>नमस्ते! <span style="color:var(--gold)">रहली एसेट</span></h2>
+        <span class="lang-en">Enter 5 Digit Secret Key</span>
+        <p style="font-size: 13px; color: #eee;">यूट्यूब वीडियो वाली 5 अंकों की चाबी डालें</p>
+        
+        <input type="number" id="userKey" placeholder="0 0 0 0 0" 
+               oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+        
+        <button class="btn-action" onclick="verifyKey()">चाबी लगायें (Unlock Now)</button>
     </div>
 
-    <!-- सेक्शन 2: यूजर प्रोफाइल (पुराने यूजर के लिए) -->
-    <div id="profileSection" class="profile-card">
-        <h2>आपकी प्रोफाइल 👤</h2>
-        <div class="user-info">
-            <p>मोबाइल नंबर: <strong id="displayMobile">---</strong></p>
-            <p>स्टेटस: <span style="color: #00ff00;">Verified ✅</span></p>
+    <!-- सेक्शन 2: रिवॉर्ड एनीमेशन (तिजोरी) -->
+    <div id="rewardSection">
+        <span class="lang-en" style="color:var(--gold)">Congratulations! You Won</span>
+        <h2 style="color: #00ff00;">बधाई हो! आपने जीते</h2>
+        
+        <div class="coin-display shiny" id="winAmount">0</div>
+        <p style="color:var(--gold); font-weight: 600;">COINS</p>
+
+        <!-- तिजोरी इमेज -->
+        <img src="https://lh3.googleusercontent.com/d/1rrk784suDVgSiUS8F1GA6HqZgeWia2qT" class="safe-img" alt="Safe">
+        
+        <button class="btn-action btn-add" id="claimBtn" onclick="showMobileInput()">खाते में जोड़ें (Add to Account)</button>
+
+        <!-- मोबाइल नंबर दर्ज करें -->
+        <div id="mobileBox">
+            <span class="lang-en">Enter Mobile to Claim</span>
+            <input type="number" id="claimMobile" placeholder="मोबाइल नंबर डालें">
+            <button class="btn-action" onclick="finalizeClaim()">पुष्टि करें (Confirm)</button>
         </div>
-        <button class="btn-action" style="margin-top: 20px;" onclick="goToMysteryBox()">मिस्ट्री बॉक्स खोलें</button>
-        <p onclick="logoutUser()" style="margin-top: 15px; cursor: pointer; font-size: 12px; text-decoration: underline;">मोबाइल नंबर बदलें</p>
     </div>
 </div>
 
+<!-- ऑडियो एलिमेंट -->
+<audio id="winSound">
+    <source src="https://lh3.googleusercontent.com/d/1IG486iet9kCnOR3aWcV1rSsS6XTyckhX" type="audio/mpeg">
+</audio>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
@@ -111,24 +117,14 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // पेज लोड होते ही चेक करें
-    window.onload = () => {
-        const savedMobile = localStorage.getItem('userMobile');
-        if (savedMobile) {
-            // अगर मोबाइल नंबर सेव है, प्रोफाइल दिखाएँ
-            document.getElementById('displayMobile').innerText = savedMobile;
-            document.getElementById('profileSection').style.display = 'block';
-        } else {
-            // अगर नया यूजर है, चाबी सेक्शन दिखाएँ
-            document.getElementById('keySection').style.display = 'block';
-        }
-    };
+    let currentReward = 0;
 
-    // चाबी वेरिफिकेशन फंक्शन
     window.verifyKey = async () => {
         const key = document.getElementById('userKey').value;
+        const sound = document.getElementById('winSound');
+        
         if (key.length !== 5) {
-            alert("कृपया 5 अंकों की सही चाबी डालें।");
+            alert("कृपया 5 अंकों की चाबी डालें!");
             return;
         }
 
@@ -137,33 +133,49 @@
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-                // चाबी सही है, अब मोबाइल वेरिफिकेशन पर भेजें
-                // यहाँ हम एक प्रॉम्प्ट ले रहे हैं, आप चाहें तो अलग पेज बना सकते हैं
-                const mobile = prompt("चाबी सही है! अपना मोबाइल नंबर दर्ज करें:");
-                if(mobile && mobile.length >= 10) {
-                    localStorage.setItem('userMobile', mobile);
-                    location.reload(); // पेज रिफ्रेश करके प्रोफाइल दिखाएँ
-                } else {
-                    alert("सही मोबाइल नंबर जरूरी है।");
-                }
+                currentReward = docSnap.data().amount || 0;
+                
+                // 1. साउंड प्ले करें
+                sound.play();
+
+                // 2. UI बदलें
+                document.getElementById('keySection').style.display = 'none';
+                document.getElementById('rewardSection').style.display = 'block';
+                document.getElementById('winAmount').innerText = currentReward;
             } else {
-                alert("गलत चाबी! कृपया वीडियो फिर से देखें।");
+                alert("गलत चाबी! (Wrong Key)");
             }
         } catch (error) {
-            console.error(error);
-            alert("सर्वर से कनेक्ट करने में समस्या आई।");
+            alert("Error: " + error.message);
         }
     };
 
-    window.goToMysteryBox = () => {
-        // यहाँ मिस्ट्री बॉक्स वाले पेज का लिंक आएगा
-        alert("मिस्ट्री बॉक्स पेज पर जा रहे हैं...");
-        // window.location.href = "mystery-box.html";
+    window.showMobileInput = () => {
+        document.getElementById('claimBtn').style.display = 'none';
+        document.getElementById('mobileBox').style.display = 'block';
     };
 
-    window.logoutUser = () => {
-        localStorage.removeItem('userMobile');
-        location.reload();
+    window.finalizeClaim = async () => {
+        const mobile = document.getElementById('claimMobile').value;
+        if (mobile.length !== 10) {
+            alert("सही मोबाइल नंबर डालें!");
+            return;
+        }
+
+        try {
+            // यहाँ आप यूजर के खाते में सिक्के जोड़ सकते हैं
+            await setDoc(doc(db, "claims", mobile + "_" + Date.now()), {
+                mobile: mobile,
+                amount: currentReward,
+                date: new Date().toISOString()
+            });
+
+            alert("सफलता! " + currentReward + " सिक्के आपके नंबर " + mobile + " पर भेज दिए गए हैं।");
+            localStorage.setItem('userMobile', mobile);
+            location.reload();
+        } catch (e) {
+            alert("Error claiming coins.");
+        }
     };
 </script>
 
