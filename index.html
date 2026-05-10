@@ -6,7 +6,7 @@
     <title>रहली डिजिटल एसेट - रिवॉर्ड्स</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #FFD700; --glass: rgba(255, 255, 255, 0.15); }
+        :root { --gold: #FFD700; --glass: rgba(255, 255, 255, 0.15); --error: #ff4757; }
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
@@ -17,11 +17,11 @@
             width: 100%; max-width: 400px; background: var(--glass);
             padding: 30px; border-radius: 30px; backdrop-filter: blur(20px);
             text-align: center; border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative;
         }
         input {
             width: 100%; padding: 15px; margin: 15px 0; border: none;
-            border-radius: 12px; font-size: 18px; outline: none; text-align: center;
+            border-radius: 12px; font-size: 18px; outline: none; text-align: center; background: #fff;
         }
         .btn-action {
             width: 100%; padding: 16px; border: none; border-radius: 15px;
@@ -29,55 +29,63 @@
             background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
             color: white; transition: 0.3s;
         }
-        .btn-action:disabled { background: #ccc; cursor: not-allowed; }
-        
-        /* रिवॉर्ड सेक्शन एनीमेशन */
-        #rewardSection { display: none; animation: slideUp 0.6s ease-out; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .coin-display {
-            font-size: 50px; font-weight: 700; color: var(--gold);
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); margin: 10px 0;
+        /* सुंदर अलर्ट स्टाइल */
+        #customAlert {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            padding: 20px; border-radius: 20px; background: #fff; color: #333;
+            width: 80%; max-width: 300px; display: none; z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4); text-align: center;
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
-        .safe-img { width: 180px; margin: 20px auto; display: block; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
-        #mobileBox { display: none; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; margin-top: 20px; }
+        @keyframes popIn { from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+
+        .coin-display { font-size: 55px; font-weight: 700; color: var(--gold); text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+        .safe-img { width: 160px; margin: 15px auto; display: block; }
+        #rewardSection, #mobileBox { display: none; }
     </style>
 </head>
 <body>
 
+<!-- सुंदर अलर्ट बॉक्स -->
+<div id="customAlert">
+    <div id="alertIcon" style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
+    <div id="alertTitle" style="font-weight: 600; font-size: 18px;">ओह!</div>
+    <div id="alertMsg" style="font-size: 14px; margin: 10px 0; color: #666;"></div>
+    <button class="btn-action" style="padding: 10px; font-size: 14px;" onclick="closeAlert()">ठीक है (OK)</button>
+</div>
+
 <div class="container">
-    <!-- चाबी सेक्शन -->
+    <!-- सेक्शन 1: चाबी एंट्री -->
     <div id="keySection">
-        <h2 style="color:var(--gold)">सीक्रेट चाबी <br><small style="font-size:14px; color:white;">Secret Key Unlock</small></h2>
-        <p style="font-size: 13px;">यूट्यूब वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
+        <h2 style="color:var(--gold)">रहली डिजिटल एसेट</h2>
+        <p style="font-size: 13px;">अपनी 5 अंकों की चाबी (Key) दर्ज करें</p>
         <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-        <button class="btn-action" id="unlockBtn" onclick="verifyKey()">खोलें (Unlock Vault)</button>
+        <button class="btn-action" id="unlockBtn" onclick="verifyKey()">अभी अनलॉक करें</button>
     </div>
 
-    <!-- रिवॉर्ड सेक्शन -->
+    <!-- सेक्शन 2: रिवॉर्ड (तिजोरी) -->
     <div id="rewardSection">
-        <h2 style="color:#00ff00;">बधाई हो! <br><small style="font-size:14px; color:white;">You Won Coins</small></h2>
+        <h2 style="color:#00ff00;">शानदार!</h2>
         <div class="coin-display" id="winAmount">0</div>
-        <img src="https://lh3.googleusercontent.com/d/1rrk784suDVgSiUS8F1GA6HqZgeWia2qT" class="safe-img" alt="Safe Box">
-        
-        <button class="btn-action" id="claimBtn" onclick="showMobileInput()" style="background: #27ae60;">खाते में जोड़ें (Add to Wallet)</button>
+        <p style="color:var(--gold); margin-top:-10px;">GOLD COINS</p>
+        <img src="https://lh3.googleusercontent.com/d/1rrk784suDVgSiUS8F1GA6HqZgeWia2qT" class="safe-img">
+        <button class="btn-action" id="claimBtn" onclick="showMobileInput()" style="background: #27ae60;">वॉलेट में जोड़ें</button>
 
         <div id="mobileBox">
-            <p style="font-size:13px;">सिक्के प्राप्त करने के लिए नंबर डालें</p>
             <input type="number" id="claimMobile" placeholder="मोबाइल नंबर (10 अंक)" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
-            <button class="btn-action" onclick="finalizeAccount()">खाता बनाएँ और सिक्के लें</button>
+            <button class="btn-action" onclick="finalizeAccount()">पुष्टि करें (Confirm)</button>
         </div>
     </div>
 </div>
 
-<!-- साउंड लोडिंग फिक्स -->
-<audio id="winSound" preload="auto">
+<audio id="winSound">
     <source src="https://docs.google.com/uc?export=download&id=1IG486iet9kCnOR3aWcV1rSsS6XTyckhX" type="audio/mpeg">
 </audio>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
@@ -90,44 +98,46 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
     let wonCoins = 0;
+    let inputKey = "";
+
+    // कस्टम अलर्ट फंक्शन
+    window.showAlert = (title, msg, type) => {
+        document.getElementById('alertTitle').innerText = title;
+        document.getElementById('alertMsg').innerText = msg;
+        document.getElementById('alertIcon').innerText = type === 'error' ? '❌' : '⚠️';
+        document.getElementById('customAlert').style.display = 'block';
+    };
+
+    window.closeAlert = () => { document.getElementById('customAlert').style.display = 'none'; };
 
     window.verifyKey = async () => {
-        const key = document.getElementById('userKey').value;
+        inputKey = document.getElementById('userKey').value;
         const btn = document.getElementById('unlockBtn');
-        const sound = document.getElementById('winSound');
 
-        if (key.length !== 5) {
-            alert("कृपया 5 अंकों की चाबी डालें!");
+        if (inputKey.length !== 5) {
+            showAlert("अपूर्ण चाबी", "कृपया 5 अंकों की पूरी चाबी डालें।", "error");
             return;
         }
 
         btn.disabled = true;
-        btn.innerText = "जाँच हो रही है...";
 
         try {
-            const assetRef = doc(db, "assets", key);
+            const assetRef = doc(db, "assets", inputKey);
             const assetSnap = await getDoc(assetRef);
 
             if (assetSnap.exists()) {
-                wonCoins = assetSnap.data().amount || 0;
-                
-                // साउंड प्ले करने की कोशिश
-                sound.play().catch(e => console.log("Sound error:", e));
-
+                wonCoins = assetSnap.data().value || 0;
+                // चाबी सही है, अब रिवॉर्ड दिखाएँ
                 document.getElementById('keySection').style.display = 'none';
                 document.getElementById('rewardSection').style.display = 'block';
                 document.getElementById('winAmount').innerText = wonCoins;
+                document.getElementById('winSound').play();
             } else {
-                alert("गलत चाबी! कृपया वीडियो फिर से देखें।");
+                showAlert("गलत चाबी", "यह चाबी अमान्य है। कृपया वीडियो फिर से देखें।", "error");
                 btn.disabled = false;
-                btn.innerText = "खोलें (Unlock Vault)";
             }
-        } catch (e) {
-            alert("सर्वर एरर: " + e.message);
-            btn.disabled = false;
-        }
+        } catch (e) { showAlert("एरर", e.message, "error"); btn.disabled = false; }
     };
 
     window.showMobileInput = () => {
@@ -138,38 +148,54 @@
     window.finalizeAccount = async () => {
         const mobile = document.getElementById('claimMobile').value;
         if (mobile.length !== 10) {
-            alert("कृपया 10 अंकों का सही मोबाइल नंबर डालें!");
+            showAlert("गलत नंबर", "10 अंकों का मोबाइल नंबर डालें।", "error");
             return;
         }
 
         try {
-            const userRef = doc(db, "users", mobile);
-            const userSnap = await getDoc(userRef);
+            // 1. Check Usage: क्या इस यूजर ने इस महीने यह चाबी इस्तेमाल की है?
+            const usageRef = doc(db, "users", mobile, "used_keys", inputKey);
+            const usageSnap = await getDoc(usageRef);
 
-            if (!userSnap.exists()) {
-                // नया यूजर है - खाता बनाएँ
-                await setDoc(userRef, {
-                    mobile: mobile,
-                    balance: wonCoins,
-                    regDate: new Date().toISOString(),
-                    status: "new"
-                });
-                alert("बधाई हो! आपका नया खाता बन गया है और " + wonCoins + " सिक्के जोड़ दिए गए हैं।");
-            } else {
-                // पुराना यूजर है - बैलेंस अपडेट करें (सिक्के जोड़ें)
-                const currentBalance = userSnap.data().balance || 0;
-                await setDoc(userRef, { balance: currentBalance + wonCoins }, { merge: true });
-                alert("सिक्के आपके मौजूदा खाते में जोड़ दिए गए हैं।");
+            if (usageSnap.exists()) {
+                const lastUsed = new Date(usageSnap.data().timestamp);
+                const today = new Date();
+                const diffDays = Math.ceil((today - lastUsed) / (1000 * 60 * 60 * 24));
+
+                if (diffDays < 30) {
+                    showAlert("लिमिट समाप्त", `आप इस चाबी का उपयोग ${30 - diffDays} दिन बाद ही कर पाएंगे।`, "error");
+                    return;
+                }
             }
 
-            localStorage.setItem('userMobile', mobile);
-            window.location.href = "profile-setup.html"; // प्रोफाइल पूरी करने के लिए भेजें
+            // 2. सब सही है, बैलेंस अपडेट करें और तारीख सेव करें
+            const userRef = doc(db, "users", mobile);
+            const userSnap = await getDoc(userRef);
+            let currentBalance = 0;
 
-        } catch (e) {
-            alert("डेटा सेव करने में त्रुटि: " + e.message);
-        }
+            if (userSnap.exists()) {
+                currentBalance = userSnap.data().balance || 0;
+            }
+
+            // बैलेंस अपडेट
+            await setDoc(userRef, { 
+                mobile: mobile, 
+                balance: currentBalance + wonCoins,
+                lastUpdate: new Date().toISOString()
+            }, { merge: true });
+
+            // चाबी का रिकॉर्ड सेव करें
+            await setDoc(usageRef, {
+                timestamp: new Date().toISOString(),
+                key: inputKey,
+                amount: wonCoins
+            });
+
+            showAlert("सफलता! ✅", "सिक्के आपके खाते में जोड़ दिए गए हैं।", "success");
+            setTimeout(() => { window.location.href = "profile-setup.html"; }, 2000);
+
+        } catch (e) { showAlert("एरर", "डेटा सेव नहीं हो सका।", "error"); }
     };
 </script>
-
 </body>
 </html>
