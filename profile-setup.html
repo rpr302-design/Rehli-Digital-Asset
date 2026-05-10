@@ -39,11 +39,10 @@
         }
         input:focus { border-color: var(--primary-bg); background: #fff; }
 
-        /* प्रोफेशनल टोस्ट मैसेज (Center) */
         #customToast {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             padding: 20px 30px; border-radius: 15px; color: white; font-weight: 600;
-            text-align: center; z-index: 1000; display: none;
+            text-align: center; z-index: 2000; display: none;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             animation: fadeIn 0.4s ease; min-width: 280px;
         }
@@ -102,7 +101,7 @@
         </div>
     </div>
 
-    <button class="btn-submit" onclick="registerUser()">प्रोफाइल सुरक्षित करें</button>
+    <button class="btn-submit" id="mainBtn" onclick="registerUser()">प्रोफाइल सुरक्षित करें</button>
 </div>
 
 <script type="module">
@@ -123,7 +122,8 @@
     const db = getFirestore(app);
     const messaging = getMessaging(app);
 
-    // सेंटर टोस्ट फंक्शन
+    const vapidKey = 'BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk';
+
     window.showToast = (msg, type) => {
         const toast = document.getElementById('customToast');
         toast.innerText = msg;
@@ -145,9 +145,10 @@
         const pin = document.getElementById('userPin').value;
         const cPin = document.getElementById('confirmPin').value;
         const gender = document.getElementById('userGender').value;
+        const btn = document.getElementById('mainBtn');
 
         if (!name || mobile.length < 10 || pin.length !== 4) {
-            showToast("कृपया जानकारी सही भरें!", "error");
+            showToast("जानकारी सही भरें!", "error");
             return;
         }
         if (pin !== cPin) {
@@ -155,14 +156,28 @@
             return;
         }
 
+        btn.disabled = true;
+        btn.innerText = "प्रोसेसिंग...";
+
         try {
-            // 1. Duplicate Check: चेक करें कि नंबर पहले से तो नहीं है
             const userRef = doc(db, "users", mobile);
             const userSnap = await getDoc(userRef);
 
             if (userSnap.exists()) {
                 showToast("यह नंबर पहले से रजिस्टर है!", "error");
+                btn.disabled = false;
+                btn.innerText = "प्रोफाइल सुरक्षित करें";
                 return;
+            }
+
+            // 1. नोटिफिकेशन परमिशन मांगें
+            const permission = await Notification.requestPermission();
+            let fcmToken = null;
+
+            if (permission === 'granted') {
+                try {
+                    fcmToken = await getToken(messaging, { vapidKey: vapidKey });
+                } catch (e) { console.log("Token Fetch Error:", e); }
             }
 
             // 2. डेटा सेव करें
@@ -171,16 +186,9 @@
                 gender: gender,
                 mobile: mobile,
                 pin: pin,
+                fcmToken: fcmToken,
                 regDate: new Date().toISOString()
             });
-
-            // 3. टोकन सेविंग (Silent) - अपनी VAPID Key यहाँ पेस्ट करें
-            try {
-                const token = await getToken(messaging, { vapidKey: 'BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk' });
-                if (token) {
-                    await setDoc(userRef, { fcmToken: token }, { merge: true });
-                }
-            } catch (tErr) { console.log("Token error:", tErr); }
 
             showToast("प्रोफाइल सुरक्षित हो गई! ✅", "success");
             localStorage.setItem('userMobile', mobile);
@@ -188,6 +196,8 @@
 
         } catch (error) {
             showToast("त्रुटि: " + error.message, "error");
+            btn.disabled = false;
+            btn.innerText = "प्रोफाइल सुरक्षित करें";
         }
     };
 </script>
