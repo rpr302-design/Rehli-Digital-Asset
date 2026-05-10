@@ -4,14 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>रहली डिजिटल एसेट - एडमिन पैनल</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; padding: 20px; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; }
-        input, select, button { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; }
-        button:hover { background-color: #0056b3; }
-        #adminForm { display: none; } /* शुरू में फॉर्म छुपा रहेगा */
+        :root {
+            --primary-color: #4facfe;
+            --secondary-color: #00f2fe;
+            --danger-color: #ff4b2b;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(79, 172, 254, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-logout {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3);
+            margin-top: 20px;
+        }
+
+        #adminForm { display: none; }
+
+        /* Success Animation */
+        .success-msg {
+            display: none;
+            color: #28a745;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -19,37 +114,50 @@
 <div class="container">
     <!-- लॉगिन सेक्शन -->
     <div id="loginSection">
-        <h2>एडमिन लॉगिन</h2>
-        <input type="email" id="adminEmail" placeholder="ईमेल दर्ज करें">
-        <input type="password" id="adminPass" placeholder="पासवर्ड दर्ज करें">
+        <h2>🔒 एडमिन लॉगिन</h2>
+        <div class="input-group">
+            <input type="email" id="adminEmail" placeholder="ईमेल" value="rpr302@gmail.com">
+        </div>
+        <div class="input-group">
+            <input type="password" id="adminPass" placeholder="पासवर्ड" value="Sammo*1234">
+        </div>
         <button onclick="login()">लॉगिन करें</button>
     </div>
 
     <!-- डेटा एंट्री फॉर्म -->
     <div id="adminForm">
-        <h2>एसेट डेटा दर्ज करें</h2>
-        <label>प्लेटफार्म का प्रकार:</label>
-        <select id="platform">
-            <option value="YouTube">1. YouTube</option>
-            <option value="Facebook">2. Facebook</option>
-            <option value="Instagram">3. Instagram</option>
-        </select>
+        <h2>🛠️ एसेट मैनेजमेंट</h2>
         
-        <input type="text" id="videoTitle" placeholder="वीडियो का टाइटल">
-        <input type="number" id="assetKey" placeholder="5 अंकों की चाबी" maxlength="5" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+        <div class="input-group">
+            <label>प्लेटफार्म चुनें</label>
+            <select id="platform">
+                <option value="YouTube">📺 YouTube</option>
+                <option value="Facebook">👥 Facebook</option>
+                <option value="Instagram">📸 Instagram</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <input type="text" id="videoTitle" placeholder="वीडियो का टाइटल दर्ज करें">
+        </div>
+
+        <div class="input-group">
+            <input type="number" id="assetKey" placeholder="5 अंकों की सीक्रेट चाबी" 
+                   oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+        </div>
         
         <button onclick="submitData()">फायरबेस में सेव करें</button>
-        <button onclick="logout()" style="background-color: #dc3545;">लॉगआउट</button>
+        <div id="successMessage" class="success-msg">डेटा सेव हो गया! ✅</div>
+        
+        <button onclick="logout()" class="btn-logout">लॉगआउट</button>
     </div>
 </div>
 
-<!-- Firebase SDKs -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // आपका कॉन्फ़िगरेशन
     const firebaseConfig = {
         apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
         authDomain: "rehli-digital-asset.firebaseapp.com",
@@ -63,19 +171,16 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // लॉगिन फंक्शन
     window.login = async () => {
         const email = document.getElementById('adminEmail').value;
         const pass = document.getElementById('adminPass').value;
         try {
             await signInWithEmailAndPassword(auth, email, pass);
-            alert("लॉगिन सफल!");
         } catch (error) {
-            alert("लॉगिन विफल: " + error.message);
+            alert("लॉगिन त्रुटि: " + error.message);
         }
     };
 
-    // ऑथेंटिकेशन चेक
     onAuthStateChanged(auth, (user) => {
         if (user) {
             document.getElementById('loginSection').style.display = 'none';
@@ -86,31 +191,32 @@
         }
     });
 
-    // डेटा सबमिट फंक्शन
     window.submitData = async () => {
         const platform = document.getElementById('platform').value;
         const title = document.getElementById('videoTitle').value;
         const key = document.getElementById('assetKey').value;
+        const msg = document.getElementById('successMessage');
 
-        if(key.length !== 5) {
-            alert("कृपया 5 अंकों की चाबी डालें।");
+        if(key.length !== 5 || title === "") {
+            alert("कृपया टाइटल और 5 अंकों की चाबी भरें।");
             return;
         }
 
         try {
-            // चाबी को ही डॉक्यूमेंट ID बना रहे हैं ताकि सर्च करना आसान हो
             await setDoc(doc(db, "assets", key), {
                 platform: platform,
                 title: title,
                 key: key,
                 timestamp: new Date()
             });
-            alert("डेटा सफलतापूर्वक सुरक्षित किया गया!");
+            
+            msg.style.display = "block";
             document.getElementById('videoTitle').value = "";
             document.getElementById('assetKey').value = "";
+            
+            setTimeout(() => { msg.style.display = "none"; }, 3000);
         } catch (error) {
-            console.error("Error adding document: ", error);
-            alert("डेटा सेव करने में त्रुटि आई।");
+            alert("त्रुटि: " + error.message);
         }
     };
 
