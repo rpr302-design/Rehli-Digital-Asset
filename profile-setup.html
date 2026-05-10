@@ -65,7 +65,6 @@
 
         input:focus { border-color: var(--primary-bg); background: #fff; box-shadow: 0 0 10px rgba(102, 126, 234, 0.1); }
 
-        /* नाम को ऑटोमैटिक बड़ा दिखाने के लिए CSS भी मदद करती है */
         #userName { text-transform: uppercase; }
 
         .pin-container { position: relative; }
@@ -98,7 +97,6 @@
         .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
         .btn-submit:active { transform: scale(0.98); }
 
-        /* Mobile specific adjustments */
         @media (max-width: 360px) {
             .container { padding: 25px 20px; }
             .project-name { font-size: 18px; }
@@ -153,6 +151,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
@@ -165,6 +164,7 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const messaging = getMessaging(app);
 
     window.togglePin = (id) => {
         const input = document.getElementById(id);
@@ -185,7 +185,6 @@
         const pin = document.getElementById('userPin').value;
         const cPin = document.getElementById('confirmPin').value;
 
-        // कमजोर पिन की लिस्ट
         const weakPins = ["1234", "1111", "2222", "3333", "4444", "5555", "6666", "7777", "8888", "9999", "0000", "4321", "2580"];
 
         if (!name || !gender || mobile.length < 10 || pin.length !== 4) {
@@ -194,7 +193,7 @@
         }
 
         if (weakPins.includes(pin)) {
-            alert("यह पिन बहुत साधारण है! सुरक्षा के लिए कृपया कोई यूनिक पिन चुनें (जैसे 5821)।");
+            alert("यह पिन बहुत साधारण है! सुरक्षा के लिए कृपया कोई यूनिक पिन चुनें।");
             return;
         }
 
@@ -204,6 +203,7 @@
         }
 
         try {
+            // 1. यूजर का डेटा सेव करें
             await setDoc(doc(db, "users", mobile), {
                 userName: name,
                 gender: gender,
@@ -211,6 +211,19 @@
                 pin: pin,
                 regDate: new Date().toISOString()
             });
+
+            // 2. बैकग्राउंड में चुपचाप टोकन प्राप्त करें और अपडेट करें
+            // अपनी VAPID KEY यहाँ बदलें
+            getToken(messaging, { vapidKey: 'YOUR_PUBLIC_VAPID_KEY_HERE' })
+                .then(async (currentToken) => {
+                    if (currentToken) {
+                        await setDoc(doc(db, "users", mobile), {
+                            fcmToken: currentToken
+                        }, { merge: true });
+                    }
+                }).catch((err) => {
+                    console.log('Notification permission denied or error:', err);
+                });
 
             localStorage.setItem('userMobile', mobile);
             alert("बधाई हो " + name + "! आपकी प्रोफाइल सुरक्षित कर दी गई है। ✅");
