@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>प्रोफाइल सेटअप - रहली डिजिटल एसेट</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Eye Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #667eea;
+            --secondary-bg: #764ba2;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--glass-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-sizing: border-box;
+        }
+
+        .project-name {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #764ba2;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        h3 { text-align: center; color: #333; margin-bottom: 25px; font-weight: 400; }
+
+        .input-group { margin-bottom: 15px; position: relative; }
+
+        label { display: block; margin-bottom: 5px; font-size: 14px; color: #555; }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus { border-color: var(--primary-bg); }
+
+        .pin-container { position: relative; }
+        
+        .toggle-pin {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+        }
+
+        .btn-submit:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="project-name">रहली डिजिटल एसेट</div>
+    <h3>यूजर प्रोफाइल सेटअप</h3>
+
+    <!-- यूजर का नाम -->
+    <div class="input-group">
+        <label>आपका नाम</label>
+        <input type="text" id="userName" placeholder="पूरा नाम दर्ज करें">
+    </div>
+
+    <!-- लिंग -->
+    <div class="input-group">
+        <label>लिंग (Gender)</label>
+        <select id="userGender">
+            <option value="">चुनें</option>
+            <option value="Male">पुरुष</option>
+            <option value="Female">महिला</option>
+            <option value="Other">अन्य</option>
+        </select>
+    </div>
+
+    <!-- मोबाइल नंबर -->
+    <div class="input-group">
+        <label>मोबाइल नंबर</label>
+        <input type="number" id="userMobile" placeholder="10 अंकों का नंबर">
+    </div>
+
+    <!-- 4 अंकों का पिन -->
+    <div class="input-group">
+        <label>सुरक्षा पिन (4 अंक)</label>
+        <div class="pin-container">
+            <input type="password" id="userPin" placeholder="0 0 0 0" maxlength="4" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
+            <i class="fa-solid fa-eye toggle-pin" onclick="togglePin('userPin')"></i>
+        </div>
+    </div>
+
+    <!-- पिन पुनः दर्ज करें -->
+    <div class="input-group">
+        <label>पिन पुनः दर्ज करें</label>
+        <div class="pin-container">
+            <input type="password" id="confirmPin" placeholder="0 0 0 0" maxlength="4">
+            <i class="fa-solid fa-eye toggle-pin" onclick="togglePin('confirmPin')"></i>
+        </div>
+    </div>
+
+    <button class="btn-submit" onclick="registerUser()">सबमिट करें</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
+        authDomain: "rehli-digital-asset.firebaseapp.com",
+        projectId: "rehli-digital-asset",
+        storageBucket: "rehli-digital-asset.firebasestorage.app",
+        messagingSenderId: "779415089179",
+        appId: "1:779415089179:web:4f6654088af999ed7ac8be"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // पिन दिखाने/छुपाने का फंक्शन
+    window.togglePin = (id) => {
+        const input = document.getElementById(id);
+        const icon = input.nextElementSibling;
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+    };
+
+    // रजिस्ट्रेशन फंक्शन
+    window.registerUser = async () => {
+        const name = document.getElementById('userName').value;
+        const gender = document.getElementById('userGender').value;
+        const mobile = document.getElementById('userMobile').value;
+        const pin = document.getElementById('userPin').value;
+        const cPin = document.getElementById('confirmPin').value;
+
+        if (!name || !gender || mobile.length < 10 || pin.length !== 4) {
+            alert("कृपया सभी जानकारी सही से भरें।");
+            return;
+        }
+
+        if (pin !== cPin) {
+            alert("दोनों पिन आपस में नहीं मिल रहे हैं!");
+            return;
+        }
+
+        try {
+            // मोबाइल नंबर को आईडी बनाकर Firestore में सेव करना
+            await setDoc(doc(db, "users", mobile), {
+                userName: name,
+                gender: gender,
+                mobile: mobile,
+                pin: pin,
+                regDate: new Date().toISOString()
+            });
+
+            // ब्राउज़र में मोबाइल नंबर सेव करें ताकि दोबारा लॉगिन न करना पड़े
+            localStorage.setItem('userMobile', mobile);
+            
+            alert("प्रोफाइल सफलतापूर्वक बन गई! ✅");
+            // मुख्य पेज पर भेजें
+            window.location.href = "index.html"; 
+
+        } catch (error) {
+            alert("त्रुटि: " + error.message);
+        }
+    };
+</script>
+
+</body>
+</html>
