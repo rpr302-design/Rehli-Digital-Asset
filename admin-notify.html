@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>एडमिन पैनल - पुश नोटिफिकेशन</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #4e54c8; --secondary: #8f94fb; --success: #27ae60; --error: #e74c3c; }
+        body { font-family: 'Poppins', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        
+        .admin-container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { color: var(--primary); text-align: center; margin-bottom: 30px; }
+
+        .input-box { margin-bottom: 20px; }
+        label { font-weight: 600; font-size: 14px; color: #555; display: block; margin-bottom: 8px; }
+        input, textarea, select { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 14px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--secondary); }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .btn-send { background: linear-gradient(to right, #4e54c8, #8f94fb); }
+        .btn-clear { background: #95a5a6; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Status Toast */
+        #statusMsg { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: 10px; color: white; display: none; z-index: 1000; }
+
+        /* Preview Box */
+        .preview-card { background: #f9f9fb; border-left: 5px solid var(--primary); padding: 15px; margin-top: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <h2><i class="fa-solid fa-paper-plane"></i> एडवांस नोटिफिकेशन सेंडर</h2>
+
+    <div class="input-box">
+        <label>नोटिफिकेशन का टाइटल</label>
+        <input type="text" id="notifTitle" placeholder="उदा. धमाका ऑफर! 🎁">
+    </div>
+
+    <div class="input-box">
+        <label>मैसेज (Body)</label>
+        <textarea id="notifBody" rows="3" placeholder="यहाँ अपना मुख्य मैसेज लिखें..."></textarea>
+    </div>
+
+    <div class="input-box">
+        <label>क्लिक करने पर कहाँ भेजें? (Link)</label>
+        <input type="text" id="notifLink" placeholder="https://rehli-digital-asset.web.app/mystery.html">
+    </div>
+
+    <div class="input-box">
+        <label>टारगेट यूजर चुनें</label>
+        <select id="userScope">
+            <option value="all">सभी यूजर्स को भेजें (All Users)</option>
+            <option value="single">किसी एक मोबाइल नंबर को</option>
+        </select>
+    </div>
+
+    <div id="singleUserBox" class="input-box" style="display:none;">
+        <label>यूजर का मोबाइल नंबर</label>
+        <input type="number" id="targetMobile" placeholder="10 अंकों का नंबर">
+    </div>
+
+    <div class="preview-card">
+        <strong>लाइव प्रिव्यू:</strong>
+        <p id="preView" style="font-size: 13px; color: #666; margin-top: 5px;">शीर्षक और मैसेज दर्ज करें...</p>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-clear" onclick="location.reload()">साफ़ करें</button>
+        <button class="btn btn-send" id="sendBtn" onclick="sendNotification()">अभी भेजें (Broadcast)</button>
+    </div>
+</div>
+
+<div id="statusMsg"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
+        authDomain: "rehli-digital-asset.firebaseapp.com",
+        projectId: "rehli-digital-asset",
+        storageBucket: "rehli-digital-asset.firebasestorage.app",
+        messagingSenderId: "779415089179",
+        appId: "1:779415089179:web:4f6654088af999ed7ac8be"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // UI Logic
+    document.getElementById('userScope').addEventListener('change', (e) => {
+        document.getElementById('singleUserBox').style.display = e.target.value === 'single' ? 'block' : 'none';
+    });
+
+    window.sendNotification = async () => {
+        const title = document.getElementById('notifTitle').value;
+        const body = document.getElementById('notifBody').value;
+        const link = document.getElementById('notifLink').value;
+        const scope = document.getElementById('userScope').value;
+        const btn = document.getElementById('sendBtn');
+
+        if(!title || !body) { alert("टाइटल और मैसेज जरूरी है!"); return; }
+
+        btn.disabled = true;
+        btn.innerText = "भेज रहा हूँ...";
+
+        let tokens = [];
+
+        try {
+            if(scope === 'all') {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                querySnapshot.forEach((doc) => {
+                    if(doc.data().fcmToken) tokens.push(doc.data().fcmToken);
+                });
+            } else {
+                const mobile = document.getElementById('targetMobile').value;
+                const userDoc = await getDoc(doc(db, "users", mobile));
+                if(userDoc.exists() && userDoc.data().fcmToken) {
+                    tokens.push(userDoc.data().fcmToken);
+                }
+            }
+
+            if(tokens.length === 0) {
+                alert("कोई एक्टिव टोकन नहीं मिला!");
+                btn.disabled = false;
+                return;
+            }
+
+            // यहाँ महत्वपूर्ण बात: Firebase Web SDK सीधे क्लाइंट से मैसेज भेजने की अनुमति नहीं देता (सुरक्षा कारणों से)
+            // इसके लिए हमें Firebase Cloud Function या एक छोटे Backend की जरूरत होती है।
+            // लेकिन टेस्टिंग के लिए आप 'FCM HTTP v1 API' का इस्तेमाल कर सकते हैं।
+            
+            console.log("Sending to tokens:", tokens);
+            alert(tokens.length + " यूजर्स को नोटिफिकेशन भेजने की प्रक्रिया शुरू हुई। (Check Console)");
+            
+            // फिलहाल के लिए हम यहाँ लॉजिक दिखा रहे हैं। 
+            // असल में भेजने के लिए आपको अपने एडमिन सर्वर से API कॉल करनी होगी।
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "अभी भेजें (Broadcast)";
+        }
+    };
+</script>
+</body>
+</html>
