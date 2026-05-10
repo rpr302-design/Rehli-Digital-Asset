@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>रहली डिजिटल एसेट - एडमिन पैनल</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        input, select, button { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        #adminForm { display: none; } /* शुरू में फॉर्म छुपा रहेगा */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- लॉगिन सेक्शन -->
+    <div id="loginSection">
+        <h2>एडमिन लॉगिन</h2>
+        <input type="email" id="adminEmail" placeholder="ईमेल दर्ज करें">
+        <input type="password" id="adminPass" placeholder="पासवर्ड दर्ज करें">
+        <button onclick="login()">लॉगिन करें</button>
+    </div>
+
+    <!-- डेटा एंट्री फॉर्म -->
+    <div id="adminForm">
+        <h2>एसेट डेटा दर्ज करें</h2>
+        <label>प्लेटफार्म का प्रकार:</label>
+        <select id="platform">
+            <option value="YouTube">1. YouTube</option>
+            <option value="Facebook">2. Facebook</option>
+            <option value="Instagram">3. Instagram</option>
+        </select>
+        
+        <input type="text" id="videoTitle" placeholder="वीडियो का टाइटल">
+        <input type="number" id="assetKey" placeholder="5 अंकों की चाबी" maxlength="5" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+        
+        <button onclick="submitData()">फायरबेस में सेव करें</button>
+        <button onclick="logout()" style="background-color: #dc3545;">लॉगआउट</button>
+    </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // आपका कॉन्फ़िगरेशन
+    const firebaseConfig = {
+        apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
+        authDomain: "rehli-digital-asset.firebaseapp.com",
+        projectId: "rehli-digital-asset",
+        storageBucket: "rehli-digital-asset.firebasestorage.app",
+        messagingSenderId: "779415089179",
+        appId: "1:779415089179:web:4f6654088af999ed7ac8be"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // लॉगिन फंक्शन
+    window.login = async () => {
+        const email = document.getElementById('adminEmail').value;
+        const pass = document.getElementById('adminPass').value;
+        try {
+            await signInWithEmailAndPassword(auth, email, pass);
+            alert("लॉगिन सफल!");
+        } catch (error) {
+            alert("लॉगिन विफल: " + error.message);
+        }
+    };
+
+    // ऑथेंटिकेशन चेक
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminForm').style.display = 'block';
+        } else {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminForm').style.display = 'none';
+        }
+    });
+
+    // डेटा सबमिट फंक्शन
+    window.submitData = async () => {
+        const platform = document.getElementById('platform').value;
+        const title = document.getElementById('videoTitle').value;
+        const key = document.getElementById('assetKey').value;
+
+        if(key.length !== 5) {
+            alert("कृपया 5 अंकों की चाबी डालें।");
+            return;
+        }
+
+        try {
+            // चाबी को ही डॉक्यूमेंट ID बना रहे हैं ताकि सर्च करना आसान हो
+            await setDoc(doc(db, "assets", key), {
+                platform: platform,
+                title: title,
+                key: key,
+                timestamp: new Date()
+            });
+            alert("डेटा सफलतापूर्वक सुरक्षित किया गया!");
+            document.getElementById('videoTitle').value = "";
+            document.getElementById('assetKey').value = "";
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            alert("डेटा सेव करने में त्रुटि आई।");
+        }
+    };
+
+    window.logout = () => signOut(auth);
+</script>
+
+</body>
+</html>
