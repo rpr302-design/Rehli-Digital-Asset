@@ -82,13 +82,13 @@
 
     <div class="input-group">
         <label>मोबाइल नंबर</label>
-        <input type="number" id="userMobile" placeholder="10 अंकों का नंबर">
+        <input type="number" id="userMobile" placeholder="10 अंकों का नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
     </div>
 
     <div class="input-group">
         <label>सुरक्षा पिन (4 अंक)</label>
         <div class="pin-container">
-            <input type="password" id="userPin" placeholder="यूनिक पिन चुनें" maxlength="4">
+            <input type="password" id="userPin" placeholder="यूनिक पिन चुनें" maxlength="4" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
             <i class="fa-solid fa-eye toggle-pin" onclick="togglePin('userPin')"></i>
         </div>
     </div>
@@ -96,7 +96,7 @@
     <div class="input-group">
         <label>पिन पुनः दर्ज करें</label>
         <div class="pin-container">
-            <input type="password" id="confirmPin" placeholder="पिन कन्फर्म करें" maxlength="4">
+            <input type="password" id="confirmPin" placeholder="पिन कन्फर्म करें" maxlength="4" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
             <i class="fa-solid fa-eye toggle-pin" onclick="togglePin('confirmPin')"></i>
         </div>
     </div>
@@ -147,8 +147,9 @@
         const gender = document.getElementById('userGender').value;
         const btn = document.getElementById('mainBtn');
 
-        if (!name || mobile.length < 10 || pin.length !== 4) {
-            showToast("जानकारी सही भरें!", "error");
+        // मोबाइल नंबर की लंबाई चेक करें
+        if (!name || mobile.length !== 10 || pin.length !== 4) {
+            showToast("कृपया 10 अंकों का सही मोबाइल नंबर भरें!", "error");
             return;
         }
         if (pin !== cPin) {
@@ -170,7 +171,6 @@
                 return;
             }
 
-            // 1. नोटिफिकेशन परमिशन मांगें
             const permission = await Notification.requestPermission();
             let fcmToken = null;
 
@@ -180,7 +180,6 @@
                 } catch (e) { console.log("Token Fetch Error:", e); }
             }
 
-            // 2. डेटा सेव करें
             await setDoc(userRef, {
                 userName: name,
                 gender: gender,
