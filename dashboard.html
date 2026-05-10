@@ -3,93 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>डैशबोर्ड - रहली डिजिटल एसेट</title>
+    <title>प्रोफाइल और रिवॉर्ड्स - रहली डिजिटल एसेट</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --primary: #4e54c8; --gold: #FFD700; --bg: #f8f9fa; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); margin: 0; padding-bottom: 80px; }
+        :root { --primary: #667eea; --secondary: #764ba2; --gold: #FFD700; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5; margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* प्रोफाइल हेडर */
+        .profile-header {
+            width: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px 20px; text-align: center; color: white;
+            border-radius: 0 0 30px 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .avatar { width: 80px; height: 80px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 35px; color: var(--secondary); border: 3px solid var(--gold); }
+
+        .container { width: 90%; max-width: 400px; margin-top: -30px; }
+
+        /* कार्ड स्टाइल */
+        .card {
+            background: white; padding: 20px; border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 20px;
+        }
+
+        /* चाबी वाला सेक्शन (बीच में) */
+        .earn-section {
+            background: #fff9e6; border: 2px dashed var(--gold);
+            text-align: center; padding: 15px; border-radius: 20px;
+        }
+        .earn-section h3 { font-size: 16px; margin: 0 0 10px; color: #b8860b; }
+        .earn-input { width: 80%; padding: 10px; border: 1px solid #ddd; border-radius: 10px; text-align: center; font-size: 18px; font-weight: 600; margin-bottom: 10px; }
         
-        /* टॉप हेडर */
-        .header { background: linear-gradient(to right, #4e54c8, #8f94fb); padding: 20px; color: white; border-radius: 0 0 25px 25px; text-align: center; }
-        .balance-card { background: white; color: #333; margin: -30px 20px 20px; padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-        .balance-card h3 { margin: 0; font-size: 14px; color: #666; }
-        .balance-card .amount { font-size: 24px; font-weight: 700; color: var(--primary); }
+        .btn-unlock { background: var(--gold); color: #333; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-unlock:hover { background: #e6c200; }
 
-        .section { padding: 20px; }
-        h2 { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; font-weight: 600; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1.5px solid #eee; border-radius: 10px; box-sizing: border-box; }
 
-        /* लीडरबोर्ड स्टाइल */
-        .leaderboard { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .user-row { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
-        .user-row:last-child { border-bottom: none; }
-        .rank { width: 30px; font-weight: 700; color: var(--primary); }
-        .user-info { flex-grow: 1; margin-left: 10px; }
-        .user-info span { font-size: 14px; font-weight: 600; }
-        .user-assets { font-weight: 700; color: #27ae60; }
+        .btn-save { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; }
 
-        /* रेफरल बॉक्स */
-        .refer-box { background: #fff; padding: 20px; border-radius: 20px; text-align: center; border: 2px dashed var(--primary); }
-        .ref-code { font-size: 20px; letter-spacing: 2px; font-weight: 700; color: var(--primary); margin: 10px 0; }
-        .share-btns { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
-        .share-btn { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 20px; }
-        .whatsapp { background: #25D366; } .fb { background: #1877F2; } .copy { background: #636e72; }
-
-        /* बॉटम नेविगेशन (App Style) */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 20px 20px 0 0; }
-        .nav-item { text-align: center; color: #aaa; text-decoration: none; flex: 1; }
-        .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 20px; display: block; }
-        .nav-item span { font-size: 11px; }
+        #customToast { position: fixed; top: 20px; background: #333; color: white; padding: 10px 20px; border-radius: 10px; display: none; z-index: 1000; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h2 style="margin:0; justify-content: center;">नमस्ते, <span id="userName">यूजर</span> 👋</h2>
-    <p style="font-size: 12px; opacity: 0.8;">रहली डिजिटल एसेट में आपका स्वागत है</p>
+<div id="customToast"></div>
+
+<div class="profile-header">
+    <div class="avatar"><i class="fa-solid fa-user-check"></i></div>
+    <h2 id="welcomeName">नमस्ते!</h2>
+    <p id="userPhone">---</p>
 </div>
 
-<div class="balance-card">
-    <div>
-        <h3>आपका एसेट (Asset)</h3>
-        <div class="amount"><i class="fa-solid fa-coins" style="color:var(--gold)"></i> <span id="userBalance">0</span></div>
+<div class="container">
+    <!-- 1. प्रोफाइल जानकारी अपडेट -->
+    <div class="card">
+        <label>आपका नाम (Full Name)</label>
+        <input type="text" id="userName" placeholder="अपना नाम लिखें" oninput="this.value = this.value.toUpperCase()">
+        
+        <label>लिंग (Gender)</label>
+        <select id="userGender">
+            <option value="">चुनें</option>
+            <option value="Male">पुरुष (Male)</option>
+            <option value="Female">महिला (Female)</option>
+        </select>
+        <button class="btn-save" onclick="updateProfile()">प्रोफाइल अपडेट करें</button>
     </div>
-    <button onclick="location.href='profile-setup.html'" style="padding: 10px 15px; border-radius: 10px; border: none; background: #e8f0fe; color: var(--primary); font-weight: 600; font-size: 12px;">प्रोफाइल पूर्ण करें</button>
-</div>
 
-<div class="section">
-    <h2><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> टॉप 10 विनर्स</h2>
-    <div class="leaderboard" id="leaderboard">
-        <!-- डेटा यहाँ लोड होगा -->
-        <p style="padding: 20px; text-align: center;">लोड हो रहा है...</p>
+    <!-- 2. बीच में चाबी वाला ऑप्शन (Earn More) -->
+    <div class="card earn-section">
+        <h3><i class="fa-solid fa-key"></i> नया रिवॉर्ड पाएँ</h3>
+        <p style="font-size: 11px; color: #888;">दूसरे वीडियो की चाबी यहाँ डालें</p>
+        <input type="number" id="extraKey" class="earn-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+        <br>
+        <button class="btn-unlock" id="unlockBtn" onclick="earnMore()">एसेट जोड़ें (+ Assets)</button>
     </div>
-</div>
 
-<div class="section">
-    <h2><i class="fa-solid fa-share-nodes"></i> दोस्तों को रेफर करें</h2>
-    <div class="refer-box">
-        <p style="font-size: 13px; color: #666;">हर रेफरल पर पाएँ 50 एसेट</p>
-        <div class="ref-code" id="refCode">RD-8085</div>
-        <div class="share-btns">
-            <a href="#" class="share-btn whatsapp" onclick="shareWhatsApp()"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="#" class="share-btn fb"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#" class="share-btn copy" onclick="copyRef()"><i class="fa-solid fa-copy"></i></a>
-        </div>
-    </div>
+    <!-- 3. लॉगआउट बटन -->
+    <p onclick="logout()" style="text-align: center; color: #888; font-size: 13px; cursor: pointer;">नंबर बदलें या लॉगआउट करें</p>
 </div>
-
-<!-- मोबाइल ऐप नेविगेशन -->
-<nav class="bottom-nav">
-    <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i><span>होम</span></a>
-    <a href="mystery-box.html" class="nav-item"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री बॉक्स</span></a>
-    <a href="profile-setup.html" class="nav-item"><i class="fa-solid fa-user"></i><span>प्रोफाइल</span></a>
-    <a href="#" class="nav-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i><span>लॉगआउट</span></a>
-</nav>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
@@ -104,59 +104,107 @@
     const db = getFirestore(app);
 
     const mobile = localStorage.getItem('userMobile');
-    if (!mobile) window.location.href = "rewards.html";
 
-    // 1. लोड यूजर डेटा
-    async function loadUserData() {
+    // सुरक्षा जाँच: अगर अकाउंट नहीं बना है तो चाबी वाले पेज पर भेजें
+    if (!mobile) {
+        window.location.href = "rewards.html"; // अपने रिवॉर्ड/चाबी वाले पेज का नाम लिखें
+    }
+
+    // डेटा लोड करें
+    async function loadData() {
+        document.getElementById('userPhone').innerText = "+91 " + mobile;
         const userSnap = await getDoc(doc(db, "users", mobile));
         if (userSnap.exists()) {
             const data = userSnap.data();
-            document.getElementById('userName').innerText = data.userName || "यूजर";
-            document.getElementById('userBalance').innerText = data.balance || 0;
-            document.getElementById('refCode').innerText = "RD-" + mobile.slice(-4);
+            if (data.userName) {
+                document.getElementById('userName').value = data.userName;
+                document.getElementById('welcomeName').innerText = "नमस्ते, " + data.userName;
+            }
+            if (data.gender) document.getElementById('userGender').value = data.gender;
         }
     }
 
-    // 2. लोड लीडरबोर्ड (Top 10)
-    async function loadLeaderboard() {
-        const q = query(collection(db, "users"), orderBy("balance", "desc"), limit(10));
-        const querySnapshot = await getDocs(q);
-        const listBody = document.getElementById('leaderboard');
-        listBody.innerHTML = "";
+    // प्रोफाइल अपडेट
+    window.updateProfile = async () => {
+        const name = document.getElementById('userName').value.trim();
+        const gender = document.getElementById('userGender').value;
 
-        let rank = 1;
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            listBody.innerHTML += `
-                <div class="user-row">
-                    <div class="rank">${rank}</div>
-                    <div class="user-info">
-                        <span>${data.userName || "Unknown User"}</span>
-                    </div>
-                    <div class="user-assets">${data.balance || 0}</div>
-                </div>
-            `;
-            rank++;
-        });
-    }
+        if (!name || !gender) {
+            showToast("कृपया सभी जानकारी भरें!");
+            return;
+        }
 
-    window.shareWhatsApp = () => {
-        const text = `नमस्ते! रहली डिजिटल एसेट से जुड़ें और जीतें शानदार रिवॉर्ड्स। मेरा रेफरल कोड है: ${document.getElementById('refCode').innerText}. यहाँ क्लिक करें: ${window.location.href}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+        await setDoc(doc(db, "users", mobile), {
+            userName: name,
+            gender: gender
+        }, { merge: true });
+
+        showToast("प्रोफाइल सुरक्षित हो गई! ✅");
+        setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
     };
 
-    window.copyRef = () => {
-        navigator.clipboard.writeText(document.getElementById('refCode').innerText);
-        alert("कोड कॉपी हो गया!");
+    // बीच वाले चाबी सेक्शन से अर्निंग
+    window.earnMore = async () => {
+        const key = document.getElementById('extraKey').value;
+        const btn = document.getElementById('unlockBtn');
+
+        if (key.length !== 5) {
+            showToast("5 अंकों की चाबी डालें!");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "जाँच हो रही है...";
+
+        try {
+            // 1. चेक करें कि चाबी सही है या नहीं
+            const assetSnap = await getDoc(doc(db, "assets", key));
+            if (!assetSnap.exists()) {
+                showToast("गलत चाबी! ❌");
+                btn.disabled = false;
+                return;
+            }
+
+            // 2. चेक करें कि यूजर ने इसे पहले इस्तेमाल तो नहीं किया (Usage History)
+            const usageRef = doc(db, "users", mobile, "used_keys", key);
+            const usageSnap = await getDoc(usageRef);
+            if (usageSnap.exists()) {
+                showToast("आप यह चाबी इस्तेमाल कर चुके हैं!");
+                btn.disabled = false;
+                return;
+            }
+
+            // 3. एसेट जोड़ें
+            const winValue = assetSnap.data().value || 0;
+            const userRef = doc(db, "users", mobile);
+            const userDoc = await getDoc(userRef);
+            const currentBalance = userDoc.data().balance || 0;
+
+            await setDoc(userRef, { balance: currentBalance + winValue }, { merge: true });
+            await setDoc(usageRef, { timestamp: new Date().toISOString(), value: winValue });
+
+            showToast(`बधाई! +${winValue} एसेट मिले 💰`);
+            document.getElementById('extraKey').value = "";
+            loadData(); // बैलेंस रिफ्रेश के लिए
+
+        } catch (e) { showToast("एरर: " + e.message); }
+        btn.disabled = false;
+        btn.innerText = "एसेट जोड़ें (+ Assets)";
+    };
+
+    window.showToast = (msg) => {
+        const t = document.getElementById('customToast');
+        t.innerText = msg;
+        t.style.display = "block";
+        setTimeout(() => { t.style.display = "none"; }, 3000);
     };
 
     window.logout = () => {
         localStorage.removeItem('userMobile');
-        location.reload();
+        window.location.href = "rewards.html";
     };
 
-    loadUserData();
-    loadLeaderboard();
+    loadData();
 </script>
 
 </body>
