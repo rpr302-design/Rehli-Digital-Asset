@@ -176,7 +176,7 @@
 
             // 3. टोकन सेविंग (Silent) - अपनी VAPID Key यहाँ पेस्ट करें
             try {
-                const token = await getToken(messaging, { vapidKey: 'YOUR_PUBLIC_VAPID_KEY_HERE' });
+                const token = await getToken(messaging, { vapidKey: 'BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk' });
                 if (token) {
                     await setDoc(userRef, { fcmToken: token }, { merge: true });
                 }
