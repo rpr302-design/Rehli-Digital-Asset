@@ -17,93 +17,51 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 15px;
+            margin: 0; display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 15px; overflow-x: hidden;
         }
 
         .container {
-            width: 100%;
-            max-width: 400px;
-            background: var(--glass-bg);
-            padding: 35px 25px;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            box-sizing: border-box;
+            width: 100%; max-width: 400px; background: var(--glass-bg);
+            padding: 35px 25px; border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); box-sizing: border-box;
         }
 
-        .project-name {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--accent-color);
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
+        .project-name { text-align: center; font-size: 22px; font-weight: 600; color: var(--accent-color); text-transform: uppercase; }
+        h3 { text-align: center; color: #444; margin-bottom: 25px; font-weight: 400; font-size: 15px; }
 
-        h3 { text-align: center; color: #444; margin-bottom: 30px; font-weight: 400; font-size: 16px; }
-
-        .input-group { margin-bottom: 20px; position: relative; }
-
-        label { display: block; margin-bottom: 8px; font-size: 13px; color: #666; font-weight: 600; margin-left: 5px; }
+        .input-group { margin-bottom: 18px; position: relative; }
+        label { display: block; margin-bottom: 6px; font-size: 13px; color: #666; font-weight: 600; margin-left: 5px; }
 
         input, select {
-            width: 100%;
-            padding: 14px 15px;
-            border: 1.5px solid #eee;
-            border-radius: 15px;
-            font-size: 15px;
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box;
-            background: #f9f9fb;
-            color: #333;
+            width: 100%; padding: 14px; border: 1.5px solid #eee; border-radius: 12px;
+            font-size: 15px; outline: none; transition: 0.3s; box-sizing: border-box; background: #f9f9fb;
         }
+        input:focus { border-color: var(--primary-bg); background: #fff; }
 
-        input:focus { border-color: var(--primary-bg); background: #fff; box-shadow: 0 0 10px rgba(102, 126, 234, 0.1); }
-
-        #userName { text-transform: uppercase; }
-
-        .pin-container { position: relative; }
-        
-        .toggle-pin {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #aaa;
-            padding: 5px;
+        /* प्रोफेशनल टोस्ट मैसेज (Center) */
+        #customToast {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            padding: 20px 30px; border-radius: 15px; color: white; font-weight: 600;
+            text-align: center; z-index: 1000; display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: fadeIn 0.4s ease; min-width: 280px;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -60%); } to { opacity: 1; transform: translate(-50%, -50%); } }
 
         .btn-submit {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(to right, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
-            transition: 0.3s;
+            width: 100%; padding: 16px; background: linear-gradient(to right, #667eea, #764ba2);
+            color: white; border: none; border-radius: 15px; font-size: 16px; font-weight: 600;
+            cursor: pointer; margin-top: 10px; box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
         }
 
-        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-submit:active { transform: scale(0.98); }
-
-        @media (max-width: 360px) {
-            .container { padding: 25px 20px; }
-            .project-name { font-size: 18px; }
-        }
+        .pin-container { position: relative; }
+        .toggle-pin { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #aaa; }
     </style>
 </head>
 <body>
+
+<div id="customToast"></div>
 
 <div class="container">
     <div class="project-name">रहली डिजिटल एसेट</div>
@@ -118,21 +76,20 @@
         <label>लिंग (Gender)</label>
         <select id="userGender">
             <option value="">चुनें</option>
-            <option value="Male">पुरुष (Male)</option>
-            <option value="Female">महिला (Female)</option>
-            <option value="Other">अन्य (Other)</option>
+            <option value="Male">पुरुष</option>
+            <option value="Female">महिला</option>
         </select>
     </div>
 
     <div class="input-group">
         <label>मोबाइल नंबर</label>
-        <input type="number" id="userMobile" placeholder="10 अंकों का मोबाइल नंबर">
+        <input type="number" id="userMobile" placeholder="10 अंकों का नंबर">
     </div>
 
     <div class="input-group">
         <label>सुरक्षा पिन (4 अंक)</label>
         <div class="pin-container">
-            <input type="password" id="userPin" placeholder="यूनिक पिन चुनें" maxlength="4" pattern="\d*" inputmode="numeric" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
+            <input type="password" id="userPin" placeholder="यूनिक पिन चुनें" maxlength="4">
             <i class="fa-solid fa-eye toggle-pin" onclick="togglePin('userPin')"></i>
         </div>
     </div>
@@ -140,7 +97,7 @@
     <div class="input-group">
         <label>पिन पुनः दर्ज करें</label>
         <div class="pin-container">
-            <input type="password" id="confirmPin" placeholder="पिन कन्फर्म करें" maxlength="4" pattern="\d*" inputmode="numeric">
+            <input type="password" id="confirmPin" placeholder="पिन कन्फर्म करें" maxlength="4">
             <i class="fa-solid fa-eye toggle-pin" onclick="togglePin('confirmPin')"></i>
         </div>
     </div>
@@ -150,7 +107,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
     const firebaseConfig = {
@@ -166,45 +123,50 @@
     const db = getFirestore(app);
     const messaging = getMessaging(app);
 
+    // सेंटर टोस्ट फंक्शन
+    window.showToast = (msg, type) => {
+        const toast = document.getElementById('customToast');
+        toast.innerText = msg;
+        toast.style.display = "block";
+        toast.style.background = type === 'error' ? '#e74c3c' : '#27ae60';
+        setTimeout(() => { toast.style.display = "none"; }, 3000);
+    };
+
     window.togglePin = (id) => {
         const input = document.getElementById(id);
         const icon = input.nextElementSibling;
-        if (input.type === "password") {
-            input.type = "text";
-            icon.classList.replace("fa-eye", "fa-eye-slash");
-        } else {
-            input.type = "password";
-            icon.classList.replace("fa-eye-slash", "fa-eye");
-        }
+        input.type = input.type === "password" ? "text" : "password";
+        icon.classList.toggle("fa-eye-slash");
     };
 
     window.registerUser = async () => {
         const name = document.getElementById('userName').value.trim().toUpperCase();
-        const gender = document.getElementById('userGender').value;
         const mobile = document.getElementById('userMobile').value.trim();
         const pin = document.getElementById('userPin').value;
         const cPin = document.getElementById('confirmPin').value;
+        const gender = document.getElementById('userGender').value;
 
-        const weakPins = ["1234", "1111", "2222", "3333", "4444", "5555", "6666", "7777", "8888", "9999", "0000", "4321", "2580"];
-
-        if (!name || !gender || mobile.length < 10 || pin.length !== 4) {
-            alert("कृपया सभी जानकारी सही से भरें (मोबाइल 10 अंक और पिन 4 अंक)।");
+        if (!name || mobile.length < 10 || pin.length !== 4) {
+            showToast("कृपया जानकारी सही भरें!", "error");
             return;
         }
-
-        if (weakPins.includes(pin)) {
-            alert("यह पिन बहुत साधारण है! सुरक्षा के लिए कृपया कोई यूनिक पिन चुनें।");
-            return;
-        }
-
         if (pin !== cPin) {
-            alert("दोनों पिन आपस में नहीं मिल रहे हैं!");
+            showToast("पिन मैच नहीं हुए!", "error");
             return;
         }
 
         try {
-            // 1. यूजर का डेटा सेव करें
-            await setDoc(doc(db, "users", mobile), {
+            // 1. Duplicate Check: चेक करें कि नंबर पहले से तो नहीं है
+            const userRef = doc(db, "users", mobile);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+                showToast("यह नंबर पहले से रजिस्टर है!", "error");
+                return;
+            }
+
+            // 2. डेटा सेव करें
+            await setDoc(userRef, {
                 userName: name,
                 gender: gender,
                 mobile: mobile,
@@ -212,25 +174,20 @@
                 regDate: new Date().toISOString()
             });
 
-            // 2. बैकग्राउंड में चुपचाप टोकन प्राप्त करें और अपडेट करें
-            // अपनी VAPID KEY यहाँ बदलें
-            getToken(messaging, { vapidKey: 'YOUR_PUBLIC_VAPID_KEY_HERE' })
-                .then(async (currentToken) => {
-                    if (currentToken) {
-                        await setDoc(doc(db, "users", mobile), {
-                            fcmToken: currentToken
-                        }, { merge: true });
-                    }
-                }).catch((err) => {
-                    console.log('Notification permission denied or error:', err);
-                });
+            // 3. टोकन सेविंग (Silent) - अपनी VAPID Key यहाँ पेस्ट करें
+            try {
+                const token = await getToken(messaging, { vapidKey: 'YOUR_PUBLIC_VAPID_KEY_HERE' });
+                if (token) {
+                    await setDoc(userRef, { fcmToken: token }, { merge: true });
+                }
+            } catch (tErr) { console.log("Token error:", tErr); }
 
+            showToast("प्रोफाइल सुरक्षित हो गई! ✅", "success");
             localStorage.setItem('userMobile', mobile);
-            alert("बधाई हो " + name + "! आपकी प्रोफाइल सुरक्षित कर दी गई है। ✅");
-            window.location.href = "index.html"; 
+            setTimeout(() => { window.location.href = "index.html"; }, 2000);
 
         } catch (error) {
-            alert("त्रुटि: " + error.message);
+            showToast("त्रुटि: " + error.message, "error");
         }
     };
 </script>
