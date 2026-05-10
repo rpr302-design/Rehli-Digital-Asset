@@ -3,216 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - होम</title>
+    <title>रहली डिजिटल एसेट - रिवॉर्ड्स</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
         body {
-            background-color: #f4f7f6;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            color: #333;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+            padding: 15px;
         }
+
         .container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(15px);
             text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        h2 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        .profile-box {
-            display: none;
-            margin-bottom: 20px;
-        }
-        .profile-box span {
-            font-weight: bold;
-            color: #27ae60;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-            color: #666;
-        }
+
+        h2 { font-weight: 600; margin-bottom: 20px; }
+        p { font-size: 14px; opacity: 0.9; margin-bottom: 25px; }
+
         input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1em;
-            outline: none;
-            transition: border 0.3s;
-        }
-        input:focus {
-            border-color: #3498db;
-        }
-        button {
-            width: 100%;
-            padding: 11px;
-            background-color: #3498db;
-            color: white;
+            padding: 14px;
+            margin-bottom: 15px;
             border: none;
-            border-radius: 6px;
-            font-size: 1em;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            text-align: center;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            background: #00d2ff;
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            color: white;
+            transition: 0.3s;
         }
-        button:hover {
-            background-color: #2980b9;
-        }
-        .alert {
-            margin-top: 15px;
-            font-size: 0.85em;
-            color: #c0392b;
-            display: none;
-        }
-        .success {
-            margin-top: 15px;
-            font-size: 0.85em;
-            color: #27ae60;
-            display: none;
+
+        .btn-action:hover { transform: scale(1.02); }
+
+        .profile-card { display: none; } /* शुरू में छुपा रहेगा */
+        .key-section { display: none; }
+        
+        .user-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="profileSection" class="profile-box">
-            <h2>स्वागत है! 👋</h2>
-            <p>मोबाइल नंबर: <span id="userMobile"></span></p>
-            <p style="font-size: 0.8em; color: #7f8c8d; margin-top: 5px;">IP एड्रेस: <span id="userIp"></span></p>
-            <button onclick="logout()" style="margin-top: 15px; background-color: #e74c3c;">लॉग आउट</button>
-        </div>
-
-        <div id="formSection">
-            <h2>रहली डिजिटल एसेट</h2>
-            <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">कृपया अपना मोबाइल नंबर सही दर्ज करें।</p>
-            
-            <form id="mobileForm">
-                <div class="form-group">
-                    <label for="phone">मोबाइल नंबर (+91 के साथ):</label>
-                    <input type="tel" id="phone" placeholder="9876543210" pattern="[6-9][0-9]{9}" required>
-                </div>
-                <button type="submit" id="submitBtn">प्रवेश करें</button>
-            </form>
-            
-            <p id="alertMsg" class="alert">चेतावनी: इस IP एड्रेस से पहले ही एक अकाउंट बन चुका है या एक IP से दो अकाउंट चलाना प्रतिबंधित है।</p>
-            <p id="successMsg" class="success">सफलतापूर्वक रजिस्टर किया गया!</p>
-        </div>
+<div class="container">
+    <!-- सेक्शन 1: चाबी दर्ज करें (नए यूजर के लिए) -->
+    <div id="keySection" class="key-section">
+        <h2>स्वागत है! 🎁</h2>
+        <p>कृपया यूट्यूब वीडियो से प्राप्त 5 अंकों की सीक्रेट चाबी यहाँ दर्ज करें।</p>
+        <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+        <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें</button>
     </div>
 
-    <script type="module">
-        // Firebase SDKs 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+    <!-- सेक्शन 2: यूजर प्रोफाइल (पुराने यूजर के लिए) -->
+    <div id="profileSection" class="profile-card">
+        <h2>आपकी प्रोफाइल 👤</h2>
+        <div class="user-info">
+            <p>मोबाइल नंबर: <strong id="displayMobile">---</strong></p>
+            <p>स्टेटस: <span style="color: #00ff00;">Verified ✅</span></p>
+        </div>
+        <button class="btn-action" style="margin-top: 20px;" onclick="goToMysteryBox()">मिस्ट्री बॉक्स खोलें</button>
+        <p onclick="logoutUser()" style="margin-top: 15px; cursor: pointer; font-size: 12px; text-decoration: underline;">मोबाइल नंबर बदलें</p>
+    </div>
+</div>
 
-        // Firebase कॉन्फिगरेशन
-        const firebaseConfig = {
-            apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
-            authDomain: "rehli-digital-asset.firebaseapp.com",
-            projectId: "rehli-digital-asset",
-            storageBucket: "rehli-digital-asset.firebasestorage.app",
-            messagingSenderId: "779415089179",
-            appId: "1:779415089179:web:4f6654088af999ed7ac8be",
-            measurementId: "G-1KR9GT1MT6"
-        };
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    const firebaseConfig = {
+        apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
+        authDomain: "rehli-digital-asset.firebaseapp.com",
+        projectId: "rehli-digital-asset",
+        storageBucket: "rehli-digital-asset.firebasestorage.app",
+        messagingSenderId: "779415089179",
+        appId: "1:779415089179:web:4f6654088af999ed7ac8be"
+    };
 
-        // IP API का उपयोग करके IP एड्रेस प्राप्त करना
-        async function getUserIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            } catch (error) {
-                console.error("IP प्राप्त करने में त्रुटि:", error);
-                return "Unknown_IP";
-            }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // पेज लोड होते ही चेक करें
+    window.onload = () => {
+        const savedMobile = localStorage.getItem('userMobile');
+        if (savedMobile) {
+            // अगर मोबाइल नंबर सेव है, प्रोफाइल दिखाएँ
+            document.getElementById('displayMobile').innerText = savedMobile;
+            document.getElementById('profileSection').style.display = 'block';
+        } else {
+            // अगर नया यूजर है, चाबी सेक्शन दिखाएँ
+            document.getElementById('keySection').style.display = 'block';
+        }
+    };
+
+    // चाबी वेरिफिकेशन फंक्शन
+    window.verifyKey = async () => {
+        const key = document.getElementById('userKey').value;
+        if (key.length !== 5) {
+            alert("कृपया 5 अंकों की सही चाबी डालें।");
+            return;
         }
 
-        // पेज लोड होने पर चेक करना
-        document.addEventListener("DOMContentLoaded", async () => {
-            const storedMobile = localStorage.getItem("userMobile");
-            const storedIp = localStorage.getItem("userIp");
+        try {
+            const docRef = doc(db, "assets", key);
+            const docSnap = await getDoc(docRef);
 
-            if (storedMobile && storedIp) {
-                document.getElementById("formSection").style.display = "none";
-                document.getElementById("profileSection").style.display = "block";
-                document.getElementById("userMobile").innerText = storedMobile;
-                document.getElementById("userIp").innerText = storedIp;
+            if (docSnap.exists()) {
+                // चाबी सही है, अब मोबाइल वेरिफिकेशन पर भेजें
+                // यहाँ हम एक प्रॉम्प्ट ले रहे हैं, आप चाहें तो अलग पेज बना सकते हैं
+                const mobile = prompt("चाबी सही है! अपना मोबाइल नंबर दर्ज करें:");
+                if(mobile && mobile.length >= 10) {
+                    localStorage.setItem('userMobile', mobile);
+                    location.reload(); // पेज रिफ्रेश करके प्रोफाइल दिखाएँ
+                } else {
+                    alert("सही मोबाइल नंबर जरूरी है।");
+                }
             } else {
-                window.currentIp = await getUserIP();
-                console.log("Current IP:", window.currentIp);
+                alert("गलत चाबी! कृपया वीडियो फिर से देखें।");
             }
-        });
-
-        // फॉर्म सबमिट होने पर प्रक्रिया
-        document.getElementById("mobileForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
-            const phoneInput = document.getElementById("phone").value;
-            const alertMsg = document.getElementById("alertMsg");
-            const successMsg = document.getElementById("successMsg");
-            
-            alertMsg.style.display = "none";
-            successMsg.style.display = "none";
-
-            const ipAddress = window.currentIp || await getUserIP();
-
-            // 1. जांचें कि क्या यह IP पहले से डेटाबेस में मौजूद है
-            const q = query(collection(db, "users"), where("ip", "==", ipAddress));
-            const querySnapshot = await getDocs(q);
-
-            if (!querySnapshot.empty) {
-                alertMsg.style.display = "block";
-                return;
-            }
-
-            // 2. यदि IP नहीं है, तो नया रिकॉर्ड सेव करें
-            try {
-                await addDoc(collection(db, "users"), {
-                    mobile: phoneInput,
-                    ip: ipAddress,
-                    timestamp: new Date()
-                });
-
-                // लोकल स्टोरेज में सेव करें
-                localStorage.setItem("userMobile", phoneInput);
-                localStorage.setItem("userIp", ipAddress);
-
-                successMsg.style.display = "block";
-                
-                setTimeout(() => {
-                    location.reload();
-                }, 1500);
-
-            } catch (e) {
-                console.error("डेटा जोड़ने में त्रुटि: ", e);
-            }
-        });
-
-        // लॉगआउट फंक्शन 
-        window.logout = function() {
-            localStorage.clear();
-            location.reload();
+        } catch (error) {
+            console.error(error);
+            alert("सर्वर से कनेक्ट करने में समस्या आई।");
         }
-    </script>
+    };
+
+    window.goToMysteryBox = () => {
+        // यहाँ मिस्ट्री बॉक्स वाले पेज का लिंक आएगा
+        alert("मिस्ट्री बॉक्स पेज पर जा रहे हैं...");
+        // window.location.href = "mystery-box.html";
+    };
+
+    window.logoutUser = () => {
+        localStorage.removeItem('userMobile');
+        location.reload();
+    };
+</script>
+
 </body>
 </html>
