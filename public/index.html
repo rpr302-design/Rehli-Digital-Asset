@@ -3,94 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो डैशबोर्ड</title>
+    <title>रहली डिजिटल एसेट - रिवॉर्ड्स</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #4e54c8;
-            --secondary: #8f94fb;
-            --gold: #FFD700;
-            --glass: rgba(255, 255, 255, 0.95);
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+            padding: 15px;
         }
 
-        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; margin: 0; padding-bottom: 90px; color: #333; }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
 
-        /* टॉप हेडर */
-        .header-bg { background: linear-gradient(135deg, var(--primary), var(--secondary)); height: 180px; border-radius: 0 0 40px 40px; padding: 25px; color: white; position: relative; }
-        .user-badge { display: flex; align-items: center; gap: 15px; }
-        .avatar { width: 55px; height: 55px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 24px; border: 2px solid var(--gold); }
+        h2 { font-weight: 600; margin-bottom: 20px; }
+        p { font-size: 14px; opacity: 0.9; margin-bottom: 25px; }
 
-        /* एसेट कार्ड */
-        .asset-card { background: var(--glass); margin: -60px 20px 20px; padding: 25px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; }
-        .asset-val { font-size: 28px; font-weight: 700; color: var(--primary); }
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            text-align: center;
+        }
 
-        /* चाबी अर्निंग सेक्शन */
-        .section { padding: 0 20px; margin-bottom: 25px; }
-        .earn-box { background: #fff; padding: 20px; border-radius: 20px; border: 2px solid #e0e0e0; text-align: center; }
-        .key-input { width: 80%; padding: 12px; border: 2px solid #f0f0f0; border-radius: 12px; text-align: center; font-size: 20px; margin-bottom: 15px; font-weight: 600; }
+        .btn-action {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #00d2ff;
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            color: white;
+            transition: 0.3s;
+        }
 
-        /* स्मार्ट रेफरल बॉक्स */
-        .refer-card { background: linear-gradient(45deg, #2d3436, #000); color: white; padding: 20px; border-radius: 25px; position: relative; overflow: hidden; }
-        .refer-card::after { content: '🎁'; position: absolute; right: -10px; bottom: -10px; font-size: 80px; opacity: 0.1; }
+        .btn-action:hover { transform: scale(1.02); }
 
-        /* बॉटम नेविगेशन */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-radius: 25px 25px 0 0; z-index: 1000; }
-        .nav-link { text-align: center; color: #a0a0a0; text-decoration: none; font-size: 11px; font-weight: 600; transition: 0.3s; }
-        .nav-link.active { color: var(--primary); }
-        .nav-link i { font-size: 22px; display: block; margin-bottom: 4px; }
-
-        .btn-main { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; }
-        .btn-gold { background: var(--gold); color: #333; }
+        .profile-card { display: none; } /* शुरू में छुपा रहेगा */
+        .key-section { display: none; }
+        
+        .user-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-<div class="header-bg">
-    <div class="user-badge">
-        <div class="avatar"><i class="fa-solid fa-crown"></i></div>
-        <div>
-            <h2 id="userNameDisplay" style="margin:0; font-size: 20px;">नमस्ते!</h2>
-            <span id="userPhoneDisplay" style="opacity: 0.8; font-size: 13px;">+91 0000000000</span>
+<div class="container">
+    <!-- सेक्शन 1: चाबी दर्ज करें (नए यूजर के लिए) -->
+    <div id="keySection" class="key-section">
+        <h2>स्वागत है! 🎁</h2>
+        <p>कृपया यूट्यूब वीडियो से प्राप्त 5 अंकों की सीक्रेट चाबी यहाँ दर्ज करें।</p>
+        <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+        <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें</button>
+    </div>
+
+    <!-- सेक्शन 2: यूजर प्रोफाइल (पुराने यूजर के लिए) -->
+    <div id="profileSection" class="profile-card">
+        <h2>आपकी प्रोफाइल 👤</h2>
+        <div class="user-info">
+            <p>मोबाइल नंबर: <strong id="displayMobile">---</strong></p>
+            <p>स्टेटस: <span style="color: #00ff00;">Verified ✅</span></p>
         </div>
+        <button class="btn-action" style="margin-top: 20px;" onclick="goToMysteryBox()">मिस्ट्री बॉक्स खोलें</button>
+        <p onclick="logoutUser()" style="margin-top: 15px; cursor: pointer; font-size: 12px; text-decoration: underline;">मोबाइल नंबर बदलें</p>
     </div>
 </div>
-
-<div class="asset-card">
-    <div>
-        <span style="font-size: 12px; color: #666; font-weight: 600;">कुल डिजिटल एसेट</span>
-        <div class="asset-val"><i class="fa-solid fa-coins" style="color:var(--gold)"></i> <span id="balanceVal">0</span></div>
-    </div>
-    <i class="fa-solid fa-circle-check" style="color: #27ae60; font-size: 24px;"></i>
-</div>
-
-<div class="section">
-    <div class="earn-box">
-        <h3 style="margin-top:0; font-size: 16px;"><i class="fa-solid fa-key" style="color:var(--primary)"></i> नयी चाबी अनलॉक करें</h3>
-        <input type="number" id="secretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-        <button class="btn-main" onclick="processKey()">एसेट क्लेम करें</button>
-    </div>
-</div>
-
-<div class="section">
-    <div class="refer-card">
-        <h3 style="margin:0;">कमाई का मौका! 💰</h3>
-        <p style="font-size: 12px; opacity: 0.8;">रेफर करें और लाइफटाइम 10% कमीशन पाएँ</p>
-        <div id="refLinkDisplay" style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; font-size: 11px; margin: 10px 0; border: 1px dashed rgba(255,255,255,0.3); overflow: hidden;">लोड हो रहा है...</div>
-        <button class="btn-main btn-gold" onclick="shareReferral()"><i class="fa-brands fa-whatsapp"></i> व्हाट्सएप पर शेयर करें</button>
-    </div>
-</div>
-
-<nav class="nav-bar">
-    <a href="dashboard.html" class="nav-link active"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
-    <a href="mystery-box.html" class="nav-link"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
-    <a href="profile-setup.html" class="nav-link"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
-    <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
-</nav>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
@@ -104,83 +111,61 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const mobile = localStorage.getItem('userMobile');
-    if (!mobile) window.location.href = "index.html"; // रिवॉर्ड/लॉगिन पेज
-
-    async function init() {
-        const userRef = doc(db, "users", mobile);
-        const snap = await getDoc(userRef);
-        
-        if (snap.exists()) {
-            const data = snap.data();
-            document.getElementById('userNameDisplay').innerText = data.userName || "यूजर";
-            document.getElementById('userPhoneDisplay').innerText = "+91 " + mobile;
-            document.getElementById('balanceVal').innerText = data.balance || 0;
-            
-            // रेफरल लिंक बनाना
-            const myRefLink = window.location.origin + "/index.html?ref=" + mobile;
-            document.getElementById('refLinkDisplay').innerText = myRefLink;
+    // पेज लोड होते ही चेक करें
+    window.onload = () => {
+        const savedMobile = localStorage.getItem('userMobile');
+        if (savedMobile) {
+            // अगर मोबाइल नंबर सेव है, प्रोफाइल दिखाएँ
+            document.getElementById('displayMobile').innerText = savedMobile;
+            document.getElementById('profileSection').style.display = 'block';
+        } else {
+            // अगर नया यूजर है, चाबी सेक्शन दिखाएँ
+            document.getElementById('keySection').style.display = 'block';
         }
+    };
 
-        // URL से रेफरल कोड डिटेक्ट करना
-        const urlParams = new URLSearchParams(window.location.search);
-        const refBy = urlParams.get('ref');
-        if (refBy && refBy !== mobile) {
-            sessionStorage.setItem('referredBy', refBy);
+    // चाबी वेरिफिकेशन फंक्शन
+    window.verifyKey = async () => {
+        const key = document.getElementById('userKey').value;
+        if (key.length !== 5) {
+            alert("कृपया 5 अंकों की सही चाबी डालें।");
+            return;
         }
-    }
-
-    window.processKey = async () => {
-        const key = document.getElementById('secretKey').value;
-        if (key.length !== 5) return alert("5 अंकों की चाबी डालें");
 
         try {
-            const assetSnap = await getDoc(doc(db, "assets", key));
-            if (!assetSnap.exists()) return alert("गलत चाबी");
+            const docRef = doc(db, "assets", key);
+            const docSnap = await getDoc(docRef);
 
-            const winValue = assetSnap.data().value || 0;
-            const userRef = doc(db, "users", mobile);
-            const userDoc = await getDoc(userRef);
-            const currentBal = userDoc.data().balance || 0;
-
-            // --- रेफरल रिवॉर्ड लॉजिक ---
-            const referrer = sessionStorage.getItem('referredBy');
-            if (referrer) {
-                const refRef = doc(db, "users", referrer);
-                const refSnap = await getDoc(refRef);
-
-                if (refSnap.exists()) {
-                    const refData = refSnap.data();
-                    // चेक करें क्या यह पहला रिवॉर्ड है (100% के लिए)
-                    const isFirstTime = !refData.referred_users || !refData.referred_users.includes(mobile);
-                    
-                    let bonus = isFirstTime ? winValue : Math.floor(winValue * 0.10);
-                    
-                    await setDoc(refRef, { 
-                        balance: (refData.balance || 0) + bonus,
-                        referred_users: Array.from(new Set([...(refData.referred_users || []), mobile]))
-                    }, { merge: true });
-                    
-                    sessionStorage.removeItem('referredBy'); 
+            if (docSnap.exists()) {
+                // चाबी सही है, अब मोबाइल वेरिफिकेशन पर भेजें
+                // यहाँ हम एक प्रॉम्प्ट ले रहे हैं, आप चाहें तो अलग पेज बना सकते हैं
+                const mobile = prompt("चाबी सही है! अपना मोबाइल नंबर दर्ज करें:");
+                if(mobile && mobile.length >= 10) {
+                    localStorage.setItem('userMobile', mobile);
+                    location.reload(); // पेज रिफ्रेश करके प्रोफाइल दिखाएँ
+                } else {
+                    alert("सही मोबाइल नंबर जरूरी है।");
                 }
+            } else {
+                alert("गलत चाबी! कृपया वीडियो फिर से देखें।");
             }
-
-            await setDoc(userRef, { balance: currentBal + winValue }, { merge: true });
-            alert(`सफलता! +${winValue} एसेट मिले।`);
-            location.reload();
-
-        } catch (e) { alert("त्रुटि: " + e.message); }
+        } catch (error) {
+            console.error(error);
+            alert("सर्वर से कनेक्ट करने में समस्या आई।");
+        }
     };
 
-    window.shareReferral = () => {
-        const link = document.getElementById('refLinkDisplay').innerText;
-        const text = `नमस्ते! रहली डिजिटल एसेट से जुड़ें। मेरे लिंक से आने पर आपको बोनस मिलेगा: ${link}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+    window.goToMysteryBox = () => {
+        // यहाँ मिस्ट्री बॉक्स वाले पेज का लिंक आएगा
+        alert("मिस्ट्री बॉक्स पेज पर जा रहे हैं...");
+        // window.location.href = "mystery-box.html";
     };
 
-    window.logout = () => { localStorage.clear(); window.location.href = "index.html"; };
-
-    init();
+    window.logoutUser = () => {
+        localStorage.removeItem('userMobile');
+        location.reload();
+    };
 </script>
+
 </body>
 </html>
