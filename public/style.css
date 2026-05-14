@@ -1,81 +1,70 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - होम</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+:root {
+    --gold: #FFD700;
+    --glass: rgba(255, 255, 255, 0.15);
+    --primary: #4e54c8;
+    --secondary: #8f94fb;
+}
 
-<div class="container" id="authContainer" style="display: none;">
-    <div id="keySection">
-        <h2>नमस्ते! रिवॉर्ड्स अनलॉक करें 🎁</h2>
-        <span class="lang-en">Welcome! Unlock Your Rewards</span>
-        <p style="font-size: 13px;">कृपया वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
-        <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-        <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें (Check Key)</button>
-    </div>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f0f2f5;
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+}
 
-    <div id="rewardSection">
-        <div class="coin-display shiny" id="winAmount">0</div>
-        <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">GOLD ASSETS WON!</p>
-        
-        <img src="https://lh3.googleusercontent.com/d/1rrk784suDVgSiUS8F1GA6HqZgeWia2qT" class="safe-img" alt="Vault">
-        
-        <button class="btn-action" id="claimBtn" onclick="showMobileInput()" style="background: linear-gradient(to right, #11998e, #38ef7d);">सिक्के खाते में जोड़ें (Add to Account)</button>
+/* लॉगिन स्क्रीन बैकग्राउंड और कंटेनर */
+#authContainer {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 1500;
+}
+.container {
+    width: 90%; max-width: 400px; background: var(--glass);
+    padding: 30px; border-radius: 30px; backdrop-filter: blur(20px);
+    text-align: center; border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
 
-        <div id="mobileBox">
-            <p style="font-size: 13px;">सिक्के प्राप्त करने के लिए मोबाइल नंबर दर्ज करें</p>
-            <input type="number" id="userMobile" placeholder="आपका मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
-            <button class="btn-action" onclick="saveMobile()">पुष्टि करें (Confirm)</button>
-        </div>
-    </div>
-</div>
+h2 { font-weight: 600; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+.lang-en { font-size: 12px; opacity: 0.8; display: block; margin-bottom: 20px; }
 
-<div class="dashboard-wrapper" id="dashboardContainer" style="display: none;">
-    <div class="header-bg">
-        <div class="user-badge">
-            <div class="avatar"><i class="fa-solid fa-crown"></i></div>
-            <div>
-                <h2 id="dashUserName" style="margin:0; font-size: 20px;">नमस्ते, यूजर!</h2>
-                <span id="dashUserPhone" style="opacity: 0.8; font-size: 13px;">+91 0000000000</span>
-            </div>
-        </div>
-    </div>
+input {
+    width: 100%; padding: 15px; margin-bottom: 15px; border: none;
+    border-radius: 15px; font-size: 18px; outline: none;
+    text-align: center; background: white; color: #333; font-weight: 600; box-sizing: border-box;
+}
 
-    <div class="asset-card">
-        <div>
-            <span style="font-size: 12px; color: #666; font-weight: 600;">कुल डिजिटल एसेट</span>
-            <div class="asset-val"><i class="fa-solid fa-coins" style="color:var(--gold)"></i> <span id="dashBalance">0</span></div>
-        </div>
-        <i class="fa-solid fa-circle-check" style="color: #27ae60; font-size: 24px;"></i>
-    </div>
+.btn-action {
+    width: 100%; padding: 16px; border: none; border-radius: 15px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+    color: white; transition: 0.3s; box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+}
+.btn-action:hover { transform: translateY(-3px); }
 
-    <div class="section">
-        <div class="earn-box">
-            <h3 style="margin-top:0; font-size: 15px;"><i class="fa-solid fa-key" style="color:#4e54c8"></i> नयी वीडियो चाबी यहाँ जोड़ें</h3>
-            <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-            <button class="btn-action" style="padding: 12px;" onclick="processDashKey()">एसेट क्लेम करें</button>
-        </div>
-    </div>
+#rewardSection { display: none; }
+.safe-img { width: 100%; max-width: 200px; margin: 20px auto; display: block; animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
 
-    <nav class="nav-bar">
-        <a href="index.html" class="nav-link active"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
-        <a href="mystery-box.html" class="nav-link"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
-        <a href="profile-setup.html" class="nav-link"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
-        <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
-    </nav>
-</div>
+.coin-display { font-size: 40px; font-weight: 700; color: var(--gold); text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 2px 2px 2px #000; }
+#mobileBox { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
 
-<audio id="winSound">
-    <source src="https://docs.google.com/uc?export=download&id=1IG486iet9kCnOR3aWcV1rSsS6XTyckhX" type="audio/mpeg">
-</audio>
+/* 📱 आधुनिक डैशबोर्ड यूआई स्टाइल */
+.dashboard-wrapper { width: 100%; max-width: 500px; margin: 0 auto; padding-bottom: 90px; background: #f8f9fa; min-height: 100vh; }
+.header-bg { background: linear-gradient(135deg, var(--primary), var(--secondary)); height: 160px; border-radius: 0 0 35px 35px; padding: 25px; color: white; box-sizing: border-box; }
+.user-badge { display: flex; align-items: center; gap: 15px; }
+.avatar { width: 55px; height: 55px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 24px; border: 2px solid var(--gold); }
 
-<script type="module" src="app.js"></script>
+.asset-card { background: white; margin: -40px 20px 20px; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+.asset-val { font-size: 26px; font-weight: 700; color: var(--primary); }
 
-</body>
-</html>
+.section { padding: 0 20px; margin-bottom: 20px; }
+.earn-box { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #e0e0e0; text-align: center; }
+.key-input { width: 100%; padding: 12px; border: 2px solid #f0f0f0; border-radius: 12px; text-align: center; font-size: 18px; margin-bottom: 15px; font-weight: 600; }
+
+/* बॉटम नेविगेशन बार */
+.nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-radius: 25px 25px 0 0; z-index: 1000; }
+.nav-link { text-align: center; color: #a0a0a0; text-decoration: none; font-size: 11px; font-weight: 600; }
+.nav-link.active { color: var(--primary); }
+.nav-link i { font-size: 22px; display: block; margin-bottom: 4px; }
