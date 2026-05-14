@@ -11,64 +11,72 @@
 </head>
 <body>
 
-<div class="container" id="authContainer" style="display: none;">
-    <div id="keySection">
-        <h2>नमस्ते! रिवॉर्ड्स अनलॉक करें 🎁</h2>
-        <span class="lang-en">Welcome! Unlock Your Rewards</span>
-        <p style="font-size: 13px;">कृपया वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
-        <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-        <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें (Check Key)</button>
-    </div>
+<div id="authContainer" class="hidden-screen">
+    <div class="container">
+        <div id="keySection">
+            <h2>नमस्ते! रिवॉर्ड्स अनलॉक करें 🎁</h2>
+            <span class="lang-en">Welcome! Unlock Your Rewards</span>
+            <p style="font-size: 13px;">कृपया वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
+            <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+            <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें (Check Key)</button>
+        </div>
 
-    <div id="rewardSection">
-        <div class="coin-display shiny" id="winAmount">0</div>
-        <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">GOLD ASSETS WON!</p>
-        
-        <img src="https://lh3.googleusercontent.com/d/1rrk784suDVgSiUS8F1GA6HqZgeWia2qT" class="safe-img" alt="Vault">
-        
-        <button class="btn-action" id="claimBtn" onclick="showMobileInput()" style="background: linear-gradient(to right, #11998e, #38ef7d);">सिक्के खाते में जोड़ें (Add to Account)</button>
+        <div id="rewardSection">
+            <div class="coin-display shiny" id="winAmount">0</div>
+            <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">GOLD ASSETS WON!</p>
+            
+            <img src="https://lh3.googleusercontent.com/d/1rrk784suDVgSiUS8F1GA6HqZgeWia2qT" class="safe-img" alt="Vault">
+            
+            <button class="btn-action" id="claimBtn" onclick="showMobileInput()" style="background: linear-gradient(to right, #11998e, #38ef7d);">सिक्के खाते में जोड़ें (Add to Account)</button>
 
-        <div id="mobileBox">
-            <p style="font-size: 13px;">सिक्के प्राप्त करने के लिए मोबाइल नंबर दर्ज करें</p>
-            <input type="number" id="userMobile" placeholder="आपका मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
-            <button class="btn-action" onclick="saveMobile()">पुष्टि करें (Confirm)</button>
+            <div id="mobileBox">
+                <p style="font-size: 13px;">सिक्के प्राप्त करने के लिए मोबाइल नंबर दर्ज करें</p>
+                <input type="number" id="userMobile" placeholder="आपका मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                <button class="btn-action" onclick="saveMobile()">पुष्टि करें (Confirm)</button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="dashboard-wrapper" id="dashboardContainer" style="display: none;">
-    <div class="header-bg">
-        <div class="user-badge">
-            <div class="avatar"><i class="fa-solid fa-crown"></i></div>
-            <div>
-                <h2 id="dashUserName" style="margin:0; font-size: 20px;">नमस्ते, यूजर!</h2>
-                <span id="dashUserPhone" style="opacity: 0.8; font-size: 13px;">+91 0000000000</span>
+<div id="dashboardContainer" class="hidden-screen">
+    <div class="dashboard-wrapper">
+        <div class="header-bg">
+            <div class="user-badge">
+                <div class="avatar"><i class="fa-solid fa-crown"></i></div>
+                <div>
+                    <h2 id="dashUserName" style="margin:0; font-size: 20px;">नमस्ते!</h2>
+                    <span id="dashUserPhone" style="opacity: 0.8; font-size: 13px;">+91 0000000000</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="asset-card">
-        <div>
-            <span style="font-size: 12px; color: #666; font-weight: 600;">कुल डिजिटल एसेट</span>
-            <div class="asset-val"><i class="fa-solid fa-coins" style="color:var(--gold)"></i> <span id="dashBalance">0</span></div>
+        <div class="asset-card">
+            <div>
+                <span style="font-size: 12px; color: #666; font-weight: 600;">कुल डिजिटल एसेट (My Coins)</span>
+                <div class="asset-val">
+                    <i class="fa-solid fa-coins" style="color:var(--gold)"></i> 
+                    <span id="dashBalance">0</span>
+                </div>
+            </div>
+            <i class="fa-solid fa-circle-check" style="color: #27ae60; font-size: 24px;"></i>
         </div>
-        <i class="fa-solid fa-circle-check" style="color: #27ae60; font-size: 24px;"></i>
-    </div>
 
-    <div class="section">
-        <div class="earn-box">
-            <h3 style="margin-top:0; font-size: 15px;"><i class="fa-solid fa-key" style="color:#4e54c8"></i> नयी वीडियो चाबी यहाँ जोड़ें</h3>
-            <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-            <button class="btn-action" style="padding: 12px;" onclick="processDashKey()">एसेट क्लेम करें</button>
+        <div class="section">
+            <div class="earn-box">
+                <h3 style="margin-top:0; font-size: 15px;"><i class="fa-solid fa-key" style="color:#4e54c8"></i> नए वीडियो की चाबी से कॉइन जोड़ें</h3>
+                <p style="font-size: 11px; color:#888; margin-top:-5px;">यहाँ चाबी डालकर अपने पुराने अकाउंट में और सिक्के इकट्ठा करें</p>
+                <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+                <button class="btn-action" style="padding: 12px;" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
+            </div>
         </div>
-    </div>
 
-    <nav class="nav-bar">
-        <a href="index.html" class="nav-link active"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
-        <a href="mystery-box.html" class="nav-link"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
-        <a href="profile-setup.html" class="nav-link"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
-        <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
-    </nav>
+        <nav class="nav-bar">
+            <a href="index.html" class="nav-link active"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
+            <a href="mystery-box.html" class="nav-link"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
+            <a href="profile-setup.html" class="nav-link"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
+            <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
+        </nav>
+    </div>
 </div>
 
 <audio id="winSound">
