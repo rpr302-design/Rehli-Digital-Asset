@@ -12,7 +12,12 @@ body {
     box-sizing: border-box;
 }
 
-/* लॉगिन स्क्रीन बैकग्राउंड और कंटेनर */
+/* 🔒 स्क्रीन छुपाने का एडवांस नियम */
+.hidden-screen {
+    display: none !important;
+}
+
+/* नया यूजर लॉगिन स्क्रीन बैकग्राउंड */
 #authContainer {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
@@ -50,7 +55,7 @@ input {
 .coin-display { font-size: 40px; font-weight: 700; color: var(--gold); text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 2px 2px 2px #000; }
 #mobileBox { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
 
-/* 📱 आधुनिक डैशबोर्ड यूआई स्टाइल */
+/* 📱 स्मार्टफोन डैशबोर्ड यूआई स्टाइल */
 .dashboard-wrapper { width: 100%; max-width: 500px; margin: 0 auto; padding-bottom: 90px; background: #f8f9fa; min-height: 100vh; }
 .header-bg { background: linear-gradient(135deg, var(--primary), var(--secondary)); height: 160px; border-radius: 0 0 35px 35px; padding: 25px; color: white; box-sizing: border-box; }
 .user-badge { display: flex; align-items: center; gap: 15px; }
