@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - होम</title>
+    <title>रहली डिजिटल एसेट - सुपर ऐप</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -22,33 +21,6 @@
     </div>
 </div>
 
-<div id="paymentModal" class="modal-overlay hidden-screen">
-    <div class="modal-box">
-        <div class="close-btn" onclick="closePaymentModal()">×</div>
-        <h3><i class="fa-solid fa-paper-plane" style="color:#4e54c8;"></i> दुकानों पर भुनाएं (Pay Shop)</h3>
-        <p style="font-size: 11px; color:#666;">दुकान का QR स्कैन करें या नंबर डालकर सीधे एसेट ट्रांसफर करें।</p>
-        
-        <div id="qrReaderContainer" class="hidden-screen">
-            <div id="qrReader"></div>
-            <button class="btn-action" style="background:#e74c3c; padding:8px; margin-top:5px; font-size:12px;" onclick="stopQRScanner()">कैमरा बंद करें</button>
-        </div>
-
-        <button class="btn-action" id="btnStartScan" style="background:#27ae60; margin-bottom:10px;" onclick="startQRScanner()">
-            <i class="fa-solid fa-camera"></i> क्यूआर कोड स्कैन करें (Scan QR)
-        </button>
-
-        <div style="font-weight: 600; color:#888; font-size:12px; margin: 10px 0;">या (OR) नंबर डालें</div>
-
-        <input type="number" id="payMerchantMobile" placeholder="दुकानदार का मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
-        <input type="number" id="payAmount" placeholder="कितने एसेट्स भेजने हैं? (Amount)">
-        <input type="number" id="payBillAmount" placeholder="आपकी कुल खरीदारी बिल राशि (₹)">
-        
-        <button class="btn-action" style="background: linear-gradient(135deg, #4e54c8, #8f94fb); margin-top:15px;" onclick="processPayment()">
-            सुरक्षित ट्रांसफर करें (Send Assets)
-        </button>
-    </div>
-</div>
-
 <div id="authContainer" class="hidden-screen">
     <div class="container">
         <div id="keySection">
@@ -60,9 +32,9 @@
         </div>
 
         <div id="rewardSection">
-            <div class="coin-display shiny" id="winAmount">0</div>
+            <div class="coin-display" id="winAmount">0</div>
             <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">GOLD ASSETS WON!</p>
-            <img src="https://lh3.googleusercontent.com/d/1rrk784suDVgSiUS8F1GA6HqZgeWia2qT" class="safe-img" alt="Vault">
+            <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" class="safe-img" alt="Vault" style="width:120px; margin:0 auto 15px;">
             <button class="btn-action" id="claimBtn" onclick="showMobileInput()" style="background: linear-gradient(to right, #11998e, #38ef7d);">सिक्के खाते में जोड़ें (Add to Account)</button>
 
             <div id="mobileBox">
@@ -76,59 +48,141 @@
 
 <div id="dashboardContainer" class="hidden-screen">
     <div class="dashboard-wrapper">
+        
         <div class="header-bg">
             <div class="user-badge">
                 <div class="avatar"><i class="fa-solid fa-crown"></i></div>
                 <div>
-                    <h2 id="dashUserName" style="margin:0; font-size: 20px;">नमस्ते!</h2>
-                    <span id="dashUserPhone" style="opacity: 0.8; font-size: 13px;">+91 0000000000</span>
+                    <h2 id="dashUserName" style="margin:0; font-size: 18px;">नमस्ते!</h2>
+                    <span id="dashUserPhone" style="opacity: 0.8; font-size: 12px;">+91 0000000000</span>
+                </div>
+            </div>
+            <div class="balance-pill">
+                <i class="fa-solid fa-coins" style="color:var(--gold)"></i> 
+                <span id="dashBalance">0</span>
+            </div>
+        </div>
+
+        <div id="tab-home" class="app-tab-content">
+            <div class="section hidden-screen" id="promoVideoSection">
+                <div class="video-promo-box">
+                    <div class="v-badge">NEW VIDEO 🔴</div>
+                    <h4 id="lblPromoTitle" style="margin: 8px 0 2px 0; font-size: 13px;">लेटेस्ट वीडियो देखें और चाबी कमाएं</h4>
+                    <a id="btnPromoLink" href="#" target="_blank" class="btn-watch"><i class="fa-brands fa-youtube"></i> वीडियो देखें (Watch Now)</a>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top:20px;">
+                <div class="earn-box">
+                    <h3 style="margin-top:0; font-size: 14px;"><i class="fa-solid fa-key" style="color:var(--primary)"></i> वीडियो कोड से सिक्के जोड़ें</h3>
+                    <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+                    <button class="btn-action" style="padding: 12px; font-size:14px; background:linear-gradient(45deg, var(--primary), var(--secondary));" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
                 </div>
             </div>
         </div>
 
-        <div class="asset-card">
-            <div>
-                <span style="font-size: 12px; color: #666; font-weight: 600;">कुल डिजिटल एसेट (My Coins)</span>
-                <div class="asset-val">
-                    <i class="fa-solid fa-coins" style="color:var(--gold)"></i> 
-                    <span id="dashBalance">0</span>
+        <div id="tab-mystery" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <h3 style="margin:0; color:#333;">जादुई मिस्ट्री बॉक्स 🔮</h3>
+                    <span style="font-size:11px; color:#666;">फीस: 1,000 सिक्के | दैनिक लिमिट: <b id="remainingAttempts">3</b>/3</span>
+                </div>
+                
+                <div class="mystery-grid">
+                    <div class="m-box-card" onclick="openMysteryPinModal(1, 1, 10000, 'Silver Box')">
+                        <div class="m-icon">🎁</div>
+                        <h4>Silver Box</h4>
+                        <span style="color:#2ecc71; font-size:12px; font-weight:600;">Win 10K Coins</span>
+                    </div>
+                    <div class="m-box-card" style="border-color:var(--gold);" onclick="openMysteryPinModal(2, 3, 100000, 'Golden Box')">
+                        <div class="m-icon">💎</div>
+                        <h4>Golden Box</h4>
+                        <span style="color:var(--gold); font-size:12px; font-weight:600;">Win 100K Coins</span>
+                    </div>
+                    <div class="m-box-card" style="border-color:#ff4757;" onclick="openMysteryPinModal(3, 8, 0, 'Mega Jackpot')">
+                        <div class="m-icon">👑</div>
+                        <h4>Mega Box</h4>
+                        <span style="color:#ff4757; font-size:12px; font-weight:600;">₹1 लाख नकद</span>
+                    </div>
                 </div>
             </div>
-            <i class="fa-solid fa-circle-check" style="color: #27ae60; font-size: 24px;"></i>
         </div>
 
-        <div class="section hidden-screen" id="promoVideoSection">
-            <div class="video-promo-box">
-                <div class="v-badge">NEW VIDEO 🔴</div>
-                <h4 id="lblPromoTitle" style="margin: 8px 0 2px 0; font-size: 14px; color:#333;">लेटेस्ट वीडियो देखें और चाबी कमाएं</h4>
-                <p style="font-size:11px; color:#666; margin:0 0 10px 0;">इस वीडियो के अंदर छुपा 5 अंकों का कोड आपको कॉइन दिलाएगा।</p>
-                <a id="btnPromoLink" href="#" target="_blank" class="btn-watch"><i class="fa-brands fa-youtube"></i> वीडियो देखें (Watch Now)</a>
+        <div id="tab-profile" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div class="earn-box" style="text-align: left;">
+                    <h3 style="margin-top:0; color:var(--primary);"><i class="fa-solid fa-user-shield"></i> सुरक्षित खाता विवरण</h3>
+                    <p style="margin:5px 0; font-size:13px;"><b>रजिस्ट्रेशन मोबाइल:</b> +91 <span id="profMobile">000</span></p>
+                    <p style="margin:5px 0; font-size:13px;"><b>स्टेटस:</b> <span style="color:green; font-weight:600;">Verified ✅</span></p>
+                    <p style="margin:5px 0; font-size:11px; color:#888;">सुरक्षा कारणों से एक बार सेव किया गया नंबर बदला नहीं जा सकता।</p>
+                    <button class="btn-action" style="background:#e74c3c; margin-top:20px; padding:10px; font-size:13px;" onclick="logout()">अकाउंट लॉगआउट करें</button>
+                </div>
             </div>
         </div>
 
-        <div class="section">
-            <div class="earn-box">
-                <h3 style="margin-top:0; font-size: 14px;"><i class="fa-solid fa-key" style="color:#4e54c8"></i> नए वीडियो की चाबी से कॉइन जोड़ें</h3>
-                <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-                <button class="btn-action" style="padding: 12px; font-size:14px;" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
+        <div id="tab-pay" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div class="earn-box">
+                    <h3 style="margin-top:0;"><i class="fa-solid fa-store" style="color:var(--success)"></i> लोकल दुकानों पर पेमेंट करें</h3>
+                    
+                    <div id="qrReaderContainer" class="hidden-screen" style="margin-bottom:10px;">
+                        <div id="qrReader"></div>
+                        <button class="btn-action" style="background:#e74c3c; padding:6px; font-size:11px; margin-top:5px;" onclick="stopQRScanner()">कैमरा ऑफ करें</button>
+                    </div>
+
+                    <button class="btn-action" id="btnStartScan" style="background:#27ae60; margin-bottom:15px;" onclick="startQRScanner()">
+                        <i class="fa-solid fa-camera"></i> दुकान का QR कोड स्कैन करें
+                    </button>
+
+                    <div style="font-size:11px; color:#888; margin-bottom:10px;">या मैन्युअल नंबर से खोजें</div>
+                    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                        <input type="number" id="payMerchantMobile" placeholder="दुकानदार का नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" style="margin:0; padding:10px; font-size:14px;">
+                        <button class="btn-action" style="width: 80px; margin:0; background:var(--primary); padding:10px; font-size:12px;" onclick="searchMerchant()">खोजें</button>
+                    </div>
+
+                    <div id="merchantVerifyArea" class="hidden-screen" style="background: #f8f9fa; padding: 12px; border-radius: 12px; text-align: left; margin-bottom: 15px; border-left: 4px solid #27ae60;">
+                        <h4 id="lblVerifiedShopName" style="margin:0; font-size:14px;">Shop Name</h4>
+                        <span id="lblVerifiedShopPhone" style="font-size:11px; color:#666;">+91 00</span>
+                        <p id="lblShopRulesInfo" style="font-size:10px; color:var(--primary); margin:3px 0 0 0; font-weight:600;"></p>
+                    </div>
+
+                    <div id="paymentFormArea" class="hidden-screen">
+                        <input type="number" id="payAmount" placeholder="कितने सिक्के भेजने हैं?">
+                        <input type="number" id="payBillAmount" placeholder="कुल बिल राशि (₹)">
+                        <button class="btn-action" style="background: linear-gradient(135deg, #27ae60, #11998e);" onclick="processPayment()">Confirm & Pay Now</button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <nav class="nav-bar">
-            <a href="index.html" class="nav-link active"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
+            <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
+            <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
             
-            <div class="nav-pay-center" onclick="openPaymentModal()">
-                <div class="pay-circle">
-                    <i class="fa-solid fa-qrcode"></i>
-                </div>
-                <span style="font-size:10px; font-weight:600; color:#4e54c8; display:block; margin-top:2px;">पे (Pay)</span>
+            <div class="nav-pay-center" onclick="switchAppTab('pay')">
+                <div class="pay-circle" id="nav-pay-circle"><i class="fa-solid fa-qrcode"></i></div>
+                <span style="font-size:10px; font-weight:600; color:var(--primary); display:block; margin-top:2px;">पे (Pay)</span>
             </div>
             
-            <a href="mystery-box.html" class="nav-link"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
-            <a href="profile-setup.html" class="nav-link"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
+            <a href="#" class="nav-link" id="nav-profile" onclick="switchAppTab('profile')"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
+            <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
         </nav>
+
     </div>
 </div>
+
+<div id="mysteryModal" class="modal-overlay hidden-screen">
+    <div class="modal-box">
+        <div class="close-btn" onclick="closeMysteryModal()">×</div>
+        <h3 id="mModalTitle">Unlock Box</h3>
+        <p style="font-size: 11px; color:#666; margin-bottom: 12px;">गेम खेलने पर आपके वॉलेट से 1,000 सिक्के काट लिए जाएंगे।</p>
+        <input type="number" id="mPinInput" placeholder="Enter PIN" autocomplete="off">
+        <button class="btn-action" id="mSubmitBtn" style="background: linear-gradient(45deg, #4e54c8, #8f94fb);" onclick="attemptMysteryUnlock()">Claim Reward (-1000)</button>
+    </div>
+</div>
+
+<audio id="winSound"><source src="https://docs.google.com/uc?export=download&id=1IG486iet9kCnOR3aWcV1rSsS6XTyckhX" type="audio/mpeg"></audio>
+<audio id="failSound"><source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg"></audio>
 
 <script type="module" src="app.js"></script>
 </body>
