@@ -27,36 +27,67 @@ window.toggleAuth = (showRegister) => {
     document.getElementById('authTitle').innerText = showRegister ? "नया दुकानदार रजिस्ट्रेशन" : "दुकानदार लॉगिन (Merchant Login)";
 };
 
-// 🏪 दुकानदार रजिस्ट्रेशन लॉजिक
+// 🏪 दुकानदार रजिस्ट्रेशन लॉजिक (पेज रिस्पॉन्स फिक्स)
 window.merchantRegister = async () => {
+    // फॉर्म के सभी इनपुट्स की वैल्यू उठाना
     const name = document.getElementById('regShopName').value.trim();
     const address = document.getElementById('regAddress').value.trim();
     const mobile = document.getElementById('regMobile').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const pass = document.getElementById('regPass').value;
 
-    if (!name || !address || mobile.length !== 10 || !email || !pass) {
-        return alert("कृपया सभी फील्ड सही-सही भरें!");
+    // वैलिडेशन चेक (यदि कोई भी फील्ड खाली है तो अलर्ट आएगा)
+    if (!name || !address || !mobile || !email || !pass) {
+        alert("कृपया सभी जानकारी भरें! (Please fill all fields)");
+        return;
+    }
+
+    if (mobile.length !== 10) {
+        alert("मोबाइल नंबर पूरा 10 अंकों का होना चाहिए!");
+        return;
     }
 
     try {
+        // फायरबेस में मर्चेंट रेफरेंस चेक करना
         const mRef = doc(db, "merchants", mobile);
         const mSnap = await getDoc(mRef);
 
-        if (mSnap.exists()) return alert("यह मोबाइल नंबर पहले से रजिस्टर्ड है!");
+        if (mSnap.exists()) {
+            alert("यह मोबाइल नंबर पहले से रजिस्टर्ड है! (Mobile already registered)");
+            return;
+        }
 
-        // डिफॉल्ट सेटिंग्स के साथ दुकानदार का खाता बनाना
+        // फायरबेस डेटाबेस में नया डॉक्यूमेंट सेव करना
         await setDoc(mRef, {
-            shopName: name, address: address, mobile: mobile, email: email, password: pass,
-            balance: 0, perTxnLimit: 5000, monthlyLimit: 20000, minBillAmount: 100,
+            shopName: name,
+            address: address,
+            mobile: mobile,
+            email: email,
+            password: pass,
+            balance: 0,
+            perTxnLimit: 5000, 
+            monthlyLimit: 20000, 
+            minBillAmount: 100,
             regDate: new Date().toISOString()
         });
 
-        alert("रजिस्ट्रेशन सफल! अब लॉगिन करें।");
-        location.reload();
-    } catch (e) { alert("त्रुटि: " + e.message); }
-};
+        alert("बधाई हो! दुकानदार रजिस्ट्रेशन सफल रहा। ✅\nअब आप लॉगिन कर सकते हैं।");
+        
+        // रजिस्ट्रेशन सफल होने के बाद ऑटोमैटिक लॉगिन फॉर्म पर वापस भेजें
+        toggleAuth(false);
+        
+        // इनपुट बॉक्स साफ करना
+        document.getElementById('regShopName').value = "";
+        document.getElementById('regAddress').value = "";
+        document.getElementById('regMobile').value = "";
+        document.getElementById('regEmail').value = "";
+        document.getElementById('regPass').value = "";
 
+    } catch (e) { 
+        console.error("Registration Error: ", e);
+        alert("रजिस्ट्रेशन फेल हुआ: " + e.message); 
+    }
+};
 // 🔑 दुकानदार लॉगिन
 window.merchantLogin = async () => {
     const mobile = document.getElementById('loginMobile').value.trim();
