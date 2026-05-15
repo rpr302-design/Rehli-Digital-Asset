@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो एडमिन v2.4</title>
+    <title>रहली डिजिटल एसेट - प्रो एडमिन v2.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -15,6 +15,7 @@
             --white: #ffffff;
             --success: #27ae60;
             --danger: #e74c3c;
+            --warning: #f1c40f;
         }
 
         body { font-family: 'Poppins', sans-serif; margin: 0; display: flex; height: 100vh; background-color: var(--main-bg); overflow: hidden; }
@@ -46,12 +47,14 @@
         #loginWrapper { position: fixed; top:0; left:0; width: 100%; height: 100%; background: #2c3e50; display: flex; align-items: center; justify-content: center; z-index: 2000; }
         .login-box { background: white; padding: 40px; border-radius: 30px; width: 100%; max-width: 350px; text-align: center; }
 
-        .btn { border: none; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s; font-size: 14px; }
+        .btn { border: none; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.3s; font-size: 13px; }
         .btn-primary { background: var(--accent); color: white; width: 100%; }
+        .btn-action-sm { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; padding: 6px 12px; border-radius: 8px; }
 
         input, select { width: 100%; padding: 12px; margin-top: 8px; border: 1.5px solid #eee; border-radius: 10px; box-sizing: border-box; }
-        .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
         .hidden { display: none !important; }
+        
+        .modal-card { background: #f9f9f9; padding: 20px; border-radius: 15px; border: 1px solid #e0e0e0; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -62,7 +65,7 @@
             <h3>व्यवस्थापक लॉगिन</h3>
             <input type="email" id="adminEmail" value="rpr302@gmail.com">
             <input type="password" id="adminPass" value="Sammo*1234">
-            <button class="btn btn-primary" style="margin-top: 20px;" onclick="login()">पहुंच प्राप्त करें</button>
+            <button class="btn btn-primary" style="margin-top: 20px; padding: 12px;" onclick="login()">पहुंच प्राप्त करें</button>
         </div>
     </div>
 
@@ -72,8 +75,8 @@
             <div class="nav-link active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> डैशबोर्ड</div>
             <div class="nav-link" onclick="showTab('entry')"><i class="fas fa-plus-circle"></i> नया एसेट बनाएँ</div>
             <div class="nav-link" onclick="showTab('users')"><i class="fas fa-users"></i> यूजर लिस्ट</div>
-            <div class="nav-link" onclick="showTab('tracking')"><i class="fas fa-search-location"></i> यूज़र ट्रैकिंग 🎯</div>
-            <div class="nav-link" onclick="showTab('history')"><i class="fas fa-history"></i> चाबी इतिहास</div>
+            <div class="nav-link" onclick="showTab('tracking')"><i class="fas fa-search-location"></i> यूज़र ट्रैकिंग</div>
+            <div class="nav-link" onclick="showTab('history')"><i class="fas fa-history"></i> चाबी इतिहास 🔑</div>
             <div class="nav-link" style="margin-top: auto; border-top: 1px solid #34495e;" onclick="logout()"><i class="fas fa-power-off"></i> लॉगआउट</div>
         </div>
 
@@ -113,11 +116,11 @@
                         <label>कॉइन वैल्यू (Value)</label>
                         <input type="number" id="assetValue" placeholder="100">
                         
-                        <button class="btn btn-primary" id="genKeyBtn" style="margin-top:20px; background:#6c5ce7;" onclick="generateUniqueKey()">चाबी जनरेट करें</button>
+                        <button class="btn btn-primary" id="genKeyBtn" style="margin-top:20px; background:#6c5ce7; padding: 12px;" onclick="generateUniqueKey()">चाबी जनरेट करें</button>
                         
                         <div id="keyArea" class="hidden" style="margin-top: 20px; padding: 15px; border: 2px dashed #3498db; text-align: center; border-radius: 10px;">
                             <div id="keyDisplay" style="font-size: 30px; font-weight: bold; letter-spacing: 5px; margin: 10px 0;">00000</div>
-                            <button id="saveBtn" class="btn btn-primary" style="background: var(--success);" onclick="submitData()">फायरबेस में सुरक्षित करें</button>
+                            <button id="saveBtn" class="btn btn-primary" style="background: var(--success); padding: 12px;" onclick="submitData()">फायरबेस में सुरक्षित करें</button>
                         </div>
                     </div>
                 </div>
@@ -135,19 +138,14 @@
                 <div id="tab-tracking" class="hidden">
                     <div class="card">
                         <h3>🎯 यूजर चाबी अर्निंग ट्रैकर</h3>
-                        <p style="font-size:12px; color:#666;">किसी भी यूजर का मोबाइल नंबर डालकर चेक करें कि उसने किस चाबी से कितने सिक्के कमाए हैं:</p>
-                        
-                        <div class="search-container">
-                            <input type="number" id="searchMobile" placeholder="10 अंकों का मोबाइल नंबर डालें" style="margin:0;">
-                            <button class="btn btn-primary" style="width:120px; margin:0;" onclick="trackUserKeys()">खोजें (Search)</button>
+                        <div style="display:flex; gap:10px; margin-bottom: 20px;">
+                            <input type="number" id="searchMobile" placeholder="मोबाइल नंबर डालें" style="margin:0;">
+                            <button class="btn btn-primary" style="width:120px; margin:0;" onclick="trackUserKeys()">खोजें</button>
                         </div>
-
                         <div id="trackerResult" class="hidden">
-                            <h4 id="trackerInfo" style="color:var(--accent); margin-bottom:5px;">यूजर: N/A</h4>
+                            <h4 id="trackerInfo" style="color:var(--accent);">यूजर: N/A</h4>
                             <table>
-                                <thead style="background:#f1f2f6;">
-                                    <tr><th>चाबी (Key Used)</th><th>प्राप्त सिक्के (Assets Won)</th><th>क्लेम का समय (Date & Time)</th></tr>
-                                </thead>
+                                <thead><tr><th>चाबी Used</th><th>प्राप्त सिक्के</th><th>समय</th></tr></thead>
                                 <tbody id="trackerListBody"></tbody>
                             </table>
                         </div>
@@ -156,10 +154,23 @@
 
                 <div id="tab-history" class="hidden">
                     <div class="card">
-                        <h3>🔑 जारी की गई सभी चाबियाँ</h3>
+                        <h3>🔑 जारी की गई सभी चाबियाँ और उनका लाइव खर्च</h3>
+                        <p style="font-size:12px; color:#666;">नीचे किसी भी चाबी के सामने <b>"खर्च ट्रैक करें"</b> बटन दबाकर देखें कि उसे कितने लोगों ने क्लेम किया है।</p>
                         <table>
-                            <thead><tr><th>चाबी</th><th>टाइटल</th><th>वैल्यू</th><th>प्लेटफार्म</th></tr></thead>
+                            <thead><tr><th>चाबी (Key)</th><th>शीर्षक (Title)</th><th>कॉइन वैल्यू</th><th>प्लेटफार्म</th><th>कार्रवाई</th></tr></thead>
                             <tbody id="historyListBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div id="keyStatsSection" class="card modal-card hidden">
+                        <h3 style="color: var(--sidebar-bg); margin-top: 0;"><i class="fas fa-chart-pie"></i> चाबी <span id="activeStatKey" style="color:var(--accent);">00000</span> का लाइव खर्च ट्रैकर</h3>
+                        <div style="display:flex; gap:30px; margin-bottom: 15px; background: #fff; padding: 15px; border-radius: 10px; border-left: 5px solid var(--accent);">
+                            <div>कुल क्लेम करने वाले यूजर: <b id="statTotalUsers" style="color:var(--sidebar-bg); font-size:16px;">0</b></div>
+                            <div>कुल खर्च हुए कॉइन्स: <b id="statTotalCoins" style="color:var(--danger); font-size:16px;">0</b></div>
+                        </div>
+                        <table>
+                            <thead style="background:#eee;"><tr><th>यूजर मोबाइल नंबर</th><th>क्लेम किए सिक्के</th><th>तारीख और समय</th></tr></thead>
+                            <tbody id="keyStatsListBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -171,7 +182,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, orderBy, query, limit, collectionGroup, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
@@ -231,43 +242,25 @@
         });
     }
 
-    // 🎯 NEW: यूजर के पर्सनल 'used_keys' सब-कलेक्शन को ट्रैक करने का जादुई लॉजिक
     window.trackUserKeys = async () => {
         const searchMobile = document.getElementById('searchMobile').value.trim();
-        if(searchMobile.length !== 10) return alert("कृपया सही 10 अंकों का मोबाइल नंबर डालें!");
-
+        if(searchMobile.length !== 10) return alert("10 अंकों का नंबर डालें");
         const body = document.getElementById('trackerListBody');
-        body.innerHTML = "<tr><td colspan='3'>डेटा खोजा जा रहा है...</td></tr>";
+        body.innerHTML = "<tr><td colspan='3'>खोज रहे हैं...</td></tr>";
         document.getElementById('trackerResult').classList.remove('hidden');
 
-        try {
-            // पहले मुख्य यूजर की प्रोफाइल चेक करें
-            const userSnap = await getDoc(doc(db, "users", searchMobile));
-            if(!userSnap.exists()) {
-                body.innerHTML = "<tr><td colspan='3' style='color:red; text-align:center;'>यह मोबाइल नंबर पंजीकृत नहीं है!</td></tr>";
-                document.getElementById('trackerInfo').innerText = "यूज़र रिकॉर्ड नहीं मिला";
-                return;
-            }
-
-            const userData = userSnap.data();
-            document.getElementById('trackerInfo').innerText = `यूजर नाम: ${userData.userName || 'N/A'} | कुल वॉलेट बैलेंस: ${userData.balance || 0} कॉइन्स`;
-
-            // अब उसके अंदर के 'used_keys' सब-कलेक्शन से डेटा लाएं
-            const keysSnap = await getDocs(collection(db, "users", searchMobile, "used_keys"));
-            body.innerHTML = "";
-
-            if(keysSnap.empty) {
-                body.innerHTML = "<tr><td colspan='3' style='text-align:center; color:orange;'>इस यूजर ने अभी तक कोई चाबी क्लेम नहीं की है।</td></tr>";
-                return;
-            }
-
-            keysSnap.forEach(k => {
-                const data = k.data();
-                const claimDate = data.claimedAt ? data.claimedAt.replace('T', ' ').substring(0, 19) : 'N/A';
-                body.innerHTML += `<tr><td><b>${data.key}</b></td><td style='color:var(--success); font-weight:600;'>+${data.amount} এसेट</td><td>${claimDate}</td></tr>`;
-            });
-
-        } catch (e) { alert("ट्रैकिंग एरर: " + e.message); }
+        const userSnap = await getDoc(doc(db, "users", searchMobile));
+        if(!userSnap.exists()) {
+            body.innerHTML = "<tr><td colspan='3' style='color:red;'>नंबर रजिस्टर्ड नहीं है।</td></tr>";
+            return;
+        }
+        document.getElementById('trackerInfo').innerText = `यूज़र: ${userSnap.data().userName || 'N/A'} | बैलेंस: ${userSnap.data().balance || 0}`;
+        
+        const keysSnap = await getDocs(collection(db, "users", searchMobile, "used_keys"));
+        body.innerHTML = "";
+        keysSnap.forEach(k => {
+            body.innerHTML += `<tr><td><b>${k.data().key}</b></td><td>+${k.data().amount}</td><td>${k.data().claimedAt ? k.data().claimedAt.substring(0,16).replace('T',' '):'-'}</td></tr>`;
+        });
     };
 
     async function loadHistory() {
@@ -276,9 +269,65 @@
         body.innerHTML = "";
         snap.forEach(d => {
             const a = d.data();
-            body.innerHTML += `<tr><td><b>${a.key}</b></td><td>${a.title || '<span style="color:red;">Pending Form...</span>'}</td><td>${a.value || 0}</td><td>${a.platform || '-'}</td></tr>`;
+            body.innerHTML += `<tr>
+                <td><b>${a.key}</b></td>
+                <td>${a.title || '<span style="color:red;">Pending Form...</span>'}</td>
+                <td>${a.value || 0} कॉइन</td>
+                <td>${a.platform || '-'}</td>
+                <td><button class="btn btn-action-sm" onclick="trackKeySpend('${a.key}')"><i class="fas fa-eye"></i> खर्च ट्रैक करें</button></td>
+            </tr>`;
         });
     }
+
+    // 🎯 REHLI SMART LOGIC: पूरे फायरबेस डेटाबेस से किसी एक चाबी का पूरा खर्च निकालना
+    window.trackKeySpend = async (keyNumber) => {
+        document.getElementById('activeStatKey').innerText = keyNumber;
+        const statsList = document.getElementById('keyStatsListBody');
+        statsList.innerHTML = "<tr><td colspan='3'>डेटाबेस खंगाला जा रहा है... कृपया रुकें।</td></tr>";
+        document.getElementById('keyStatsSection').classList.remove('hidden');
+
+        try {
+            // Firestore Collection Group Query का जादू जो सभी यूजर्स के 'used_keys' सब-कलेक्शन को एक साथ स्कैन करेगा
+            const usedKeysQuery = query(collectionGroup(db, "used_keys"), where("key", "==", keyNumber));
+            const querySnapshot = await getDocs(usedKeysQuery);
+
+            let totalUsers = 0;
+            let totalCoinsSpent = 0;
+            statsList.innerHTML = "";
+
+            if (querySnapshot.empty) {
+                statsList.innerHTML = "<tr><td colspan='3' style='color:orange; text-align:center;'>इस चाबी को अभी तक किसी भी यूजर ने क्लेम नहीं किया है।</td></tr>";
+                document.getElementById('statTotalUsers').innerText = "0";
+                document.getElementById('statTotalCoins').innerText = "0";
+                return;
+            }
+
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                totalUsers++;
+                totalCoinsSpent += (data.amount || 0);
+
+                // फायरबेस पाथ से यूजर का मोबाइल नंबर निकालना (users/NUMBER/used_keys/KEY)
+                const pathSegments = docSnap.ref.path.split('/');
+                const userMobileNumber = pathSegments[1]; 
+
+                const claimTime = data.claimedAt ? data.claimedAt.substring(0, 19).replace('T', ' ') : 'N/A';
+
+                statsList.innerHTML += `<tr>
+                    <td><i class="fas fa-phone-alt" style="color:#888; font-size:12px;"></i> <b>${userMobileNumber}</b></td>
+                    <td style="color:var(--danger); font-weight:600;">${data.amount || 0} कॉइन खर्च</td>
+                    <td>${claimTime}</td>
+                </tr>`;
+            });
+
+            // काउंटर्स अपडेट करें
+            document.getElementById('statTotalUsers').innerText = totalUsers;
+            document.getElementById('statTotalCoins').innerText = totalCoinsSpent;
+
+        } catch (e) {
+            alert("क्वेरी एरर: " + e.message + "\nध्यान दें: इसके लिए आपको Firebase Console में एक इंडेक्स (Index) इनेबल करने का लिंक आ सकता है, उस पर क्लिक कर दें।");
+        }
+    };
 
     function checkSavedKeyStatus() {
         const savedKey = localStorage.getItem('pendingAdminKey');
@@ -287,14 +336,13 @@
             document.getElementById('keyDisplay').innerText = genKey;
             document.getElementById('keyArea').classList.remove('hidden');
             document.getElementById('genKeyBtn').disabled = true;
-            document.getElementById('genKeyBtn').innerText = "पुरानी चाबी लॉक है (रीफ्रेश प्रूफ)";
+            document.getElementById('genKeyBtn').innerText = "पुरानी चाबी लॉक है";
         }
     }
 
     window.generateUniqueKey = async () => {
-        if (localStorage.getItem('pendingAdminKey')) return alert("पहले पेंडिंग चाबी का फॉर्म सबमिट करें!");
-        const btn = document.getElementById('genKeyBtn');
-        btn.disabled = true;
+        if (localStorage.getItem('pendingAdminKey')) return alert("पहले पेंडिंग चाबी सबमिट करें!");
+        const btn = document.getElementById('genKeyBtn'); btn.disabled = true;
         let isUnique = false, testKey = "";
         while (!isUnique) {
             testKey = Math.floor(10000 + Math.random() * 90000).toString();
@@ -304,8 +352,7 @@
         genKey = testKey;
         await setDoc(doc(db, "assets", genKey), { key: genKey, status: "pending_fields", timestamp: new Date().toISOString() });
         localStorage.setItem('pendingAdminKey', genKey);
-        document.getElementById('keyDisplay').innerText = genKey;
-        document.getElementById('keyArea').classList.remove('hidden');
+        document.getElementById('keyDisplay').innerText = genKey; document.getElementById('keyArea').classList.remove('hidden');
         btn.innerText = "चाबी डेटाबेस में लॉक हुई";
     };
 
@@ -319,7 +366,7 @@
             title: title, link: url, value: Number(val), platform: document.getElementById('platform').value, status: "active", timestamp: new Date().toISOString()
         }, { merge: true });
 
-        alert("डेटा चाबी " + genKey + " के साथ मर्ज हुआ।");
+        alert("सुरक्षित हुआ!");
         localStorage.removeItem('pendingAdminKey');
         document.getElementById('videoTitle').value = ""; document.getElementById('videoLink').value = ""; document.getElementById('assetValue').value = "";
         document.getElementById('keyArea').classList.add('hidden');
