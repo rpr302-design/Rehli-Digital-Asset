@@ -6,6 +6,7 @@
     <title>दुकानदार पोर्टल - रहली डिजिटल एसेट</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="merchant.css">
 </head>
 <body>
@@ -15,7 +16,7 @@
         <h2 id="authTitle">दुकानदार लॉगिन (Merchant Login)</h2>
         
         <div id="loginForm">
-            <input type="number" id="loginMobile" placeholder="मोबाइल नंबर (10 Digits)">
+            <input type="tel" id="loginMobile" placeholder="मोबाइल नंबर (10 Digits)" maxlength="10">
             <input type="password" id="loginPass" placeholder="पासवर्ड (Password)">
             <button class="btn-main" onclick="merchantLogin()">लॉगिन करें (Sign In)</button>
             <p onclick="toggleAuth(true)" class="toggle-text">नया दुकानदार? यहाँ रजिस्ट्रेशन करें</p>
@@ -24,7 +25,7 @@
         <div id="registerForm" class="hidden">
             <input type="text" id="regShopName" placeholder="दुकान का नाम (Shop Name)">
             <input type="text" id="regAddress" placeholder="दुकान का पता (Address)">
-            <input type="number" id="regMobile" placeholder="मोबाइल नंबर (10 Digits)">
+            <input type="tel" id="regMobile" placeholder="मोबाइल नंबर (10 Digits)" maxlength="10">
             <input type="email" id="regEmail" placeholder="ईमेल आईडी (Email)">
             <input type="password" id="regPass" placeholder="सुरक्षित पासवर्ड बनाएं">
             <button class="btn-main" style="background:#2ecc71;" onclick="merchantRegister()">अकाउंट बनाएं (Register)</button>
@@ -60,7 +61,7 @@
             </div>
         </div>
         
-        <label style="margin-top:10px; display:block;">न्यूनतम बिल राशि (Min Purchase Bill Amount ₹)</label>
+        <label style="margin-top:10px; display:block; font-size: 12px; font-weight: 600;">न्यूनतम बिल राशि (Min Purchase Bill Amount ₹)</label>
         <input type="number" id="setMinBill" value="100" placeholder="उदा. ₹100 की खरीदारी पर ही एसेट मान्य">
         
         <button class="btn-main" style="padding:10px; font-size:13px; margin-top:10px; background:#4e54c8;" onclick="saveMerchantRules()">रूल्स अपडेट करें (Save Rules)</button>
@@ -88,6 +89,8 @@
 
     <button class="btn-main" style="background:#e74c3c; width:90%; margin: 20px auto; display:block;" onclick="merchantLogout()">पोर्टल से बाहर निकलें (Logout)</button>
 </div>
+
+<script type="module" src="merchant.js"></script>
 
 </body>
 </html>
