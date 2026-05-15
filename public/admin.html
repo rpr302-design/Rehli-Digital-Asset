@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो एडमिन v2.2</title>
+    <title>रहली डिजिटल एसेट - प्रो एडमिन v2.3</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -37,13 +37,13 @@
         .stat-card:hover { transform: translateY(-5px); }
         .stat-icon { font-size: 45px; margin-right: 20px; opacity: 0.8; }
 
-        /* Tables & Lists */
+        /* Tables & Cards */
         .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); margin-bottom: 20px; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
         th { color: #888; font-weight: 600; }
 
-        /* Login Wrapper */
+        /* Login */
         #loginWrapper { position: fixed; top:0; left:0; width: 100%; height: 100%; background: #2c3e50; display: flex; align-items: center; justify-content: center; z-index: 2000; }
         .login-box { background: white; padding: 40px; border-radius: 30px; width: 100%; max-width: 350px; text-align: center; }
 
@@ -98,7 +98,7 @@
 
                 <div id="tab-entry" class="hidden">
                     <div class="card" style="max-width: 500px; margin: auto;">
-                        <h3>✨ नया रिवॉर्ड जनरेट करें</h3>
+                        <h3>✨ नया एसेट रिवॉर्ड बनाएँ</h3>
                         
                         <label>प्लेटफार्म</label>
                         <select id="platform">
@@ -119,9 +119,9 @@
                         <button class="btn btn-primary" id="genKeyBtn" style="margin-top:20px; background:#6c5ce7;" onclick="generateUniqueKey()">चाबी जनरेट करें</button>
                         
                         <div id="keyArea" class="hidden" style="margin-top: 20px; padding: 15px; border: 2px dashed #3498db; text-align: center; border-radius: 10px;">
-                            <span style="font-size: 12px; color: #888;">आपकी सुरक्षित लॉक की गई चाबी:</span>
+                            <span style="font-size: 12px; color: #888;">आपकी सुरक्षित (Locked) चाबी:</span>
                             <div id="keyDisplay" style="font-size: 30px; font-weight: bold; color: #2c3e50; letter-spacing: 5px; margin: 10px 0;">00000</div>
-                            <p style="font-size: 11px; color: #e74c3c; margin: 0 0 10px 0;"><i class="fas fa-lock"></i> डेटा सुरक्षित होने तक यह चाबी बदली नहीं जा सकती।</p>
+                            <p style="font-size: 11px; color: #e74c3c; margin: 0 0 10px 0;"><i class="fas fa-database"></i> यह चाबी डेटाबेस में रिजर्व हो चुकी है। फॉर्म भरने के बाद ही लॉक खुलेगा।</p>
                             <button id="saveBtn" class="btn btn-primary" style="background: var(--success);" onclick="submitData()">फायरबेस में सुरक्षित करें</button>
                         </div>
                     </div>
@@ -173,7 +173,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     let genKey = "";
-    let isKeyLocked = false; // चाबी लॉक ट्रैकर
 
     window.login = async () => {
         try {
@@ -186,6 +185,7 @@
             document.getElementById('loginWrapper').classList.add('hidden');
             document.getElementById('adminPanel').style.display = 'flex';
             loadDashboard();
+            checkSavedKeyStatus(); // पेज रीफ्रेश होने पर पुरानी अधूरी चाबी चेक करें
         } else {
             document.getElementById('loginWrapper').classList.remove('hidden');
             document.getElementById('adminPanel').style.display = 'none';
@@ -226,27 +226,40 @@
         body.innerHTML = "";
         snap.forEach(d => {
             const a = d.data();
-            body.innerHTML += `<tr><td><b>${a.key}</b></td><td>${a.title}</td><td>${a.value}</td><td>${a.platform}</td></tr>`;
+            // अधूरी चाबियों को लिस्ट में 'Pending Setup' दिखाएगा
+            body.innerHTML += `<tr><td><b>${a.key}</b></td><td>${a.title || '<span style="color:red;">Pending Form Fill...</span>'}</td><td>${a.value || 0}</td><td>${a.platform || '-'}</td></tr>`;
         });
     }
 
-    // 🔑 डेटाबेस से चेक करके यूनिक चाबी जनरेट करने का लॉजिक
+    // 🔒 पेज लोड/रीफ्रेश पर लोकल स्टोरेज की जाँच
+    function checkSavedKeyStatus() {
+        const savedKey = localStorage.getItem('pendingAdminKey');
+        if (savedKey) {
+            genKey = savedKey;
+            document.getElementById('keyDisplay').innerText = genKey;
+            document.getElementById('keyArea').classList.remove('hidden');
+            
+            const btn = document.getElementById('genKeyBtn');
+            btn.disabled = true;
+            btn.innerText = "पुरानी चाबी लॉक है (रीफ्रेश प्रूफ)";
+        }
+    }
+
+    // 🔑 बटन दबाते ही तुरंत फायरबेस में डॉक्यूमेंट रिजर्व करने का लॉजिक
     window.generateUniqueKey = async () => {
-        // सुरक्षा लॉक: यदि चाबी पहले से जनरेटेड है और डेटा सेव नहीं हुआ है, तो बदलने से रोकें
-        if (isKeyLocked) {
-            alert("सुरक्षा नियम: वर्तमान चाबी लॉक है! पहले नीचे दी गई चाबी का डेटा फायरबेस में सेव करें।");
+        if (localStorage.getItem('pendingAdminKey')) {
+            alert("सुरक्षा अलर्ट: एक चाबी पहले से जनरेटेड है। कृपया पहले उसका फॉर्म भरकर सबमिट करें!");
             return;
         }
 
         const btn = document.getElementById('genKeyBtn');
         btn.disabled = true;
-        btn.innerText = "यूनिक चाबी खोजी जा रही है...";
+        btn.innerText = "चेक और रिजर्व किया जा रहा है...";
 
         let isUnique = false;
         let testKey = "";
 
         try {
-            // लूप तब तक चलेगा जब तक डेटाबेस में पूर्णतः अनुपलब्ध चाबी न मिल जाए
             while (!isUnique) {
                 testKey = Math.floor(10000 + Math.random() * 90000).toString();
                 const snap = await getDoc(doc(db, "assets", testKey));
@@ -256,19 +269,28 @@
             }
 
             genKey = testKey;
-            isKeyLocked = true; // चाबी को लॉक स्टेट में डालें
+
+            // [💥 महत्वपूर्ण सुधार]: डेटाबेस में तुरंत खाली (प्रारंभिक) डॉक्यूमेंट बनाना
+            await setDoc(doc(db, "assets", genKey), {
+                key: genKey,
+                status: "pending_fields",
+                timestamp: new Date().toISOString()
+            });
+
+            // लोकल स्टोरेज में भी रखें ताकि रीफ्रेश होने पर याद रहे
+            localStorage.setItem('pendingAdminKey', genKey);
 
             document.getElementById('keyDisplay').innerText = genKey;
             document.getElementById('keyArea').classList.remove('hidden');
-            btn.innerText = "चाबी सफलतापूर्वक लॉक हुई";
+            btn.innerText = "चाबी डेटाबेस में लॉक हुई";
         } catch (e) {
-            alert("चाबी जनरेट करने में एरर आया: " + e.message);
+            alert("त्रुटि: " + e.message);
             btn.disabled = false;
             btn.innerText = "चाबी जनरेट करें";
         }
     };
 
-    // 💾 पूरा फॉर्म डेटा फायरबेस में सेव करने का लॉजिक
+    // 💾 बाद में बची हुई फील्ड्स को अपडेट/मर्ज करने का लॉजिक
     window.submitData = async () => {
         const title = document.getElementById('videoTitle').value.trim();
         const url = document.getElementById('videoLink').value.trim();
@@ -276,38 +298,37 @@
         const platform = document.getElementById('platform').value;
 
         if (!title || !url || !val) {
-            alert("कृपया सभी आवश्यक फील्ड (शीर्षक, लिंक और वैल्यू) भरें!");
+            alert("कृपया सभी फील्ड (शीर्षक, लिंक और वैल्यू) भरें!");
             return;
         }
 
         try {
-            // फायरबेस के 'assets' कलेक्शन में डेटा सेव करना
+            // { merge: true } के साथ बची हुई फील्ड्स को सुरक्षित करना
             await setDoc(doc(db, "assets", genKey), {
-                key: genKey,
                 title: title,
                 link: url,
                 value: Number(val),
                 platform: platform,
+                status: "active",
                 timestamp: new Date().toISOString()
-            });
+            }, { merge: true });
 
-            alert("डेटा सफलतापूर्वक सेव हुआ! चाबी: " + genKey + " अब एक्टिव है।");
+            alert("शानदार! पूरा डेटा चाबी " + genKey + " के साथ सुरक्षित रूप से मर्ज हो गया है।");
             
-            // फॉर्म इनपुट साफ करना और लॉक खोलना
+            // क्लियर करें और लॉक खोलें
+            localStorage.removeItem('pendingAdminKey');
             document.getElementById('videoTitle').value = "";
             document.getElementById('videoLink').value = "";
             document.getElementById('assetValue').value = "";
             document.getElementById('keyArea').classList.add('hidden');
             
-            // चाबी का लॉक खोलें ताकि अगली चाबी जनरेट हो सके
-            isKeyLocked = false; 
             const btn = document.getElementById('genKeyBtn');
             btn.disabled = false;
             btn.innerText = "चाबी जनरेट करें";
 
             showTab('dashboard');
         } catch (e) {
-            alert("फायरबेस में डेटा सुरक्षित करने में त्रुटि: " + e.message);
+            alert("डेटा अपडेट फेल: " + e.message);
         }
     };
 
