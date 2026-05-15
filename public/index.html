@@ -8,8 +8,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
+
+<div id="customAlert" class="alert-overlay hidden-screen">
+    <div class="alert-card">
+        <div id="alertIcon">🎁</div>
+        <h3 id="alertTitle">Status</h3>
+        <p id="alertMsg">Message...</p>
+        <button class="btn-alert-close" onclick="closeAlert()">ठीक है (OK)</button>
+    </div>
+</div>
+
+<div id="paymentModal" class="modal-overlay hidden-screen">
+    <div class="modal-box">
+        <div class="close-btn" onclick="closePaymentModal()">×</div>
+        <h3><i class="fa-solid fa-paper-plane" style="color:#4e54c8;"></i> दुकानों पर भुनाएं (Pay Shop)</h3>
+        <p style="font-size: 11px; color:#666;">दुकान का QR स्कैन करें या नंबर डालकर सीधे एसेट ट्रांसफर करें।</p>
+        
+        <div id="qrReaderContainer" class="hidden-screen">
+            <div id="qrReader"></div>
+            <button class="btn-action" style="background:#e74c3c; padding:8px; margin-top:5px; font-size:12px;" onclick="stopQRScanner()">कैमरा बंद करें</button>
+        </div>
+
+        <button class="btn-action" id="btnStartScan" style="background:#27ae60; margin-bottom:10px;" onclick="startQRScanner()">
+            <i class="fa-solid fa-camera"></i> क्यूआर कोड स्कैन करें (Scan QR)
+        </button>
+
+        <div style="font-weight: 600; color:#888; font-size:12px; margin: 10px 0;">या (OR) नंबर डालें</div>
+
+        <input type="number" id="payMerchantMobile" placeholder="दुकानदार का मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+        <input type="number" id="payAmount" placeholder="कितने एसेट्स भेजने हैं? (Amount)">
+        <input type="number" id="payBillAmount" placeholder="आपकी कुल खरीदारी बिल राशि (₹)">
+        
+        <button class="btn-action" style="background: linear-gradient(135deg, #4e54c8, #8f94fb); margin-top:15px;" onclick="processPayment()">
+            सुरक्षित ट्रांसफर करें (Send Assets)
+        </button>
+    </div>
+</div>
 
 <div id="authContainer" class="hidden-screen">
     <div class="container">
@@ -24,9 +62,7 @@
         <div id="rewardSection">
             <div class="coin-display shiny" id="winAmount">0</div>
             <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">GOLD ASSETS WON!</p>
-            
             <img src="https://lh3.googleusercontent.com/d/1rrk784suDVgSiUS8F1GA6HqZgeWia2qT" class="safe-img" alt="Vault">
-            
             <button class="btn-action" id="claimBtn" onclick="showMobileInput()" style="background: linear-gradient(to right, #11998e, #38ef7d);">सिक्के खाते में जोड़ें (Add to Account)</button>
 
             <div id="mobileBox">
@@ -61,29 +97,39 @@
             <i class="fa-solid fa-circle-check" style="color: #27ae60; font-size: 24px;"></i>
         </div>
 
+        <div class="section hidden-screen" id="promoVideoSection">
+            <div class="video-promo-box">
+                <div class="v-badge">NEW VIDEO 🔴</div>
+                <h4 id="lblPromoTitle" style="margin: 8px 0 2px 0; font-size: 14px; color:#333;">लेटेस्ट वीडियो देखें और चाबी कमाएं</h4>
+                <p style="font-size:11px; color:#666; margin:0 0 10px 0;">इस वीडियो के अंदर छुपा 5 अंकों का कोड आपको कॉइन दिलाएगा।</p>
+                <a id="btnPromoLink" href="#" target="_blank" class="btn-watch"><i class="fa-brands fa-youtube"></i> वीडियो देखें (Watch Now)</a>
+            </div>
+        </div>
+
         <div class="section">
             <div class="earn-box">
-                <h3 style="margin-top:0; font-size: 15px;"><i class="fa-solid fa-key" style="color:#4e54c8"></i> नए वीडियो की चाबी से कॉइन जोड़ें</h3>
-                <p style="font-size: 11px; color:#888; margin-top:-5px;">यहाँ चाबी डालकर अपने पुराने अकाउंट में और सिक्के इकट्ठा करें</p>
+                <h3 style="margin-top:0; font-size: 14px;"><i class="fa-solid fa-key" style="color:#4e54c8"></i> नए वीडियो की चाबी से कॉइन जोड़ें</h3>
                 <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-                <button class="btn-action" style="padding: 12px;" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
+                <button class="btn-action" style="padding: 12px; font-size:14px;" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
             </div>
         </div>
 
         <nav class="nav-bar">
             <a href="index.html" class="nav-link active"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
+            
+            <div class="nav-pay-center" onclick="openPaymentModal()">
+                <div class="pay-circle">
+                    <i class="fa-solid fa-qrcode"></i>
+                </div>
+                <span style="font-size:10px; font-weight:600; color:#4e54c8; display:block; margin-top:2px;">पे (Pay)</span>
+            </div>
+            
             <a href="mystery-box.html" class="nav-link"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
             <a href="profile-setup.html" class="nav-link"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
-            <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
         </nav>
     </div>
 </div>
 
-<audio id="winSound">
-    <source src="https://docs.google.com/uc?export=download&id=1IG486iet9kCnOR3aWcV1rSsS6XTyckhX" type="audio/mpeg">
-</audio>
-
 <script type="module" src="app.js"></script>
-
 </body>
 </html>
