@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो एडमिन v2.1</title>
+    <title>रहली डिजिटल एसेट - प्रो एडमिन v2.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -42,7 +42,6 @@
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
         th { color: #888; font-weight: 600; }
-        .badge { padding: 5px 10px; border-radius: 8px; font-size: 11px; color: white; }
 
         /* Login Wrapper */
         #loginWrapper { position: fixed; top:0; left:0; width: 100%; height: 100%; background: #2c3e50; display: flex; align-items: center; justify-content: center; z-index: 2000; }
@@ -50,8 +49,6 @@
 
         .btn { border: none; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s; font-size: 14px; }
         .btn-primary { background: var(--accent); color: white; width: 100%; }
-        .btn-sm { padding: 5px 10px; font-size: 12px; }
-        .btn-danger { background: var(--danger); color: white; }
 
         input, select { width: 100%; padding: 12px; margin-top: 8px; border: 1.5px solid #eee; border-radius: 10px; box-sizing: border-box; }
         .hidden { display: none !important; }
@@ -86,7 +83,6 @@
             </div>
 
             <div class="main-content">
-                <!-- Dashboard Tab -->
                 <div id="tab-dashboard">
                     <div class="stats-grid">
                         <div class="stat-card">
@@ -100,32 +96,37 @@
                     </div>
                 </div>
 
-                <!-- Asset Entry Tab -->
                 <div id="tab-entry" class="hidden">
                     <div class="card" style="max-width: 500px; margin: auto;">
                         <h3>✨ नया रिवॉर्ड जनरेट करें</h3>
+                        
                         <label>प्लेटफार्म</label>
                         <select id="platform">
-                            <option value="YouTube">YouTube</option>
-                            <option value="Facebook">Facebook</option>
+                            <option value="YouTube">YouTube Video</option>
+                            <option value="Facebook">Facebook Post</option>
                             <option value="Other">Other</option>
                         </select>
-                        <label>टाइटल</label>
-                        <input type="text" id="videoTitle" placeholder="Video Title">
+                        
+                        <label>वीडियो / एसेट का शीर्षक (Title)</label>
+                        <input type="text" id="videoTitle" placeholder="उदा. New Technical Video 2026">
+                        
+                        <label>वीडियो लिंक (URL)</label>
+                        <input type="url" id="videoLink" placeholder="https://youtube.com/watch?v=...">
+
                         <label>कॉइन वैल्यू (Value)</label>
                         <input type="number" id="assetValue" placeholder="उदा. 100">
                         
-                        <button class="btn btn-primary" style="margin-top:20px; background:#6c5ce7;" onclick="generateUniqueKey()">चाबी जनरेट करें</button>
+                        <button class="btn btn-primary" id="genKeyBtn" style="margin-top:20px; background:#6c5ce7;" onclick="generateUniqueKey()">चाबी जनरेट करें</button>
                         
                         <div id="keyArea" class="hidden" style="margin-top: 20px; padding: 15px; border: 2px dashed #3498db; text-align: center; border-radius: 10px;">
-                            <span style="font-size: 12px; color: #888;">सुरक्षित चाबी:</span>
-                            <div id="keyDisplay" style="font-size: 30px; font-weight: bold; color: #2c3e50; letter-spacing: 5px;">00000</div>
-                            <button id="saveBtn" class="btn btn-primary" style="background: var(--success); margin-top: 10px;" onclick="submitData()">फायरबेस में सेव करें</button>
+                            <span style="font-size: 12px; color: #888;">आपकी सुरक्षित लॉक की गई चाबी:</span>
+                            <div id="keyDisplay" style="font-size: 30px; font-weight: bold; color: #2c3e50; letter-spacing: 5px; margin: 10px 0;">00000</div>
+                            <p style="font-size: 11px; color: #e74c3c; margin: 0 0 10px 0;"><i class="fas fa-lock"></i> डेटा सुरक्षित होने तक यह चाबी बदली नहीं जा सकती।</p>
+                            <button id="saveBtn" class="btn btn-primary" style="background: var(--success);" onclick="submitData()">फायरबेस में सुरक्षित करें</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Users List Tab -->
                 <div id="tab-users" class="hidden">
                     <div class="card">
                         <h3>👥 पंजीकृत यूजर लिस्ट</h3>
@@ -138,7 +139,6 @@
                     </div>
                 </div>
 
-                <!-- History Tab -->
                 <div id="tab-history" class="hidden">
                     <div class="card">
                         <h3>🔑 जारी की गई चाबियाँ</h3>
@@ -173,6 +173,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     let genKey = "";
+    let isKeyLocked = false; // चाबी लॉक ट्रैकर
 
     window.login = async () => {
         try {
@@ -229,22 +230,85 @@
         });
     }
 
+    // 🔑 डेटाबेस से चेक करके यूनिक चाबी जनरेट करने का लॉजिक
     window.generateUniqueKey = async () => {
-        genKey = Math.floor(10000 + Math.random() * 90000).toString();
-        document.getElementById('keyDisplay').innerText = genKey;
-        document.getElementById('keyArea').classList.remove('hidden');
+        // सुरक्षा लॉक: यदि चाबी पहले से जनरेटेड है और डेटा सेव नहीं हुआ है, तो बदलने से रोकें
+        if (isKeyLocked) {
+            alert("सुरक्षा नियम: वर्तमान चाबी लॉक है! पहले नीचे दी गई चाबी का डेटा फायरबेस में सेव करें।");
+            return;
+        }
+
+        const btn = document.getElementById('genKeyBtn');
+        btn.disabled = true;
+        btn.innerText = "यूनिक चाबी खोजी जा रही है...";
+
+        let isUnique = false;
+        let testKey = "";
+
+        try {
+            // लूप तब तक चलेगा जब तक डेटाबेस में पूर्णतः अनुपलब्ध चाबी न मिल जाए
+            while (!isUnique) {
+                testKey = Math.floor(10000 + Math.random() * 90000).toString();
+                const snap = await getDoc(doc(db, "assets", testKey));
+                if (!snap.exists()) {
+                    isUnique = true;
+                }
+            }
+
+            genKey = testKey;
+            isKeyLocked = true; // चाबी को लॉक स्टेट में डालें
+
+            document.getElementById('keyDisplay').innerText = genKey;
+            document.getElementById('keyArea').classList.remove('hidden');
+            btn.innerText = "चाबी सफलतापूर्वक लॉक हुई";
+        } catch (e) {
+            alert("चाबी जनरेट करने में एरर आया: " + e.message);
+            btn.disabled = false;
+            btn.innerText = "चाबी जनरेट करें";
+        }
     };
 
+    // 💾 पूरा फॉर्म डेटा फायरबेस में सेव करने का लॉजिक
     window.submitData = async () => {
-        const title = document.getElementById('videoTitle').value;
+        const title = document.getElementById('videoTitle').value.trim();
+        const url = document.getElementById('videoLink').value.trim();
         const val = document.getElementById('assetValue').value;
-        if(!title || !val) return alert("भरें!");
-        
-        await setDoc(doc(db, "assets", genKey), {
-            key: genKey, title, value: Number(val), platform: document.getElementById('platform').value, timestamp: new Date().toISOString()
-        });
-        alert("सफलतापूर्वक सेव हुआ!");
-        showTab('dashboard');
+        const platform = document.getElementById('platform').value;
+
+        if (!title || !url || !val) {
+            alert("कृपया सभी आवश्यक फील्ड (शीर्षक, लिंक और वैल्यू) भरें!");
+            return;
+        }
+
+        try {
+            // फायरबेस के 'assets' कलेक्शन में डेटा सेव करना
+            await setDoc(doc(db, "assets", genKey), {
+                key: genKey,
+                title: title,
+                link: url,
+                value: Number(val),
+                platform: platform,
+                timestamp: new Date().toISOString()
+            });
+
+            alert("डेटा सफलतापूर्वक सेव हुआ! चाबी: " + genKey + " अब एक्टिव है।");
+            
+            // फॉर्म इनपुट साफ करना और लॉक खोलना
+            document.getElementById('videoTitle').value = "";
+            document.getElementById('videoLink').value = "";
+            document.getElementById('assetValue').value = "";
+            document.getElementById('keyArea').classList.add('hidden');
+            
+            // चाबी का लॉक खोलें ताकि अगली चाबी जनरेट हो सके
+            isKeyLocked = false; 
+            const btn = document.getElementById('genKeyBtn');
+            btn.disabled = false;
+            btn.innerText = "चाबी जनरेट करें";
+
+            showTab('dashboard');
+        } catch (e) {
+            alert("फायरबेस में डेटा सुरक्षित करने में त्रुटि: " + e.message);
+        }
     };
 
     window.logout = () => signOut(auth);
