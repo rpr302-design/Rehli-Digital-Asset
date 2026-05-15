@@ -29,7 +29,7 @@ window.toggleAuth = (showRegister) => {
     document.getElementById('authTitle').innerText = showRegister ? "नया दुकानदार रजिस्ट्रेशन" : "दुकानदार लॉगिन (Merchant Login)";
 };
 
-// 🏪 दुकानदार रजिस्ट्रेशन लॉजिक (फिक्स्ड और टेस्टेड)
+// 🏪 दुकानदार रजिस्ट्रेशन लॉजिक
 window.merchantRegister = async () => {
     const name = document.getElementById('regShopName').value.trim();
     const address = document.getElementById('regAddress').value.trim();
@@ -70,17 +70,9 @@ window.merchantRegister = async () => {
         });
 
         alert("बधाई हो! दुकानदार रजिस्ट्रेशन सफल रहा। ✅\nअब आप लॉगिन कर सकते हैं।");
-        
         window.toggleAuth(false);
-        
-        document.getElementById('regShopName').value = "";
-        document.getElementById('regAddress').value = "";
-        document.getElementById('regMobile').value = "";
-        document.getElementById('regEmail').value = "";
-        document.getElementById('regPass').value = "";
 
     } catch (e) { 
-        console.error("Registration Error: ", e);
         alert("रजिस्ट्रेशन फेल हुआ: " + e.message); 
     }
 };
@@ -104,13 +96,10 @@ window.merchantLogin = async () => {
         } else {
             alert("गलत मोबाइल नंबर या पासवर्ड!");
         }
-    } catch (e) { 
-        console.error("Login Error: ", e);
-        alert("लॉगिन एरर!"); 
-    }
+    } catch (e) { alert("लॉगिन एरर!"); }
 };
 
-// 📊 डैशबोर्ड लोड करना (window स्कोप फिक्स)
+// 📊 डैशबोर्ड लोड करना (QR कोड फिक्स के साथ)
 window.showDashboard = async () => {
     document.getElementById('merchantAuthSection').classList.add('hidden');
     document.getElementById('merchantDashboard').classList.remove('hidden');
@@ -123,21 +112,25 @@ window.showDashboard = async () => {
             document.getElementById('lblMerchantPhone').innerText = "Shop ID: +91 " + data.mobile;
             document.getElementById('lblMerchantBalance').innerText = data.balance || 0;
             
+            // क्यूआर कार्ड के नीचे दुकान की जानकारी अपडेट करें
+            document.getElementById('qrShopNameLabel').innerText = data.shopName;
+            document.getElementById('qrShopPhoneLabel').innerText = "Shop ID: +91 " + data.mobile;
+
             document.getElementById('setPerTxnLimit').value = data.perTxnLimit || 5000;
             document.getElementById('setMonthlyLimit').value = data.monthlyLimit || 20000;
             document.getElementById('setMinBill').value = data.minBillAmount || 100;
 
-            // 🔲 डायनामिक क्यूआर कोड जनरेशन
-            const qrUrl = `https://chart.googleapis.com/chart?chs=160x160&cht=qr&chl=${encodeURIComponent("REHLI-PAY:" + data.mobile)}&choe=UTF-8`;
+            // 🔲 न्यू फिक्स्ड क्यूआर कोड लिंक (ताकि इमेज 100% लोड हो)
+            const qrPayload = "REHLI-PAY:" + data.mobile;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(qrPayload)}`;
             document.getElementById('shopQrImg').src = qrUrl;
 
-            // ट्रांजैक्शन लोड करना
             await loadRecentTransactions();
         }
-    } catch (e) { console.error("Dashboard Load Error: ", e); }
+    } catch (e) { console.error(e); }
 };
 
-// 📋 हालिया 5 ट्रांजैक्शन लोड करने का सख्त नियम
+// 📋 सिर्फ हालिया 5 ट्रांजैक्शन लोड करना
 async function loadRecentTransactions() {
     const txBody = document.getElementById('merchantTxBody');
     try {
@@ -149,13 +142,9 @@ async function loadRecentTransactions() {
         );
         
         const snap = await getDocs(q);
-        if (snap.empty) {
-            txBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#999;">कोई लेनदेन नहीं मिला।</td></tr>`;
-            return;
-        }
+        if (snap.empty) return;
 
         txBody.innerHTML = "";
-        
         snap.forEach(docSnap => {
             const tx = docSnap.data();
             const dateStr = tx.timestamp ? tx.timestamp.substring(0,10) : '-';
@@ -165,21 +154,59 @@ async function loadRecentTransactions() {
                 <td>${dateStr}</td>
             </tr>`;
         });
-    } catch (e) { 
-        console.error("Tx Load Error:", e); 
-    }
+    } catch (e) { console.error(e); }
 }
+
+// 📲 1. क्यूआर कोड व्हाट्सएप/अन्य ऐप्स पर शेयर करने का फीचर
+window.shareShopQR = async () => {
+    const shopName = document.getElementById('lblShopName').innerText;
+    const qrImgSrc = document.getElementById('shopQrImg').src;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: shopName + ' - QR कोड',
+                text: `रहलीजिटल एसेट पेमेंट के लिए *${shopName}* का QR कोड। इस लिंक से सीधे स्कैन करें:`,
+                url: qrImgSrc
+            });
+        } catch (err) {
+            console.log("Sharing failed or cancelled");
+        }
+    } else {
+        // अगर ब्राउज़र शेयर एपीआई सपोर्ट नहीं करता तो क्लिपबोर्ड पर लिंक कॉपी हो जाएगी
+        navigator.clipboard.writeText(qrImgSrc);
+        alert("QR कोड का लिंक कॉपी कर लिया गया है! आप इसे कहीं भी पेस्ट करके शेयर कर सकते हैं।");
+    }
+};
+
+// 💾 2. क्यूआर कोड को PDF के रूप में सेव/प्रिंट करने का डिजिटल फीचर
+window.downloadQRAsPDF = () => {
+    const printContents = document.getElementById('qrPrintArea').innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    // एक नया अस्थायी प्रिंट विंडो ढांचा तैयार करना
+    document.body.innerHTML = `
+        <div style="text-align:center; padding:50px; font-family:'Poppins', sans-serif;">
+            <h2 style="color:#2c3e50; margin-bottom:5px;">रहली डिजिटल एसेट पेमेंट</h2>
+            <p style="font-size:12px; color:#666; margin-top:0; margin-bottom:30px;">स्थानीय डिजिटल करेंसी नेटवर्क</p>
+            ${printContents}
+            <p style="margin-top:40px; font-size:11px; color:#999;">ग्राहक इस कोड को अपने एसेट ऐप से स्कैन करके भुगतान करें</p>
+        </div>
+    `;
+
+    // ब्राउज़र का प्रिंट डायलॉग खोलना (यहाँ से यूजर 'Save as PDF' चुन सकता है)
+    window.print();
+
+    // प्रिंट होने के बाद मूल डैशबोर्ड स्क्रीन वापस लाना
+    document.body.innerHTML = originalContents;
+    location.reload(); // पेज रिफ्रेश करके स्टेट रीस्टोर करना
+};
 
 // ⚙️ बिजनेस रूल्स/लिमिट सेव करना
 window.saveMerchantRules = async () => {
     const perTxn = document.getElementById('setPerTxnLimit').value;
     const monthly = document.getElementById('setMonthlyLimit').value;
     const minBill = document.getElementById('setMinBill').value;
-
-    if (!perTxn || !monthly || !minBill) {
-        alert("कृपया सभी लिमिट फील्ड भरें!");
-        return;
-    }
 
     try {
         await setDoc(doc(db, "merchants", currentMerchantMobile), {
@@ -190,12 +217,9 @@ window.saveMerchantRules = async () => {
 
         alert("व्यापार नियम सफलतापूर्वक अपडेट हो गए हैं! ✅");
         location.reload();
-    } catch (e) { 
-        alert("सेव करने में एरर आया!"); 
-    }
+    } catch (e) { alert("सेव एरर!"); }
 };
 
-// दुकानदार लॉगआउट
 window.merchantLogout = () => {
     localStorage.removeItem('merchantMobile');
     location.reload();
