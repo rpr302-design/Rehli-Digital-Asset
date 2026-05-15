@@ -14,55 +14,64 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const mobile = localStorage.getItem('userMobile');
-if (!mobile) window.location.href = "index.html"; // सुरक्षा: बिना नंबर के बाहर निकालें
+if (!mobile) window.location.href = "index.html";
 
 let userBalance = 0;
 let currentBoxType = null;
 let currentDigits = 0;
 let currentReward = 0;
 
-// आज की तारीख प्राप्त करें (उदा. "2026-05-15")
 const todayDate = new Date().toISOString().substring(0, 10);
 
-// पेज लोड होते ही डेटा सिंक करना
 window.addEventListener('DOMContentLoaded', async () => {
+    // 🎯 इनपुट की लिमिट को रीयल-टाइम में रोकने के लिए इवेंट लिस्नर लगाना
+    document.getElementById('pinInput').addEventListener('input', function() {
+        if (this.value.length > currentDigits) {
+            this.value = this.value.slice(0, currentDigits);
+        }
+    });
     await syncUserStats();
 });
 
 async function syncUserStats() {
     try {
-        // 1. बैलेंस और मोबाइल लोड करें
         const userSnap = await getDoc(doc(db, "users", mobile));
         if (userSnap.exists()) {
             userBalance = userSnap.data().balance || 0;
-            document.getElementById('userPhoneDisplay').innerText = "मोबाइल: +91 " + mobile;
+            document.getElementById('userPhoneDisplay').innerText = "Mobile: +91 " + mobile;
             document.getElementById('userBalanceDisplay').innerText = userBalance;
         }
 
-        // 2. आज की डेली लिमिट लोड करें
         const limitSnap = await getDoc(doc(db, "users", mobile, "mystery_limit", todayDate));
-        let usedAttempts = 0;
-        if (limitSnap.exists()) {
-            usedAttempts = limitSnap.data().count || 0;
-        }
-        document.getElementById('remainingAttempts').innerText = 10 - usedAttempts;
-
-    } catch (e) { console.error("Sync Error:", e); }
+        let usedAttempts = limitSnap.exists() ? limitSnap.data().count || 0 : 0;
+        document.getElementById('remainingAttempts').innerText = 3 - usedAttempts;
+    } catch (e) { console.error(e); }
 }
 
-// मॉडल ओपन करना
+// 🔔 कस्टम अलर्ट डिस्प्ले फंक्शन
+window.showCustomAlert = (title, msg, iconType) => {
+    document.getElementById('alertTitle').innerText = title;
+    document.getElementById('alertMsg').innerText = msg;
+    document.getElementById('alertIcon').innerText = iconType === 'success' ? '🎉' : '❌';
+    document.getElementById('customAlert').classList.remove('hidden');
+};
+
+window.closeAlert = () => {
+    document.getElementById('customAlert').classList.add('hidden');
+};
+
 window.openPinModal = async (boxType, digits, reward) => {
-    // डेली लिमिट चेक करें
+    // 1. तुरंत लोकल स्टोरेज/फायरबेस से लिमिट चेक करें
     const limitSnap = await getDoc(doc(db, "users", mobile, "mystery_limit", todayDate));
     const usedAttempts = limitSnap.exists() ? limitSnap.data().count || 0 : 0;
-    if (usedAttempts >= 10) {
-        alert("🚨 आज की लिमिट समाप्त! आप एक दिन में केवल 10 बार ही मिस्ट्री बॉक्स खोल सकते हैं। कल दोबारा खेलें।");
+    
+    if (usedAttempts >= 3) {
+        showCustomAlert("Limit Exceeded! 🚨", "आप एक दिन में केवल 3 बार ही मिस्ट्री बॉक्स खोल सकते हैं। कल दोबारा ट्राई करें!", "error");
         return;
     }
 
-    // बैलेंस चेक करें
     if (userBalance < 1000) {
-        alert("❌ अपर्याप्त बैलेंस! मिस्ट्री बॉक्स खेलने के लिए कम से कम 1,000 एसेट्स होना जरूरी है।");
+        showCustomAlert("Low Balance! ❌", "मिस्ट्री बॉक्स खोलने के लिए मिनिमम 1,000 Assets होना जरूरी है।", "error");
         return;
     }
 
@@ -70,9 +79,11 @@ window.openPinModal = async (boxType, digits, reward) => {
     currentDigits = digits;
     currentReward = reward;
 
-    document.getElementById('pinInput').value = "";
-    document.getElementById('modalTitle').innerText = boxType === 3 ? "👑 महा जैकपॉट अनलॉक करें" : `🎁 बॉक्स ${boxType} अनलॉक करें`;
-    document.getElementById('pinInput').maxLength = digits;
+    const pinInp = document.getElementById('pinInput');
+    pinInp.value = "";
+    pinInp.placeholder = `${digits} Digit PIN`;
+    
+    document.getElementById('modalTitle').innerText = boxType === 3 ? "👑 Jackpot Box" : `🎁 Open Box ${boxType}`;
     document.getElementById('pinModal').classList.remove('hidden');
 };
 
@@ -80,72 +91,64 @@ window.closePinModal = () => {
     document.getElementById('pinModal').classList.add('hidden');
 };
 
-// 🔮 भाग्य आजमाने का मुख्य गेमप्ले लॉजिक
+// ⚡ पलक झपकते उत्तर देने वाला मुख्य अट्रैक्शन लॉजिक
 window.attemptUnlock = async () => {
     const userPinInput = document.getElementById('pinInput').value.trim();
     if (userPinInput.length !== currentDigits) {
-        alert(`कृपया पूरे ${currentDigits} अंकों का पिन दर्ज करें!`);
+        alert(`Please enter a full ${currentDigits} digit PIN!`);
         return;
     }
 
     closePinModal();
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
 
     try {
-        // 1. दोबारा रीयल-टाइम लिमिट और बैलेंस की जांच (सुरक्षा के लिए)
         const userRef = doc(db, "users", mobile);
-        const userDoc = await getDoc(userRef);
-        const latestBalance = userDoc.data().balance || 0;
-
-        if (latestBalance < 1000) return alert("बैलेंस कम है!");
-
         const limitRef = doc(db, "users", mobile, "mystery_limit", todayDate);
-        const limitDoc = await getDoc(limitRef);
-        const currentCount = limitDoc.exists() ? limitDoc.data().count || 0 : 0;
-        if (currentCount >= 10) return alert("आज के चांस खत्म!");
 
-        // 2. रीयल-टाइम में गुप्त पिन जनरेट करें (स्कैम प्रूफ)
-        let generatedCorrectPin = "";
+        // पलक झपकते रिस्पांस के लिए हम एक साथ दोनों डॉक्यूमेंट रीड कर रहे हैं
+        const [userDoc, limitDoc] = await Promise.all([getDoc(userRef), getDoc(limitRef)]);
         
-        if (currentBoxType === 1) {
-            // 1 अंक का रैंडम पिन (0 से 9)
-            generatedCorrectPin = Math.floor(Math.random() * 10).toString();
-        } else if (currentBoxType === 2) {
-            // 3 अंकों का रैंडम पिन (100 से 999)
-            generatedCorrectPin = Math.floor(100 + Math.random() * 900).toString();
-        } else if (currentBoxType === 3) {
-            // बॉक्स 3: हमेशा गलत करना है, इसलिए इनपुट से अलग कुछ भी बना दो
-            generatedCorrectPin = "TRA-99999999"; 
+        const latestBalance = userDoc.data().balance || 0;
+        const currentCount = limitDoc.exists() ? limitDoc.data().count || 0 : 0;
+
+        if (latestBalance < 1000 || currentCount >= 3) {
+            submitBtn.disabled = false;
+            return;
         }
 
-        // 3. फीस काटें और डेली काउंट +1 करें
-        const finalFeesBalance = latestBalance - 1000;
-        await setDoc(userRef, { balance: finalFeesBalance }, { merge: true });
-        await setDoc(limitRef, { count: currentCount + 1 });
+        // रैंडम सीक्रेट पिन जनरेशन लॉजिक
+        let generatedCorrectPin = "";
+        if (currentBoxType === 1) {
+            generatedCorrectPin = Math.floor(Math.random() * 10).toString(); // 1 अंक (0-9)
+        } else if (currentBoxType === 2) {
+            generatedCorrectPin = Math.floor(100 + Math.random() * 900).toString(); // 3 अंक (100-999)
+        } else if (currentBoxType === 3) {
+            generatedCorrectPin = "LOCK-99K"; // मास्टर ट्रैप
+        }
 
-        // 4. परिणाम की जांच
+        // फीस डिटेक्शन और लिमिट अपडेट (एक साथ)
+        const finalFeesBalance = latestBalance - 1000;
+        await Promise.all([
+            setDoc(userRef, { balance: finalFeesBalance }, { merge: true }),
+            setDoc(limitRef, { count: currentCount + 1 })
+        ]);
+
         if (userPinInput === generatedCorrectPin) {
-            // 🎉 जीत गए!
+            // Winner! 🎉
             const finalWinBalance = finalFeesBalance + currentReward;
             await setDoc(userRef, { balance: finalWinBalance }, { merge: true });
-            
             document.getElementById('winSound').play();
-            alert(`🎉 शानदार जीत!! आपका पिन एकदम सही था। आपको +${currentReward} डिजिटल एसेट मिले हैं!`);
+            showCustomAlert("Boom! Perfect Match! 🎉", `आपका PIN बिल्कुल सही निकला! आपको +${currentReward} Assets मिले हैं।`, "success");
         } else {
-            // ❌ हार गए!
+            // Loser! ❌
             document.getElementById('failSound').play();
-            alert(`❌ ओह! गलत पिन। सही पिन "${boxTypeMessage(currentBoxType, generatedCorrectPin)}" था। आपके 1,000 सिक्के कट गए हैं। दोबारा प्रयास करें!`);
+            let showPin = currentBoxType === 3 ? Math.floor(10000000 + Math.random() * 90000000).toString() : generatedCorrectPin;
+            showCustomAlert("Wrong PIN! ❌", `ओह! गलत पिन। Correct PIN "${showPin}" था। आपके खाते से 1,000 Assets कट गए हैं।`, "error");
         }
 
-        // स्क्रीन रिफ्रेश किए बिना वॉलेट अपडेट करें
         await syncUserStats();
-
-    } catch (e) { alert("गेम एरर: " + e.message); }
+    } catch (e) { console.error(e); }
+    submitBtn.disabled = false;
 };
-
-function boxTypeMessage(box, correctPin) {
-    if (box === 3) {
-        // बॉक्स 3 में हमेशा रैंडम 8 अंकों का नंबर दिखाएं ताकि उसे लगे कि वो चूक गया
-        return Math.floor(10000000 + Math.random() * 90000000).toString();
-    }
-    return correctPin;
-}
