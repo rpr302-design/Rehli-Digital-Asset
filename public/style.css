@@ -3,26 +3,22 @@
     --glass: rgba(255, 255, 255, 0.15);
     --primary: #4e54c8;
     --secondary: #8f94fb;
+    --success: #2ecc71;
+    --danger: #ff4757;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: #f0f2f5;
-    margin: 0; padding: 0;
-    box-sizing: border-box;
+    background: #f0f2f5; margin: 0; padding: 0; box-sizing: border-box;
 }
 
-/* 🔒 स्क्रीन छुपाने का एडवांस नियम */
-.hidden-screen {
-    display: none !important;
-}
+.hidden-screen { display: none !important; }
 
-/* नया यूजर लॉगिन स्क्रीन बैकग्राउंड */
+/* लॉगिन स्क्रीन बैकग्राउंड */
 #authContainer {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 1500;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1500;
 }
 .container {
     width: 90%; max-width: 400px; background: var(--glass);
@@ -35,41 +31,57 @@ h2 { font-weight: 600; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,
 .lang-en { font-size: 12px; opacity: 0.8; display: block; margin-bottom: 20px; }
 
 input {
-    width: 100%; padding: 15px; margin-bottom: 15px; border: none;
-    border-radius: 15px; font-size: 18px; outline: none;
-    text-align: center; background: white; color: #333; font-weight: 600; box-sizing: border-box;
+    width: 100%; padding: 14px; margin-bottom: 12px; border: 1.5px solid #eee;
+    border-radius: 12px; font-size: 16px; outline: none; text-align: center;
+    font-weight: 600; box-sizing: border-box;
 }
 
 .btn-action {
-    width: 100%; padding: 16px; border: none; border-radius: 15px;
-    font-size: 16px; font-weight: 600; cursor: pointer;
+    width: 100%; padding: 14px; border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
     background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
-    color: white; transition: 0.3s; box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+    color: white; transition: 0.2s; box-shadow: 0 5px 15px rgba(245, 87, 108, 0.3);
 }
-.btn-action:hover { transform: translateY(-3px); }
-
+.btn-action:active { transform: translateY(1px); }
 #rewardSection { display: none; }
-.safe-img { width: 100%; max-width: 200px; margin: 20px auto; display: block; animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.safe-img { width: 100%; max-width: 180px; margin: 15px auto; display: block; }
+.coin-display { font-size: 38px; font-weight: 700; color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
+#mobileBox { display: none; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; }
 
-.coin-display { font-size: 40px; font-weight: 700; color: var(--gold); text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 2px 2px 2px #000; }
-#mobileBox { display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
-
-/* 📱 स्मार्टफोन डैशबोर्ड यूआई स्टाइल */
-.dashboard-wrapper { width: 100%; max-width: 500px; margin: 0 auto; padding-bottom: 90px; background: #f8f9fa; min-height: 100vh; }
-.header-bg { background: linear-gradient(135deg, var(--primary), var(--secondary)); height: 160px; border-radius: 0 0 35px 35px; padding: 25px; color: white; box-sizing: border-box; }
+/* 📱 आधुनिक स्मार्टफोन डैशボード स्टाइल */
+.dashboard-wrapper { width: 100%; max-width: 480px; margin: 0 auto; padding-bottom: 100px; background: #f8f9fa; min-height: 100vh; position: relative; }
+.header-bg { background: linear-gradient(135deg, var(--primary), var(--secondary)); height: 150px; border-radius: 0 0 30px 30px; padding: 25px; color: white; box-sizing: border-box; }
 .user-badge { display: flex; align-items: center; gap: 15px; }
-.avatar { width: 55px; height: 55px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 24px; border: 2px solid var(--gold); }
+.avatar { width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 22px; border: 2px solid var(--gold); }
+.asset-card { background: white; margin: -35px 20px 20px; padding: 20px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; }
+.asset-val { font-size: 24px; font-weight: 700; color: var(--primary); margin-top: 2px; }
 
-.asset-card { background: white; margin: -40px 20px 20px; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
-.asset-val { font-size: 26px; font-weight: 700; color: var(--primary); }
+.section { padding: 0 20px; margin-bottom: 15px; }
+.earn-box { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #ebdff0; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+.key-input { width: 100%; padding: 11px; border: 2px solid #f3eff6; border-radius: 12px; text-align: center; font-size: 18px; margin-bottom: 12px; }
 
-.section { padding: 0 20px; margin-bottom: 20px; }
-.earn-box { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #e0e0e0; text-align: center; }
-.key-input { width: 100%; padding: 12px; border: 2px solid #f0f0f0; border-radius: 12px; text-align: center; font-size: 18px; margin-bottom: 15px; font-weight: 600; }
+/* 📺 लेटेस्ट वीडियो विजेट डिजाइन */
+.video-promo-box { background: #fff; border: 2px dashed #ff4757; padding: 15px; border-radius: 20px; text-align: center; position: relative; }
+.v-badge { position: absolute; top: -10px; left: 20px; background: #ff4757; color: white; padding: 2px 10px; font-size: 10px; font-weight: bold; border-radius: 8px; }
+.btn-watch { display: inline-block; width: 100%; background: #ff4757; color: white; text-decoration: none; padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 600; box-sizing: border-box; transition: 0.2s; }
 
-/* बॉटम नेविगेशन बार */
-.nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-radius: 25px 25px 0 0; z-index: 1000; }
-.nav-link { text-align: center; color: #a0a0a0; text-decoration: none; font-size: 11px; font-weight: 600; }
+/* 🔐 सुन्दर सेन्टर अलर्ट बॉक्स यूआई */
+.alert-overlay, .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 3000; }
+.alert-card, .modal-box { background: #ffffff; color: #222; width: 85%; max-width: 330px; padding: 25px; border-radius: 25px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.4); animation: popCenter 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.2); }
+@keyframes popCenter { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+#alertIcon { font-size: 42px; margin-bottom: 5px; }
+.btn-alert-close { width: 100%; padding: 12px; border: none; border-radius: 12px; background: #12121e; color: white; font-weight: 600; cursor: pointer; margin-top: 15px; }
+.close-btn { position: absolute; right: 20px; top: 12px; font-size: 26px; color: #aaa; cursor: pointer; }
+
+/* 📱 अपग्रेड बॉटम नेविगेशन: सेंटर पे बटन के साथ */
+.nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: white; height: 75px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -5px 25px rgba(0,0,0,0.08); border-radius: 25px 25px 0 0; z-index: 1000; }
+.nav-link { text-align: center; color: #a0a0a0; text-decoration: none; font-size: 11px; font-weight: 600; width: 60px; }
 .nav-link.active { color: var(--primary); }
-.nav-link i { font-size: 22px; display: block; margin-bottom: 4px; }
+.nav-link i { font-size: 20px; display: block; margin-bottom: 2px; }
+
+/* सेंटर क्यूआर नियॉन बटन */
+.nav-pay-center { position: relative; top: -18px; text-align: center; cursor: pointer; z-index: 1100; }
+.pay-circle { width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), #8f94fb); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; box-shadow: 0 5px 20px rgba(78, 84, 200, 0.45); border: 3px solid #fff; transition: 0.2s; }
+.pay-circle:active { transform: scale(0.92); }
+
+#qrReader { width: 100%; background: #000; border-radius: 15px; overflow: hidden; margin-bottom: 10px; }
