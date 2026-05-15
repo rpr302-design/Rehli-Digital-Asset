@@ -1,0 +1,93 @@
+:root {
+    --primary: #1e1e2f;
+    --card-bg: #2d2d44;
+    --gold: #FFD700;
+    --text-color: #ffffff;
+    --accent: #4e54c8;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--primary);
+    color: var(--text-color);
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+}
+
+.game-wrapper {
+    width: 100%; max-width: 500px; margin: 0 auto;
+    padding: 20px; padding-bottom: 100px; min-height: 100vh;
+}
+
+/* वॉलेट हेडर */
+.wallet-header {
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    padding: 15px 20px; border-radius: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+.user-info { display: flex; flex-direction: column; gap: 4px; }
+.balance-badge {
+    background: rgba(0, 0, 0, 0.3); padding: 5px 12px;
+    border-radius: 20px; font-weight: bold; color: var(--gold);
+    display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+}
+.limit-badge { background: #fff; color: #333; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+
+.main-title { text-align: center; margin: 25px 0; }
+.main-title h2 { margin: 0; font-size: 24px; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+.main-title p { margin: 5px 0 0; font-size: 13px; opacity: 0.8; }
+
+/* बॉक्स ग्रिड */
+.boxes-grid { display: flex; flex-direction: column; gap: 20px; }
+.box-card {
+    background: var(--card-bg); padding: 20px; border-radius: 25px;
+    text-align: center; cursor: pointer; transition: 0.3s;
+    border: 2px solid rgba(255,255,255,0.05); position: relative;
+    overflow: hidden;
+}
+.box-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(78,84,200,0.2); }
+.box-icon { font-size: 50px; margin-bottom: 10px; animation: bounce 2s infinite; }
+
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+.box-card h3 { margin: 0; font-size: 18px; }
+.reward-tag { display: block; font-size: 14px; color: #2ecc71; font-weight: 600; margin: 5px 0; }
+.pin-tag { font-size: 11px; background: rgba(255,255,255,0.1); padding: 3px 10px; border-radius: 20px; opacity: 0.7; }
+
+/* विशेष बॉक्स कलर्स */
+.gold-card { border-color: rgba(255,215,0,0.3); }
+.gold-card .reward-tag { color: var(--gold); }
+.mega-card { border-color: rgba(255, 71, 87, 0.4); background: linear-gradient(145deg, #2d2d44, #1e1e24); }
+
+/* 🔐 पॉप-अप मॉडल स्टाइल */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center; z-index: 2000;
+}
+.modal-box {
+    background: #ffffff; color: #333333; width: 85%; max-width: 340px;
+    padding: 30px 25px; border-radius: 25px; text-align: center;
+    position: relative; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.close-btn { position: absolute; right: 20px; top: 15px; font-size: 28px; color: #aaa; cursor: pointer; }
+.modal-box input {
+    width: 100%; padding: 12px; font-size: 22px; font-weight: bold; letter-spacing: 4px;
+    text-align: center; border: 2px solid #ddd; border-radius: 15px; margin-bottom: 20px; outline: none;
+}
+.modal-box input:focus { border-color: var(--accent); }
+.btn-unlock {
+    width: 100%; padding: 14px; border: none; border-radius: 15px;
+    background: linear-gradient(45deg, #4e54c8, #8f94fb); color: white;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+}
+
+/* बॉटम नेविगेशन बार */
+.nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 500px; background: #ffffff; height: 75px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); border-radius: 25px 25px 0 0; z-index: 1000; }
+.nav-link { text-align: center; color: #a0a0a0; text-decoration: none; font-size: 11px; font-weight: 600; }
+.nav-link.active { color: var(--accent); }
+.nav-link i { font-size: 22px; display: block; margin-bottom: 4px; }
+.hidden { display: none !important; }
