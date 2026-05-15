@@ -67,11 +67,25 @@
         <button class="btn-main" style="padding:10px; font-size:13px; margin-top:10px; background:#4e54c8;" onclick="saveMerchantRules()">रूल्स अपडेट करें (Save Rules)</button>
     </div>
 
-    <div class="card qr-box">
+  <div class="card qr-box">
         <h3><i class="fa-solid fa-qrcode"></i> आपकी दुकान का QR कोड</h3>
         <p style="font-size:11px; color:#666;">यूजर इस QR कोड को स्कैन करके सीधे आपको कॉइन ट्रांसफर कर सकता है</p>
-        <div id="qrcodeContainer">
-            <img id="shopQrImg" src="" alt="Shop QR Code">
+        
+        <div id="qrPrintArea" style="background: white; padding: 15px; border-radius: 15px; display: inline-block;">
+            <div id="qrcodeContainer">
+                <img id="shopQrImg" src="" alt="Shop QR Code" style="width:160px; height:160px; display:block; margin:0 auto;">
+            </div>
+            <h4 id="qrShopNameLabel" style="margin: 10px 0 0 0; font-size: 16px; color: #2c3e50;"></h4>
+            <p id="qrShopPhoneLabel" style="margin: 2px 0 0 0; font-size: 12px; color: #666;"></p>
+        </div>
+
+        <div class="qr-action-buttons" style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+            <button class="btn-main" style="background: #27ae60; margin: 0; padding: 10px 15px; font-size: 13px;" onclick="shareShopQR()">
+                <i class="fa-solid fa-share-nodes"></i> क्यूआर शेयर करें
+            </button>
+            <button class="btn-main" style="background: #e67e22; margin: 0; padding: 10px 15px; font-size: 13px;" onclick="downloadQRAsPDF()">
+                <i class="fa-solid fa-file-pdf"></i> PDF / प्रिंट लें
+            </button>
         </div>
     </div>
 
