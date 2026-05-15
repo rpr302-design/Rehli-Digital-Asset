@@ -3,53 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - मिस्ट्री बॉक्स</title>
+    <title>Mystery Box - रहली डिजिटल एसेट</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="mystery.css">
 </head>
 <body>
 
+<div id="customAlert" class="alert-overlay hidden">
+    <div class="alert-card">
+        <div id="alertIcon">🎁</div>
+        <h3 id="alertTitle">Status</h3>
+        <p id="alertMsg">Message goes here...</p>
+        <button class="btn-alert-close" onclick="closeAlert()">ठीक है (OK)</button>
+    </div>
+</div>
+
 <div class="game-wrapper">
     <div class="wallet-header">
         <div class="user-info">
-            <span id="userPhoneDisplay">💥 लोड हो रहा है...</span>
+            <span id="userPhoneDisplay">Loading...</span>
             <div class="balance-badge">
                 <i class="fa-solid fa-coins"></i> <span id="userBalanceDisplay">0</span>
             </div>
         </div>
         <div class="limit-badge">
-            आज के चांस बचे: <b id="remainingAttempts">10</b>/10
+            Chances Left: <b id="remainingAttempts">3</b>/3
         </div>
     </div>
 
     <div class="main-title">
-        <h2>🔮 जादुई मिस्ट्री बॉक्स 🔮</h2>
-        <p>हर बॉक्स को अनलॉक करने की फीस: <b style="color:var(--gold);">1,000 एसेट</b></p>
+        <h2>🔮 Magic Mystery Box 🔮</h2>
+        <p>Entry Fee: <b style="color:var(--gold);">1,000 Assets</b> per box</p>
     </div>
 
     <div class="boxes-grid">
         
         <div class="box-card" onclick="openPinModal(1, 1, 10000)">
             <div class="box-icon">🎁</div>
-            <h3>सिल्वर बॉक्स</h3>
-            <span class="reward-tag">जीतें: 10,000 एसेट</span>
-            <span class="pin-tag">पिन: 1 अंक (0-9)</span>
+            <h3>Silver Box</h3>
+            <span class="reward-tag">Win: 10,000 Assets</span>
+            <span class="pin-tag">Pin: 1 Digit Only (0-9)</span>
         </div>
 
         <div class="box-card gold-card" onclick="openPinModal(2, 3, 100000)">
             <div class="box-icon">💎</div>
-            <h3>गोल्डन बॉक्स</h3>
-            <span class="reward-tag">जीतें: 1,00,000 एसेट</span>
-            <span class="pin-tag">पिन: 3 अंक (100-999)</span>
+            <h3>Golden Box</h3>
+            <span class="reward-tag">Win: 1,00,000 Assets</span>
+            <span class="pin-tag">Pin: 3 Digits (100-999)</span>
         </div>
 
         <div class="box-card mega-card" onclick="openPinModal(3, 8, 0)">
             <div class="box-icon">👑</div>
-            <h3>महा जैकपॉट</h3>
-            <span class="reward-tag" style="color:#ff4757;">इनाम: ₹1,00,000 नकद</span>
-            <span class="pin-tag">पिन: 8 अंक</span>
+            <h3>Mega Jackpot</h3>
+            <span class="reward-tag" style="color:#ff4757;">Prize: ₹1,00,000 Cash</span>
+            <span class="pin-tag">Pin: 8 Digits Master Lock</span>
         </div>
 
     </div>
@@ -58,18 +66,18 @@
 <div id="pinModal" class="modal-overlay hidden">
     <div class="modal-box">
         <div class="close-btn" onclick="closePinModal()">×</div>
-        <h3 id="modalTitle">बॉक्स अनलॉक करें</h3>
-        <p style="font-size: 12px; color:#666; margin-bottom: 15px;">अनलॉक बटन दबाते ही आपके खाते से 1000 सिक्के कट जाएंगे।</p>
+        <h3 id="modalTitle">Unlock Box</h3>
+        <p style="font-size: 11px; color:#666; margin-bottom: 15px;">1000 Assets अपने आप आपके खाते से कट जाएंगे।</p>
         
-        <input type="number" id="pinInput" placeholder="यहाँ गुप्त पिन डालें" autocomplete="off">
+        <input type="number" id="pinInput" placeholder="Enter PIN" autocomplete="off">
         
-        <button class="btn-unlock" onclick="attemptUnlock()">भाग्य आजमाएं (-1000 एसेट)</button>
+        <button class="btn-unlock" id="submitBtn" onclick="attemptUnlock()">Claim Reward (-1000 Assets)</button>
     </div>
 </div>
 
 <nav class="nav-bar">
-    <a href="index.html" class="nav-link"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
-    <a href="mystery-box.html" class="nav-link active"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
+    <a href="index.html" class="nav-link"><i class="fa-solid fa-house-chimney"></i><span>होम (Home)</span></a>
+    <a href="mystery-box.html" class="nav-link active"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री (Mystery)</span></a>
     <a href="profile-setup.html" class="nav-link"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
 </nav>
 
@@ -77,6 +85,5 @@
 <audio id="failSound"><source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg"></audio>
 
 <script type="module" src="mystery.js"></script>
-
 </body>
 </html>
