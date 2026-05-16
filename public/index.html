@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो v5.0</title>
+    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v4.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<!-- 🔔 स्मार्ट कस्टम अलर्ट -->
+<!-- 🔔 प्रीमियम रंगीन सेन्टर मेसेज बॉक्स -->
 <div id="customAlert" class="alert-overlay hidden-screen">
     <div class="alert-card">
         <div id="alertIcon">🎁</div>
@@ -21,172 +21,257 @@
     </div>
 </div>
 
-<!-- [GATEWAY]: चाबी और लॉगिन स्क्रीन -->
+<!-- [भाग 1: नया यूजर - गेटवे स्क्रीन] -->
 <div id="authContainer" class="hidden-screen">
-    <div class="gateway-card">
-        <div id="keyEntryArea">
-            <h2 style="color:#fff;">रिवॉर्ड्स अनलॉक करें 🎁</h2>
-            <p style="color:rgba(255,255,255,0.8); font-size:13px;">वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
-            <input type="number" id="userKey" placeholder="0 0 0 0 0" maxlength="5">
-            <button class="btn-action" style="background:#fff; color:#4e54c8;" onclick="verifyKey()">चाबी चेक करें</button>
-            <p onclick="showDirectLogin()" style="margin-top:20px; color:#fff; text-decoration:underline; cursor:pointer; font-size:14px;">पहले से अकाउंट है? लॉगिन करें</p>
+    <div class="container">
+        <!-- स्टेप 1: चाबी एंट्री -->
+        <div id="keySection">
+            <h2>नमस्ते! रिवॉर्ड्स अनलॉक करें 🎁</h2>
+            <span class="lang-en">Welcome! Unlock Your Rewards</span>
+            <p style="font-size: 13px;">कृपया वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
+            <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+            <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें (Check Key)</button>
         </div>
 
-        <div id="mobileEntryArea" class="hidden-screen">
-            <h2 style="color:#fff;">स्वागत है! 👋</h2>
-            <input type="text" id="userReferralInput" placeholder="रेफरल कोड (Optional)" readonly>
-            <input type="number" id="userMobile" placeholder="मोबाइल नंबर डालें">
-            <button class="btn-action" style="background:#2ecc71;" onclick="saveMobile()">सफलतापूर्वक प्रवेश करें</button>
+        <!-- स्टेप 2: मोबाइल एंट्री और ऑटो-रेफरल कोड डिटेक्शन -->
+        <div id="rewardSection" class="hidden-screen">
+            <div class="coin-display" id="winAmount">🔑 KEY NOTED</div>
+            <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">VERIFICATION GATEWAY</p>
+            <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" class="safe-img" alt="Vault" style="width:110px; margin:0 auto 15px;">
+            
+            <div id="mobileBox">
+                <!-- ऑटोमैटिक भरा हुआ रेफरल कोड (यदि लिंक से आया है) -->
+                <label style="font-size: 11px; font-weight: 600; color: #fff; text-align: left; display: block;">रेफरल कोड (Auto-Filled)</label>
+                <input type="text" id="userReferralInput" placeholder="कोई रेफरल कोड नहीं मिला" style="background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4);" readonly>
+
+                <label style="font-size: 11px; font-weight: 600; color: #fff; text-align: left; display: block; margin-top: 5px;">आपका मोबाइल नंबर</label>
+                <input type="number" id="userMobile" placeholder="10 अंकों का मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                <button class="btn-action" style="background: linear-gradient(to right, #11998e, #38ef7d);" onclick="saveMobile()">खाता बनाएं और लॉगिन करें</button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- [APP INTERFACE] -->
+<!-- [भाग 2: मुख्य स्मार्टफोन एप्लीकेशन लेआउट] -->
 <div id="dashboardContainer" class="hidden-screen">
-    <div class="app-shell">
+    <div class="dashboard-wrapper">
         
-        <!-- SIDEBAR -->
-        <div id="appSidebar" class="sidebar">
-            <div class="side-head">
-                <div class="avatar"><i class="fa-solid fa-user-astronaut"></i></div>
-                <h3 id="sideMenuUser">User</h3>
-                <span id="sideMenuPhone">+91 000</span>
+        <!-- 🍔 [प्रोफेशनल साइडबार मेनू (Hamburger Sidebar)] -->
+        <div id="appSidebar" class="sidebar-menu">
+            <div class="sidebar-header">
+                <div class="avatar" style="width:60px; height:60px;"><i class="fa-solid fa-user-shield"></i></div>
+                <h3 id="sideMenuUser" style="margin:10px 0 0; font-size:16px;">User Name</h3>
+                <span id="sideMenuPhone" style="font-size:12px; opacity:0.8;">+91 000</span>
             </div>
-            <div class="side-body">
-                <div class="menu-item" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i> होम स्क्रीन</div>
-                <div class="menu-item" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i> मेरा वॉलेट (My Wallet)</div>
-                <div class="menu-item" onclick="switchAppTab('profile')"><i class="fa-solid fa-user-shield"></i> प्रोफाइल और सुरक्षा</div>
-                <div class="menu-item" onclick="switchAppTab('social')"><i class="fa-solid fa-share-nodes"></i> सोशल मीडिया टास्क (+5000)</div>
-                <div class="menu-item" onclick="switchAppTab('terms')"><i class="fa-solid fa-file-contract"></i> नियम एवं शर्तें (T&C)</div>
-                <hr>
-                <div class="menu-item" onclick="logout()" style="color:#ff4757;"><i class="fa-solid fa-power-off"></i> लॉगआउट</div>
+            <div class="sidebar-links">
+                <a href="#" onclick="openSidebarBonus('profile_tab')"><i class="fa-solid fa-id-card" style="color:#3498db;"></i> 🛠️ प्रोफाइल सेटअप करें <span class="side-badge">+500</span></a>
+                <a href="#" onclick="openSidebarBonus('refer_tab')"><i class="fa-solid fa-gift" style="color:#e67e22;"></i> 🎁 इनवाइट लिंक और रेफरल</a>
+                <a href="#" onclick="openSidebarBonus('social_tab')"><i class="fa-solid fa-hashtag" style="color:#e74c3c;"></i> 📱 सोशल मीडिया टास्क</a>
+                <a href="#" onclick="openSidebarBonus('settings_tab')"><i class="fa-solid fa-gear" style="color:#95a5a6;"></i> ⚙️ ऐप सेटिंग्स</a>
+                <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+                <a href="#" onclick="logout()" style="color:#e74c3c;"><i class="fa-solid fa-power-off"></i> लॉगआउट (Logout)</a>
             </div>
         </div>
-        <div id="sidebarOverlay" class="overlay hidden-screen" onclick="toggleSidebar(false)"></div>
+        <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
 
-        <!-- TOP BAR -->
-        <div class="top-nav">
-            <div class="menu-btn" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars-staggered"></i></div>
-            <div class="top-logo">REHLI ASSET</div>
-            <div class="bal-chip"><i class="fa-solid fa-coins"></i> <span id="dashBalance">0</span></div>
+        <!-- टॉप एक्शन हेडर बार -->
+        <div class="header-bg">
+            <div class="user-badge">
+                <div class="menu-trigger-btn" onclick="toggleSidebar(true)">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <div>
+                    <h2 id="dashUserName" style="margin:0; font-size: 16px;">नमस्ते!</h2>
+                    <span id="dashUserPhone" style="opacity: 0.8; font-size: 11px;">+91 0000</span>
+                </div>
+            </div>
+            <div class="balance-pill">
+                <i class="fa-solid fa-coins" style="color:var(--gold)"></i> 
+                <span id="dashBalance">0</span>
+            </div>
         </div>
 
-        <!-- CONTENT AREA -->
-        <main class="content">
-            <!-- TAB: HOME -->
-            <div id="tab-home" class="tab-pane">
-                <div class="card earn-card">
-                    <h3><i class="fa-solid fa-key"></i> चाबी क्लेम करें</h3>
-                    <input type="number" id="dashSecretKey" placeholder="Enter 5 Digit Key">
-                    <button class="btn-primary" onclick="processDashKey()">सिक्के प्राप्त करें</button>
-                </div>
-
-                <!-- 📺 लेटेस्ट अन-यूज्ड वीडियो प्रमोटर -->
-                <div id="promoVideoSection" class="hidden-screen card promo-card">
-                    <span class="badge">WATCH & EARN</span>
-                    <h4 id="lblPromoTitle">विडियो का शीर्षक</h4>
-                    <a id="btnPromoLink" href="#" target="_blank" class="btn-watch"><i class="fa-brands fa-youtube"></i> वीडियो देखें</a>
+        <!-- 🏠 टैब 1: मुख्य होम स्क्रीन -->
+        <div id="tab-home" class="app-tab-content">
+            <div class="section hidden-screen" id="promoVideoSection">
+                <div class="video-promo-box">
+                    <div class="v-badge">NEW VIDEO 🔴</div>
+                    <h4 id="lblPromoTitle" style="margin: 8px 0 2px 0; font-size: 13px;">लेटेस्ट वीडियो देखें और चाबी कमाएं</h4>
+                    <a id="btnPromoLink" href="#" target="_blank" class="btn-watch"><i class="fa-brands fa-youtube"></i> वीडियो देखें (Watch Now)</a>
                 </div>
             </div>
 
-            <!-- TAB: WALLET (NEW) -->
-            <div id="tab-wallet" class="tab-pane hidden-screen">
-                <div class="card wallet-stats">
-                    <h3>वॉलेट बैलेंस विवरण</h3>
-                    <div class="stat-row"><span>कुल कमाई:</span> <b id="statEarned">0</b></div>
-                    <div class="stat-row"><span>रेफरल से प्राप्त:</span> <b id="statRefer">0</b></div>
-                    <div class="stat-row"><span>कुल खर्च:</span> <b id="statSpent">0</b></div>
-                    <div class="stat-row total"><span>एसेट वैल्यू:</span> <b id="statValue">₹0.00</b></div>
-                    <p style="font-size:10px; color:#888; margin-top:10px;">* नियम: 100 एसेट्स = ₹1.00</p>
+            <div class="section" style="margin-top:20px;">
+                <div class="earn-box">
+                    <h3 style="margin-top:0; font-size: 14px;"><i class="fa-solid fa-key" style="color:var(--primary)"></i> वीडियो कोड से सिक्के जोड़ें</h3>
+                    <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+                    <button class="btn-action" style="padding: 12px; font-size:14px; background:linear-gradient(45deg, var(--primary), var(--secondary));" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
                 </div>
             </div>
+        </div>
 
-            <!-- TAB: PROFILE & SECURITY (FIXED) -->
-            <div id="tab-profile" class="tab-pane hidden-screen">
-                <!-- प्रोफाइल अपडेट फॉर्म (सिर्फ पहली बार या एडिट मोड में) -->
-                <div id="profileFormArea" class="card">
-                    <h3>प्रोफाइल सेटअप</h3>
-                    <input type="text" id="profName" placeholder="पूरा नाम">
-                    <input type="date" id="profDob" placeholder="जन्म तिथि">
-                    <select id="profGender" class="select-box">
-                        <option value="">लिंग चुनें</option>
-                        <option value="Male">पुरुष</option>
-                        <option value="Female">महिला</option>
-                    </select>
-                    <input type="number" id="profPin1" placeholder="4 अंकों का सुरक्षा पिन">
-                    <input type="number" id="profPin2" placeholder="पिन दोबारा डालें">
-                    <button class="btn-primary" onclick="updateProfile()">सुरक्षित करें (+500)</button>
+        <!-- 🔮 टैब 2: मिस्ट्री बॉक्स गेम स्क्रीन -->
+        <div id="tab-mystery" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <h3 style="margin:0; color:#333;">जादुई मिस्ट्री बॉक्स 🔮</h3>
+                    <span style="font-size:11px; color:#666;">फीस: 1,000 सिक्के | दैनिक लिमिट: <b id="remainingAttempts">3</b>/3</span>
                 </div>
-                <!-- प्रोफाइल व्यू मोड (अपडेट के बाद) -->
-                <div id="profileViewArea" class="card hidden-screen">
-                    <h3>मेरा प्रोफाइल स्टेटस ✅</h3>
-                    <p><b>नाम:</b> <span id="vName">-</span></p>
-                    <p><b>जन्म तिथि:</b> <span id="vDob">-</span></p>
-                    <p><b>व्हाट्सएप:</b> <span id="vPhone">-</span></p>
-                    <button class="btn-outline" onclick="showChangePin()">सुरक्षा पिन बदलें</button>
-                    <button class="btn-outline" style="color:var(--primary);" onclick="forgotPin()">पिन भूल गए?</button>
-                </div>
-            </div>
-
-            <!-- TAB: SOCIAL -->
-            <div id="tab-social" class="tab-pane hidden-screen">
-                <div class="card">
-                    <h3>सोशल टास्क रिवॉर्ड्स</h3>
-                    <p style="font-size:11px;">प्रत्येक टास्क पर +1000 एसेट्स (एक बार)</p>
-                    <div class="social-list">
-                        <div class="s-task">YouTube <button onclick="claimSocial('yt')">Follow</button></div>
-                        <div class="s-task">Facebook <button onclick="claimSocial('fb')">Follow</button></div>
-                        <div class="s-task">Instagram <button onclick="claimSocial('ig')">Follow</button></div>
-                        <div class="s-task">Telegram <button onclick="claimSocial('tg')">Join</button></div>
-                        <div class="s-task">WhatsApp <button onclick="claimSocial('wa')">Join</button></div>
+                
+                <div class="mystery-grid">
+                    <div class="m-box-card" onclick="openMysteryPinModal(1, 1, 10000, 'Silver Box')">
+                        <div class="m-icon">🎁</div>
+                        <h4>Silver Box</h4>
+                        <span style="color:#2ecc71; font-size:12px; font-weight:600;">Win 10K Coins</span>
+                    </div>
+                    <div class="m-box-card" style="border-color:var(--gold);" onclick="openMysteryPinModal(2, 3, 100000, 'Golden Box')">
+                        <div class="m-icon">💎</div>
+                        <h4>Golden Box</h4>
+                        <span style="color:var(--gold); font-size:12px; font-weight:600;">Win 100K Coins</span>
+                    </div>
+                    <div class="m-box-card" style="border-color:#ff4757;" onclick="openMysteryPinModal(3, 8, 0, 'Mega Jackpot')">
+                        <div class="m-icon">👑</div>
+                        <h4>Mega Box</h4>
+                        <span style="color:#ff4757; font-size:12px; font-weight:600;">₹1 लाख नकद</span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- TAB: TERMS -->
-            <div id="tab-terms" class="tab-pane hidden-screen">
-                <div class="card">
-                    <h3>नियम एवं शर्तें</h3>
-                    <div style="font-size:13px; line-height:1.6;">
-                        1. रहली डिजिटल एसेट एक स्थानीय रिवॉर्ड सिस्टम है।<br>
-                        2. <b>100 एसेट्स की वैल्यू ₹1 के बराबर है।</b><br>
-                        3. एसेट्स केवल पंजीकृत दुकानों पर ही भुनाए जा सकते हैं।<br>
-                        4. फ्रॉड या गलत चाबी के उपयोग पर अकाउंट ब्लॉक किया जा सकता है।
+        <!-- 💸 टैब 3: दुकानदार पेमेंट गेटवे स्क्रीन -->
+        <div id="tab-pay" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div class="earn-box">
+                    <h3 style="margin-top:0;"><i class="fa-solid fa-store" style="color:var(--success)"></i> लोकल दुकानों पर पेमेंट करें</h3>
+                    
+                    <div id="qrReaderContainer" class="hidden-screen" style="margin-bottom:10px;">
+                        <div id="qrReader"></div>
+                        <button class="btn-action" style="background:#e74c3c; padding:6px; font-size:11px; margin-top:5px;" onclick="stopQRScanner()">कैमरा ऑफ करें</button>
+                    </div>
+
+                    <button class="btn-action" id="btnStartScan" style="background:#27ae60; margin-bottom:15px;" onclick="startQRScanner()">
+                        <i class="fa-solid fa-camera"></i> दुकान का QR कोड स्कैन करें
+                    </button>
+
+                    <div style="font-size:11px; color:#888; margin-bottom:10px;">या मैन्युअल नंबर से खोजें</div>
+                    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                        <input type="number" id="payMerchantMobile" placeholder="दुकानदार का नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" style="margin:0; padding:10px; font-size:14px;">
+                        <button class="btn-action" style="width: 80px; margin:0; background:var(--primary); padding:10px; font-size:12px;" onclick="searchMerchant()">खोजें</button>
+                    </div>
+
+                    <!-- दुकानदार सत्यापन कार्ड -->
+                    <div id="merchantVerifyArea" class="hidden-screen" style="background: #f8f9fa; padding: 12px; border-radius: 12px; text-align: left; margin-bottom: 15px; border-left: 4px solid #27ae60;">
+                        <h4 id="lblVerifiedShopName" style="margin:0; font-size:14px;">Shop Name</h4>
+                        <span id="lblVerifiedShopPhone" style="font-size:11px; color:#666;">+91 00</span>
+                        <p id="lblShopRulesInfo" style="font-size:10px; color:var(--primary); margin:3px 0 0 0; font-weight:600;"></p>
+                    </div>
+
+                    <!-- फाइनल पेमेंट फॉर्म (सिक्योरिटी पिन के साथ) -->
+                    <div id="paymentFormArea" class="hidden-screen">
+                        <input type="number" id="payAmount" placeholder="कितने सिक्के भेजने हैं?">
+                        <input type="number" id="payBillAmount" placeholder="कुल बिल राशि (₹)">
+                        
+                        <!-- 🔒 पेमेंट करने के लिए आवश्यक पिन फ़ील्ड -->
+                        <label style="font-size:11px; font-weight:600; color:#ff4757; display:block; text-align:left; margin-bottom:3px;">अपना 4 अंकों का सिक्योरिटी पिन डालें</label>
+                        <input type="number" id="paySecurityPin" placeholder="• • • •" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc; text-security: disc;">
+                        
+                        <button class="btn-action" style="background: linear-gradient(135deg, #27ae60, #11998e); margin-top:5px;" onclick="processPayment()">सुरक्षित भुगतान करें (Pay Now)</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- TAB: PAY (Center QR) -->
-            <div id="tab-pay" class="tab-pane hidden-screen">
-                <div class="card">
-                    <h3>दुकानदार को भुगतान</h3>
-                    <div id="qrReader" style="width:100%;"></div>
-                    <button class="btn-primary" onclick="startQRScanner()"><i class="fa-solid fa-camera"></i> स्कैन करें</button>
-                    <div style="margin:10px 0;">या</div>
-                    <input type="number" id="payMerchantMobile" placeholder="दुकानदार का नंबर">
-                    <button class="btn-outline" onclick="searchMerchant()">खोजें</button>
-
-                    <div id="payForm" class="hidden-screen" style="margin-top:20px;">
-                        <h4 id="lblShop">Shop Name</h4>
-                        <input type="number" id="payAmount" placeholder="सिक्के">
-                        <input type="number" id="payBill" placeholder="बिल राशि ₹">
-                        <input type="password" id="payPin" placeholder="सुरक्षा पिन डालें" style="-webkit-text-security: disc;">
-                        <button class="btn-primary" onclick="processPayment()">पेमेंट कन्फर्म करें</button>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- BOTTOM NAV -->
-        <nav class="bottom-nav">
-            <div class="nav-item active" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i></div>
-            <div class="nav-item" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i></div>
-            <div class="nav-pay" onclick="switchAppTab('pay')"><i class="fa-solid fa-qrcode"></i></div>
-            <div class="nav-item" onclick="switchAppTab('social')"><i class="fa-solid fa-users"></i></div>
-            <div class="nav-item" onclick="switchAppTab('profile')"><i class="fa-solid fa-shield-halved"></i></div>
+        <!-- 📱 इन-ऐप बॉटम स्मार्ट नेविगेशन बार -->
+        <nav class="nav-bar">
+            <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
+            <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
+            
+            <div class="nav-pay-center" onclick="switchAppTab('pay')"><div class="pay-circle" id="nav-pay-circle"><i class="fa-solid fa-qrcode"></i></div><span style="font-size:10px; font-weight:600; color:var(--primary); display:block; margin-top:2px;">पे (Pay)</span></div>
+            
+            <a href="#" class="nav-link" id="nav-profile" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars"></i><span>मेनू</span></a>
+            <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
         </nav>
     </div>
 </div>
+
+<!-- ⚙️ साइडबार बोनस पॉप-अप मॉड्यूल्स (उसी स्क्रीन पर डिटेल में दिखाने के लिए) -->
+<div id="bonusModal" class="modal-overlay hidden-screen">
+    <div class="modal-box" style="max-width: 350px;">
+        <div class="close-btn" onclick="closeBonusModal()">×</div>
+        
+        <!-- 📝 1. 2-Step सिक्योरिटी पिन के साथ एडवांस प्रोफाइल सेटअप -->
+        <div id="widget-profile_tab" class="hidden-screen" style="text-align: left;">
+            <h3 style="text-align: center; margin-top: 0; color: var(--primary);"><i class="fa-solid fa-user-shield"></i> प्रोफाइल और एसेट सुरक्षा</h3>
+            <p style="font-size:11px; color:#666; text-align: center; margin-top: -5px;">विवरण लॉक करते ही आपको मिलेंगे <b style="color:var(--success);">+500 एसेट्स बोनस</b></p>
+            
+            <label style="font-size: 11px; font-weight: 600; color: #555;">पंजीकृत मोबाइल नंबर (Locked)</label>
+            <input type="text" id="profUserMobileLocked" readonly style="background: #e9ecef; color: #6c757d; cursor: not-allowed;">
+
+            <label style="font-size: 11px; font-weight: 600; color: #555;">आपका पूरा नाम (Full Name)</label>
+            <input type="text" id="profFullNameInp" placeholder="आपका पूरा नाम दर्ज करें">
+
+            <label style="font-size: 11px; font-weight: 600; color: #555;">व्हाट्सएप नंबर (WhatsApp Number)</label>
+            <input type="number" id="profWhatsappInp" placeholder="10 अंकों का व्हाट्सएप नंबर">
+
+            <!-- 🔒 पिन रिएंटर सिस्टम -->
+            <label style="font-size: 11px; font-weight: 600; color: #ff4757;">4 अंकों का सुरक्षा पिन बनाएं</label>
+            <input type="number" id="profSecurityPinInp" placeholder="नया पिन बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc; text-security: disc;">
+
+            <label style="font-size: 11px; font-weight: 600; color: #ff4757;">सुरक्षा पिन दोबारा डालें (Re-enter PIN)</label>
+            <input type="number" id="profSecurityPinConfirmInp" placeholder="पिन दोबारा दर्ज करें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc; text-security: disc;">
+
+            <button class="btn-action" style="background: linear-gradient(135deg, #3498db, #2980b9); margin-top: 10px;" onclick="claimProfileBonus()">प्रोफाइल लॉक करें (+500)</button>
+        </div>
+
+        <!-- 🎁 2. इनवाइट लिंक और रेफरल विजेट -->
+        <div id="widget-refer_tab" class="hidden-screen">
+            <h3>🎁 रेफरल नेटवर्क इनवाइट</h3>
+            <p style="font-size:12px; color:#666;">अपने दोस्तों को नीचे दिए गए बटन से इनवाइट करें। लिंक पर क्लिक करते ही उनका रेफरल कोड अपने आप भर जाएगा!</p>
+            <div id="lblReferralCodeBox" style="background:#f1f2f6; padding:12px; font-size:18px; font-weight:bold; letter-spacing:2px; border-radius:10px; margin-bottom:15px; color:var(--primary);">REHLI-000</div>
+            <button class="btn-action" style="background:#e67e22;" onclick="shareReferralCode()">व्हाट्सएप पर इनवाइट लिंक भेजें</button>
+        </div>
+
+        <!-- 📱 3. सोशल मीडिया टास्क विजेट (One-Time Claim Logic) -->
+        <div id="widget-social_tab" class="hidden-screen" style="text-align: left;">
+            <h3 style="text-align:center;">🔴 सोशल मीडिया टास्क</h3>
+            <p style="font-size:11px; color:#666; text-align:center; margin-top:-5px;">प्रत्येक प्लेटफार्म को फॉलो करने पर अलग-अलग सिक्के मिलेंगे (केवल 1 बार):</p>
+            
+            <div style="margin-top:15px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8f9fa; padding:10px; border-radius:12px;">
+                    <span style="font-size:13px; font-weight:600;"><i class="fa-brands fa-youtube" style="color:#e74c3c;"></i> यूट्यूब सब्सक्राइब (+100)</span>
+                    <button class="side-badge" style="border:none; cursor:pointer; background:#e74c3c; color:white; padding:5px 10px;" onclick="claimMediaBonus('youtube', 100, 'https://youtube.com/')">Follow</button>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8f9fa; padding:10px; border-radius:12px;">
+                    <span style="font-size:13px; font-weight:600;"><i class="fa-brands fa-telegram" style="color:#3498db;"></i> टेलीग्राम ग्रुप (+100)</span>
+                    <button class="side-badge" style="border:none; cursor:pointer; background:#3498db; color:white; padding:5px 10px;" onclick="claimMediaBonus('telegram', 100, 'https://telegram.org/')">Join</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ⚙️ 4. ऐप सेटिंग्स विजेट -->
+        <div id="widget-settings_tab" class="hidden-screen">
+            <h3>⚙️ Application Settings</h3>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• ऐप वर्जन: v4.0 अल्टीमेट प्रो (2026)</p>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• पेमेंट गेटवे सुरक्षा: एसेट लॉक एक्टिव 🔒</p>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:15px;">• सर्वर स्टेटस: ऑनलाइन 🟢</p>
+            <button class="btn-action" style="background:#7f8c8d;" onclick="closeBonusModal()">वापस जाएँ</button>
+        </div>
+    </div>
+</div>
+
+<!-- 🔐 मिस्ट्री बॉक्स पॉप-अप -->
+<div id="mysteryModal" class="modal-overlay hidden-screen">
+    <div class="modal-box">
+        <div class="close-btn" onclick="closeMysteryModal()">×</div>
+        <h3 id="mModalTitle">Unlock Box</h3>
+        <p style="font-size: 11px; color:#666; margin-bottom: 12px;">गेम खेलने पर आपके वॉलेट से 1,000 सिक्के काट लिए जाएंगे।</p>
+        <input type="number" id="mPinInput" placeholder="Enter PIN" autocomplete="off">
+        <button class="btn-action" id="mSubmitBtn" style="background: linear-gradient(45deg, #4e54c8, #8f94fb);" onclick="attemptMysteryUnlock()">Claim Reward (-1000)</button>
+    </div>
+</div>
+
+<audio id="winSound"><source src="https://docs.google.com/uc?export=download&id=1IG486iet9kCnOR3aWcV1rSsS6XTyckhX" type="audio/mpeg"></audio>
+<audio id="failSound"><source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg"></audio>
 
 <script type="module" src="app.js"></script>
 </body>
