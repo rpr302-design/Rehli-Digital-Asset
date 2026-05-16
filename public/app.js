@@ -155,29 +155,28 @@ async function checkKeyMonthLock(userMobile, key) {
 }
 
 // =================== 🎁 [Step 1: बाहर से चाबी को सिर्फ नोट करना] ===================
+// =================== 🎁 [Step 1: बाहर से चाबी को सिर्फ नोट करना] ===================
 window.verifyKey = async () => {
     const key = document.getElementById('userKey').value.trim();
     if (key.length !== 5) return showCustomAlert("अमान्य ❌", "5 अंकों की सही चाबी डालें।", "error");
 
     try {
+        // डेटाबेस में चाबी अस्तित्व की जांच
         const assetSnap = await getDoc(doc(db, "assets", key));
-        if (!assetSnap.exists()) return showCustomAlert("गलत चाबी ❌", "यह चाबी मान्य नहीं है! कृपया वीडियो दोबारा देखें।", "error");
+        if (!assetSnap.exists()) return showCustomAlert("गलत चाबी ❌", "यह चाबी मान्य नहीं है! कृपया वीडियो दोबारा ध्यान से देखें।", "error");
 
         const assetData = assetSnap.data();
         const winCoins = assetData.value || 100;
 
-        // बैकएंड सेशन में नोट करें
+        // चाबी और कॉइन्स को तुरंत बैकएंड सेशन मेमोरी में सेव करें
         sessionStorage.setItem('temp_key', key);
         sessionStorage.setItem('temp_coins', winCoins);
 
-        // सीधे मोबाइल नंबर बॉक्स को खोलें
-        document.getElementById('keySection').style.display = 'none';
-        document.getElementById('rewardSection').style.display = 'block';
-        document.getElementById('winAmount').innerText = "🔑 KEY NOTED";
-        document.getElementById('claimBtn').style.display = 'none';
-        document.getElementById('mobileBox').style.display = 'block';
+        // [सुधार]: पुराने कंटेनर को पूरी तरह छुपाकर केवल मोबाइल नंबर वाला सुंदर बॉक्स खोलें
+        document.getElementById('keySection').classList.add('hidden-screen');
+        document.getElementById('rewardSection').classList.remove('hidden-screen');
 
-    } catch (e) { showCustomAlert("Error", "सर्वर एरer!", "error"); }
+    } catch (e) { showCustomAlert("Error", "सर्वर एरर आया है!", "error"); }
 };
 
 // =================== 📱 [Step 2: मोबाइल एंट्री और सरल स्मार्ट लॉगिन गेटवे] ===================
