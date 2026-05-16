@@ -90,88 +90,128 @@
 <div id="dashboardContainer" class="hidden-screen">
     <div class="dashboard-wrapper">
         
-        <!-- 🍔 [प्रोफेशनल साइडबार मेनू (Hamburger Sidebar)] -->
+        <!-- 🍔 [प्रोफेशनल साइडबार मेनू] -->
         <div id="appSidebar" class="sidebar-menu">
             <div class="sidebar-header">
-                <div class="avatar" style="width:60px; height:60px;"><i class="fa-solid fa-user-shield"></i></div>
-                <h3 id="sideMenuUser" style="margin:10px 0 0; font-size:16px;">User Name</h3>
-                <span id="sideMenuPhone" style="font-size:12px; opacity:0.8;">+91 000</span>
+                <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
+                <h3 id="sideMenuUser">User Name</h3>
+                <span id="sideMenuPhone">+91 000</span>
             </div>
             <div class="sidebar-links">
-                <a href="#" onclick="openSidebarBonus('profile_tab')"><i class="fa-solid fa-id-card" style="color:#3498db;"></i> 🛠️ प्रोफाइल सेटअप करें <span class="side-badge">+500</span></a>
-                <a href="#" onclick="openSidebarBonus('refer_tab')"><i class="fa-solid fa-gift" style="color:#e67e22;"></i> 🎁 इनवाइट लिंक और रेफरल</a>
-                <a href="#" onclick="openSidebarBonus('social_tab')"><i class="fa-solid fa-hashtag" style="color:#e74c3c;"></i> 📱 सोशल मीडिया टास्क</a>
-                <a href="#" onclick="openSidebarBonus('settings_tab')"><i class="fa-solid fa-gear" style="color:#95a5a6;"></i> ⚙️ ऐप सेटिंग्स</a>
-                <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-                <a href="#" onclick="logout()" style="color:#e74c3c;"><i class="fa-solid fa-power-off"></i> लॉगआउट (Logout)</a>
+                <a href="#" onclick="switchAppTab('home')"><i class="fa-solid fa-house-chimney"></i> होम स्क्रीन (Home)</a>
+                <a href="#" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet" style="color:#2ecc71;"></i> मेरा वॉलेट (My Wallet)</a>
+                <a href="#" onclick="switchAppTab('profile')"><i class="fa-solid fa-id-card" style="color:#3498db;"></i> प्रोफाइल सेटअप (+500)</a>
+                <a href="#" onclick="switchAppTab('social')"><i class="fa-solid fa-hashtag" style="color:#e74c3c;"></i> सोशल मीडिया टास्क (+5000)</a>
+                <a href="#" onclick="switchAppTab('terms')"><i class="fa-solid fa-file-contract" style="color:#9b59b6;"></i> नियम एवं शर्तें (T&C)</a>
+                <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
+                <a href="#" onclick="logout()" style="color:#e74c3c;"><i class="fa-solid fa-power-off"></i> लॉगआउट</a>
             </div>
         </div>
         <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
 
-        <!-- टॉप एक्शन हेडर बार -->
+        <!-- टॉप हेडर -->
         <div class="header-bg">
             <div class="user-badge">
-                <div class="menu-trigger-btn" onclick="toggleSidebar(true)">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-                <div>
-                    <h2 id="dashUserName" style="margin:0; font-size: 16px;">नमस्ते!</h2>
-                    <span id="dashUserPhone" style="opacity: 0.8; font-size: 11px;">+91 0000</span>
-                </div>
+                <div class="menu-trigger-btn" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars"></i></div>
+                <div><h2 id="dashUserName" style="font-size:16px; margin:0;">नमस्ते!</h2><span id="dashUserPhone" style="font-size:11px; opacity:0.8;">+91 000</span></div>
             </div>
-            <div class="balance-pill">
-                <i class="fa-solid fa-coins" style="color:var(--gold)"></i> 
-                <span id="dashBalance">0</span>
-            </div>
+            <div class="balance-pill"><i class="fa-solid fa-coins" style="color:var(--gold)"></i> <span id="dashBalance">0</span></div>
         </div>
 
-        <!-- 🏠 टैब 1: मुख्य होम स्क्रीन -->
-        <div id="tab-home" class="app-tab-content">
-            <div class="section hidden-screen" id="promoVideoSection">
-                <div class="video-promo-box">
-                    <div class="v-badge">NEW VIDEO 🔴</div>
-                    <h4 id="lblPromoTitle" style="margin: 8px 0 2px 0; font-size: 13px;">लेटेस्ट वीडियो देखें और चाबी कमाएं</h4>
-                    <a id="btnPromoLink" href="#" target="_blank" class="btn-watch"><i class="fa-brands fa-youtube"></i> वीडियो देखें (Watch Now)</a>
-                </div>
-            </div>
-
-            <div class="section" style="margin-top:20px;">
-                <div class="earn-box">
-                    <h3 style="margin-top:0; font-size: 14px;"><i class="fa-solid fa-key" style="color:var(--primary)"></i> वीडियो कोड से सिक्के जोड़ें</h3>
-                    <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
-                    <button class="btn-action" style="padding: 12px; font-size:14px; background:linear-gradient(45deg, var(--primary), var(--secondary));" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 🔮 टैब 2: मिस्ट्री बॉक्स गेम स्क्रीन -->
-        <div id="tab-mystery" class="app-tab-content hidden-screen">
+        <!-- 💰 टैब: वॉलेट (Detailed Wallet) -->
+        <div id="tab-wallet" class="app-tab-content hidden-screen">
             <div class="section">
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <h3 style="margin:0; color:#333;">जादुई मिस्ट्री बॉक्स 🔮</h3>
-                    <span style="font-size:11px; color:#666;">फीस: 1,000 सिक्के | दैनिक लिमिट: <b id="remainingAttempts">3</b>/3</span>
-                </div>
-                
-                <div class="mystery-grid">
-                    <div class="m-box-card" onclick="openMysteryPinModal(1, 1, 10000, 'Silver Box')">
-                        <div class="m-icon">🎁</div>
-                        <h4>Silver Box</h4>
-                        <span style="color:#2ecc71; font-size:12px; font-weight:600;">Win 10K Coins</span>
-                    </div>
-                    <div class="m-box-card" style="border-color:var(--gold);" onclick="openMysteryPinModal(2, 3, 100000, 'Golden Box')">
-                        <div class="m-icon">💎</div>
-                        <h4>Golden Box</h4>
-                        <span style="color:var(--gold); font-size:12px; font-weight:600;">Win 100K Coins</span>
-                    </div>
-                    <div class="m-box-card" style="border-color:#ff4757;" onclick="openMysteryPinModal(3, 8, 0, 'Mega Jackpot')">
-                        <div class="m-icon">👑</div>
-                        <h4>Mega Box</h4>
-                        <span style="color:#ff4757; font-size:12px; font-weight:600;">₹1 लाख नकद</span>
+                <div class="earn-box" style="text-align: left; background: #fff;">
+                    <h3><i class="fa-solid fa-wallet"></i> एसेट बैलेंस शीट</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top:10px; font-size:13px;">
+                        <div style="display:flex; justify-content:space-between;"><span>कुल कमाई:</span><b id="wTotalEarned">0</b></div>
+                        <div style="display:flex; justify-content:space-between; color:#e67e22;"><span>रेफरल बोनस:</span><b id="wReferEarned">0</b></div>
+                        <div style="display:flex; justify-content:space-between; color:#e74c3c;"><span>कुल खर्च:</span><b id="wTotalSpent">0</b></div>
+                        <div style="padding:15px; background:#f8f9fa; border-radius:15px; text-align:center; border:1px dashed #2ecc71;">
+                            <span style="font-size:11px;">खर्च किए गए एसेट्स की वैल्यू</span>
+                            <h2 style="margin:5px 0; color:#2ecc71;" id="wSpentValue">₹ 0.00</h2>
+                            <small style="font-size:9px;">(20 एसेट्स = ₹1)</small>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- 👤 टैब: प्रोफाइल (एडवांस सेटअप & पिन रिकवरी) -->
+        <div id="tab-profile" class="app-tab-content hidden-screen">
+            <div class="section">
+                <!-- प्रोफाइल फॉर्म (पहली बार के लिए) -->
+                <div id="profileForm" class="earn-box hidden-screen" style="text-align:left;">
+                    <h3 style="text-align:center;">विवरण पूरा करें (+500)</h3>
+                    <input type="text" id="profName" placeholder="पूरा नाम">
+                    <input type="date" id="profDOB">
+                    <select id="profGender" class="key-input" style="width:100%;"><option value="Male">पुरुष</option><option value="Female">महिला</option></select>
+                    <input type="number" id="profPin" placeholder="4 अंकों का सुरक्षा पिन">
+                    <button class="btn-action" onclick="submitProfile()">सेव करें</button>
+                </div>
+
+                <!-- प्रोफाइल स्टेटस (अपडेट के बाद) -->
+                <div id="profileStatus" class="earn-box hidden-screen" style="text-align:left;">
+                    <div style="text-align:center;"><i class="fa-solid fa-circle-check" style="font-size:40px; color:#2ecc71;"></i><h3>Verified Account</h3></div>
+                    <p><b>नाम:</b> <span id="stName">-</span></p>
+                    <p><b>जन्मतिथि:</b> <span id="stDOB">-</span></p>
+                    <hr>
+                    <button class="btn-action" onclick="togglePinReset(true)" style="background:#4e54c8;">पिन बदलें</button>
+                    <p onclick="togglePinForgot(true)" style="text-align:center; font-size:12px; margin-top:10px; color:#666; cursor:pointer;">पिन भूल गए? (रिकवरी करें)</p>
+                </div>
+
+                <!-- पिन रीसेट / रिकवरी सेक्शन -->
+                <div id="pinResetArea" class="earn-box hidden-screen">
+                    <h4 id="pinTaskTitle">पिन बदलें</h4>
+                    <div id="resetFields">
+                        <input type="number" id="oldPinOrName" placeholder="पुराना पिन या नाम">
+                        <input type="text" id="recoveryDOB" class="hidden-screen" placeholder="जन्मतिथि">
+                        <input type="number" id="newPin" placeholder="नया 4 अंकों का पिन">
+                        <button class="btn-action" onclick="handlePinUpdate()">अपडेट करें</button>
+                        <button class="btn-action" onclick="switchAppTab('profile')" style="background:#95a5a6; margin-top:5px;">रद्द करें</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📱 टैब: सोशल मीडिया टास्क -->
+        <div id="tab-social" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div class="earn-box">
+                    <h3>सोशल मीडिया रिवॉर्ड्स</h3>
+                    <p style="font-size:11px; margin-bottom:15px;">प्रत्येक फॉलो पर पाएं +1000 सिक्के</p>
+                    <div class="social-grid" style="display:flex; flex-direction:column; gap:10px;">
+                        <button class="btn-action" style="background:#ff0000;" onclick="claimSocial('youtube')"><i class="fa-brands fa-youtube"></i> YouTube</button>
+                        <button class="btn-action" style="background:#1877f2;" onclick="claimSocial('facebook')"><i class="fa-brands fa-facebook"></i> Facebook</button>
+                        <button class="btn-action" style="background:#e4405f;" onclick="claimSocial('instagram')"><i class="fa-brands fa-instagram"></i> Instagram</button>
+                        <button class="btn-action" style="background:#0088cc;" onclick="claimSocial('telegram')"><i class="fa-brands fa-telegram"></i> Telegram</button>
+                        <button class="btn-action" style="background:#25d366;" onclick="claimSocial('whatsapp')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Channel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📄 टैब: नियम एवं शर्तें -->
+        <div id="tab-terms" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div class="earn-box" style="text-align:left;">
+                    <h3 style="color:#9b59b6;">नियम एवं शर्तें</h3>
+                    <p>• <b>एसेट वैल्यू:</b> 20 रहली डिजिटल एसेट = ₹1</p>
+                    <p>• प्रत्येक सोशल मीडिया टास्क के सिक्के (+1000) केवल एक बार ही मिलेंगे।</p>
+                    <p>• किसी भी दुकानदार को एसेट भेजने के लिए 4 अंकों का सुरक्षा पिन डालना अनिवार्य है।</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- बॉटम नेविगेशन -->
+        <nav class="nav-bar">
+            <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
+            <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
+            <div class="nav-pay-center" onclick="switchAppTab('pay')"><div class="pay-circle"><i class="fa-solid fa-qrcode"></i></div></div>
+            <a href="#" class="nav-link" id="nav-profile" onclick="switchAppTab('profile')"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
+        </nav>
+    </div>
+</div>
         <!-- 💸 टैब 3: दुकानदार पेमेंट गेटवे स्क्रीन -->
         <div id="tab-pay" class="app-tab-content hidden-screen">
             <div class="section">
