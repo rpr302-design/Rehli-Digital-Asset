@@ -22,16 +22,50 @@
 </div>
 
 <!-- [भाग 1: नया यूजर - गेटवे स्क्रीन] -->
+<!-- [भाग 1: नया/पुराना यूजर - गेटवे स्क्रीन] -->
 <div id="authContainer" class="hidden-screen">
     <div class="container">
-        <!-- स्टेप 1: चाबी एंट्री -->
+        
+        <!-- स्टेप 1: चाबी एंट्री सेक्शन -->
         <div id="keySection">
             <h2>नमस्ते! रिवॉर्ड्स अनलॉक करें 🎁</h2>
             <span class="lang-en">Welcome! Unlock Your Rewards</span>
-            <p style="font-size: 13px;">कृपया वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
+            <p style="font-size: 13px;">वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
             <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
             <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें (Check Key)</button>
+            
+            <!-- ✨ नया लॉगिन ऑप्शन (Direct Login for Old Users) -->
+            <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px;">
+                <p style="font-size: 12px; color: #fff; margin-bottom: 8px;">पहले से अकाउंट बना हुआ है?</p>
+                <button onclick="showDirectLogin()" style="background: rgba(255,255,255,0.2); border: 1px solid #fff; color: #fff; padding: 8px 20px; border-radius: 10px; font-size: 12px; cursor: pointer; font-weight: 600;">
+                    सीधे लॉगिन करें (Direct Login)
+                </button>
+            </div>
         </div>
+
+        <!-- स्टेप 2: मोबाइल एंट्री (चाबी के बाद या डायरेक्ट लॉगिन पर खुलेगा) -->
+        <div id="rewardSection" class="hidden-screen">
+            <div id="loginHeaderTitle">
+                <div class="coin-display" id="winAmount">🔑 KEY NOTED</div>
+                <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">VERIFICATION GATEWAY</p>
+            </div>
+            
+            <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" class="safe-img" alt="Vault" style="width:110px; margin:0 auto 15px;">
+            
+            <div id="mobileBox">
+                <label id="lblRefTag" style="font-size: 11px; font-weight: 600; color: #fff; text-align: left; display: block;">रेफरल कोड (Auto-Filled)</label>
+                <input type="text" id="userReferralInput" readonly style="background: rgba(255,255,255,0.2); color: #fff;">
+
+                <label style="font-size: 11px; font-weight: 600; color: #fff; text-align: left; display: block; margin-top: 5px;">पंजीकृत मोबाइल नंबर</label>
+                <input type="number" id="userMobile" placeholder="10 अंकों का मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                <button class="btn-action" id="btnFinalAuth" style="background: linear-gradient(to right, #11998e, #38ef7d);" onclick="saveMobile()">प्रवेश करें (Login)</button>
+                
+                <p id="backToKey" onclick="location.reload()" style="font-size: 11px; color: #fff; text-decoration: underline; margin-top: 15px; cursor: pointer; opacity: 0.8;">वापस चाबी वाले पेज पर जाएँ</p>
+            </div>
+        </div>
+
+    </div>
+</div>
 
         <!-- स्टेप 2: मोबाइल एंट्री और ऑटो-रेफरल कोड डिटेक्शन -->
         <div id="rewardSection" class="hidden-screen">
