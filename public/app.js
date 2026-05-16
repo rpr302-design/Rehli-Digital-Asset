@@ -263,48 +263,97 @@ window.processDashKey = async () => {
 
 // =================== 🍔 [साइडबार बोनस फीचर्स लॉजिक] ===================
 
-window.openSidebarBonus = (bonusType) => {
+// =================== 🍔 [साइडबार और प्रोफाइल बोनस फीचर्स लॉजिक] ===================
+
+window.openSidebarBonus = async (bonusType) => {
     window.toggleSidebar(false);
+    
+    // सभी विजेट्स को पहले छुपाएं
     ['profile_bonus', 'refer_bonus', 'social_bonus', 'settings'].forEach(b => {
         document.getElementById('widget-' + b).classList.add('hidden-screen');
     });
+
+    // 📝 प्रोफाइल बोनस ओपन होने पर डेटाबेस से पुराना डेटा ऑटो-लोड और मोबाइल नंबर लॉक करना
+    if (bonusType === 'profile_bonus') {
+        document.getElementById('profUserMobileLocked').value = "+91 " + mobile;
+        
+        try {
+            // अगर यूजर ने पहले से कुछ भर रखा है तो वो इनपुट बॉक्स में ऑटोमैटिक दिख जाएगा
+            const userSnap = await getDoc(doc(db, "users", mobile));
+            if (userSnap.exists()) {
+                const uData = userSnap.data();
+                if (uData.userName && uData.userName !== "नया यूजर") {
+                    document.getElementById('profFullNameInp').value = uData.userName;
+                }
+                if (uData.gender) document.getElementById('profGender').value = uData.gender;
+                if (uData.whatsapp) document.getElementById('profWhatsappInp').value = uData.whatsapp;
+                if (uData.securityPin) document.getElementById('profSecurityPinInp').value = uData.securityPin;
+            }
+        } catch (e) { console.error("Profile Load Error: ", e); }
+    }
 
     if (bonusType === 'refer_bonus') {
         document.getElementById('lblReferralCodeBox').innerText = `REHLI-${mobile.substring(6)}96`;
     }
 
+    // एक्टिव विजेट को दिखाएँ
     document.getElementById('widget-' + bonusType).classList.remove('hidden-screen');
     document.getElementById('bonusModal').classList.remove('hidden-screen');
 };
 
 window.closeBonusModal = () => document.getElementById('bonusModal').classList.add('hidden-screen');
 
+// 🏆 फाइनल और सुरक्षित प्रोफाइल बोनस क्लेम गेटवे
 window.claimProfileBonus = async () => {
-    const nameInput = document.getElementById('profFullNameInp').value.trim();
-    if (nameInput.length < 3) return showCustomAlert("त्रुटि ❌", "कृपया अपना पूरा नाम दर्ज करें!", "error");
+    const fullName = document.getElementById('profFullNameInp').value.trim();
+    const gender = document.getElementById('profGender').value;
+    const whatsapp = document.getElementById('profWhatsappInp').value.trim();
+    const securityPin = document.getElementById('profSecurityPinInp').value.trim();
+
+    // सख्त फॉर्म वैलिडेशन
+    if (!fullName || fullName.length < 3) return showCustomAlert("त्रुटि ❌", "कृपया अपना पूरा नाम सही दर्ज करें!", "error");
+    if (!gender) return showCustomAlert("त्रुटि ❌", "कृपया अपना लिंग (Gender) चुनें!", "error");
+    if (whatsapp.length !== 10) return showCustomAlert("त्रुटि ❌", "व्हाट्सएप नंबर पूरा 10 अंकों का होना चाहिए!", "error");
+    if (securityPin.length !== 4) return showCustomAlert("त्रुटि ❌", "सिक्योरिटी पिन पूरा 4 अंकों का होना चाहिए!", "error");
 
     try {
         const userRef = doc(db, "users", mobile);
         const userDoc = await getDoc(userRef);
         
-        if (userDoc.data().profileBonusClaimed) {
-            return showCustomAlert("नियम ब्लॉक ❌", "आप प्रोफाइल बोनस (+500 सिक्के) पहले ही क्लेम कर चुके हैं।", "error");
+        let currentBal = userDoc.data().balance || 0;
+        let bonusAdded = false;
+
+        // चेक करें कि क्या बोनस पहले क्लेम किया गया है
+        if (!userDoc.data().profileBonusClaimed) {
+            currentBal = currentBal + 500; // +500 सिक्का बोनस जोड़ें
+            bonusAdded = true;
         }
 
-        const currentBal = userDoc.data().balance || 0;
-        const newBalance = currentBal + 500;
+        // फायरबेस में डेटाबेस अपडेट करें (मोबाइल नंबर वही रहेगा, उसमें कोई छेड़छाड़ नहीं होगी)
+        await setDoc(userRef, { 
+            userName: fullName,
+            gender: gender,
+            whatsapp: whatsapp,
+            securityPin: securityPin,
+            balance: currentBal, 
+            profileBonusClaimed: true 
+        }, { merge: true });
 
-        await setDoc(userRef, { userName: nameInput, balance: newBalance, profileBonusClaimed: true }, { merge: true });
-
-        sessionStorage.setItem('cash_name', nameInput);
-        sessionStorage.setItem('cash_balance', newBalance);
-        renderDashboardUI(nameInput, newBalance);
-
+        // लोकल ऐप सेशन मेमोरी तुरंत सिंक करें
+        sessionStorage.setItem('cash_name', fullName);
+        sessionStorage.setItem('cash_balance', currentBal);
+        
+        // मुख्य स्क्रीन पर लाइव डेटा रिफ्रेश करें
+        renderDashboardUI(fullName, currentBal);
         closeBonusModal();
-        showCustomAlert("प्रोफाइल बोनस! 🎉", "प्रोफाइल पूरी करने पर +500 सिक्के आपके खाते में जोड़ दिए गए हैं।", "success");
-    } catch (e) { showCustomAlert("Error", "अपडेट फेल!", "error"); }
-};
 
+        if (bonusAdded) {
+            showCustomAlert("प्रोफाइल पूर्ण! 🎉", "आपका विवरण सुरक्षित हो गया है और खाते में +500 एसेट्स बोनस जमा कर दिए गए हैं।", "success");
+        } else {
+            showCustomAlert("अपडेट सफल! ✅", "आपका प्रोफाइल विवरण सफलता पूर्वक अपडेट कर दिया गया है।", "success");
+        }
+    } catch (e) { showCustomAlert("Error ❌", "विवरण सुरक्षित करने में सर्वर एरर आया!", "error"); }
+};
 window.shareReferralCode = () => {
     const code = document.getElementById('lblReferralCodeBox').innerText;
     const shareText = `*रहली डिजिटल एसेट नेटवर्क* ज्वाइन करें और मेरा रेफरल कोड *${code}* इस्तेमाल करके मुफ्त में +1000 वेलकम बोनस सिक्के कमाएं! ऐप लिंक: ${window.location.href}`;
