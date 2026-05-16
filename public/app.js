@@ -122,26 +122,55 @@ async function fetchAndCachePromoVideo() {
 }
 
 window.switchAppTab = async (tabName) => {
-    stopQRScanner();
+    // 1. साइडबार बंद करें
     window.toggleSidebar(false);
-    ['home', 'mystery', 'pay'].forEach(t => {
-        document.getElementById('tab-' + t).classList.add('hidden-screen');
-        const link = document.getElementById('nav-' + t);
-        if (link) link.classList.remove('active');
-    });
-    document.getElementById('nav-pay-circle').parentElement.classList.remove('active');
+    
+    // 2. सभी टैब छुपाएं
+    document.querySelectorAll('.app-tab-content').forEach(t => t.classList.add('hidden-screen'));
+    
+    // 3. चुना हुआ टैब दिखाएं
+    const targetTab = document.getElementById('tab-' + tabName);
+    if(targetTab) targetTab.classList.remove('hidden-screen');
 
-    document.getElementById('tab-' + tabName).classList.remove('hidden-screen');
-    if (tabName === 'pay') {
-        document.getElementById('nav-pay-circle').parentElement.classList.add('active');
-    } else {
-        const link = document.getElementById('nav-' + tabName);
-        if (link) link.add('active');
+    // 4. अगर वॉलेट टैब खुला है, तो डेटा लोड करें
+    if (tabName === 'wallet') {
+        await updateWalletSheet();
     }
-
-    if (tabName === 'mystery') await syncMysteryLimit();
-    if (tabName === 'pay') window.openPaymentArea();
+    
+    // 5. अगर प्रोफाइल खुला है
+    if (tabName === 'profile') await loadProfileStatus();
 };
+
+// 💰 वॉलेट का लाइव हिसाब निकालने का फंक्शन
+async function updateWalletSheet() {
+    try {
+        const userRef = doc(db, "users", mobile);
+        const userSnap = await getDoc(userRef);
+        const uData = userSnap.data();
+
+        // ट्रांजैक्शन हिस्ट्री से खर्च निकालें
+        const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", mobile)));
+        
+        let totalSpent = 0;
+        txSnap.forEach(d => totalSpent += (d.data().amount || 0));
+
+        const currentBalance = uData.balance || 0;
+        const totalEarned = currentBalance + totalSpent; // कुल कमाई = अभी का बैलेंस + जो खर्च किया
+        const referIncome = uData.referredBy !== "Direct" ? 1000 : 0; // उदाहरण
+
+        // HTML में डेटा भरें
+        document.getElementById('wTotalEarned').innerText = totalEarned + " एसेट्स";
+        document.getElementById('wTotalSpent').innerText = totalSpent + " एसेट्स";
+        document.getElementById('wReferEarned').innerText = referIncome + " एसेट्स";
+        
+        // 💸 रुपया कैलकुलेशन (20 एसेट = ₹1)
+        const cashValue = (totalSpent / 20).toFixed(2);
+        document.getElementById('wSpentValue').innerText = "₹ " + cashValue;
+
+    } catch (e) {
+        console.error("Wallet Error: ", e);
+    }
+}
 
 window.showCustomAlert = (title, msg, type) => {
     document.getElementById('alertTitle').innerText = title;
