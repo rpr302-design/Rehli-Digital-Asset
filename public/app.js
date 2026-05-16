@@ -121,28 +121,124 @@ async function fetchAndCachePromoVideo() {
     } catch (e) { console.error(e); }
 }
 
+// ... फायरबेस कॉन्फ़िगरेशन वही रहेगा ...
+
+// 📱 इन-ऐप टैब स्विचर
 window.switchAppTab = async (tabName) => {
     stopQRScanner();
     window.toggleSidebar(false);
-    ['home', 'mystery', 'pay'].forEach(t => {
-        document.getElementById('tab-' + t).classList.add('hidden-screen');
-        const link = document.getElementById('nav-' + t);
-        if (link) link.classList.remove('active');
-    });
-    document.getElementById('nav-pay-circle').parentElement.classList.remove('active');
-
+    document.querySelectorAll('.app-tab-content').forEach(t => t.classList.add('hidden-screen'));
     document.getElementById('tab-' + tabName).classList.remove('hidden-screen');
-    if (tabName === 'pay') {
-        document.getElementById('nav-pay-circle').parentElement.classList.add('active');
-    } else {
-        const link = document.getElementById('nav-' + tabName);
-        if (link) link.add('active');
-    }
-
-    if (tabName === 'mystery') await syncMysteryLimit();
-    if (tabName === 'pay') window.openPaymentArea();
+    
+    if (tabName === 'wallet') await updateWalletSheet();
+    if (tabName === 'profile') await loadProfileStatus();
 };
 
+// 👤 प्रोफाइल मैनेजमेंट लॉजिक
+async function loadProfileStatus() {
+    const userSnap = await getDoc(doc(db, "users", mobile));
+    const data = userSnap.data();
+    
+    if (!data.profileCompleted) {
+        document.getElementById('profileForm').classList.remove('hidden-screen');
+        document.getElementById('profileStatus').classList.add('hidden-screen');
+    } else {
+        document.getElementById('profileForm').classList.add('hidden-screen');
+        document.getElementById('profileStatus').classList.remove('hidden-screen');
+        document.getElementById('stName').innerText = data.userName;
+        document.getElementById('stDOB').innerText = data.dob;
+    }
+}
+
+window.submitProfile = async () => {
+    const name = document.getElementById('profName').value;
+    const dob = document.getElementById('profDOB').value;
+    const pin = document.getElementById('profPin').value;
+    const gender = document.getElementById('profGender').value;
+
+    if (!name || !dob || pin.length !== 4) return showCustomAlert("त्रुटि", "सभी जानकारी भरें!");
+
+    const userRef = doc(db, "users", mobile);
+    const snap = await getDoc(userRef);
+    const newBal = (snap.data().balance || 0) + 500;
+
+    await setDoc(userRef, {
+        userName: name, dob: dob, gender: gender, securityPin: pin,
+        balance: newBal, profileCompleted: true
+    }, { merge: true });
+
+    showCustomAlert("सफल!", "+500 एसेट्स आपके वॉलेट में जुड़ गए हैं।", "success");
+    loadProfileStatus();
+};
+
+// 🔑 पिन रिकवरी (Forgot PIN)
+window.togglePinForgot = (show) => {
+    document.getElementById('profileStatus').classList.add('hidden-screen');
+    document.getElementById('pinResetArea').classList.remove('hidden-screen');
+    document.getElementById('pinTaskTitle').innerText = "पिन रिकवरी (Forgot PIN)";
+    document.getElementById('oldPinOrName').placeholder = "अपना नाम भरें";
+    document.getElementById('recoveryDOB').classList.remove('hidden-screen');
+};
+
+window.handlePinUpdate = async () => {
+    const userRef = doc(db, "users", mobile);
+    const snap = await getDoc(userRef);
+    const data = snap.data();
+    const val1 = document.getElementById('oldPinOrName').value;
+    const dobRec = document.getElementById('recoveryDOB').value;
+    const newP = document.getElementById('newPin').value;
+
+    // यदि रिकवरी मोड है
+    if (!document.getElementById('recoveryDOB').classList.contains('hidden-screen')) {
+        if (val1 === data.userName && dobRec === data.dob) {
+            await setDoc(userRef, { securityPin: newP }, { merge: true });
+            showCustomAlert("सफल", "पिन बदल गया!", "success");
+            switchAppTab('profile');
+        } else {
+            showCustomAlert("गलत विवरण", "नाम या जन्मतिथि मैच नहीं हुई।", "error");
+        }
+    } else {
+        // यदि पिन चेंज मोड है
+        if (val1 === data.securityPin) {
+            await setDoc(userRef, { securityPin: newP }, { merge: true });
+            showCustomAlert("सफल", "पिन अपडेट हो गया!", "success");
+            switchAppTab('profile');
+        } else {
+            showCustomAlert("गलत पुराना पिन", "पुराना पिन सही नहीं है।", "error");
+        }
+    }
+};
+
+// 💰 वॉलेट शीट अपडेट
+async function updateWalletSheet() {
+    const userSnap = await getDoc(doc(db, "users", mobile));
+    const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", mobile)));
+    
+    let spent = 0;
+    txSnap.forEach(d => spent += d.data().amount);
+    
+    const balance = userSnap.data().balance || 0;
+    const totalEarned = balance + spent;
+
+    document.getElementById('wTotalEarned').innerText = totalEarned;
+    document.getElementById('wTotalSpent').innerText = spent;
+    document.getElementById('wSpentValue').innerText = "₹ " + (spent / 20).toFixed(2);
+}
+
+// 📱 सोशल मीडिया टास्क (One-Time)
+window.claimSocial = async (platform) => {
+    const userRef = doc(db, "users", mobile);
+    const snap = await getDoc(userRef);
+    const field = `task_${platform}_done`;
+
+    if (snap.data()[field]) return showCustomAlert("Block", "आप यह रिवॉर्ड ले चुके हैं।");
+
+    const newBal = (snap.data().balance || 0) + 1000;
+    await setDoc(userRef, { [field]: true, balance: newBal }, { merge: true });
+    
+    showCustomAlert("बधाई!", `+1000 एसेट्स क्रेडिट हो गए।`, "success");
+    loadDashboardData();
+};
 window.showCustomAlert = (title, msg, type) => {
     document.getElementById('alertTitle').innerText = title;
     document.getElementById('alertMsg').innerText = msg;
