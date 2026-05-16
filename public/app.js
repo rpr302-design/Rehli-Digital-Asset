@@ -14,9 +14,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let html5QrcodeScanner = null;
-let targetMerchantData = null;
-let mBoxType = 0, mDigits = 0, mReward = 0;
+let globalActiveMerchant = null; // [💥 मेसेज फेल्ड फिक्स]: दुकानदार डेटा स्टोर करने के लिए 100% सिक्योर वेरिएबल
 
+let mBoxType = 0, mDigits = 0, mReward = 0;
 const mobile = localStorage.getItem('userMobile');
 const todayDate = new Date().toISOString().substring(0, 10);
 
@@ -25,7 +25,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (mobile) {
         document.getElementById('dashboardContainer').classList.remove('hidden-screen');
         document.getElementById('authContainer').classList.add('hidden-screen');
-        document.getElementById('profMobile').innerText = mobile;
         
         switchAppTab('home');
         await loadCachedDashboard();
@@ -35,7 +34,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// फ़ायरबेस रीड्स को कम करने के लिए सेशन मेमोरी का उपयोग
+// साइडबार खोलना/बंद करना
+window.toggleSidebar = (open) => {
+    const sidebar = document.getElementById('appSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (open) {
+        sidebar.classList.add('open');
+        overlay.classList.remove('hidden-screen');
+    } else {
+        sidebar.classList.remove('open');
+        overlay.classList.add('hidden-screen');
+    }
+};
+
+// सेशन मेमोरी मैनेजमेंट (फायरबेस रीड्स सेविंग)
 async function loadCachedDashboard(forceRefresh = false) {
     const cachedName = sessionStorage.getItem('cash_name');
     const cachedBal = sessionStorage.getItem('cash_balance');
@@ -67,6 +79,10 @@ function renderDashboardUI(name, balance) {
     document.getElementById('dashUserName').innerText = `नमस्ते, ${name}! 👋`;
     document.getElementById('dashUserPhone').innerText = "+91 " + mobile;
     document.getElementById('dashBalance').innerText = balance;
+    
+    // साइडबार में भी लाइव नेम सिंक करना
+    document.getElementById('sideMenuUser').innerText = name;
+    document.getElementById('sideMenuPhone').innerText = "+91 " + mobile;
 }
 
 function renderCachedPromoVideo() {
@@ -111,7 +127,8 @@ async function fetchAndCachePromoVideo() {
 // इन-ऐप टैब स्विचिंग
 window.switchAppTab = async (tabName) => {
     stopQRScanner();
-    ['home', 'mystery', 'profile', 'pay'].forEach(t => {
+    window.toggleSidebar(false);
+    ['home', 'mystery', 'pay'].forEach(t => {
         document.getElementById('tab-' + t).classList.add('hidden-screen');
         const link = document.getElementById('nav-' + t);
         if (link) link.classList.remove('active');
@@ -122,14 +139,15 @@ window.switchAppTab = async (tabName) => {
     if (tabName === 'pay') {
         document.getElementById('nav-pay-circle').parentElement.classList.add('active');
     } else {
-        document.getElementById('nav-' + tabName).classList.add('active');
+        const link = document.getElementById('nav-' + tabName);
+        if (link) link.classList.add('active');
     }
 
     if (tabName === 'mystery') await syncMysteryLimit();
     if (tabName === 'pay') window.openPaymentArea();
 };
 
-// रंगीन कस्टम अलर्ट
+// प्रीमियम सेन्टर कलरफुल अलर्ट
 window.showCustomAlert = (title, msg, type) => {
     document.getElementById('alertTitle').innerText = title;
     document.getElementById('alertMsg').innerText = msg;
@@ -140,7 +158,7 @@ window.showCustomAlert = (title, msg, type) => {
 };
 window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
 
-// 🔒 एंटी-चीट चाबी प्रोटेक्शन (महीने में 1 बार लॉक चेकर)
+// 🔒 30 दिन लॉक चेकर
 async function checkKeyMonthLock(userMobile, key) {
     const snap = await getDoc(doc(db, "users", userMobile, "used_keys", key));
     if (snap.exists()) {
@@ -148,104 +166,71 @@ async function checkKeyMonthLock(userMobile, key) {
         if (claimTime) {
             const diff = Math.abs(new Date() - new Date(claimTime));
             const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            if (days <= 30) return false; // इस्तेमाल हो चुकी है
+            if (days <= 30) return false;
         }
     }
-    return true; // फ्रेश चाबी है
+    return true;
 }
 
-// =================== 🎁 [Step 1: बाहर से चाबी को सिर्फ नोट करना] ===================
-// =================== 🎁 [Step 1: बाहर से चाबी को सिर्फ नोट करना] ===================
+// चाबी नोट करना (नया यूजर)
 window.verifyKey = async () => {
     const key = document.getElementById('userKey').value.trim();
     if (key.length !== 5) return showCustomAlert("अमान्य ❌", "5 अंकों की सही चाबी डालें।", "error");
 
     try {
-        // डेटाबेस में चाबी अस्तित्व की जांच
         const assetSnap = await getDoc(doc(db, "assets", key));
-        if (!assetSnap.exists()) return showCustomAlert("गलत चाबी ❌", "यह चाबी मान्य नहीं है! कृपया वीडियो दोबारा ध्यान से देखें।", "error");
+        if (!assetSnap.exists()) return showCustomAlert("गलत चाबी ❌", "यह चाबी मान्य नहीं है! वीडियो ध्यान से देखें।", "error");
 
-        const assetData = assetSnap.data();
-        const winCoins = assetData.value || 100;
-
-        // चाबी और कॉइन्स को तुरंत बैकएंड सेशन मेमोरी में सेव करें
         sessionStorage.setItem('temp_key', key);
-        sessionStorage.setItem('temp_coins', winCoins);
+        sessionStorage.setItem('temp_coins', assetSnap.data().value || 100);
 
-        // [सुधार]: पुराने कंटेनर को पूरी तरह छुपाकर केवल मोबाइल नंबर वाला सुंदर बॉक्स खोलें
         document.getElementById('keySection').classList.add('hidden-screen');
         document.getElementById('rewardSection').classList.remove('hidden-screen');
-
-    } catch (e) { showCustomAlert("Error", "सर्वर एरर आया है!", "error"); }
+    } catch (e) { showCustomAlert("Error", "सर्वर एरर!", "error"); }
 };
 
-// =================== 📱 [Step 2: मोबाइल एंट्री और सरल स्मार्ट लॉगिन गेटवे] ===================
 window.saveMobile = async () => {
     const inputMobile = document.getElementById('userMobile').value.trim();
     const savedKey = sessionStorage.getItem('temp_key');
     const savedCoins = Number(sessionStorage.getItem('temp_coins') || 0);
 
     if (inputMobile.length !== 10) return showCustomAlert("त्रुटि ❌", "10 अंकों का सही मोबाइल नंबर डालें!", "error");
-    if (!savedKey) return showCustomAlert("त्रुटि ❌", "सत्र समाप्त! कृपया दोबारा चाबी दर्ज करें।", "error");
+    if (!savedKey) return showCustomAlert("त्रुटि ❌", "सत्र समाप्त! दोबारा चाबी दर्ज करें।", "error");
 
     try {
         const userRef = doc(db, "users", inputMobile);
         const userSnap = await getDoc(userRef);
 
-        // 1. यदि यूजर बिल्कुल नया है -> खाता बनाएं + वीडियो कॉइन्स + 1000 वेलकम बोनस!
         if (!userSnap.exists()) {
-            const finalCoins = savedCoins + 1000;
-            
-            await setDoc(userRef, { 
-                mobile: inputMobile, 
-                balance: finalCoins, 
-                userName: "नया यूजर",
-                regDate: new Date().toISOString() 
-            });
-
-            // चाबी इतिहास लॉक करें
-            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { 
-                key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() 
-            });
-
+            const finalCoins = savedCoins + 1000; // +1000 वेलकम बोनस
+            await setDoc(userRef, { mobile: inputMobile, balance: finalCoins, userName: "नया यूजर", regDate: new Date().toISOString() });
+            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() });
             localStorage.setItem('userMobile', inputMobile);
             document.getElementById('winSound').play();
-            showCustomAlert("Welcome Bonus! 🎉", `स्वागत है! नया अकाउंट बोनस +1000 और वीडियो के +${savedCoins} सिक्के आपके खाते में जोड़ दिए गए हैं।`, "success");
+            showCustomAlert("Welcome Bonus! 🎉", `अकाउंट बोनस +1000 और वीडियो के +${savedCoins} सिक्के क्रेडिट हो गए हैं!`, "success");
             setTimeout(() => location.reload(), 2500);
             return;
         }
 
-        // 2. यदि यूजर पुराना है -> बैकएंड में चेक करें कि क्या यह चाबी वह पहले इस्तेमाल कर चुका है?
         const isKeyFresh = await checkKeyMonthLock(inputMobile, savedKey);
-
         if (isKeyFresh) {
-            // पुराना यूजर + बिल्कुल नई चाबी -> पुराने बैलेंस में सिक्के जोड़ें
             const currentBal = userSnap.data().balance || 0;
-            const finalCoins = currentBal + savedCoins;
-            
-            await setDoc(userRef, { balance: finalCoins }, { merge: true });
-            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { 
-                key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() 
-            });
-
+            await setDoc(userRef, { balance: currentBal + savedCoins }, { merge: true });
+            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() });
             localStorage.setItem('userMobile', inputMobile);
             document.getElementById('winSound').play();
             showCustomAlert("सफलता 🎉", `चाबी वेरिफाई हो गई! +${savedCoins} सिक्के आपके अकाउंट में जोड़ दिए गए हैं।`, "success");
         } else {
-            // 🎯 [स्मार्ट लॉगिन]: पुराना यूजर + पहले उपयोग की जा चुकी चाबी -> कोई सिक्का नहीं जुड़ेगा, सीधा लॉगिन सफल!
             localStorage.setItem('userMobile', inputMobile);
-            showCustomAlert("लॉगिन सफल 👋", "यह चाबी आप पहले क्लेम कर चुके हैं। आपका अकाउंट सफलतापूर्वक लॉगिन कर दिया गया है!", "success");
+            showCustomAlert("लॉगिन सफल 👋", "यह चाबी आप पहले क्लेम कर चुके हैं। आपका अकाउंट लॉगिन कर दिया गया है!", "success");
         }
 
-        // सेशन मेमोरी साफ़ करें
         sessionStorage.removeItem('temp_key');
         sessionStorage.removeItem('temp_coins');
         setTimeout(() => location.reload(), 2500);
-
     } catch (e) { showCustomAlert("Error", "प्रोसेसिंग विफल!", "error"); }
 };
 
-// पुराना यूजर: डैशबोर्ड के अंदर से चाबी क्लेम करना
 window.processDashKey = async () => {
     const key = document.getElementById('dashSecretKey').value.trim();
     if (key.length !== 5) return showCustomAlert("Error", "5 अंकों की चाबी डालें!", "error");
@@ -259,9 +244,8 @@ window.processDashKey = async () => {
     const winValue = assetSnap.data().value || 0;
     const userRef = doc(db, "users", mobile);
     const userDoc = await getDoc(userRef);
-    const currentBal = userDoc.data().balance || 0;
+    const finalBalance = (userDoc.data().balance || 0) + winValue;
 
-    const finalBalance = currentBal + winValue;
     await setDoc(userRef, { balance: finalBalance }, { merge: true });
     await setDoc(doc(db, "users", mobile, "used_keys", key), { key: key, amount: winValue, claimedAt: new Date().toISOString() });
 
@@ -274,25 +258,99 @@ window.processDashKey = async () => {
     await fetchAndCachePromoVideo();
 };
 
-// =================== 🔮 [इन-ऐप मिस्ट्री बॉक्स मॉड्यूल] ===================
+// =================== 🍔 [साइडबार बोनस फीचर्स फंक्शन्स] ===================
+
+window.openSidebarBonus = (bonusType) => {
+    window.toggleSidebar(false);
+    ['profile_bonus', 'refer_bonus', 'social_bonus', 'settings'].forEach(b => {
+        document.getElementById('widget-' + b).classList.add('hidden-screen');
+    });
+
+    if (bonusType === 'refer_bonus') {
+        // डायनामिक रेफरल कोड बनाएं
+        document.getElementById('lblReferralCodeBox').innerText = `REHLI-${mobile.substring(6)}96`;
+    }
+
+    document.getElementById('widget-' + bonusType).classList.remove('hidden-screen');
+    document.getElementById('bonusModal').classList.remove('hidden-screen');
+};
+
+window.closeBonusModal = () => document.getElementById('bonusModal').classList.add('hidden-screen');
+
+// 1. प्रोफाइल बोनस क्लेम करें
+window.claimProfileBonus = async () => {
+    const nameInput = document.getElementById('profFullNameInp').value.trim();
+    if (nameInput.length < 3) return showCustomAlert("त्रुटि ❌", "कृपया अपना पूरा सही नाम दर्ज करें!", "error");
+
+    try {
+        const userRef = doc(db, "users", mobile);
+        const userDoc = await getDoc(userRef);
+        
+        if (userDoc.data().profileBonusClaimed) {
+            return showCustomAlert("नियम ब्लॉक ❌", "आप प्रोफाइल बोनस (+500 एसेट्स) पहले ही क्लेम कर चुके हैं।", "error");
+        }
+
+        const currentBal = userDoc.data().balance || 0;
+        const newBalance = currentBal + 500;
+
+        await setDoc(userRef, { 
+            userName: nameInput, 
+            balance: newBalance, 
+            profileBonusClaimed: true 
+        }, { merge: true });
+
+        sessionStorage.setItem('cash_name', nameInput);
+        sessionStorage.setItem('cash_balance', newBalance);
+        renderDashboardUI(nameInput, newBalance);
+
+        closeBonusModal();
+        showCustomAlert("प्रोफाइल बोनस! 🎉", "बधाई हो! प्रोफाइल पूरी करने पर +500 सिक्के क्रेडिट कर दिए गए हैं।", "success");
+    } catch (e) { showCustomAlert("Error", "प्रोफाइल अपडेट फेल!", "error"); }
+};
+
+// 2. रेफरल कोड शेयर
+window.shareReferralCode = () => {
+    const code = document.getElementById('lblReferralCodeBox').innerText;
+    const shareText = `*रहली डिजिटल एसेट नेटवर्क* ज्वाइन करें और मेरा रेफरल कोड *${code}* इस्तेमाल करके मुफ्त में +1000 वेलकम बोनस सिक्के कमाएं! ऐप लिंक यहाँ से खोलें: ${window.location.href}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+};
+
+// 3. सोशल मीडिया बोनस
+window.claimSocialBonus = async () => {
+    try {
+        const userRef = doc(db, "users", mobile);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.data().socialBonusClaimed) {
+            return showCustomAlert("नियम ब्लॉक ❌", "आप सोशल मीडिया बोनस पहले ही ले चुके हैं।", "error");
+        }
+
+        const currentBal = userDoc.data().balance || 0;
+        const newBalance = currentBal + 200;
+
+        await setDoc(userRef, { balance: newBalance, socialBonusClaimed: true }, { merge: true });
+        sessionStorage.setItem('cash_balance', newBalance);
+        renderDashboardUI(sessionStorage.getItem('cash_name'), newBalance);
+
+        closeBonusModal();
+        showCustomAlert("सोशल बोनस! 🎉", "चैनल ज्वाइन करने का बोनस +200 सिक्के क्रेडिट हो गया है।", "success");
+    } catch (e) { showCustomAlert("Error", "क्लेम फेल!", "error"); }
+};
+
+// =================== 🔮 [इन-ऐप मिस्ट्री बॉक्स] ===================
 async function syncMysteryLimit() {
     const limitSnap = await getDoc(doc(db, "users", mobile, "mystery_limit", todayDate));
-    const usedAttempts = limitSnap.exists() ? limitSnap.data().count || 0 : 0;
-    document.getElementById('remainingAttempts').innerText = 3 - usedAttempts;
+    document.getElementById('remainingAttempts').innerText = 3 - (limitSnap.exists() ? limitSnap.data().count || 0 : 0);
 }
 
 window.openMysteryPinModal = async (boxType, digits, reward, name) => {
     const limitSnap = await getDoc(doc(db, "users", mobile, "mystery_limit", todayDate));
-    const usedAttempts = limitSnap.exists() ? limitSnap.data().count || 0 : 0;
-    if (usedAttempts >= 3) return showCustomAlert("Limit Exceeded! 🚨", "आप एक दिन में केवल 3 बार ही मिस्ट्री बॉक्स खोल सकते हैं।", "error");
-
-    const currentBal = Number(sessionStorage.getItem('cash_balance') || 0);
-    if (currentBal < 1000) return showCustomAlert("Low Balance ❌", "गेम खेलने के लिए कम से कम 1000 सिक्के चाहिए।", "error");
+    if ((limitSnap.exists() ? limitSnap.data().count || 0 : 0) >= 3) return showCustomAlert("Limit Exceeded! 🚨", "आप एक दिन में केवल 3 बार ही मिस्ट्री बॉक्स खोल सकते हैं।", "error");
+    if (Number(sessionStorage.getItem('cash_balance') || 0) < 1000) return showCustomAlert("Low Balance ❌", "गेम खेलने के लिए मिनिमम 1000 सिक्के चाहिए।", "error");
 
     mBoxType = boxType; mDigits = digits; mReward = reward;
     const pinInp = document.getElementById('mPinInput');
-    pinInp.value = "";
-    pinInp.placeholder = `${digits} Digit PIN`;
+    pinInp.value = ""; pinInp.placeholder = `${digits} Digit PIN`;
     document.getElementById('mModalTitle').innerText = `Unlock ${name}`;
     document.getElementById('mysteryModal').classList.remove('hidden-screen');
 };
@@ -301,7 +359,7 @@ window.closeMysteryModal = () => document.getElementById('mysteryModal').classLi
 
 window.attemptMysteryUnlock = async () => {
     const userPinInput = document.getElementById('mPinInput').value.trim();
-    if (userPinInput.length !== mDigits) return alert(`Please enter full ${mDigits} digits!`);
+    if (userPinInput.length !== mDigits) return alert(`पिन पूरा भरें!`);
 
     closeMysteryModal();
     try {
@@ -320,10 +378,7 @@ window.attemptMysteryUnlock = async () => {
         else if (mBoxType === 3) correctPin = "TRAP-99X";
 
         const feesDeductedBalance = latestBalance - 1000;
-        await Promise.all([
-            setDoc(userRef, { balance: feesDeductedBalance }, { merge: true }),
-            setDoc(limitRef, { count: currentCount + 1 })
-        ]);
+        await Promise.all([ setDoc(userRef, { balance: feesDeductedBalance }, { merge: true }), setDoc(limitRef, { count: currentCount + 1 }) ]);
 
         if (userPinInput === correctPin) {
             const finalWinBal = feesDeductedBalance + mReward;
@@ -343,14 +398,15 @@ window.attemptMysteryUnlock = async () => {
     } catch (e) { console.error(e); }
 };
 
-// =================== 💸 [पेटीएम स्टाइल 2-Step पेमेंट गेटवे] ===================
+// =================== 💸 [पेटीएम स्टाइल 2-Step पेमेंट गेटवे - 100% फिक्स्ड] ===================
+
 window.openPaymentArea = () => {
     document.getElementById('payMerchantMobile').value = "";
     document.getElementById('payAmount').value = "";
     document.getElementById('payBillAmount').value = "";
     document.getElementById('merchantVerifyArea').classList.add('hidden-screen');
     document.getElementById('paymentFormArea').classList.add('hidden-screen');
-    targetMerchantData = null;
+    globalActiveMerchant = null; // रिसेट मर्चेंट वेरिएबल
 };
 
 window.startQRScanner = () => {
@@ -394,16 +450,18 @@ async function verifyAndFetchMerchant(shopMobile) {
         if (!mSnap.exists()) {
             document.getElementById('merchantVerifyArea').classList.add('hidden-screen');
             document.getElementById('paymentFormArea').classList.add('hidden-screen');
-            targetMerchantData = null;
+            globalActiveMerchant = null;
             return showCustomAlert("Not Found ❌", "यह दुकानदार डिजिटल नेटवर्क पर नहीं है।", "error");
         }
 
-        targetMerchantData = mSnap.data();
-        document.getElementById('lblVerifiedShopName').innerText = targetMerchantData.shopName + " 🏪";
-        document.getElementById('lblVerifiedShopPhone').innerText = "Shop ID: +91 " + targetMerchantData.mobile;
+        // [💥 फिक्स]: मर्चेंट डेटा को सही ग्लोबल वेरिएबल में असाइन किया
+        globalActiveMerchant = mSnap.data();
         
-        const minBill = targetMerchantData.minBillAmount || 100;
-        const maxTxn = targetMerchantData.perTxnLimit || 5000;
+        document.getElementById('lblVerifiedShopName').innerText = globalActiveMerchant.shopName + " 🏪";
+        document.getElementById('lblVerifiedShopPhone').innerText = "Shop ID: +91 " + globalActiveMerchant.mobile;
+        
+        const minBill = globalActiveMerchant.minBillAmount || 100;
+        const maxTxn = globalActiveMerchant.perTxnLimit || 5000;
         document.getElementById('lblShopRulesInfo').innerText = `शर्तें: न्यूनतम बिल ₹${minBill} | मैक्सिमम लिमिट ${maxTxn}`;
 
         document.getElementById('merchantVerifyArea').classList.remove('hidden-screen');
@@ -411,8 +469,12 @@ async function verifyAndFetchMerchant(shopMobile) {
     } catch (e) { console.error(e); }
 }
 
+// [💥 पूर्णतः संशोधित भुगतान फ़ंक्शन]: अब कभी भी "मेसेज फेल्ड" नहीं आएगा!
 window.processPayment = async () => {
-    if (!targetMerchantData) return;
+    if (!globalActiveMerchant) {
+        return showCustomAlert("त्रुटि ❌", "दुकानदार का वेरिफिकेशन खो गया है, कृपया दोबारा खोजें!", "error");
+    }
+    
     const amountStr = document.getElementById('payAmount').value;
     const billStr = document.getElementById('payBillAmount').value;
 
@@ -420,12 +482,12 @@ window.processPayment = async () => {
 
     const payAmount = Number(amountStr);
     const billAmount = Number(billStr);
-    const mMobile = targetMerchantData.mobile;
-    const perTxnLimit = targetMerchantData.perTxnLimit || 5000;
-    const minBillAmount = targetMerchantData.minBillAmount || 100;
+    const mMobile = globalActiveMerchant.mobile;
+    const perTxnLimit = globalActiveMerchant.perTxnLimit || 5000;
+    const minBillAmount = globalActiveMerchant.minBillAmount || 100;
 
-    if (billAmount < minBillAmount) return showCustomAlert("नियम उल्लंघन ❌", `न्यूनतम बिल राशि ₹${minBillAmount} होनी चाहिए।`, "error");
-    if (payAmount > perTxnLimit) return showCustomAlert("नियम उल्लंघन ❌", `एक बार में अधिकतम लिमिट ${perTxnLimit} सिक्के है।`, "error");
+    if (billAmount < minBillAmount) return showCustomAlert("नियम उल्लंघन ❌", `दुकान का न्यूनतम बिल ₹${minBillAmount} होना चाहिए।`, "error");
+    if (payAmount > perTxnLimit) return showCustomAlert("नियम उल्लंघन ❌", `इस दुकान पर एक बार में अधिकतम लिमिट ${perTxnLimit} सिक्के है।`, "error");
 
     try {
         const userRef = doc(db, "users", mobile);
@@ -435,21 +497,37 @@ window.processPayment = async () => {
         if (userCurrentBal < payAmount) return showCustomAlert("लो बैलेंस ❌", "वॉलेट में पर्याप्त सिक्के नहीं हैं!", "error");
 
         const newTxRef = doc(collection(db, "merchant_transactions"));
-        const currentMerchantBalance = targetMerchantData.balance || 0;
+        const currentMerchantBalance = globalActiveMerchant.balance || 0;
 
         const finalUserBal = userCurrentBal - payAmount;
+        
+        // फायरबेस में डेटा सुरक्षित रूप से सबमिट करें
         await Promise.all([
             setDoc(userRef, { balance: finalUserBal }, { merge: true }),
             setDoc(doc(db, "merchants", mMobile), { balance: currentMerchantBalance + payAmount }, { merge: true }),
-            setDoc(newTxRef, { txId: newTxRef.id, userMobile: mobile, merchantMobile: mMobile, amount: payAmount, billAmount: billAmount, timestamp: new Date().toISOString() })
+            setDoc(newTxRef, { 
+                txId: newTxRef.id, 
+                userMobile: mobile, 
+                merchantMobile: mMobile, 
+                amount: payAmount, 
+                billAmount: billAmount, 
+                timestamp: new Date().toISOString() 
+            })
         ]);
 
+        // [जादू]: यूआई और सेशन को तुरंत अपडेट करें
         sessionStorage.setItem('cash_balance', finalUserBal);
-        window.openPaymentArea();
-        showCustomAlert("भुगतान सफल! 💸", `सफलतापूर्वक ${payAmount} एसेट ${targetMerchantData.shopName} को ट्रांसफर हो गए।`, "success");
+        const successShopName = globalActiveMerchant.shopName;
+        
+        window.openPaymentArea(); // फॉर्म साफ़ करें
+        
+        // अब बिल्कुल सही "भुगतान सफल" का मैसेज ही ट्रिगर होगा
+        showCustomAlert("भुगतान सफल! 💸", `सफलतापूर्वक ${payAmount} एसेट ${successShopName} को ट्रांसफर हो गए हैं।`, "success");
         
         renderDashboardUI(sessionStorage.getItem('cash_name'), finalUserBal);
-    } catch (e) { showCustomAlert("Error", "पेमेंट fail हुआ!", "error"); }
+    } catch (e) { 
+        showCustomAlert("Error ❌", "सर्वर एरर: भुगतान विफल हुआ!", "error"); 
+    }
 };
 
 window.logout = () => {
