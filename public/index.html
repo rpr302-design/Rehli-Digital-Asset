@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप</title>
+    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v3.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -43,7 +43,7 @@
             
             <div id="mobileBox">
                 <p style="font-size: 13px; font-weight: 600;">सिक्के प्राप्त करने के लिए मोबाइल नंबर दर्ज करें</p>
-                <input type="number" id="userMobile" placeholder="आपका mobile नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                <input type="number" id="userMobile" placeholder="आपका मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
                 <button class="btn-action" style="background: linear-gradient(to right, #11998e, #38ef7d);" onclick="saveMobile()">पुष्टि करें (Confirm & Login)</button>
             </div>
         </div>
@@ -67,16 +67,14 @@
                 <a href="#" onclick="openSidebarBonus('social_bonus')"><i class="fa-solid fa-hashtag" style="color:#e74c3c;"></i> सोशल मीडिया फॉलो <span class="side-badge">+200</span></a>
                 <a href="#" onclick="openSidebarBonus('settings')"><i class="fa-solid fa-gear" style="color:#95a5a6;"></i> ऐप सेटिंग्स (Settings)</a>
                 <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-                <a href="#" onclick="logout()" style="color:#e74c3c;"><i class="fa-solid fa-power-off"></i> लॉगआउट (Logout)</a>
+                <a href="#" onclick="logout()" style="color:#e74c3c;"><i class="fa-solid fa-power-off"></i> लॉगआऊट (Logout)</a>
             </div>
         </div>
-        <!-- साइडबार का ब्लैक पर्दा बैकग्राउंड -->
         <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
 
-        <!-- टॉप प्रोफेशनल एक्शन हेडर बार -->
+        <!-- टॉप एक्शन हेडर बार -->
         <div class="header-bg">
             <div class="user-badge">
-                <!-- तीन लाइन वाला ऑप्शन (Hamburger Menu Button) -->
                 <div class="menu-trigger-btn" onclick="toggleSidebar(true)">
                     <i class="fa-solid fa-bars"></i>
                 </div>
@@ -138,7 +136,7 @@
             </div>
         </div>
 
-        <!-- 💸 टैब 3: दुकानदार पेमेंट गेटवे स्क्रीन (Paytm स्टाइल 2-Step - फिक्स्ड) -->
+        <!-- 💸 टैब 3: दुकानदार पेमेंट गेटवे स्क्रीन -->
         <div id="tab-pay" class="app-tab-content hidden-screen">
             <div class="section">
                 <div class="earn-box">
@@ -181,7 +179,6 @@
             <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
             <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
             
-            <!-- मुख्य भुगतान बटन (सेंटर) -->
             <div class="nav-pay-center" onclick="switchAppTab('pay')">
                 <div class="pay-circle" id="nav-pay-circle"><i class="fa-solid fa-qrcode"></i></div>
                 <span style="font-size:10px; font-weight:600; color:var(--primary); display:block; margin-top:2px;">पे (Pay)</span>
@@ -198,7 +195,6 @@
     <div class="modal-box">
         <div class="close-btn" onclick="closeBonusModal()">×</div>
         
-        <!-- प्रोफाइल पूरा करें विजेट -->
         <div id="widget-profile_bonus" class="hidden-screen">
             <h3>📝 प्रोफाइल विवरण पूरा करें</h3>
             <p style="font-size:12px; color:#666;">अपना पूरा कानूनी नाम दर्ज करें और तुरंत +500 अतिरिक्त एसेट बोनस पाएं!</p>
@@ -206,7 +202,6 @@
             <button class="btn-action" style="background:#3498db;" onclick="claimProfileBonus()">प्रोफाइल अपडेट करें (+500)</button>
         </div>
 
-        <!-- रेफरल कोड शेयर विजेट -->
         <div id="widget-refer_bonus" class="hidden-screen">
             <h3>🎁 रेफरल नेटवर्क शेयर</h3>
             <p style="font-size:12px; color:#666;">अपने दोस्तों को रहली डिजिटल एसेट ऐप पर आमंत्रित करें। आपका अनोखा रेफरल कोड नीचे है:</p>
@@ -214,18 +209,16 @@
             <button class="btn-action" style="background:#e67e22;" onclick="shareReferralCode()">व्हाट्सएप पर शेयर करें</button>
         </div>
 
-        <!-- सोशल मीडिया फॉलो विजेट -->
         <div id="widget-social_bonus" class="hidden-screen">
             <h3>🔴 सोशल मीडिया पर फॉलो करें</h3>
             <p style="font-size:12px; color:#666;">हमारे यूट्यूब चैनल और टेलीग्राम ग्रुप को ज्वाइन करके डिजिटल नेटवर्क का हिस्सा बनें और +200 सिक्के क्लेम करें।</p>
-            <a href="https://youtube.com/" target="_blank" class="btn-watch" style="margin-bottom:10px; background:#e74c3c;"><i class="fa-brands fa-youtube"></i> यूट्यूब सब्सक्राइब करें</a>
+            <a href="https://youtube.com/" target="_blank" class="btn-watch" style="margin-bottom:10px; background:#e74c3c; text-decoration:none;"><i class="fa-brands fa-youtube"></i> यूट्यूब सब्सक्राइब करें</a>
             <button class="btn-action" style="background:#2ecc71; margin-top:10px;" onclick="claimSocialBonus()">बोनस सिक्के क्लेम करें (+200)</button>
         </div>
 
-        <!-- ऐप सेटिंग्स विजेट -->
         <div id="widget-settings" class="hidden-screen">
-            <h3>⚙️ एप्लीकेशन सेटिंग्स</h3>
-            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• ऐप वर्जन: v3.0 प्रो (Premium Tier)</p>
+            <h3>⚙️ Application Settings</h3>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• ऐप वर्जन: v3.5 अल्टिमेट प्रो</p>
             <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• सर्वर स्टेटस: ऑनलाइन 🟢</p>
             <p style="font-size:12px; color:#666; text-align:left; margin-bottom:15px;">• सुरक्षा एन्क्रिप्शन: 256-Bit SSL</p>
             <button class="btn-action" style="background:#7f8c8d;" onclick="closeBonusModal()">वापस जाएँ</button>
