@@ -195,11 +195,32 @@
     <div class="modal-box">
         <div class="close-btn" onclick="closeBonusModal()">×</div>
         
-        <div id="widget-profile_bonus" class="hidden-screen">
-            <h3>📝 प्रोफाइल विवरण पूरा करें</h3>
-            <p style="font-size:12px; color:#666;">अपना पूरा कानूनी नाम दर्ज करें और तुरंत +500 अतिरिक्त एसेट बोनस पाएं!</p>
-            <input type="text" id="profFullNameInp" placeholder="आपका पूरा नाम (Full Name)">
-            <button class="btn-action" style="background:#3498db;" onclick="claimProfileBonus()">प्रोफाइल अपडेट करें (+500)</button>
+       <!-- 📝 नया एडवांस प्रोफाइल पूरा करें विजेट (In-App Form) -->
+        <div id="widget-profile_bonus" class="hidden-screen" style="text-align: left;">
+            <h3 style="text-align: center; margin-top: 0; color: var(--primary);"><i class="fa-solid fa-user-check"></i> अपनी प्रोफाइल पूरी करें</h3>
+            <p style="font-size:11px; color:#666; text-align: center; margin-top: -5px;">विवरण सुरक्षित करते ही पाएं <b style="color:var(--success);">+500 एसेट्स बोनस</b></p>
+            
+            <label style="font-size: 11px; font-weight: 600; color: #555;">पंजीकृत मोबाइल नंबर (Locked)</label>
+            <input type="text" id="profUserMobileLocked" readonly style="background: #e9ecef; color: #6c757d; cursor: not-allowed; border-color: #ddd;">
+
+            <label style="font-size: 11px; font-weight: 600; color: #555;">आपका पूरा नाम (Full Name)</label>
+            <input type="text" id="profFullNameInp" placeholder="आपका पूरा नाम दर्ज करें">
+
+            <label style="font-size: 11px; font-weight: 600; color: #555; display: block; margin-bottom: 5px;">आपका लिंग (Gender)</label>
+            <select id="profGender" style="width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 12px; font-size: 15px; margin-bottom: 12px; background: white; font-weight: 600;">
+                <option value="">लिंग चुनें (Select Gender)</option>
+                <option value="Male">पुरुष (Male)</option>
+                <option value="Female">महिला (Female)</option>
+                <option value="Other">अन्य (Other)</option>
+            </select>
+
+            <label style="font-size: 11px; font-weight: 600; color: #555;">व्हाट्सएप नंबर (WhatsApp Number)</label>
+            <input type="number" id="profWhatsappInp" placeholder="10 अंकों का व्हाट्सएप नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+
+            <label style="font-size: 11px; font-weight: 600; color: #555;">4 अंकों का सिक्योरिटी पिन (Security PIN)</label>
+            <input type="number" id="profSecurityPinInp" placeholder="• • • •" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc; text-security: disc;">
+
+            <button class="btn-action" style="background: linear-gradient(135deg, #3498db, #2980b9); margin-top: 10px;" onclick="claimProfileBonus()">प्रोफाइल सुरक्षित करें (+500)</button>
         </div>
 
         <div id="widget-refer_bonus" class="hidden-screen">
