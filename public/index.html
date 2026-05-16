@@ -64,13 +64,14 @@
                 <span id="sideMenuPhone" style="font-size:12px; opacity:0.8;">+91 000</span>
             </div>
             <div class="sidebar-links">
-                <a href="#" onclick="openSidebarBonus('profile_tab')"><i class="fa-solid fa-id-card" style="color:#3498db;"></i> 🛠️ प्रोफाइल सेटअप करें <span class="side-badge">+500</span></a>
-                <a href="#" onclick="openSidebarBonus('refer_tab')"><i class="fa-solid fa-gift" style="color:#e67e22;"></i> 🎁 इनवाइट लिंक और रेफरल</a>
-                <a href="#" onclick="openSidebarBonus('social_tab')"><i class="fa-solid fa-hashtag" style="color:#e74c3c;"></i> 📱 सोशल मीडिया टास्क</a>
-                <a href="#" onclick="openSidebarBonus('settings_tab')"><i class="fa-solid fa-gear" style="color:#95a5a6;"></i> ⚙️ ऐप सेटिंग्स</a>
-                <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-                <a href="#" onclick="logout()" style="color:#e74c3c;"><i class="fa-solid fa-power-off"></i> लॉगआउट (Logout)</a>
-            </div>
+    <a href="#" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i> होम</a>
+    <!-- ये नए ऑप्शंस जोड़ें -->
+    <a href="#" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i> मेरा वॉलेट</a>
+    <a href="#" onclick="switchAppTab('terms')"><i class="fa-solid fa-file-contract"></i> नियम एवं शर्तें</a>
+    
+    <a href="#" onclick="switchAppTab('profile')"><i class="fa-solid fa-user"></i> प्रोफाइल सेटअप</a>
+    <a href="#" onclick="logout()"><i class="fa-solid fa-power-off"></i> लॉगआउट</a>
+</div>
         </div>
         <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
 
@@ -109,7 +110,39 @@
                 </div>
             </div>
         </div>
+<!-- 💰 टैब 2: मेरा वॉलेट -->
+<div id="tab-wallet" class="app-tab-content hidden-screen">
+    <div class="section">
+        <div class="earn-box" style="text-align: left;">
+            <h3 style="color:var(--success);"><i class="fa-solid fa-chart-line"></i> एसेट बैलेंस शीट</h3>
+            <hr>
+            <p>कुल कमाए गए एसेट्स: <b id="wTotalEarned" style="float:right;">0</b></p>
+            <p>रेफरल से कमाई: <b id="wReferEarned" style="float:right;">0</b></p>
+            <p>कुल खर्च (Spent): <b id="wTotalSpent" style="float:right;">0</b></p>
+            <div style="margin-top:20px; padding:15px; background:#e8f5e9; border-radius:12px; text-align:center;">
+                <span style="font-size:12px; color:#666;">खर्च किए गए एसेट्स की कुल वैल्यू</span>
+                <h2 style="color:#2e7d32; margin:5px 0;" id="wSpentValue">₹ 0.00</h2>
+                <small style="font-size:9px;">(गणना का आधार: 20 एसेट = ₹1)</small>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- 📄 टैब 3: नियम एवं शर्तें -->
+<div id="tab-terms" class="app-tab-content hidden-screen">
+    <div class="section">
+        <div class="earn-box" style="text-align: left;">
+            <h3><i class="fa-solid fa-file-invoice"></i> नियम एवं शर्तें</h3>
+            <hr>
+            <div style="font-size:13px; line-height:1.6; color:#444;">
+                <p>1. <b>एसेट वैल्यू:</b> रहली डिजिटल एसेट नेटवर्क में 20 एसेट्स की कीमत ₹1 के बराबर है।</p>
+                <p>2. <b>ट्रांसफर:</b> कमाए गए एसेट्स को केवल अधिकृत मर्चेंट दुकानों पर ही भुनाया जा सकता है।</p>
+                <p>3. <b>सुरक्षा:</b> अपना 4 अंकों का पिन किसी को न बताएं।</p>
+                <p>4. <b>रेफरल:</b> एक सफल रेफरल पर 1000 एसेट्स दिए जाते हैं।</p>
+            </div>
+        </div>
+    </div>
+</div>
         <!-- 🔮 टैब 2: मिस्ट्री बॉक्स गेम स्क्रीन -->
         <div id="tab-mystery" class="app-tab-content hidden-screen">
             <div class="section">
