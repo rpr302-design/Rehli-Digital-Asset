@@ -12,6 +12,7 @@
 </head>
 <body>
 
+<!-- 🔔 प्रीमियम सेन्टर मेसेज बॉक्स -->
 <div id="customAlert" class="alert-overlay hidden-screen">
     <div class="alert-card">
         <div id="alertIcon">🎁</div>
@@ -21,8 +22,11 @@
     </div>
 </div>
 
+<!-- [भाग 1: नया यूजर - गेटवे स्क्रीन] -->
 <div id="authContainer" class="hidden-screen">
     <div class="container">
+        
+        <!-- स्टेप 1: सिर्फ चाबी डालने का सेक्शन -->
         <div id="keySection">
             <h2>नमस्ते! रिवॉर्ड्स अनलॉक करें 🎁</h2>
             <span class="lang-en">Welcome! Unlock Your Rewards</span>
@@ -31,21 +35,24 @@
             <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें (Check Key)</button>
         </div>
 
-        <div id="rewardSection">
-            <div class="coin-display" id="winAmount">0</div>
-            <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">GOLD ASSETS WON!</p>
+        <!-- स्टेप 2: चाबी वेरीफाई होने के बाद यह सेक्शन खुलेगा (शुरू में छुपा रहेगा) -->
+        <div id="rewardSection" class="hidden-screen">
+            <div class="coin-display" id="winAmount">🔑 KEY NOTED</div>
+            <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">VERIFICATION GATEWAY</p>
             <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" class="safe-img" alt="Vault" style="width:120px; margin:0 auto 15px;">
-            <button class="btn-action" id="claimBtn" onclick="showMobileInput()" style="background: linear-gradient(to right, #11998e, #38ef7d);">सिक्के खाते में जोड़ें (Add to Account)</button>
-
+            
+            <!-- मोबाइल बॉक्स - जो चाबी सही होने के बाद ही दिखेगा -->
             <div id="mobileBox">
-                <p style="font-size: 13px;">सिक्के प्राप्त करने के लिए मोबाइल नंबर दर्ज करें</p>
+                <p style="font-size: 13px; font-weight: 600;">सिक्के प्राप्त करने के लिए मोबाइल नंबर दर्ज करें</p>
                 <input type="number" id="userMobile" placeholder="आपका मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
-                <button class="btn-action" onclick="saveMobile()">पुष्टि करें (Confirm)</button>
+                <button class="btn-action" style="background: linear-gradient(to right, #11998e, #38ef7d);" onclick="saveMobile()">पुष्टि करें (Confirm & Login)</button>
             </div>
         </div>
+
     </div>
 </div>
 
+<!-- [भाग 2: मुख्य स्मार्टफोन एप्लीकेशन लेआउट] -->
 <div id="dashboardContainer" class="hidden-screen">
     <div class="dashboard-wrapper">
         
@@ -74,7 +81,7 @@
 
             <div class="section" style="margin-top:20px;">
                 <div class="earn-box">
-                    <h3 style="margin-top:0; font-size: 14px;"><i class="fa-solid fa-key" style="color:var(--primary)"></i> वीडियो कोड से सिक्के जोड़ें</h3>
+                    <h3 style="margin-top:0; font-size: 14px;"><i class="fa-solid fa-key" style="color:var(--primary)"></i> वीडियो कोड से सिक्के जोड़ें</h3>
                     <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
                     <button class="btn-action" style="padding: 12px; font-size:14px; background:linear-gradient(45deg, var(--primary), var(--secondary));" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
                 </div>
@@ -131,7 +138,7 @@
                     </div>
 
                     <button class="btn-action" id="btnStartScan" style="background:#27ae60; margin-bottom:15px;" onclick="startQRScanner()">
-                        <i class="fa-solid fa-camera"></i> दुकान का QR कोड स्कैन करें
+                        <i class="fa-solid fa-camera"></i>  दुकान का QR कोड स्कैन करें
                     </button>
 
                     <div style="font-size:11px; color:#888; margin-bottom:10px;">या मैन्युअल नंबर से खोजें</div>
