@@ -183,55 +183,80 @@ window.verifyKey = async () => {
 };
 
 // =================== 📱 [खाता निर्माण + ऑटो रेफरल नियम] ===================
+// ✨ नया फंक्शन: सीधे लॉगिन विंडो दिखाना
+window.showDirectLogin = () => {
+    // चाबी और रिवॉर्ड्स से जुडी चीजें हटा दें
+    sessionStorage.removeItem('temp_key');
+    sessionStorage.removeItem('temp_coins');
+    
+    // UI अपडेट करें
+    document.getElementById('keySection').classList.add('hidden-screen');
+    document.getElementById('rewardSection').classList.remove('hidden-screen');
+    
+    // टाइटल बदलें ताकि यूजर को पता चले कि वह सिर्फ लॉगिन कर रहा है
+    document.getElementById('loginHeaderTitle').innerHTML = `
+        <h2 style="color:#fff; margin-bottom:0;">Welcome Back!</h2>
+        <p style="color:#fff; font-size:12px; opacity:0.8;">अपना नंबर डालकर अकाउंट खोलें</p>
+    `;
+    
+    // रेफरल कोड वाला बॉक्स लॉगिन में छुपा दें (जरूरत नहीं है)
+    document.getElementById('lblRefTag').style.display = 'none';
+    document.getElementById('userReferralInput').style.display = 'none';
+    document.getElementById('btnFinalAuth').innerText = "अकाउंट लॉगिन करें";
+};
+
+// [संशोधित saveMobile]: इसमें चेक करेंगे कि यूजर लॉगिन कर रहा है या नया अकाउंट बना रहा है
 window.saveMobile = async () => {
     const inputMobile = document.getElementById('userMobile').value.trim();
     const refCodeUsed = document.getElementById('userReferralInput').value.trim();
     const savedKey = sessionStorage.getItem('temp_key');
     const savedCoins = Number(sessionStorage.getItem('temp_coins') || 0);
 
-    if (inputMobile.length !== 10) return showCustomAlert("त्रुटि ❌", "10 अंकों का सही मोबाइल नंबर डालें!", "error");
-    if (!savedKey) return showCustomAlert("त्रुटि ❌", "सत्र समाप्त! दोबारा चाबी दर्ज करें।", "error");
+    if (inputMobile.length !== 10) return showCustomAlert("त्रुटि ❌", "कृपया सही मोबाइल नंबर डालें!", "error");
 
     try {
         const userRef = doc(db, "users", inputMobile);
         const userSnap = await getDoc(userRef);
 
-        if (!userSnap.exists()) {
-            // नया खाता निर्माण गेटवे + 1000 वेलकम बोनस
-            let welcomeCoins = savedCoins + 1000;
-            
-            await setDoc(userRef, { 
-                mobile: inputMobile, 
-                balance: welcomeCoins, 
-                userName: "नया यूजर", 
-                referredBy: refCodeUsed || "Direct",
-                regDate: new Date().toISOString() 
-            });
-
-            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() });
-            localStorage.setItem('userMobile', inputMobile);
-            document.getElementById('winSound').play();
-            showCustomAlert("अकाउंट बन गया! 🎉", `स्वागत बोनस +1000 और वीडियो के +${savedCoins} सिक्के क्रेडिट हो गए हैं!`, "success");
-            setTimeout(() => location.reload(), 2500);
+        // स्थिति 1: अगर यूजर ने चाबी नहीं डाली (Direct Login Mode)
+        if (!savedKey) {
+            if (userSnap.exists()) {
+                localStorage.setItem('userMobile', inputMobile);
+                showCustomAlert("लॉगिन सफल 👋", "आपका स्वागत है! ऐप लोड हो रहा है...", "success");
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showCustomAlert("खाता नहीं मिला ❌", "इस नंबर से कोई अकाउंट नहीं बना है। कृपया पहले चाबी डालकर अकाउंट बनाएं।", "error");
+            }
             return;
         }
 
-        const isKeyFresh = await checkKeyMonthLock(inputMobile, savedKey);
-        if (isKeyFresh) {
-            const currentBal = userSnap.data().balance || 0;
-            await setDoc(userRef, { balance: currentBal + savedCoins }, { merge: true });
+        // स्थिति 2: अगर चाबी डालकर आया है (पुराना logic - वैसा ही रहेगा)
+        if (!userSnap.exists()) {
+            // New User Registration... (आपका पुराना कोड यहाँ रहेगा)
+            let welcomeCoins = savedCoins + 1000;
+            await setDoc(userRef, { mobile: inputMobile, balance: welcomeCoins, userName: "नया यूजर", referredBy: refCodeUsed || "Direct", regDate: new Date().toISOString() });
             await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() });
             localStorage.setItem('userMobile', inputMobile);
             document.getElementById('winSound').play();
-            showCustomAlert("सफलता 🎉", `चाबी वेरिफाई हो गई! +${savedCoins} सिक्के आपके अकाउंट में जोड़ दिए गए हैं।`, "success");
+            showCustomAlert("बधाई हो! 🎉", `+1000 बोनस और +${savedCoins} सिक्के क्रेडिट हो गए!`, "success");
+            setTimeout(() => location.reload(), 2000);
         } else {
-            localStorage.setItem('userMobile', inputMobile);
-            showCustomAlert("लॉगिन सफल 👋", "अकाउंट सफलतापूर्वक लॉगिन कर दिया गया है!", "success");
+            // Existing User with Key...
+            const isKeyFresh = await checkKeyMonthLock(inputMobile, savedKey);
+            if (isKeyFresh) {
+                const currentBal = userSnap.data().balance || 0;
+                await setDoc(userRef, { balance: currentBal + savedCoins }, { merge: true });
+                await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() });
+                localStorage.setItem('userMobile', inputMobile);
+                showCustomAlert("सफलता 🎉", `+${savedCoins} सिक्के अकाउंट में जुड़ गए।`, "success");
+            } else {
+                localStorage.setItem('userMobile', inputMobile);
+                showCustomAlert("लॉगिन सफल 👋", "अकाउंट सफलतापूर्वक लॉगिन हो गया है!", "success");
+            }
+            setTimeout(() => location.reload(), 2000);
         }
-
         sessionStorage.removeItem('temp_key');
         sessionStorage.removeItem('temp_coins');
-        setTimeout(() => location.reload(), 2000);
     } catch (e) { showCustomAlert("Error", "प्रोसेसिंग विफल!", "error"); }
 };
 
