@@ -15,21 +15,18 @@ const db = getFirestore(app);
 
 let html5QrcodeScanner = null;
 let targetMerchantData = null;
-
-// मिस्ट्री बॉक्स स्टेट ट्रैकर्स
 let mBoxType = 0, mDigits = 0, mReward = 0;
 
 const mobile = localStorage.getItem('userMobile');
 const todayDate = new Date().toISOString().substring(0, 10);
 
-// 🎯 [भाग 1: स्मार्ट गेटकीपर और फ़ायरबेस रीड कंट्रोलर]
+// 🎯 [स्मार्ट गेटकीपर और इन-ऐप मैनेजर]
 window.addEventListener('DOMContentLoaded', async () => {
     if (mobile) {
         document.getElementById('dashboardContainer').classList.remove('hidden-screen');
         document.getElementById('authContainer').classList.add('hidden-screen');
         document.getElementById('profMobile').innerText = mobile;
         
-        // इन-ऐप टैब और लोकल कैशिंग को लोड करें
         switchAppTab('home');
         await loadCachedDashboard();
     } else {
@@ -38,17 +35,15 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// 🔒 [यूनिक रीफ्रेश प्रोटेक्शन]: फ़ायरबेस रीड्स को 90% कम करने के लिए सेशन मेमोरी का उपयोग
+// फ़ायरबेस रीड्स को कम करने के लिए सेशन मेमोरी का उपयोग
 async function loadCachedDashboard(forceRefresh = false) {
     const cachedName = sessionStorage.getItem('cash_name');
     const cachedBal = sessionStorage.getItem('cash_balance');
 
     if (cachedName && cachedBal && !forceRefresh) {
-        // अगर मेमोरी में डेटा है, तो फ़ायरबेस कॉल नहीं होगी (0 Reads खर्च)
         renderDashboardUI(cachedName, cachedBal);
         renderCachedPromoVideo();
     } else {
-        // केवल पहली बार या डेटा बदलने पर ही फ़ायरबेस से लोड होगा
         try {
             const userSnap = await getDoc(doc(db, "users", mobile));
             if (userSnap.exists()) {
@@ -60,7 +55,7 @@ async function loadCachedDashboard(forceRefresh = false) {
                 sessionStorage.setItem('cash_balance', balance);
                 
                 renderDashboardUI(name, balance);
-                await fetchAndCachePromoVideo(); // वीडियो डेटा सुरक्षित रूप से स्कैन करें
+                await fetchAndCachePromoVideo();
             } else {
                 window.logout();
             }
@@ -74,7 +69,6 @@ function renderDashboardUI(name, balance) {
     document.getElementById('dashBalance').innerText = balance;
 }
 
-// 📺 वीडियो विजेट के रीड्स कंट्रोल करना (24 घंटे का लॉक)
 function renderCachedPromoVideo() {
     const pTitle = localStorage.getItem('promo_title');
     const pLink = localStorage.getItem('promo_link');
@@ -114,10 +108,9 @@ async function fetchAndCachePromoVideo() {
     } catch (e) { console.error(e); }
 }
 
-// 📱 इन-ऐप टैब स्विचिंग आर्किटेक्चर (नो न्यू टैब)
+// इन-ऐप टैब स्विचिंग
 window.switchAppTab = async (tabName) => {
     stopQRScanner();
-    // सभी टैब और लिंक्स को छुपाएं
     ['home', 'mystery', 'profile', 'pay'].forEach(t => {
         document.getElementById('tab-' + t).classList.add('hidden-screen');
         const link = document.getElementById('nav-' + t);
@@ -125,7 +118,6 @@ window.switchAppTab = async (tabName) => {
     });
     document.getElementById('nav-pay-circle').parentElement.classList.remove('active');
 
-    // एक्टिव टैब को ओपन करें
     document.getElementById('tab-' + tabName).classList.remove('hidden-screen');
     if (tabName === 'pay') {
         document.getElementById('nav-pay-circle').parentElement.classList.add('active');
@@ -133,12 +125,11 @@ window.switchAppTab = async (tabName) => {
         document.getElementById('nav-' + tabName).classList.add('active');
     }
 
-    // स्पेशल टैब एक्शन्स
     if (tabName === 'mystery') await syncMysteryLimit();
     if (tabName === 'pay') window.openPaymentArea();
 };
 
-// 🔔 रंगीन कस्टम अलर्ट
+// रंगीन कस्टम अलर्ट
 window.showCustomAlert = (title, msg, type) => {
     document.getElementById('alertTitle').innerText = title;
     document.getElementById('alertMsg').innerText = msg;
@@ -149,7 +140,7 @@ window.showCustomAlert = (title, msg, type) => {
 };
 window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
 
-// 🔐 एंटी-चीट चाबी प्रोटेक्शन (महीने में 1 बार लॉक)
+// 🔒 एंटी-चीट चाबी प्रोटेक्शन (महीने में 1 बार लॉक चेकर)
 async function checkKeyMonthLock(userMobile, key) {
     const snap = await getDoc(doc(db, "users", userMobile, "used_keys", key));
     if (snap.exists()) {
@@ -157,53 +148,105 @@ async function checkKeyMonthLock(userMobile, key) {
         if (claimTime) {
             const diff = Math.abs(new Date() - new Date(claimTime));
             const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            if (days <= 30) return false;
+            if (days <= 30) return false; // इस्तेमाल हो चुकी है
         }
     }
-    return true;
+    return true; // फ्रेश चाबी है
 }
 
-// चाबी वेरिफिकेशन (नया यूजर)
+// =================== 🎁 [Step 1: बाहर से चाबी को सिर्फ नोट करना] ===================
 window.verifyKey = async () => {
     const key = document.getElementById('userKey').value.trim();
-    if (key.length !== 5) return showCustomAlert("Invalid ❌", "5 अंकों की सही चाबी डालें।", "error");
+    if (key.length !== 5) return showCustomAlert("अमान्य ❌", "5 अंकों की सही चाबी डालें।", "error");
 
-    const assetSnap = await getDoc(doc(db, "assets", key));
-    if (!assetSnap.exists()) return showCustomAlert("Error ❌", "गलत चाबी! वीडियो दोबारा देखें।", "error");
+    try {
+        const assetSnap = await getDoc(doc(db, "assets", key));
+        if (!assetSnap.exists()) return showCustomAlert("गलत चाबी ❌", "यह चाबी मान्य नहीं है! कृपया वीडियो दोबारा देखें।", "error");
 
-    wonCoins = assetSnap.data().value || 100;
-    tempVerifiedKey = key;
-    document.getElementById('winSound').play();
-    document.getElementById('keySection').style.display = 'none';
-    document.getElementById('rewardSection').style.display = 'block';
-    document.getElementById('winAmount').innerText = wonCoins + " COINS";
+        const assetData = assetSnap.data();
+        const winCoins = assetData.value || 100;
+
+        // बैकएंड सेशन में नोट करें
+        sessionStorage.setItem('temp_key', key);
+        sessionStorage.setItem('temp_coins', winCoins);
+
+        // सीधे मोबाइल नंबर बॉक्स को खोलें
+        document.getElementById('keySection').style.display = 'none';
+        document.getElementById('rewardSection').style.display = 'block';
+        document.getElementById('winAmount').innerText = "🔑 KEY NOTED";
+        document.getElementById('claimBtn').style.display = 'none';
+        document.getElementById('mobileBox').style.display = 'block';
+
+    } catch (e) { showCustomAlert("Error", "सर्वर एरer!", "error"); }
 };
 
-window.showMobileInput = () => {
-    document.getElementById('claimBtn').style.display = 'none';
-    document.getElementById('mobileBox').style.display = 'block';
-};
-
+// =================== 📱 [Step 2: मोबाइल एंट्री और सरल स्मार्ट लॉगिन गेटवे] ===================
 window.saveMobile = async () => {
     const inputMobile = document.getElementById('userMobile').value.trim();
-    if (inputMobile.length !== 10) return showCustomAlert("Error", "10 अंकों का नंबर डालें!", "error");
+    const savedKey = sessionStorage.getItem('temp_key');
+    const savedCoins = Number(sessionStorage.getItem('temp_coins') || 0);
 
-    const isAllowed = await checkKeyMonthLock(inputMobile, tempVerifiedKey);
-    if (!isAllowed) return showCustomAlert("प्रवेश बंद 🚨", "आप इस चाबी का इस्तेमाल इस महीने कर चुके हैं!", "error");
+    if (inputMobile.length !== 10) return showCustomAlert("त्रुटि ❌", "10 अंकों का सही मोबाइल नंबर डालें!", "error");
+    if (!savedKey) return showCustomAlert("त्रुटि ❌", "सत्र समाप्त! कृपया दोबारा चाबी दर्ज करें।", "error");
 
-    const userRef = doc(db, "users", inputMobile);
-    const userSnap = await getDoc(userRef);
-    const finalCoins = userSnap.exists() ? (userSnap.data().balance || 0) + wonCoins : wonCoins;
+    try {
+        const userRef = doc(db, "users", inputMobile);
+        const userSnap = await getDoc(userRef);
 
-    await setDoc(userRef, { mobile: inputMobile, balance: finalCoins, regDate: new Date().toISOString() }, { merge: true });
-    await setDoc(doc(db, "users", inputMobile, "used_keys", tempVerifiedKey), { key: tempVerifiedKey, amount: wonCoins, claimedAt: new Date().toISOString() });
+        // 1. यदि यूजर बिल्कुल नया है -> खाता बनाएं + वीडियो कॉइन्स + 1000 वेलकम बोनस!
+        if (!userSnap.exists()) {
+            const finalCoins = savedCoins + 1000;
+            
+            await setDoc(userRef, { 
+                mobile: inputMobile, 
+                balance: finalCoins, 
+                userName: "नया यूजर",
+                regDate: new Date().toISOString() 
+            });
 
-    localStorage.setItem('userMobile', inputMobile);
-    showCustomAlert("Success 🎉", "अकाउंट सफलतापूर्वक एक्टिव हो गया है।", "success");
-    setTimeout(() => location.reload(), 1500);
+            // चाबी इतिहास लॉक करें
+            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { 
+                key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() 
+            });
+
+            localStorage.setItem('userMobile', inputMobile);
+            document.getElementById('winSound').play();
+            showCustomAlert("Welcome Bonus! 🎉", `स्वागत है! नया अकाउंट बोनस +1000 और वीडियो के +${savedCoins} सिक्के आपके खाते में जोड़ दिए गए हैं।`, "success");
+            setTimeout(() => location.reload(), 2500);
+            return;
+        }
+
+        // 2. यदि यूजर पुराना है -> बैकएंड में चेक करें कि क्या यह चाबी वह पहले इस्तेमाल कर चुका है?
+        const isKeyFresh = await checkKeyMonthLock(inputMobile, savedKey);
+
+        if (isKeyFresh) {
+            // पुराना यूजर + बिल्कुल नई चाबी -> पुराने बैलेंस में सिक्के जोड़ें
+            const currentBal = userSnap.data().balance || 0;
+            const finalCoins = currentBal + savedCoins;
+            
+            await setDoc(userRef, { balance: finalCoins }, { merge: true });
+            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { 
+                key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() 
+            });
+
+            localStorage.setItem('userMobile', inputMobile);
+            document.getElementById('winSound').play();
+            showCustomAlert("सफलता 🎉", `चाबी वेरिफाई हो गई! +${savedCoins} सिक्के आपके अकाउंट में जोड़ दिए गए हैं।`, "success");
+        } else {
+            // 🎯 [स्मार्ट लॉगिन]: पुराना यूजर + पहले उपयोग की जा चुकी चाबी -> कोई सिक्का नहीं जुड़ेगा, सीधा लॉगिन सफल!
+            localStorage.setItem('userMobile', inputMobile);
+            showCustomAlert("लॉगिन सफल 👋", "यह चाबी आप पहले क्लेम कर चुके हैं। आपका अकाउंट सफलतापूर्वक लॉगिन कर दिया गया है!", "success");
+        }
+
+        // सेशन मेमोरी साफ़ करें
+        sessionStorage.removeItem('temp_key');
+        sessionStorage.removeItem('temp_coins');
+        setTimeout(() => location.reload(), 2500);
+
+    } catch (e) { showCustomAlert("Error", "प्रोसेसिंग विफल!", "error"); }
 };
 
-// पुराना यूजर: डैशबोर्ड से चाबी क्लेम करना
+// पुराना यूजर: डैशबोर्ड के अंदर से चाबी क्लेम करना
 window.processDashKey = async () => {
     const key = document.getElementById('dashSecretKey').value.trim();
     if (key.length !== 5) return showCustomAlert("Error", "5 अंकों की चाबी डालें!", "error");
@@ -223,7 +266,6 @@ window.processDashKey = async () => {
     await setDoc(userRef, { balance: finalBalance }, { merge: true });
     await setDoc(doc(db, "users", mobile, "used_keys", key), { key: key, amount: winValue, claimedAt: new Date().toISOString() });
 
-    // सेशन और लोकल कैश को साफ़ करें ताकि अगला रीड फ्रेश हो
     sessionStorage.setItem('cash_balance', finalBalance);
     document.getElementById('winSound').play();
     showCustomAlert("Claimed! 🎉", `बधाई हो! +${winValue} सिक्के वॉलेट में जुड़ गए।`, "success");
@@ -234,7 +276,6 @@ window.processDashKey = async () => {
 };
 
 // =================== 🔮 [इन-ऐप मिस्ट्री बॉक्स मॉड्यूल] ===================
-
 async function syncMysteryLimit() {
     const limitSnap = await getDoc(doc(db, "users", mobile, "mystery_limit", todayDate));
     const usedAttempts = limitSnap.exists() ? limitSnap.data().count || 0 : 0;
@@ -304,7 +345,6 @@ window.attemptMysteryUnlock = async () => {
 };
 
 // =================== 💸 [पेटीएम स्टाइल 2-Step पेमेंट गेटवे] ===================
-
 window.openPaymentArea = () => {
     document.getElementById('payMerchantMobile').value = "";
     document.getElementById('payAmount').value = "";
@@ -410,11 +450,11 @@ window.processPayment = async () => {
         showCustomAlert("भुगतान सफल! 💸", `सफलतापूर्वक ${payAmount} एसेट ${targetMerchantData.shopName} को ट्रांसफर हो गए।`, "success");
         
         renderDashboardUI(sessionStorage.getItem('cash_name'), finalUserBal);
-    } catch (e) { showCustomAlert("Error", "पेमेंट फेल हुआ!", "error"); }
+    } catch (e) { showCustomAlert("Error", "पेमेंट fail हुआ!", "error"); }
 };
 
 window.logout = () => {
     localStorage.removeItem('userMobile');
-    sessionStorage.clear(); // सेशन मेमोरी साफ़ करें
+    sessionStorage.clear();
     location.reload();
 };
