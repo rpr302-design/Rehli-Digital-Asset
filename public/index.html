@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - सुपर ऐप</title>
+    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     
+    <!-- क्यूआर कोड स्कैनर लाइब्रेरी -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
 
-<!-- 🔔 प्रीमियम सेन्टर मेसेज बॉक्स -->
+<!-- 🔔 प्रीमियम सेन्टर मेसेज बॉक्स (Universal Custom Popup Alert) -->
 <div id="customAlert" class="alert-overlay hidden-screen">
     <div class="alert-card">
         <div id="alertIcon">🎁</div>
@@ -25,8 +26,7 @@
 <!-- [भाग 1: नया यूजर - गेटवे स्क्रीन] -->
 <div id="authContainer" class="hidden-screen">
     <div class="container">
-        
-        <!-- स्टेप 1: सिर्फ चाबी डालने का सेक्शन -->
+        <!-- स्टेप 1: चाबी एंट्री -->
         <div id="keySection">
             <h2>नमस्ते! रिवॉर्ड्स अनलॉक करें 🎁</h2>
             <span class="lang-en">Welcome! Unlock Your Rewards</span>
@@ -35,20 +35,18 @@
             <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें (Check Key)</button>
         </div>
 
-        <!-- स्टेप 2: चाबी वेरीफाई होने के बाद यह सेक्शन खुलेगा (शुरू में छुपा रहेगा) -->
+        <!-- स्टेप 2: मोबाइल एंट्री (चाबी सही होने के बाद खुलेगा) -->
         <div id="rewardSection" class="hidden-screen">
             <div class="coin-display" id="winAmount">🔑 KEY NOTED</div>
             <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">VERIFICATION GATEWAY</p>
             <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" class="safe-img" alt="Vault" style="width:120px; margin:0 auto 15px;">
             
-            <!-- मोबाइल बॉक्स - जो चाबी सही होने के बाद ही दिखेगा -->
             <div id="mobileBox">
                 <p style="font-size: 13px; font-weight: 600;">सिक्के प्राप्त करने के लिए मोबाइल नंबर दर्ज करें</p>
-                <input type="number" id="userMobile" placeholder="आपका मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                <input type="number" id="userMobile" placeholder="आपका mobile नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
                 <button class="btn-action" style="background: linear-gradient(to right, #11998e, #38ef7d);" onclick="saveMobile()">पुष्टि करें (Confirm & Login)</button>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -56,12 +54,35 @@
 <div id="dashboardContainer" class="hidden-screen">
     <div class="dashboard-wrapper">
         
+        <!-- 🍔 [प्रोफेशनल साइडबार मेनू (Hamburger Sidebar)] -->
+        <div id="appSidebar" class="sidebar-menu">
+            <div class="sidebar-header">
+                <div class="avatar" style="width:60px; height:60px;"><i class="fa-solid fa-user-gear"></i></div>
+                <h3 id="sideMenuUser" style="margin:10px 0 0; font-size:16px;">User Name</h3>
+                <span id="sideMenuPhone" style="font-size:12px; opacity:0.8;">+91 000</span>
+            </div>
+            <div class="sidebar-links">
+                <a href="#" onclick="openSidebarBonus('profile_bonus')"><i class="fa-solid fa-id-card" style="color:#3498db;"></i> प्रोफाइल पूरी करें <span class="side-badge">+500</span></a>
+                <a href="#" onclick="openSidebarBonus('refer_bonus')"><i class="fa-solid fa-gift" style="color:#e67e22;"></i> रेफरल कोड शेयर करें</a>
+                <a href="#" onclick="openSidebarBonus('social_bonus')"><i class="fa-solid fa-hashtag" style="color:#e74c3c;"></i> सोशल मीडिया फॉलो <span class="side-badge">+200</span></a>
+                <a href="#" onclick="openSidebarBonus('settings')"><i class="fa-solid fa-gear" style="color:#95a5a6;"></i> ऐप सेटिंग्स (Settings)</a>
+                <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+                <a href="#" onclick="logout()" style="color:#e74c3c;"><i class="fa-solid fa-power-off"></i> लॉगआउट (Logout)</a>
+            </div>
+        </div>
+        <!-- साइडबार का ब्लैक पर्दा बैकग्राउंड -->
+        <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
+
+        <!-- टॉप प्रोफेशनल एक्शन हेडर बार -->
         <div class="header-bg">
             <div class="user-badge">
-                <div class="avatar"><i class="fa-solid fa-crown"></i></div>
+                <!-- तीन लाइन वाला ऑप्शन (Hamburger Menu Button) -->
+                <div class="menu-trigger-btn" onclick="toggleSidebar(true)">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
                 <div>
-                    <h2 id="dashUserName" style="margin:0; font-size: 18px;">नमस्ते!</h2>
-                    <span id="dashUserPhone" style="opacity: 0.8; font-size: 12px;">+91 0000000000</span>
+                    <h2 id="dashUserName" style="margin:0; font-size: 16px;">नमस्ते!</h2>
+                    <span id="dashUserPhone" style="opacity: 0.8; font-size: 11px;">+91 0000</span>
                 </div>
             </div>
             <div class="balance-pill">
@@ -70,6 +91,7 @@
             </div>
         </div>
 
+        <!-- 🏠 टैब 1: मुख्य होम स्क्रीन -->
         <div id="tab-home" class="app-tab-content">
             <div class="section hidden-screen" id="promoVideoSection">
                 <div class="video-promo-box">
@@ -88,6 +110,7 @@
             </div>
         </div>
 
+        <!-- 🔮 टैब 2: मिस्ट्री बॉक्स गेम स्क्रीन -->
         <div id="tab-mystery" class="app-tab-content hidden-screen">
             <div class="section">
                 <div style="text-align: center; margin-bottom: 15px;">
@@ -115,18 +138,7 @@
             </div>
         </div>
 
-        <div id="tab-profile" class="app-tab-content hidden-screen">
-            <div class="section">
-                <div class="earn-box" style="text-align: left;">
-                    <h3 style="margin-top:0; color:var(--primary);"><i class="fa-solid fa-user-shield"></i> सुरक्षित खाता विवरण</h3>
-                    <p style="margin:5px 0; font-size:13px;"><b>रजिस्ट्रेशन मोबाइल:</b> +91 <span id="profMobile">000</span></p>
-                    <p style="margin:5px 0; font-size:13px;"><b>स्टेटस:</b> <span style="color:green; font-weight:600;">Verified ✅</span></p>
-                    <p style="margin:5px 0; font-size:11px; color:#888;">सुरक्षा कारणों से एक बार सेव किया गया नंबर बदला नहीं जा सकता।</p>
-                    <button class="btn-action" style="background:#e74c3c; margin-top:20px; padding:10px; font-size:13px;" onclick="logout()">अकाउंट लॉगआउट करें</button>
-                </div>
-            </div>
-        </div>
-
+        <!-- 💸 टैब 3: दुकानदार पेमेंट गेटवे स्क्रीन (Paytm स्टाइल 2-Step - फिक्स्ड) -->
         <div id="tab-pay" class="app-tab-content hidden-screen">
             <div class="section">
                 <div class="earn-box">
@@ -138,7 +150,7 @@
                     </div>
 
                     <button class="btn-action" id="btnStartScan" style="background:#27ae60; margin-bottom:15px;" onclick="startQRScanner()">
-                        <i class="fa-solid fa-camera"></i>  दुकान का QR कोड स्कैन करें
+                        <i class="fa-solid fa-camera"></i> दुकान का QR कोड स्कैन करें
                     </button>
 
                     <div style="font-size:11px; color:#888; margin-bottom:10px;">या मैन्युअल नंबर से खोजें</div>
@@ -147,12 +159,14 @@
                         <button class="btn-action" style="width: 80px; margin:0; background:var(--primary); padding:10px; font-size:12px;" onclick="searchMerchant()">खोजें</button>
                     </div>
 
+                    <!-- दुकानदार सत्यापन कार्ड -->
                     <div id="merchantVerifyArea" class="hidden-screen" style="background: #f8f9fa; padding: 12px; border-radius: 12px; text-align: left; margin-bottom: 15px; border-left: 4px solid #27ae60;">
                         <h4 id="lblVerifiedShopName" style="margin:0; font-size:14px;">Shop Name</h4>
                         <span id="lblVerifiedShopPhone" style="font-size:11px; color:#666;">+91 00</span>
                         <p id="lblShopRulesInfo" style="font-size:10px; color:var(--primary); margin:3px 0 0 0; font-weight:600;"></p>
                     </div>
 
+                    <!-- फाइनल पेमेंट फॉर्म -->
                     <div id="paymentFormArea" class="hidden-screen">
                         <input type="number" id="payAmount" placeholder="कितने सिक्के भेजने हैं?">
                         <input type="number" id="payBillAmount" placeholder="कुल बिल राशि (₹)">
@@ -162,22 +176,64 @@
             </div>
         </div>
 
+        <!-- 📱 इन-ऐप बॉटम स्मार्ट नेविगेशन बार -->
         <nav class="nav-bar">
             <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
             <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
             
+            <!-- मुख्य भुगतान बटन (सेंटर) -->
             <div class="nav-pay-center" onclick="switchAppTab('pay')">
                 <div class="pay-circle" id="nav-pay-circle"><i class="fa-solid fa-qrcode"></i></div>
                 <span style="font-size:10px; font-weight:600; color:var(--primary); display:block; margin-top:2px;">पे (Pay)</span>
             </div>
             
-            <a href="#" class="nav-link" id="nav-profile" onclick="switchAppTab('profile')"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
+            <a href="#" class="nav-link" id="nav-profile" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars"></i><span>मेनू</span></a>
             <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
         </nav>
-
     </div>
 </div>
 
+<!-- ⚙️ साइडबार बोनस पॉप-अप मॉड्यूल्स -->
+<div id="bonusModal" class="modal-overlay hidden-screen">
+    <div class="modal-box">
+        <div class="close-btn" onclick="closeBonusModal()">×</div>
+        
+        <!-- प्रोफाइल पूरा करें विजेट -->
+        <div id="widget-profile_bonus" class="hidden-screen">
+            <h3>📝 प्रोफाइल विवरण पूरा करें</h3>
+            <p style="font-size:12px; color:#666;">अपना पूरा कानूनी नाम दर्ज करें और तुरंत +500 अतिरिक्त एसेट बोनस पाएं!</p>
+            <input type="text" id="profFullNameInp" placeholder="आपका पूरा नाम (Full Name)">
+            <button class="btn-action" style="background:#3498db;" onclick="claimProfileBonus()">प्रोफाइल अपडेट करें (+500)</button>
+        </div>
+
+        <!-- रेफरल कोड शेयर विजेट -->
+        <div id="widget-refer_bonus" class="hidden-screen">
+            <h3>🎁 रेफरल नेटवर्क शेयर</h3>
+            <p style="font-size:12px; color:#666;">अपने दोस्तों को रहली डिजिटल एसेट ऐप पर आमंत्रित करें। आपका अनोखा रेफरल कोड नीचे है:</p>
+            <div id="lblReferralCodeBox" style="background:#f1f2f6; padding:12px; font-size:20px; font-weight:bold; letter-spacing:3px; border-radius:10px; margin-bottom:15px; color:var(--primary);">REHLI-000</div>
+            <button class="btn-action" style="background:#e67e22;" onclick="shareReferralCode()">व्हाट्सएप पर शेयर करें</button>
+        </div>
+
+        <!-- सोशल मीडिया फॉलो विजेट -->
+        <div id="widget-social_bonus" class="hidden-screen">
+            <h3>🔴 सोशल मीडिया पर फॉलो करें</h3>
+            <p style="font-size:12px; color:#666;">हमारे यूट्यूब चैनल और टेलीग्राम ग्रुप को ज्वाइन करके डिजिटल नेटवर्क का हिस्सा बनें और +200 सिक्के क्लेम करें।</p>
+            <a href="https://youtube.com/" target="_blank" class="btn-watch" style="margin-bottom:10px; background:#e74c3c;"><i class="fa-brands fa-youtube"></i> यूट्यूब सब्सक्राइब करें</a>
+            <button class="btn-action" style="background:#2ecc71; margin-top:10px;" onclick="claimSocialBonus()">बोनस सिक्के क्लेम करें (+200)</button>
+        </div>
+
+        <!-- ऐप सेटिंग्स विजेट -->
+        <div id="widget-settings" class="hidden-screen">
+            <h3>⚙️ एप्लीकेशन सेटिंग्स</h3>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• ऐप वर्जन: v3.0 प्रो (Premium Tier)</p>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• सर्वर स्टेटस: ऑनलाइन 🟢</p>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:15px;">• सुरक्षा एन्क्रिप्शन: 256-Bit SSL</p>
+            <button class="btn-action" style="background:#7f8c8d;" onclick="closeBonusModal()">वापस जाएँ</button>
+        </div>
+    </div>
+</div>
+
+<!-- 🔐 मिस्ट्री बॉक्स पॉप-अप -->
 <div id="mysteryModal" class="modal-overlay hidden-screen">
     <div class="modal-box">
         <div class="close-btn" onclick="closeMysteryModal()">×</div>
