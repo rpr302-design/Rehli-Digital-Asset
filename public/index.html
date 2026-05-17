@@ -64,7 +64,9 @@
             }
         }
 
-        .hidden-screen { display: none !important; }
+        .hidden-screen {
+            display: none !important;
+        }
 
         .alert-overlay {
             position: absolute;
@@ -97,9 +99,23 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        #alertIcon { font-size: 45px; margin-bottom: 15px; }
-        .alert-card h3 { font-size: 20px; margin-bottom: 8px; color: var(--dark); }
-        .alert-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+        #alertIcon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .alert-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .alert-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
 
         .btn-alert-close {
             background: var(--primary-gradient);
@@ -135,8 +151,18 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
-        .auth-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
-        .auth-card p { font-size: 13px; opacity: 0.8; margin-bottom: 25px; }
+        .auth-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-card p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
 
         input[type="number"], input[type="text"], input[type="date"], select {
             width: 100%;
@@ -148,9 +174,13 @@
             color: var(--dark);
             margin-bottom: 16px;
             outline: none;
+            transition: all 0.2s;
         }
 
-        #authContainer input { background: rgba(255, 255, 255, 0.9); border: none; }
+        #authContainer input {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+        }
 
         .btn-action {
             width: 100%;
@@ -174,7 +204,11 @@
             position: relative;
         }
 
-        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
         .menu-trigger-btn {
             width: 42px;
@@ -311,7 +345,7 @@
             gap: 10px;
         }
 
-        /* 📢 एडमिन ऑफर / घोषणा बोर्ड सीएसएस */
+        /* 📢 लाइव नोटिस/ऑफर बोर्ड स्टाइलिंग */
         .notice-board {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             border-radius: 20px;
@@ -368,7 +402,6 @@
             font-size: 14px;
             border: none;
             width: 100%;
-            cursor: pointer;
         }
 
         .nav-bar {
@@ -436,8 +469,8 @@
         <div id="customAlert" class="alert-overlay hidden-screen">
             <div class="alert-card">
                 <div id="alertIcon">🎁</div>
-                <h3 id="alertTitle">सफलता</h3>
-                <p id="alertMsg">डेटाबेस सफलतापूर्वक अपडेट किया गया।</p>
+                <h3 id="alertTitle">स्थिति</h3>
+                <p id="alertMsg">डेटा संदेश लोड हो रहा है...</p>
                 <button class="btn-alert-close" onclick="closeAlert()">ठीक है</button>
             </div>
         </div>
@@ -462,7 +495,7 @@
                 </div>
 
                 <div id="rewardSection" class="hidden-screen">
-                    <h3 id="authTitle" style="font-size:20px; margin-bottom:6px;">सत्यापन क्रेडेंशियल</h3>
+                    <h3 id="authTitle" style="font-size:20px; margin-bottom:6px;">सत्यापन</h3>
                     <p id="authSubtitle" style="margin-bottom:20px;">सुरक्षित एसेट नेटवर्क एक्सेस एंट्री</p>
                     
                     <input type="text" id="userReferralInput" placeholder="👥 कोई रेफरल कोड नहीं मिला" readonly style="background:rgba(255,255,255,0.15); color:white; display:none; text-align:center;">
@@ -588,8 +621,8 @@
                             <div class="info-row"><span>जन्मतिथि (DOB):</span><b id="stDOB">-</b></div>
                             <div class="info-row"><span>जेंडर:</span><b id="stGender">-</b></div>
                             <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
-                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('change')"><i class="fa-solid fa-lock-open"></i> सुरक्षा पिन बदलें</button>
-                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('forgot_in')" style="background:#747d8c;"><i class="fa-solid fa-circle-question"></i> पिन भूल गए? रीसेट करें</button>
+                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('change')" style="padding:12px;"><i class="fa-solid fa-lock-open"></i> सुरक्षा पिन बदलें</button>
+                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('forgot_in')" style="background:#747d8c; padding:12px;"><i class="fa-solid fa-circle-question"></i> पिन भूल गए? रीसेट करें</button>
                             </div>
                         </div>
 
@@ -675,7 +708,6 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, limit, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -696,7 +728,7 @@
 
         let userSessionMobile = localStorage.getItem('userMobile') || null;
         let activeMerchantDocPayload = null;
-        let inAppHtml5Qrcode = null; 
+        let inAppHtml5Qrcode = null;
         const localCurrentDateISO = new Date().toISOString().substring(0, 10);
 
         window.addEventListener('DOMContentLoaded', async () => {
@@ -704,7 +736,7 @@
             if (userSessionMobile) {
                 renderApplicationShellInterface(true);
                 await synchronizeUserDashboardStateEngine();
-                await initializePushNotificationGateway(); 
+                await initializePushNotificationGateway();
             } else {
                 renderApplicationShellInterface(false);
                 resetAuthStateToKey();
@@ -736,7 +768,7 @@
             }
 
             try {
-                // [🔥 डेटाटाइप फिक्स]: फायरबेस में स्टोर स्ट्रिंग आईडी ("94416") से सटीक मिलान करने का फ़िल्टर
+                // 🛠️ [डेटाटाइप फिक्स]: फायरबेस के स्ट्रिंग आर्किटेक्चर ("94416") से मिलान सुनिश्चित करने के लिए स्ट्रिंग फ़िल्टर
                 const targetStringKeyId = String(keyInput);
                 const keyDocumentSnap = await getDoc(doc(db, "assets", targetStringKeyId));
                 
@@ -826,7 +858,7 @@
                 const userDocRef = doc(db, "users", targetMobile);
                 const userSnap = await getDoc(userDocRef);
 
-                if (!cachedKey) { // PURE LOGIN
+                if (!cachedKey) {
                     if (!userSnap.exists()) return window.showCustomAlert("खाता अनुपलब्ध", "कृपया पहले चाबी से खाता बनाएं।", "error");
                     const userData = userSnap.data();
                     if (userData.securityPin && enteredPin !== userData.securityPin) {
@@ -836,10 +868,11 @@
                     userSessionMobile = targetMobile;
                     renderApplicationShellInterface(true);
                     await synchronizeUserDashboardStateEngine();
+                    await initializePushNotificationGateway();
                     return;
                 }
 
-                if (!userSnap.exists()) { // FRESH REGISTER
+                if (!userSnap.exists()) {
                     const parsedReferralInput = document.getElementById('userReferralInput').value.trim();
                     let assignedReferrer = "Direct";
                     let initialBalance = cachedValue;
@@ -856,7 +889,7 @@
 
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
                     window.showCustomAlert("रजिस्ट्रेशन सफल", "अकाउंट बन गया और चाबी के सिक्के क्रेडिट हुए!", "success");
-                } else { // EXIST USER LOCK CHECK
+                } else {
                     const keyIsFreshAndValid = await evaluateKeyUniquenessConstraints(targetMobile, cachedKey);
                     if (!keyIsFreshAndValid) {
                         return window.showCustomAlert("सुरक्षा ब्लॉक", "आप इस चाबी का इस्तेमाल पहले ही कर चुके हैं।", "error");
@@ -873,13 +906,13 @@
                 userSessionMobile = targetMobile;
                 renderApplicationShellInterface(true);
                 await synchronizeUserDashboardStateEngine();
+                await initializePushNotificationGateway();
 
             } catch (ex) { window.showCustomAlert("प्रोसेस एरर", "डेटाबेस ट्रांजैक्शन विफल।", "error"); }
         };
 
         async function evaluateKeyUniquenessConstraints(targetUserMobile, cryptographicKey) {
-            const cryptographicKeyStr = String(cryptographicKey);
-            const specificKeyUsageSnap = await getDoc(doc(db, "users", targetUserMobile, "used_keys", cryptographicKeyStr));
+            const specificKeyUsageSnap = await getDoc(doc(db, "users", targetUserMobile, "used_keys", cryptographicKey));
             if (specificKeyUsageSnap.exists()) {
                 const extractionTimestamp = specificKeyUsageSnap.data().claimedAt;
                 if (extractionTimestamp) {
@@ -891,7 +924,7 @@
         }
 
         /* ==========================================================================
-           📊 लाइव सिंक इंजन और रीड्स ऑप्टिमाइज़र (Cash Memory Caching Tracker)
+           📊 लाइव सिंक इंजन और रीड्स ऑप्टिमाइज़र
            ========================================================================== */
         async function synchronizeUserDashboardStateEngine() {
             if (!userSessionMobile) return;
@@ -907,7 +940,7 @@
                 document.getElementById('sideMenuPhone').innerText = "+91 " + userSessionMobile;
                 document.getElementById('lblReferralCodeDisplay').innerText = "REHLI" + userSessionMobile.substring(6).toUpperCase();
 
-                // ⚡ [रीड्स बचाओ कैशिंग]: घोषणा बोर्ड डेटा केवल सेशन मेमोरी से लोड होगा अगर रिफ्रेश हुआ है
+                // 🌟 [रीड्स बचाओ कैशिंग]: घोषणा बोर्ड डेटा सेशन मेमोरी से लोड होगा यदि पेज रिफ्रेश हुआ है
                 const cachedNotice = sessionStorage.getItem('cached_announcement');
                 if (cachedNotice) {
                     document.getElementById('lblAnnouncementText').innerText = cachedNotice;
@@ -931,11 +964,12 @@
            ========================================================================== */
         async function renderDynamicUnusedPromoVideoWidget(activeUserMobile) {
             try {
+                // आपके स्ट्रक्चर के अनुसार एसेट्स में से एक्टिव वीडियो फेच करना
                 const assetsCollectionSnap = await getDocs(query(collection(db, "assets"), where("status", "==", "active")));
                 const usedKeysSnap = await getDocs(collection(db, "users", activeUserMobile, "used_keys"));
                 
                 const usedKeysList = [];
-                usedKeysSnap.forEach(dk => usedKeysList.push(String(dk.id)));
+                usedKeysSnap.forEach(dk => usedKeysList.push(dk.id));
 
                 let discoveredValidPromoDoc = null;
                 assetsCollectionSnap.forEach(assetDoc => {
@@ -987,9 +1021,8 @@
            ========================================================================== */
         function startLiveQRScannerEngine() {
             document.getElementById('qrReaderBox').classList.remove('hidden-screen');
-            document.getElementById('payManualInputArea').classList.add('hidden-screen');
             
-            // इन-ऐप लाइव क्यूआर कोड डिकोडर इन्वोक
+            // नया लाइव स्कैनर ऑब्जेक्ट इंजन कॉल
             inAppHtml5Qrcode = new Html5Qrcode("qrReader");
             inAppHtml5Qrcode.start(
                 { facingMode: "environment" },
@@ -998,19 +1031,18 @@
                     if (qrTextStr.includes("REHLI-PAY:")) {
                         const extractedNum = qrTextStr.split(":")[1].trim();
                         document.getElementById('payMerchantMobile').value = extractedNum;
-                        window.stopQRScanner(); 
+                        window.stopQRScanner(); // सफल स्कैन पर कैमरा स्टैंडबाय
                         await verifyMerchantEntryFlow(extractedNum);
                     }
                 },
-                (scanError) => { /* फ़्रेम मॉनिटर सक्रिय */ }
-            ).catch(err => console.error("Camera Blocked: ", err));
+                (scanError) => { }
+            ).catch(err => console.error("Camera Init Blocked: ", err));
         }
 
         window.stopQRScanner = () => {
             if (inAppHtml5Qrcode && inAppHtml5Qrcode.isScanning) {
                 inAppHtml5Qrcode.stop().then(() => {
                     document.getElementById('qrReaderBox').classList.add('hidden-screen');
-                    document.getElementById('payManualInputArea').classList.remove('hidden-screen');
                 }).catch(e => console.log(e));
             }
         };
@@ -1051,7 +1083,7 @@
                     return window.showCustomAlert("ट्रांजैक्शन ब्लॉक", "गलत सुरक्षा पिन! ट्रांसफर रद्द।", "error");
                 }
                 if (consumerData.balance < transferTokenQuantity) {
-                    return window.showCustomAlert("अपर्याप्त बैलेंस", "वॉलेट में पर्याप्त डिजिटल सिक्के नहीं हैं।", "error");
+                    return window.showCustomAlert("अपर्याप्त बैलेंस", "वॉलेट में पर्याप्त सिक्के नहीं हैं।", "error");
                 }
 
                 const finalAugmentedConsumerBalance = consumerData.balance - transferTokenQuantity;
@@ -1080,7 +1112,7 @@
         };
 
         /* ==========================================================================
-           🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे (FCM Token Registration Engine)
+           🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे
            ========================================================================== */
         async function initializePushNotificationGateway() {
             if ('serviceWorker' in navigator) {
@@ -1089,14 +1121,13 @@
                     const permission = await Notification.requestPermission();
                     if (permission === 'granted' && userSessionMobile) {
                         const currentFcmToken = await getToken(messaging, { 
-                            serviceWorkerRegistration: registration,
-                            vapidKey: "BFLzE7A... (यदि आपके पास विशिष्ट VAPID की है तो यहाँ डालें वरना डिफ़ॉल्ट चालू है)"
+                            serviceWorkerRegistration: registration
                         });
                         if (currentFcmToken) {
                             await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken }, { merge: true });
                         }
                     }
-                } catch (err) { console.log("Push Notification Integration Offline"); }
+                } catch (err) { console.log("Push Gateway Sync Standby: ", err); }
             }
         }
 
@@ -1114,7 +1145,7 @@
                     document.getElementById('profileFormArea').classList.add('hidden-screen');
                     document.getElementById('profileStatusArea').classList.remove('hidden-screen');
                     document.getElementById('stName').innerText = profilePayload.userName || "-";
-                    document.getElementById('stWhatsapp').innerText = "+91 " + userSessionMobile;
+                    document.getElementById('stAddress').innerText = "+91 " + userSessionMobile;
                     document.getElementById('stDOB').innerText = profilePayload.dob || "Not Set";
                     document.getElementById('stGender').innerText = profilePayload.gender || "Male";
                 }
@@ -1129,7 +1160,7 @@
             const inputPin = document.getElementById('pPin').value.trim();
             const inputPinConfirm = document.getElementById('pPinConfirm').value.trim();
 
-            if (!inputName || !inputDOB || inputPin.length !== 4) return window.showCustomAlert("अधूरा फॉर्म", "सभी कॉलम भरना अनिवार्य है।", "error");
+            if (!inputName || !inputDOB || inputPin.length !== 4) return window.showCustomAlert("अधुरा फॉर्म", "सभी कॉलम भरना अनिवार्य है।", "error");
             if (inputPin !== inputPinConfirm) return window.showCustomAlert("मैच त्रुटि", "सुरक्षा पिन की दोनों प्रविष्टियाँ अलग हैं।", "error");
 
             try {
@@ -1178,7 +1209,7 @@
                 await setDoc(userDocumentReference, { securityPin: newPin }, { merge: true });
                 window.showCustomAlert("संशोधन सफल", "नया सुरक्षा पिन सुरक्षित रूप से सेव कर दिया गया है।", "success");
                 document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');
-            } catch (err) { window.showCustomAlert("त्रुटि", "मार्क अपडेशन फेल।", "error"); }
+            } catch (err) { window.showCustomAlert("त्रुटि", "मॉडिफिकेशन विफलता।", "error"); }
         };
 
         async function updateWalletSheet() {
@@ -1227,7 +1258,14 @@
             const activeNav = document.getElementById('nav-' + targetTabId);
             if (activeNav) activeNav.classList.add('active');
 
-            document.querySelectorAll('.app-tab-content').forEach(v => v.classList.add('hidden-screen'));
+            document.getElementById('tab-home').classList.add('hidden-screen');
+            document.getElementById('tab-wallet').classList.add('hidden-screen');
+            document.getElementById('tab-profile').classList.add('hidden-screen');
+            document.getElementById('tab-social').classList.add('hidden-screen');
+            document.getElementById('tab-refer').classList.add('hidden-screen');
+            document.getElementById('tab-terms').classList.add('hidden-screen');
+            document.getElementById('tab-pay').classList.add('hidden-screen');
+            
             document.getElementById('tab-' + targetTabId).classList.remove('hidden-screen');
 
             if (targetTabId === 'wallet') updateWalletSheet();
