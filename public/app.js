@@ -121,56 +121,120 @@ async function fetchAndCachePromoVideo() {
     } catch (e) { console.error(e); }
 }
 
+// --- 📱 स्मार्ट टैब स्विचर ---
 window.switchAppTab = async (tabName) => {
-    // 1. साइडबार बंद करें
     window.toggleSidebar(false);
-    
-    // 2. सभी टैब छुपाएं
     document.querySelectorAll('.app-tab-content').forEach(t => t.classList.add('hidden-screen'));
+    document.getElementById('tab-' + tabName).classList.remove('hidden-screen');
     
-    // 3. चुना हुआ टैब दिखाएं
-    const targetTab = document.getElementById('tab-' + tabName);
-    if(targetTab) targetTab.classList.remove('hidden-screen');
-
-    // 4. अगर वॉलेट टैब खुला है, तो डेटा लोड करें
-    if (tabName === 'wallet') {
-        await updateWalletSheet();
-    }
-    
-    // 5. अगर प्रोफाइल खुला है
-    if (tabName === 'profile') await loadProfileStatus();
+    if (tabName === 'wallet') updateWalletSheet();
+    if (tabName === 'profile') loadProfileScreen();
 };
 
-// 💰 वॉलेट का लाइव हिसाब निकालने का फंक्शन
-async function updateWalletSheet() {
-    try {
-        const userRef = doc(db, "users", mobile);
-        const userSnap = await getDoc(userRef);
-        const uData = userSnap.data();
+// --- 👤 प्रोफाइल लोड करने का लॉजिक ---
+async function loadProfileScreen() {
+    const userSnap = await getDoc(doc(db, "users", mobile));
+    const uData = userSnap.data();
 
-        // ट्रांजैक्शन हिस्ट्री से खर्च निकालें
-        const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", mobile)));
-        
-        let totalSpent = 0;
-        txSnap.forEach(d => totalSpent += (d.data().amount || 0));
-
-        const currentBalance = uData.balance || 0;
-        const totalEarned = currentBalance + totalSpent; // कुल कमाई = अभी का बैलेंस + जो खर्च किया
-        const referIncome = uData.referredBy !== "Direct" ? 1000 : 0; // उदाहरण
-
-        // HTML में डेटा भरें
-        document.getElementById('wTotalEarned').innerText = totalEarned + " एसेट्स";
-        document.getElementById('wTotalSpent').innerText = totalSpent + " एसेट्स";
-        document.getElementById('wReferEarned').innerText = referIncome + " एसेट्स";
-        
-        // 💸 रुपया कैलकुलेशन (20 एसेट = ₹1)
-        const cashValue = (totalSpent / 20).toFixed(2);
-        document.getElementById('wSpentValue').innerText = "₹ " + cashValue;
-
-    } catch (e) {
-        console.error("Wallet Error: ", e);
+    if (!uData.profileCompleted) {
+        document.getElementById('profileFormArea').classList.remove('hidden-screen');
+        document.getElementById('profileStatusArea').classList.add('hidden-screen');
+    } else {
+        document.getElementById('profileFormArea').classList.add('hidden-screen');
+        document.getElementById('profileStatusArea').classList.remove('hidden-screen');
+        document.getElementById('stName').innerText = uData.userName;
+        document.getElementById('stDOB').innerText = uData.dob || "Not Set";
+        document.getElementById('stWhatsapp').innerText = uData.whatsapp || mobile;
     }
+    document.getElementById('pinPanelArea').classList.add('hidden-screen');
 }
+
+// --- 🔒 प्रोफाइल सेव (+500 बोनस) ---
+window.saveFullProfile = async () => {
+    const name = document.getElementById('pName').value.trim();
+    const dob = document.getElementById('pDOB').value;
+    const pin = document.getElementById('pPin').value;
+    const conf = document.getElementById('pPinConfirm').value;
+
+    if (!name || !dob || pin.length !== 4) return showCustomAlert("त्रुटि", "सभी जानकारी भरें!");
+    if (pin !== conf) return showCustomAlert("Error", "पिन मैच नहीं हुआ!");
+
+    const userRef = doc(db, "users", mobile);
+    const snap = await getDoc(userRef);
+    let finalBal = (snap.data().balance || 0) + 500;
+
+    await setDoc(userRef, {
+        userName: name, dob: dob, securityPin: pin, whatsapp: mobile,
+        balance: finalBal, profileCompleted: true
+    }, { merge: true });
+
+    showCustomAlert("सफल!", "प्रोफाइल सुरक्षित हुई और +500 सिक्के मिले!", "success");
+    loadProfileScreen();
+};
+
+// --- 🔑 पिन मैनेजमेंट (Reset/Recovery) ---
+let currentPinTask = "";
+window.showPinPanel = (task) => {
+    currentPinTask = task;
+    document.getElementById('profileStatusArea').classList.add('hidden-screen');
+    document.getElementById('pinPanelArea').classList.remove('hidden-screen');
+    
+    if (task === 'forgot') {
+        document.getElementById('pinPanelTitle').innerText = "पिन रिकवरी";
+        document.getElementById('recoveryInput1').placeholder = "अपना नाम भरें";
+        document.getElementById('recoveryInput2').classList.remove('hidden-screen');
+    } else {
+        document.getElementById('pinPanelTitle').innerText = "पिन बदलें";
+        document.getElementById('recoveryInput1').placeholder = "पुराना पिन डालें";
+        document.getElementById('recoveryInput2').classList.add('hidden-screen');
+    }
+};
+
+window.executePinUpdate = async () => {
+    const val1 = document.getElementById('recoveryInput1').value;
+    const val2 = document.getElementById('recoveryInput2').value; // DOB
+    const newP = document.getElementById('newPinInput').value;
+
+    const userRef = doc(db, "users", mobile);
+    const snap = await getDoc(userRef);
+    const data = snap.data();
+
+    if (currentPinTask === 'reset') {
+        if (val1 === data.securityPin) {
+            await setDoc(userRef, { securityPin: newP }, { merge: true });
+            showCustomAlert("सफल", "पिन अपडेट हो गया!", "success");
+            loadProfileScreen();
+        } else { showCustomAlert("Error", "पुराना पिन गलत है!"); }
+    } else {
+        if (val1 === data.userName && val2 === data.dob) {
+            await setDoc(userRef, { securityPin: newP }, { merge: true });
+            showCustomAlert("सफल", "नया पिन सेट हो गया!", "success");
+            loadProfileScreen();
+        } else { showCustomAlert("Error", "नाम या जन्मतिथि गलत है!"); }
+    }
+};
+
+// --- 💰 वॉलेट कैलकुलेटर ---
+async function updateWalletSheet() {
+    const userSnap = await getDoc(doc(db, "users", mobile));
+    const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", mobile)));
+    
+    let spent = 0;
+    txSnap.forEach(d => spent += (d.data().amount || 0));
+    const bal = userSnap.data().balance || 0;
+
+    document.getElementById('wTotalEarned').innerText = bal + spent;
+    document.getElementById('wTotalSpent').innerText = spent;
+    document.getElementById('wSpentValue').innerText = "₹ " + (spent / 20).toFixed(2);
+}
+
+// --- 🔗 रेफरल शेयर लिंक जनरेटर ---
+window.shareReferralCode = () => {
+    const code = "REHLI" + mobile.substring(6);
+    const link = window.location.origin + window.location.pathname + "?ref=" + code;
+    const text = `*रहली डिजिटल एसेट* ज्वाइन करें और पाएं +1000 फ्री सिक्के!\nलिंक पर क्लिक करें, कोड अपने आप भर जाएगा: ${link}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
+};
 
 window.showCustomAlert = (title, msg, type) => {
     document.getElementById('alertTitle').innerText = title;
