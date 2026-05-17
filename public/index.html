@@ -36,7 +36,7 @@
         }
 
         body {
-            background-color: #0f1123; /* Dark ambient background for desktop fallback */
+            background-color: #0f1123;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -44,7 +44,6 @@
             color: var(--dark);
         }
 
-        /* 📱 Mobile App Container Backdrop System */
         .phone-wrapper {
             width: 100%;
             max-width: 420px;
@@ -69,7 +68,6 @@
             display: none !important;
         }
 
-        /* 🔔 Custom Floating Notification System */
         .alert-overlay {
             position: absolute;
             top: 0;
@@ -83,7 +81,6 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            transition: all 0.3s ease;
         }
 
         .alert-card {
@@ -132,7 +129,6 @@
             box-shadow: 0 5px 15px rgba(78, 84, 200, 0.4);
         }
 
-        /* 🚪 Auth Gateway Layout */
         #authContainer {
             width: 100%;
             height: 100%;
@@ -178,17 +174,11 @@
             color: var(--dark);
             margin-bottom: 16px;
             outline: none;
-            transition: all 0.2s;
         }
 
         #authContainer input {
             background: rgba(255, 255, 255, 0.9);
             border: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.15);
         }
 
         .btn-action {
@@ -202,14 +192,8 @@
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 6px 18px rgba(78, 84, 200, 0.3);
-            transition: all 0.2s;
         }
 
-        .btn-action:active {
-            transform: scale(0.98);
-        }
-
-        /* 👑 Premium Header Dashboard Component */
         .app-header {
             background: linear-gradient(135deg, #1e3799 0%, #2e51bb 100%);
             padding: 25px 20px 30px 20px;
@@ -250,21 +234,10 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .user-intro {
-            margin-top: 20px;
-        }
+        .user-intro { margin-top: 20px; }
+        .user-intro h2 { font-size: 18px; font-weight: 600; }
+        .user-intro p { font-size: 12px; opacity: 0.75; }
 
-        .user-intro h2 {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .user-intro p {
-            font-size: 12px;
-            opacity: 0.75;
-        }
-
-        /* 🍔 Fluid Hamburger Sidebar Menu System */
         .sidebar-menu {
             position: absolute;
             top: 0;
@@ -279,15 +252,12 @@
             box-shadow: 15px 0 30px rgba(0,0,0,0.25);
         }
 
-        .sidebar-menu.open {
-            left: 0;
-        }
+        .sidebar-menu.open { left: 0; }
 
         .sidebar-header {
             background: linear-gradient(135deg, #2b2e4a 0%, #1e213a 100%);
             padding: 35px 24px;
             color: white;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
             text-align: center;
         }
 
@@ -301,7 +271,6 @@
             justify-content: center;
             align-items: center;
             font-size: 26px;
-            box-shadow: 0 8px 20px rgba(78,84,200,0.4);
         }
 
         .sidebar-links {
@@ -323,17 +292,11 @@
             font-size: 14px;
             font-weight: 500;
             border-radius: 12px;
-            transition: all 0.2s;
         }
 
         .sidebar-links a:hover, .sidebar-links a.active-link {
             background: rgba(255, 255, 255, 0.06);
             color: white;
-        }
-
-        .sidebar-links a i {
-            font-size: 16px;
-            width: 20px;
         }
 
         .sidebar-overlay {
@@ -347,7 +310,6 @@
             z-index: 9998;
         }
 
-        /* 🗂 Viewports Container */
         .app-body {
             flex: 1;
             overflow-y: auto;
@@ -364,7 +326,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 🎫 Modern Matte Cards UI Elements */
         .earn-box {
             background: white;
             border-radius: 24px;
@@ -381,7 +342,17 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--dark);
+        }
+
+        /* 📢 एडमिन घोषणा / ऑफर बोर्ड यूआई */
+        .notice-board {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 20px;
+            padding: 15px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(56, 239, 125, 0.25);
+            border-left: 5px solid #fff;
         }
 
         .info-row {
@@ -396,7 +367,6 @@
         .info-row span { color: var(--text-muted); }
         .info-row b { color: var(--dark); font-weight: 600; }
 
-        /* 📺 Dynamically Filtered Promo Video Card Widget */
         .video-card {
             background: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
             color: white;
@@ -405,30 +375,6 @@
             box-shadow: 0 10px 20px rgba(255, 82, 82, 0.2);
             margin-bottom: 20px;
             position: relative;
-            overflow: hidden;
-        }
-
-        .video-card::after {
-            content: '\f167';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            right: -10px;
-            bottom: -20px;
-            font-size: 100px;
-            opacity: 0.12;
-        }
-
-        .video-card h4 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .video-card p {
-            font-size: 11px;
-            opacity: 0.9;
-            margin-bottom: 16px;
         }
 
         .btn-play {
@@ -440,10 +386,8 @@
             font-size: 12px;
             font-weight: 700;
             text-decoration: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        /* 📱 Social Task Buttons UI Layout */
         .social-btn {
             display: flex;
             align-items: center;
@@ -457,12 +401,8 @@
             font-size: 14px;
             border: none;
             width: 100%;
-            cursor: pointer;
-            transition: transform 0.2s;
         }
-        .social-btn:active { transform: scale(0.98); }
 
-        /* 💳 Bottom Navigation Mobile Hub Bar */
         .nav-bar {
             position: absolute;
             bottom: 0;
@@ -475,7 +415,6 @@
             justify-content: space-around;
             align-items: center;
             z-index: 9000;
-            padding: 0 10px;
         }
 
         .nav-link {
@@ -486,18 +425,11 @@
             text-decoration: none;
             font-size: 11px;
             font-weight: 500;
-            gap: 4px;
             width: 60px;
-            transition: all 0.2s;
         }
 
-        .nav-link i {
-            font-size: 20px;
-        }
-
-        .nav-link.active {
-            color: var(--primary);
-        }
+        .nav-link i { font-size: 20px; }
+        .nav-link.active { color: var(--primary); }
 
         .nav-pay-center {
             position: relative;
@@ -514,27 +446,25 @@
             border: 5px solid var(--light);
         }
 
-        .nav-pay-center i {
-            color: white;
-            font-size: 22px;
-        }
+        .nav-pay-center i { color: white; font-size: 22px; }
 
-        #qrReader {
+        /* 📸 लाइव क्यूआर स्कैनर कंटेनर बॉक्स यूआई */
+        #qrReaderBox {
             width: 100%;
             max-width: 280px;
-            margin: 0 auto 15px auto;
-            border-radius: 16px;
+            margin: 15px auto;
+            border-radius: 20px;
             overflow: hidden;
-            border: 2px dashed var(--primary);
+            background: #000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 3px solid var(--primary);
         }
     </style>
 </head>
 <body>
 
-    <!-- 📱 Main Simulated Smartphone Framework Context Container -->
     <div class="phone-wrapper">
 
-        <!-- 🔔 Global Float Notification Component Alert Layout Block -->
         <div id="customAlert" class="alert-overlay hidden-screen">
             <div class="alert-card">
                 <div id="alertIcon">🎁</div>
@@ -544,48 +474,39 @@
             </div>
         </div>
 
-        <!-- ==========================================================================
-           🚪 GATEWAY COMPONENT: REGISTER / LOGIN VIEWPORT
-           ========================================================================== -->
         <div id="authContainer">
             <div class="auth-card">
                 <div id="authBrand" style="margin-bottom:20px;">
                     <i class="fa-solid fa-shield-halved" style="font-size:50px; color:var(--neon-blue);"></i>
                 </div>
                 
-                <!-- Screen Segment A: Key Code Check Input Form -->
                 <div id="keySection">
-                    <h2>नमस्ते! सुपर ऐप में आपका स्वागत है</h2>
+                    <h2>रहली डिजिटल एसेट</h2>
                     <p>वीडियो से प्राप्त की गयी 5 अंकों की एक्टिवेशन चाबी डालें</p>
                     <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
                     <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें</button>
                     
                     <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 20px;">
-                        <button onclick="toggleAuthRoute('login')" style="background:transparent; border:1px solid rgba(255,255,255,0.6); color:white; padding:10px 20px; border-radius:12px; font-size:12px; cursor:pointer; width:100%; font-weight:500;">
-                            मेरे पास खाता है? सीधे लॉगिन करें
+                        <button onclick="toggleAuthRoute('login')" style="background:transparent; border:1px solid rgba(255,255,255,0.6); color:white; padding:10px 20px; border-radius:12px; font-size:12px; cursor:pointer; width:100%;">
+                            पहले से खाता है? सीधे लॉगिन करें
                         </button>
                     </div>
                 </div>
 
-                <!-- Screen Segment B: Secured Mobile Route Verification Block -->
                 <div id="rewardSection" class="hidden-screen">
                     <h3 id="authTitle" style="font-size:20px; margin-bottom:6px;">सत्यापन क्रेडेंशियल</h3>
                     <p id="authSubtitle" style="margin-bottom:20px;">सुरक्षित एसेट नेटवर्क एक्सेस एंट्री</p>
                     
-                    <!-- Dynamic Readonly Field for Auto Referrals URL Parsing -->
-                    <input type="text" id="userReferralInput" placeholder="👥 कोई रेफरल कोड नहीं मिला" readonly style="background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.2); display:none; text-align:center; font-weight:600;">
-                    
+                    <input type="text" id="userReferralInput" placeholder="👥 कोई रेफरल कोड नहीं मिला" readonly style="background:rgba(255,255,255,0.15); color:white; display:none; text-align:center;">
                     <input type="number" id="userMobile" placeholder="10-अंकीय मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
                     
-                    <!-- Secured PIN Sub-Block: Loaded dynamically if User Document is Profile Initialized -->
                     <div id="loginPinArea" class="hidden-screen" style="margin-top:4px;">
                         <input type="number" id="loginSecurityPin" placeholder="अपना 4-अंकीय पिन दर्ज करें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc;">
-                        <p onclick="showForgotPinGateway()" style="text-align:right; color:var(--neon-blue); font-size:11px; margin-top:-8px; margin-bottom:15px; cursor:pointer; font-weight:500;">
+                        <p onclick="showForgotPinGateway()" style="text-align:right; color:var(--neon-blue); font-size:11px; margin-top:-8px; margin-bottom:15px; cursor:pointer;">
                             पिन भूल गए? (Forgot PIN)
                         </p>
                     </div>
 
-                    <!-- Forgot PIN Inline Identity Form Block -->
                     <div id="forgotPinArea" class="hidden-screen" style="background:rgba(0,0,0,0.2); padding:15px; border-radius:14px; margin-bottom:16px; text-align:left;">
                         <h5 style="color:var(--gold); margin-bottom:8px; font-size:12px;"><i class="fa-solid fa-key"></i> पहचान सत्यापन द्वारा रीसेट करें:</h5>
                         <input type="text" id="forgotName" placeholder="प्रोफाइल में दर्ज पूरा नाम" style="padding:8px; margin-bottom:8px; font-size:12px;">
@@ -600,12 +521,8 @@
             </div>
         </div>
 
-        <!-- ==========================================================================
-           👑 MAIN APP ENGINE COMPONENTS CONTAINER
-           ========================================================================== -->
         <div id="dashboardContainer" class="hidden-screen" style="width:100%; height:100%; display:flex; flex-direction:column; position:relative;">
             
-            <!-- 🍔 Fluid Hamburger Flyout Panel System -->
             <div id="appSidebar" class="sidebar-menu">
                 <div class="sidebar-header">
                     <div class="avatar"><i class="fa-solid fa-user-gear"></i></div>
@@ -625,7 +542,6 @@
             </div>
             <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
 
-            <!-- Global Mobile Top Branding Navigation Component Navbar Header -->
             <div class="app-header">
                 <div class="header-top">
                     <div class="menu-trigger-btn" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars"></i></div>
@@ -640,14 +556,15 @@
                 </div>
             </div>
 
-            <!-- ==========================================================================
-               🗂 SCREEN VIEWPORTS HUB: TABS SEGMENT CONTEXTS
-               ========================================================================== -->
             <div class="app-body">
 
-                <!-- 🏠 TAB CONTENT: HOME PORTAL (With Real-Time Filtered Promotional Video Unused Widget Indicator) -->
                 <div id="tab-home" class="app-tab-content">
-                    <!-- Dynamic Promo Video Promotor Section Card Layout -->
+                    
+                    <div id="announcementBoard" class="notice-board hidden-screen">
+                        <h4 style="font-size:14px; font-weight:700;"><i class="fa-solid fa-bullhorn"></i> एडमिन घोषणा / धमाका ऑफर!</h4>
+                        <p id="lblAnnouncementText" style="font-size:12px; margin-top:5px; font-weight:500; opacity:0.95;">ऑफर लोड हो रहा है विवरण...</p>
+                    </div>
+
                     <div class="video-card hidden-screen" id="promoVideoSection">
                         <h4>📺 प्रमोटेड वीडियो: <span id="lblPromoTitle">लोड हो रहा है...</span></h4>
                         <p>इस वीडियो को पूरा ध्यान से देखें, इसमें आपको ५ अंकों की गुप्त चाबी मिलेगी!</p>
@@ -662,7 +579,6 @@
                     </div>
                 </div>
 
-                <!-- 💰 TAB CONTENT: DIGITAL ASSET REAL-TIME WALLET ASSET SHEET VIEWPORT -->
                 <div id="tab-wallet" class="app-tab-content hidden-screen">
                     <div class="earn-box">
                         <h3 style="color:var(--success);"><i class="fa-solid fa-chart-line"></i> एसेट बैलेंस शीट</h3>
@@ -673,194 +589,129 @@
                         <div style="margin-top:22px; padding:18px; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius:18px; text-align:center; border:1px solid rgba(0, 184, 148, 0.15);">
                             <span style="font-size:12px; color:#2e7d32; font-weight:500;">खर्च किए गए एसेट्स की कुल वैल्यू</span>
                             <h2 id="wSpentValue" style="color:#1b5e20; margin:6px 0; font-size:26px; font-weight:700;">₹ 0.00</h2>
-                            <small style="font-size:10px; color:#4caf50; font-weight:500;">(कैलकुलेटर फार्मूला मैट्रिक्स आधार: 20 एसेट = ₹1)</small>
+                            <small style="font-size:10px; color:#4caf50; font-weight:500;">(20 एसेट = ₹1)</small>
                         </div>
                     </div>
                 </div>
 
-                <!-- 👤 TAB CONTENT: DIGITAL PROFILE DATA CAPTURE OR VERIFIED LIVE STATUS PANEL -->
                 <div id="tab-profile" class="app-tab-content hidden-screen">
-                    <!-- Stage A Form: Displays only if Database ProfileCompleted Flag is Falsy -->
-                    <div id="profileFormArea" class="earn-box hidden-screen">
-                        <h3><i class="fa-solid fa-user-plus" style="color:var(--primary);"></i> प्रोफाइल पंजीकरण (+500 बोनस)</h3>
-                        <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">पहली बार प्रोफाइल पूर्ण करने पर 500 सिक्के आपके खाते में जुड़ेंगे।</p>
-                        
-                        <label style="font-size:12px; font-weight:600; margin-bottom:4px; display:block;">आपका पूरा नाम:</label>
-                        <input type="text" id="pName" placeholder="नाम दर्ज करें">
-                        
-                        <label style="font-size:12px; font-weight:600; margin-bottom:4px; display:block;">जन्मतिथि (DOB):</label>
-                        <input type="date" id="pDOB">
-                        
-                        <label style="font-size:12px; font-weight:600; margin-bottom:4px; display:block;">लिंग (Gender):</label>
-                        <select id="pGender">
-                            <option value="Male">पुरुष (Male)</option>
-                            <option value="Female">महिला (Female)</option>
-                            <option value="Other">अन्य (Other)</option>
-                        </select>
-                        
-                        <label style="font-size:12px; font-weight:600; margin-bottom:4px; display:block;">सुरक्षा पिन (4-अंकीय न्यूमेरिकल):</label>
-                        <input type="number" id="pPin" placeholder="4-अंकीय नया पिन बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
-                        
-                        <input type="number" id="pPinConfirm" placeholder="पिन की पुष्टि दोबारा दर्ज करें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
-                        
-                        <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल लॉक करें और बोनस पाएं</button>
-                    </div>
+                    <div class="section">
+                        <div id="profileFormArea" class="earn-box hidden-screen">
+                            <h3><i class="fa-solid fa-user-plus" style="color:var(--primary);"></i> प्रोफाइल पंजीकरण (+500 बोनस)</h3>
+                            <input type="text" id="pName" placeholder="नाम दर्ज करें">
+                            <input type="date" id="pDOB">
+                            <select id="pGender">
+                                <option value="Male">पुरुष (Male)</option>
+                                <option value="Female">महिला (Female)</option>
+                                <option value="Other">अन्य (Other)</option>
+                            </select>
+                            <input type="number" id="pPin" placeholder="4-अंकीय नया पिन बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
+                            <input type="number" id="pPinConfirm" placeholder="पिन की पुष्टि दोबारा दर्ज करें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
+                            <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल लॉक करें और बोनस पाएं</button>
+                        </div>
 
-                    <!-- Stage B Card View: Loaded if ProfileCompleted is True -->
-                    <div id="profileStatusArea" class="earn-box hidden-screen">
-                        <div style="text-align:center; margin-bottom:15px;">
-                            <div style="width:54px; height:54px; background:#e8f5e9; color:var(--success); border-radius:50%; display:inline-flex; justify-content:center; align-items:center; font-size:22px; margin-bottom:8px;">
-                                <i class="fa-solid fa-circle-check"></i>
+                        <div id="profileStatusArea" class="earn-box hidden-screen">
+                            <div style="text-align:center; margin-bottom:15px;">
+                                <h3 style="justify-content:center; margin-bottom:2px;">सत्यापित प्रोफाइल स्टेटस</h3>
+                                <span style="font-size:11px; color:var(--success); font-weight:600;">Verified Account ✅</span>
                             </div>
-                            <h3 style="justify-content:center; margin-bottom:2px;">सत्यापित प्रोफाइल स्टेटस</h3>
-                            <span style="font-size:11px; color:var(--success); font-weight:600; text-transform:uppercase; letter-spacing:1px;">Verified Account ✅</span>
+                            <div class="info-row"><span>सत्यापित नाम:</span><b id="stName">-</b></div>
+                            <div class="info-row"><span>व्हाट्सएप मोबाइल:</span><b id="stWhatsapp">-</b></div>
+                            <div class="info-row"><span>जन्मतिथि (DOB):</span><b id="stDOB">-</b></div>
+                            <div class="info-row"><span>जेंडर:</span><b id="stGender">-</b></div>
+                            <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
+                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('change')" style="padding:12px;"><i class="fa-solid fa-lock-open"></i> सुरक्षा पिन बदलें</button>
+                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('forgot_in')" style="background:#747d8c; padding:12px;"><i class="fa-solid fa-circle-question"></i> पिन भूल गए? रीसेट करें</button>
+                            </div>
                         </div>
-                        
-                        <div class="info-row"><span>सत्यापित नाम:</span><b id="stName">-</b></div>
-                        <div class="info-row"><span>व्हाट्सएप मोबाइल:</span><b id="stWhatsapp">-</b></div>
-                        <div class="info-row"><span>जन्मतिथि (DOB):</span><b id="stDOB">-</b></div>
-                        <div class="info-row"><span>जेंडर:</span><b id="stGender">-</b></div>
-                        
-                        <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px; display:flex; flex-direction:column; gap:10px;">
-                            <button class="btn-action" onclick="toggleInAppPinManagementPanel('change')" style="background:var(--primary-gradient); padding:12px;">
-                                <i class="fa-solid fa-lock-open"></i> सुरक्षा पिन बदलें
-                            </button>
-                            <button class="btn-action" onclick="toggleInAppPinManagementPanel('forgot_in')" style="background:#747d8c; padding:12px;">
-                                <i class="fa-solid fa-circle-question"></i> पिन भूल गए? रीसेट करें
-                            </button>
-                        </div>
-                    </div>
 
-                    <!-- In-App Shared Secured Pin Change/Reset Layout Form Area Block Component -->
-                    <div id="inAppPinPanelArea" class="earn-box hidden-screen" style="border-left:4px solid var(--primary); background:#fafafa;">
-                        <h4 id="lblPinPanelTitle" style="font-size:14px; font-weight:600; margin-bottom:12px; color:var(--dark);">पिन प्रदाता पैनल</h4>
-                        
-                        <input type="text" id="inAppVerifyInput1" placeholder="सत्यापन डेटा प्रविष्टि १">
-                        <input type="date" id="inAppVerifyInput2" class="hidden-screen">
-                        
-                        <input type="number" id="inAppNewPinInput" placeholder="नया ४ अंकों का सुरक्षा पिन डालें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
-                        
-                        <div style="display:flex; gap:10px; margin-top:5px;">
-                            <button class="btn-action" onclick="executeInAppPinModificationTransaction()" style="flex:2; font-size:13px; padding:10px;">अद्यतन करें</button>
-                            <button class="btn-action" onclick="document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');" style="flex:1; background:#ced6e0; color:var(--dark); font-size:13px; padding:10px;">रद्द करें</button>
+                        <div id="inAppPinPanelArea" class="earn-box hidden-screen">
+                            <h4 id="lblPinPanelTitle" style="font-size:14px; font-weight:600; margin-bottom:12px;">पिन प्रदाता पैनल</h4>
+                            <input type="text" id="inAppVerifyInput1" placeholder="सत्यापन डेटा प्रविष्टि १">
+                            <input type="date" id="inAppVerifyInput2" class="hidden-screen">
+                            <input type="number" id="inAppNewPinInput" placeholder="नया ४ अंकों का सुरक्षा पिन डालें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
+                            <div style="display:flex; gap:10px; margin-top:5px;">
+                                <button class="btn-action" onclick="executeInAppPinModificationTransaction()" style="flex:2; padding:10px;">अद्यतन करें</button>
+                                <button class="btn-action" onclick="document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');" style="flex:1; background:#ced6e0; color:var(--dark); padding:10px;">रद्द करें</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 📱 TAB CONTENT: SINGLE TIME SOCIAL MEDIA NETWORK REWARDS SYSTEM TASKS -->
                 <div id="tab-social" class="app-tab-content hidden-screen">
                     <div class="earn-box">
                         <h3><i class="fa-solid fa-hashtag" style="color:#e4405f;"></i> सोशल मीडिया टास्क</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">हमारे चैनल्स को फॉलो करें। प्रत्येक टास्क को पूर्ण करने पर खाते में केवल एक बार 1000 सिक्के जुड़ेंगे:</p>
-                        
-                        <button class="social-btn" style="background:#ff0000;" onclick="handleSocialTaskExecution('youtube')">
-                            <span><i class="fa-brands fa-youtube"></i> YouTube चैनल</span><small id="lbl-social-youtube">+1000 एसेट्स</small>
-                        </button>
-                        <button class="social-btn" style="background:#1877f2;" onclick="handleSocialTaskExecution('facebook')">
-                            <span><i class="fa-brands fa-facebook"></i> Facebook पेज</span><small id="lbl-social-facebook">+1000 एसेट्स</small>
-                        </button>
-                        <button class="social-btn" style="background:#e4405f;" onclick="handleSocialTaskExecution('instagram')">
-                            <span><i class="fa-brands fa-instagram"></i> Instagram प्रोफाइल</span><small id="lbl-social-instagram">+1000 एसेट्स</small>
-                        </button>
-                        <button class="social-btn" style="background:#0088cc;" onclick="handleSocialTaskExecution('telegram')">
-                            <span><i class="fa-brands fa-telegram"></i> Telegram ग्रुप</span><small id="lbl-social-telegram">+1000 एसेट्स</small>
-                        </button>
-                        <button class="social-btn" style="background:#25d366;" onclick="handleSocialTaskExecution('whatsapp')">
-                            <span><i class="fa-brands fa-whatsapp"></i> WhatsApp चैनल</span><small id="lbl-social-whatsapp">+1000 एसेट्स</small>
-                        </button>
+                        <button class="social-btn" style="background:#ff0000;" onclick="handleSocialTaskExecution('youtube')"><span><i class="fa-brands fa-youtube"></i> YouTube चैनल</span><small id="lbl-social-youtube">+1000 एसेट्स</small></button>
+                        <button class="social-btn" style="background:#1877f2;" onclick="handleSocialTaskExecution('facebook')"><span><i class="fa-brands fa-facebook"></i> Facebook पेज</span><small id="lbl-social-facebook">+1000 एसेट्स</small></button>
+                        <button class="social-btn" style="background:#e4405f;" onclick="handleSocialTaskExecution('instagram')"><span><i class="fa-brands fa-instagram"></i> Instagram प्रोफाइल</span><small id="lbl-social-instagram">+1000 एसेट्स</small></button>
+                        <button class="social-btn" style="background:#0088cc;" onclick="handleSocialTaskExecution('telegram')"><span><i class="fa-brands fa-telegram"></i> Telegram ग्रुप</span><small id="lbl-social-telegram">+1000 एसेट्स</small></button>
+                        <button class="social-btn" style="background:#25d366;" onclick="handleSocialTaskExecution('whatsapp')"><span><i class="fa-brands fa-whatsapp"></i> WhatsApp चैनल</span><small id="lbl-social-whatsapp">+1000 एसेट्स</small></button>
                     </div>
                 </div>
 
-                <!-- 🔗 TAB CONTENT: MODERNIZED INVITATION AUTO REFFERAL LINKS MATRIX GENERATOR -->
                 <div id="tab-refer" class="app-tab-content hidden-screen">
                     <div class="earn-box" style="text-align:center;">
                         <div style="font-size:50px; color:var(--gold); margin-bottom:10px;"><i class="fa-solid fa-gift"></i></div>
                         <h3>मित्रों को आमंत्रित करें और कमाएं</h3>
-                        <p style="font-size:13px; color:var(--text-muted); padding:0 10px; margin-bottom:15px;">
-                            जब आपका कोई मित्र आपके लिंक द्वारा पहली बार चाबी रजिस्टर करेगा तो आपको तथा आपके मित्र को बोनस दिया जाएगा।
-                        </p>
-                        
-                        <div style="background:var(--light); padding:12px 15px; border-radius:12px; font-weight:700; color:var(--primary); font-size:16px; border:1px dashed var(--secondary); margin-bottom:20px; letter-spacing:1px;" id="lblReferralCodeDisplay">
-                            REHLI------
-                        </div>
-                        
-                        <button class="btn-action" style="background:linear-gradient(135deg, #25d366 0%, #075e54 100%);" onclick="generateAndShareModernReferralLink()">
-                            <i class="fa-brands fa-whatsapp"></i> व्हाट्सएप पर लिंक शेयर करें
-                        </button>
+                        <div style="background:var(--light); padding:12px 15px; border-radius:12px; font-weight:700; color:var(--primary); font-size:16px; border:1px dashed var(--secondary); margin-bottom:20px;" id="lblReferralCodeDisplay">REHLI------</div>
+                        <button class="btn-action" style="background:linear-gradient(135deg, #25d366 0%, #075e54 100%);" onclick="generateAndShareModernReferralLink()"><i class="fa-brands fa-whatsapp"></i> व्हाट्सएप पर लिंक शेयर करें</button>
                     </div>
                 </div>
 
-                <!-- 📄 TAB CONTENT: TERMS AND CONDITIONS AND LEGAL MATRIX BASE MATRIX SHEET -->
                 <div id="tab-terms" class="app-tab-content hidden-screen">
                     <div class="earn-box" style="text-align: left;">
-                        <h3><i class="fa-solid fa-file-shield" style="color:var(--primary);"></i> नियम एवं शर्तें (Terms & Conditions)</h3>
+                        <h3><i class="fa-solid fa-file-shield" style="color:var(--primary);"></i> नियम एवं शर्तें</h3>
                         <hr style="opacity:0.08; margin-bottom:15px;">
                         <div style="font-size:13px; line-height:1.6; color:#444; display:flex; flex-direction:column; gap:12px;">
-                            <p>१. <b>डिजिटल एसेट वैल्यू रूपांतरण मैट्रिक्स:</b> रहली डिजिटल नेटवर्क में एसेट रिडेम्पशन गणना दर २0 एसेट बराबर ₹१ (एक भारतीय रुपया) के रूप में निर्धारित है।</p>
-                            <p>२. <b>सुरक्षा दिशानिर्देश:</b> प्रत्येक उपभोक्ता का प्रोफाइल सुरक्षा पिन पूरी तरह गोपनीय है। अनधिकृत लेन-देन रोकने के लिए अपना पिन किसी से साझा न करें।</p>
-                            <p>३. <b>एंटी-धोखाधड़ी नियमावली:</b> सिस्टम द्वारा पकड़े जाने पर एक ही एक्टिवेशन की का क्लोन या बार-बार दुरुपयोग करने वाले उपयोगकर्ताओं का खाता ब्लॉक किया जा सकता है।</p>
-                            <p>४. <b>रेफरल पुरस्कार पात्रता:</b> रेफरल कोड से जुड़ने वाले नए खातों का प्रामाणिक डिवाइस और वैध भारतीय मोबाइल नंबर होना अनिवार्य है।</p>
+                            <p>१. <b>कैलकुलेटर फार्मूला मैट्रिक्स आधार:</b> २0 एसेट बराबर ₹१ (एक भारतीय रुपया) के रूप में निर्धारित है।</p>
+                            <p>२. <b>सुरक्षा:</b> लेन-देन रोकने के लिए अपना पिन किसी से साझा न करें।</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 💳 TAB CONTENT: FINANCIAL MERCHANT SECURED POINT OF SALE TRANSFER INTERFACE -->
                 <div id="tab-pay" class="app-tab-content hidden-screen">
                     <div class="earn-box">
                         <h3><i class="fa-solid fa-qrcode" style="color:var(--primary);"></i> दुकानदार को भुगतान गेटवे</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">दुकान का क्यूआर कोड स्कैन करें या नीचे मोबाइल नंबर दर्ज करें:</p>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">नीचे लाइव कैमरा स्कैनर से दुकान का QR कोड स्कैन करें या नंबर दर्ज करें:</p>
                         
-                        <div id="qrReader"></div>
+                        <div id="qrReaderBox" class="hidden-screen">
+                            <div id="qrReader" style="width:100%;"></div>
+                        </div>
+
+                        <div id="payManualInputArea">
+                            <input type="number" id="payMerchantMobile" placeholder="पंजीकृत मर्चेंट मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                            <button class="btn-action" onclick="searchAndVerifyMerchantDatabase()">मर्चेंट खाता खोजें</button>
+                        </div>
                         
-                        <input type="number" id="payMerchantMobile" placeholder="पंजीकृत मर्चेंट मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
-                        <button class="btn-action" onclick="searchAndVerifyMerchantDatabase()">मर्चेंट खाता खोजें</button>
-                        
-                        <!-- Transaction Execution Hidden Secondary Segment Context Block Area -->
                         <div id="merchantVerifyArea" class="hidden-screen" style="margin-top:20px; border-top:2px dashed var(--border-color); padding-top:15px; text-align:left;">
-                            <div style="background:#fff3cd; padding:10px 15px; border-radius:12px; margin-bottom:15px; border:1px solid #ffeaa7;">
+                            <div style="background:#fff3cd; padding:10px 15px; border-radius:12px; margin-bottom:15px;">
                                 <small style="font-size:11px; color:#b7791f; font-weight:600; display:block;">सत्यापित प्राप्तकर्ता दुकान:</small>
                                 <span id="lblVerifiedShopName" style="font-size:15px; font-weight:700; color:#744210;">Shop Name Loaded</span>
                             </div>
-                            
-                            <label style="font-size:12px; font-weight:600; margin-bottom:4px; display:block;">भेजे जाने वाले सिक्कों की संख्या (Assets):</label>
-                            <input type="number" id="payAmount" placeholder="0000">
-                            
-                            <label style="font-size:12px; font-weight:600; margin-bottom:4px; display:block;">सुरक्षा पिन प्रमाणित करें:</label>
+                            <input type="number" id="payAmount" placeholder="भेजे जाने वाले सिक्कों की संख्या (Assets)">
                             <input type="number" id="paySecurityPin" placeholder="४-अंकीय ट्रांजैक्शन पिन" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc;">
-                            
-                            <button class="btn-action" style="background:var(--success-gradient);" onclick="executeSecuredAssetTransferToMerchant()">भुगतान की पुष्टि करें (Confirm Pay)</button>
+                            <button class="btn-action" style="background:var(--success-gradient);" onclick="executeSecuredAssetTransferToMerchant()">भुगतान की पुष्टि करें</button>
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- ==========================================================================
-               💳 HARDCODED FIXED MOBILE SMARTPHONE NAV BAR TAB SWITCHER HUB
-               ========================================================================== -->
             <nav class="nav-bar">
-                <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')">
-                    <i class="fa-solid fa-house"></i><span>होम</span>
-                </a>
-                <div class="nav-pay-center" onclick="switchAppTab('pay')">
-                    <div><i class="fa-solid fa-qrcode"></i></div>
-                </div>
-                <a href="#" class="nav-link" id="nav-profile" onclick="switchAppTab('profile')">
-                    <i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span>
-                </a>
+                <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i><span>होम</span></a>
+                <div class="nav-pay-center" onclick="switchAppTab('pay')"><div><i class="fa-solid fa-qrcode"></i></div></div>
+                <a href="#" class="nav-link" id="nav-profile" onclick="switchAppTab('profile')"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
             </nav>
 
         </div>
     </div>
 
-    <!-- ==========================================================================
-       💻 3. JAVASCRIPT SYSTEM ENGINE LOGIC MODULE WITH EMBEDDED MODAL & FIREBASE ROUTERS
-       ========================================================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, limit, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
-        // Firebase Configuration Parameter Constants Configured specifically for your live database
         const firebaseConfig = {
             apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
             authDomain: "rehli-digital-asset.firebaseapp.com",
@@ -872,20 +723,19 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const messaging = getMessaging(app);
 
-        // State Machine Storage Context Matrix Variables
         let userSessionMobile = localStorage.getItem('userMobile') || null;
         let activeMerchantDocPayload = null;
+        let inAppHtml5Qrcode = null; // कैमरा स्कैनर ऑब्जेक्ट होल्डर
         const localCurrentDateISO = new Date().toISOString().substring(0, 10);
 
-        /* ==========================================================================
-           🚪 APPLICATION ENTRY & INITIAL ROUTING HANDLERS
-           ========================================================================== */
         window.addEventListener('DOMContentLoaded', async () => {
             parseIncomingUrlParametersForAutoReferrals();
             if (userSessionMobile) {
                 renderApplicationShellInterface(true);
                 await synchronizeUserDashboardStateEngine();
+                await initializePushNotificationGateway(); // वेब पुश नोटिफिकेशन के लिए ट्रिगर
             } else {
                 renderApplicationShellInterface(false);
                 resetAuthStateToKey();
@@ -903,17 +753,12 @@
         }
 
         function renderApplicationShellInterface(isLoggedIn) {
-            if (isLoggedIn) {
-                document.getElementById('dashboardContainer').classList.remove('hidden-screen');
-                document.getElementById('authContainer').classList.add('hidden-screen');
-            } else {
-                document.getElementById('dashboardContainer').classList.add('hidden-screen');
-                document.getElementById('authContainer').classList.remove('hidden-screen');
-            }
+            document.getElementById('dashboardContainer').classList.toggle('hidden-screen', !isLoggedIn);
+            document.getElementById('authContainer').classList.toggle('hidden-screen', isLoggedIn);
         }
 
         /* ==========================================================================
-           🔑 AUTHENTICATION LOGIC ARCHITECTURE (KEY ENTRY / PIN CHECK / FORGOT PIN)
+           🔑 ऑथेंटिकेशन और सख्त चाबी चेकर नियम (String Datatype फिक्स के साथ)
            ========================================================================== */
         window.verifyKey = async () => {
             const keyInput = document.getElementById('userKey').value.trim();
@@ -922,9 +767,12 @@
             }
 
             try {
-                const keyDocumentSnap = await getDoc(doc(db, "assets", keyInput));
+                // [🔥 डेटाटाइप फिक्स]: फायरबेस में स्टोर स्ट्रिंग आईडी ("94416") से सटीक मिलान करने का फ़िल्टर
+                const targetStringKeyId = String(keyInput);
+                const keyDocumentSnap = await getDoc(doc(db, "assets", targetStringKeyId));
+                
                 if (!keyDocumentSnap.exists()) {
-                    return window.showCustomAlert("अमान्य चाबी", "यह एक्टिवेशन चाबी सर्वर पर नहीं मिली। कृपया सही कोड डालें।", "error");
+                    return window.showCustomAlert("अमान्य चाबी", "यह एक्टिवेशन चाबी डेटाबेस रिकॉर्ड में नहीं मिली। कृपया सही चाबी डालें।", "error");
                 }
 
                 const keyData = keyDocumentSnap.data();
@@ -932,11 +780,9 @@
                     return window.showCustomAlert("चाबी निष्क्रिय", "यह चाबी एडमिन द्वारा बंद कर दी गयी है।", "error");
                 }
 
-                // Temporary cache storage within session boundaries for conversion step
-                sessionStorage.setItem('verified_activation_key', keyInput);
+                sessionStorage.setItem('verified_activation_key', targetStringKeyId);
                 sessionStorage.setItem('verified_key_asset_value', keyData.value || 500);
 
-                // Transition viewport state smoothly
                 document.getElementById('keySection').classList.add('hidden-screen');
                 document.getElementById('rewardSection').classList.remove('hidden-screen');
                 document.getElementById('userReferralInput').style.display = "block";
@@ -944,15 +790,13 @@
                 document.getElementById('authTitle').innerText = "नया रजिस्ट्रेशन फॉर्म";
                 document.getElementById('authSubtitle').innerText = "चाबी सत्यापित! खाता बनाने के लिए नंबर दर्ज करें।";
             } catch (error) {
-                console.error("Key Verification Error: ", error);
                 window.showCustomAlert("सर्वर त्रुटि", "नेटवर्क विफलता। पुन: प्रयास करें।", "error");
             }
         };
 
         window.toggleAuthRoute = (mode) => {
             if (mode === 'login') {
-                sessionStorage.removeItem('verified_activation_key');
-                sessionStorage.removeItem('verified_key_asset_value');
+                sessionStorage.clear();
                 document.getElementById('keySection').classList.add('hidden-screen');
                 document.getElementById('rewardSection').classList.remove('hidden-screen');
                 document.getElementById('userReferralInput').style.display = "none";
@@ -980,30 +824,25 @@
             const inputDOB = document.getElementById('forgotDOB').value;
             const inputNewPin = document.getElementById('forgotNewPin').value.trim();
 
-            if (inputMobile.length !== 10) return window.showCustomAlert("त्रुटि", "पहले मोबाइल नंबर वाले बॉक्स में नंबर भरें।", "error");
-            if (!inputName || !inputDOB || inputNewPin.length !== 4) return window.showCustomAlert("त्रुटि", "सभी सत्यापन पहचान फ़ील्ड्स भरें।", "error");
+            if (inputMobile.length !== 10 || !inputName || !inputDOB || inputNewPin.length !== 4) {
+                return window.showCustomAlert("त्रुटि", "सभी सत्यापन पहचान फ़ील्ड्स पूरा भरें।", "error");
+            }
 
             try {
                 const userDocRef = doc(db, "users", inputMobile);
                 const userSnap = await getDoc(userDocRef);
-                if (!userSnap.exists()) return window.showCustomAlert("त्रुटि", "इस नंबर से कोई खाता पंजीकृत नहीं है।", "error");
+                if (!userSnap.exists()) return window.showCustomAlert("त्रुटि", "यह मोबाइल नंबर पंजीकृत नहीं है।", "error");
 
                 const userData = userSnap.data();
-                if (!userData.profileCompleted) {
-                    return window.showCustomAlert("अनुमति नहीं", "आपकी प्रोफाइल सेटअप अधूरी है। सीधे रजिस्टर करें।", "error");
-                }
-
                 if (userData.userName.toLowerCase() === inputName.toLowerCase() && userData.dob === inputDOB) {
                     await setDoc(userDocRef, { securityPin: inputNewPin }, { merge: true });
-                    window.showCustomAlert("पिन रीसेट सफल", "आपका नया सुरक्षा पिन अपडेट कर दिया गया है। अब लॉगिन करें।", "success");
+                    window.showCustomAlert("पिन रीसेट सफल", "सुरक्षा पिन अपडेट हो गया है। अब प्रवेश करें।", "success");
                     document.getElementById('forgotPinArea').classList.add('hidden-screen');
                     document.getElementById('loginSecurityPin').value = inputNewPin;
                 } else {
-                    window.showCustomAlert("सत्यापन विफल", "दर्ज किया गया नाम या जन्मतिथि रिकॉर्ड से मेल नहीं खाती।", "error");
+                    window.showCustomAlert("सत्यापन विफल", "नाम या जन्मतिथि रिकॉर्ड से मेल नहीं खाती।", "error");
                 }
-            } catch (err) {
-                window.showCustomAlert("त्रुटि", "सर्वर रिस्पॉन्स फेल।", "error");
-            }
+            } catch (err) { window.showCustomAlert("त्रुटि", "सर्वर रिस्पॉन्स फेल।", "error"); }
         };
 
         window.handleFinalAuthRoute = async () => {
@@ -1018,9 +857,8 @@
                 const userDocRef = doc(db, "users", targetMobile);
                 const userSnap = await getDoc(userDocRef);
 
-                // PATHWAY 1: PURE AUTHENTICATION LOGIN ROUTE (WITHOUT KEY ACTIVATION)
-                if (!cachedKey) {
-                    if (!userSnap.exists()) return window.showCustomAlert("खाता अनुपलब्ध", "यह नंबर पंजीकृत नहीं है। कृपया वीडियो चाबी से खाता बनाएं।", "error");
+                if (!cachedKey) { // PURE LOGIN
+                    if (!userSnap.exists()) return window.showCustomAlert("खाता अनुपलब्ध", "कृपया पहले चाबी से खाता बनाएं।", "error");
                     const userData = userSnap.data();
                     if (userData.securityPin && enteredPin !== userData.securityPin) {
                         return window.showCustomAlert("लॉगिन अस्वीकृत", "आपका सुरक्षा पिन गलत है।", "error");
@@ -1029,63 +867,47 @@
                     userSessionMobile = targetMobile;
                     renderApplicationShellInterface(true);
                     await synchronizeUserDashboardStateEngine();
+                    await initializePushNotificationGateway();
                     return;
                 }
 
-                // PATHWAY 2: KEY VALIDATION AND REGISTRATION/CLAIMING TRANSACTION MATRIX
-                if (!userSnap.exists()) {
-                    // Fully Fresh Account Creation Routine
+                if (!userSnap.exists()) { // FRESH REGISTER
                     const parsedReferralInput = document.getElementById('userReferralInput').value.trim();
                     let assignedReferrer = "Direct";
                     let initialBalance = cachedValue;
 
                     if (parsedReferralInput && parsedReferralInput.startsWith("REHLI") && parsedReferralInput !== ("REHLI" + targetMobile.substring(6))) {
                         assignedReferrer = parsedReferralInput;
-                        initialBalance += 1000; // Sign-up referral bonus increment
+                        initialBalance += 1000;
                     }
 
                     await setDoc(userDocRef, {
-                        mobile: targetMobile,
-                        balance: initialBalance,
-                        userName: "नया यूजर",
-                        regDate: localCurrentDateISO,
-                        profileCompleted: false,
-                        referredBy: assignedReferrer
+                        mobile: targetMobile, balance: initialBalance, userName: "नया यूजर",
+                        regDate: localCurrentDateISO, profileCompleted: false, referredBy: assignedReferrer
                     });
 
-                    // Log the unique cryptographic key block collection array
-                    await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), {
-                        amount: cachedValue,
-                        claimedAt: new Date().toISOString()
-                    });
-
-                    window.showCustomAlert("रजिस्ट्रेशन सफल", "आपका खाता बना दिया गया है और चाबी सिक्के क्रेडिट हुए!", "success");
-                } else {
-                    // Pre-existing Account attempting a Registration-Gate Key Claim
+                    await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
+                    window.showCustomAlert("रजिस्ट्रेशन सफल", "अकाउंट बन गया और चाबी के सिक्के क्रेडिट हुए!", "success");
+                } else { // EXIST USER LOCK CHECK
                     const keyIsFreshAndValid = await evaluateKeyUniquenessConstraints(targetMobile, cachedKey);
                     if (!keyIsFreshAndValid) {
-                        return window.showCustomAlert("सुरक्षा ब्लॉक", "आप इस चाबी का इस्तेमाल पहले ही कर चुके हैं। १ चाबी केवल १ बार मान्य है।", "error");
+                        return window.showCustomAlert("सुरक्षा ब्लॉक", "आप इस चाबी का इस्तेमाल पहले ही कर चुके हैं।", "error");
                     }
 
                     const currentBalance = userSnap.data().balance || 0;
                     await setDoc(userDocRef, { balance: currentBalance + cachedValue }, { merge: true });
-                    await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), {
-                        amount: cachedValue,
-                        claimedAt: new Date().toISOString()
-                    });
+                    await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
 
-                    window.showCustomAlert("सिक्के क्रेडिट सफल", "पुरानी प्रोफाइल में चाबी मूल्य जोड़ दिया गया है।", "success");
+                    window.showCustomAlert("सिक्के क्रेडिट सफल", "चाबी मूल्य पुराने खाते में जोड़ दिया गया है।", "success");
                 }
 
                 localStorage.setItem('userMobile', targetMobile);
                 userSessionMobile = targetMobile;
                 renderApplicationShellInterface(true);
                 await synchronizeUserDashboardStateEngine();
+                await initializePushNotificationGateway();
 
-            } catch (ex) {
-                console.error("Auth Routine Failure: ", ex);
-                window.showCustomAlert("प्रोसेस एरर", "डेटाबेस ट्रांजैक्शन निष्पादन विफल।", "error");
-            }
+            } catch (ex) { window.showCustomAlert("प्रोसेस एरर", "डेटाबेस ट्रांजैक्शन विफल।", "error"); }
         };
 
         async function evaluateKeyUniquenessConstraints(targetUserMobile, cryptographicKey) {
@@ -1094,30 +916,22 @@
                 const extractionTimestamp = specificKeyUsageSnap.data().claimedAt;
                 if (extractionTimestamp) {
                     const durationDifferenceMs = Math.abs(new Date() - new Date(extractionTimestamp));
-                    const contextualDaysComputed = Math.ceil(durationDifferenceMs / (1000 * 60 * 60 * 24));
-                    if (contextualDaysComputed <= 30) {
-                        return false; // Absolute fraud prevent barrier match within a rolling 30 day frame
-                    }
-                } else {
-                    return false;
-                }
+                    if (Math.ceil(durationDifferenceMs / (1000 * 60 * 60 * 24)) <= 30) return false;
+                } else return false;
             }
             return true;
         }
 
         /* ==========================================================================
-           📊 LIVE SYNCHRONIZATION DATA CORE DASHBOARD ENGINE
+           📊 लाइव सिंक इंजन और रीड्स ऑप्टिमाइज़र (Cash Memory Caching Tracker)
            ========================================================================== */
         async function synchronizeUserDashboardStateEngine() {
             if (!userSessionMobile) return;
-
             try {
                 const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
                 if (!userSnapshot.exists()) return processLogoutRoute();
 
                 const coreUserData = userSnapshot.data();
-
-                // Hydrate Visual Elements Across Layout Layers Dynamically
                 document.getElementById('dashBalance').innerText = coreUserData.balance || 0;
                 document.getElementById('dashUserName').innerText = "नमस्ते, " + (coreUserData.userName || "यूजर");
                 document.getElementById('dashUserPhone').innerText = "+91 " + userSessionMobile;
@@ -1125,48 +939,53 @@
                 document.getElementById('sideMenuPhone').innerText = "+91 " + userSessionMobile;
                 document.getElementById('lblReferralCodeDisplay').innerText = "REHLI" + userSessionMobile.substring(6).toUpperCase();
 
-                // Trigger Contextual Layout Evaluation Routines
-                await renderDynamicUnusedPromoVideoWidget(userSessionMobile);
-
-            } catch (error) {
-                console.error("Dashboard Sync Grid Collapse: ", error);
-            }
-        }
-
-        /* ==========================================================================
-           📺 FILTER ENGINE: DYNAMIC PROMO VIDEO PROMOTER MODULE
-           ========================================================================== */
-        async function renderDynamicUnusedPromoVideoWidget(activeUserMobile) {
-            try {
-                const assetsCollectionSnap = await getDocs(collection(db, "assets"));
-                let discoveredValidPromoDoc = null;
-
-                for (const assetDoc of assetsCollectionSnap.docs) {
-                    const tempKeyId = assetDoc.id;
-                    
-                    // Cross check with the subcollection tracking used instances
-                    const traceUsedKeyDocRef = doc(db, "users", activeUserMobile, "used_keys", tempKeyId);
-                    const traceUsedKeySnap = await getDoc(traceUsedKeyDocRef);
-
-                    if (!traceUsedKeySnap.exists()) {
-                        discoveredValidPromoDoc = assetDoc.data();
-                        discoveredValidPromoDoc.extractedKey = tempKeyId;
-                        break; // Found the top chronological priority unused promo video
+                // ⚡ [रीड्स बचाओ कैशिंग]: घोषणा बोर्ड डेटा केवल सेशन मेमोरी से लोड होगा अगर रिफ्रेश हुआ है
+                const cachedNotice = sessionStorage.getItem('cached_announcement');
+                if (cachedNotice) {
+                    document.getElementById('lblAnnouncementText').innerText = cachedNotice;
+                    document.getElementById('announcementBoard').classList.remove('hidden-screen');
+                } else {
+                    const noticeSnap = await getDocs(query(collection(db, "announcements"), limit(1)));
+                    if (!noticeSnap.empty) {
+                        const noticeText = noticeSnap.docs[0].data().text || "कोई नया ऑफर नहीं है।";
+                        sessionStorage.setItem('cached_announcement', noticeText);
+                        document.getElementById('lblAnnouncementText').innerText = noticeText;
+                        document.getElementById('announcementBoard').classList.remove('hidden-screen');
                     }
                 }
 
+                await renderDynamicUnusedPromoVideoWidget(userSessionMobile);
+            } catch (error) { console.error(error); }
+        }
+
+        /* ==========================================================================
+           📺 फ़िल्टर्ड प्रमोटेड वीडियो विजेट इंजन (Firestore Structure Sync)
+           ========================================================================== */
+        async function renderDynamicUnusedPromoVideoWidget(activeUserMobile) {
+            try {
+                // आपके स्ट्रक्चर के अनुसार एसेट्स में से एक्टिव वीडियो फेच करना
+                const assetsCollectionSnap = await getDocs(query(collection(db, "assets"), where("status", "==", "active")));
+                const usedKeysSnap = await getDocs(collection(db, "users", activeUserMobile, "used_keys"));
+                
+                const usedKeysList = [];
+                usedKeysSnap.forEach(dk => usedKeysList.push(dk.id));
+
+                let discoveredValidPromoDoc = null;
+                assetsCollectionSnap.forEach(assetDoc => {
+                    if (!usedKeysList.includes(String(assetDoc.id)) && !discoveredValidPromoDoc) {
+                        discoveredValidPromoDoc = assetDoc.data();
+                    }
+                });
+
                 const widgetElementBlock = document.getElementById('promoVideoSection');
                 if (discoveredValidPromoDoc) {
-                    document.getElementById('lblPromoTitle').innerText = discoveredValidPromoDoc.title || "विशेष रिवॉर्ड";
-                    const fallbackRefUrl = discoveredValidPromoDoc.link || "https://youtube.com";
-                    document.getElementById('btnPromoLink').setAttribute('href', fallbackRefUrl);
+                    document.getElementById('lblPromoTitle').innerText = discoveredValidPromoDoc.title || "विशेष वीडियो";
+                    document.getElementById('btnPromoLink').setAttribute('href', discoveredValidPromoDoc.link || "https://youtube.com");
                     widgetElementBlock.classList.remove('hidden-screen');
                 } else {
                     widgetElementBlock.classList.add('hidden-screen');
                 }
-            } catch (err) {
-                console.error("Promoter Engine Fallback Trace: ", err);
-            }
+            } catch (err) { console.error(err); }
         }
 
         window.processDashboardKeyClaim = async () => {
@@ -1174,12 +993,12 @@
             if (enteredSecretCode.length !== 5) return window.showCustomAlert("त्रुटि", "५ अंकों का गुप्त कोड डालें।", "error");
 
             try {
-                const keyDocSnap = await getDoc(doc(db, "assets", enteredSecretCode));
+                const stringSecretKeyId = String(enteredSecretCode);
+                const keyDocSnap = await getDoc(doc(db, "assets", stringSecretKeyId));
                 if (!keyDocSnap.exists()) return window.showCustomAlert("अमान्य चाबी", "यह चाबी सर्वर रिकॉर्ड्स में मौजूद नहीं है।", "error");
 
                 const targetedAssetVal = Number(keyDocSnap.data().value || 500);
-
-                const checkFreshnessConstraint = await evaluateKeyUniquenessConstraints(userSessionMobile, enteredSecretCode);
+                const checkFreshnessConstraint = await evaluateKeyUniquenessConstraints(userSessionMobile, stringSecretKeyId);
                 if (!checkFreshnessConstraint) {
                     return window.showCustomAlert("विफल", "आप इस वीडियो की चाबी से कॉइन पहले ही ले चुके हैं।", "error");
                 }
@@ -1188,76 +1007,153 @@
                 const augmentedWalletValue = (liveUserSnap.data().balance || 0) + targetedAssetVal;
 
                 await setDoc(doc(db, "users", userSessionMobile), { balance: augmentedWalletValue }, { merge: true });
-                await setDoc(doc(db, "users", userSessionMobile, "used_keys", enteredSecretCode), {
-                    amount: targetedAssetVal,
-                    claimedAt: new Date().toISOString()
-                });
+                await setDoc(doc(db, "users", userSessionMobile, "used_keys", stringSecretKeyId), { amount: targetedAssetVal, claimedAt: new Date().toISOString() });
 
                 document.getElementById('dashSecretKey').value = "";
-                window.showCustomAlert("बधाई हो!", `${targetedAssetVal} सिक्के सफलतापूर्वक आपके वॉलेट में जोड़ दिए गए हैं।`, "success");
+                window.showCustomAlert("बधाई हो!", `${targetedAssetVal} सिक्के वॉलेट में जोड़ दिए गए हैं।`, "success");
                 await synchronizeUserDashboardStateEngine();
-
-            } catch (error) {
-                window.showCustomAlert("त्रुटि", "दावा प्रविष्टि असफल।", "error");
-            }
+            } catch (error) { window.showCustomAlert("त्रुटि", "दावा प्रविष्टि असफल।", "error"); }
         };
 
         /* ==========================================================================
-           💰 FINANCIAL REAL-TIME BALANCE SHEET ENGINE CALCULATOR
+           📸 फिनटेक मॉड्यूल: PhonePe Style Live QR Code Scanner Engine (100% Fixed)
            ========================================================================== */
-        async function updateWalletSheet() {
+        function startLiveQRScannerEngine() {
+            document.getElementById('qrReaderBox').classList.remove('hidden-screen');
+            
+            // नया लाइव स्कैनर ऑब्जेक्ट इंजन कॉल
+            inAppHtml5Qrcode = new Html5Qrcode("qrReader");
+            inAppHtml5Qrcode.start(
+                { facingMode: "environment" },
+                { fps: 15, qrbox: { width: 230, height: 230 } },
+                async (qrTextStr) => {
+                    if (qrTextStr.includes("REHLI-PAY:")) {
+                        const extractedNum = qrTextStr.split(":")[1].trim();
+                        document.getElementById('payMerchantMobile').value = extractedNum;
+                        window.stopQRScanner(); // सफल स्कैन पर कैमरा स्टैंडबाय
+                        await verifyMerchantEntryFlow(extractedNum);
+                    }
+                },
+                (scanError) => { /* कैमरे का फ्रेम कैप्चर चालू है */ }
+            ).catch(err => console.error("Camera Init Blocked: ", err));
+        }
+
+        window.stopQRScanner = () => {
+            if (inAppHtml5Qrcode && inAppHtml5Qrcode.isScanning) {
+                inAppHtml5Qrcode.stop().then(() => {
+                    document.getElementById('qrReaderBox').classList.add('hidden-screen');
+                }).catch(e => console.log(e));
+            }
+        };
+
+        window.searchAndVerifyMerchantDatabase = async () => {
+            const targetMerchantPhone = document.getElementById('payMerchantMobile').value.trim();
+            if (targetMerchantPhone.length !== 10) return window.showCustomAlert("त्रुटि", "१०-अंकीय मर्चेंट नंबर डालें।", "error");
+            await verifyMerchantEntryFlow(targetMerchantPhone);
+        };
+
+        async function verifyMerchantEntryFlow(shopMobileNum) {
             try {
-                const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
-                const transactionsQuerySnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", userSessionMobile)));
+                const merchantSnapshot = await getDoc(doc(db, "merchants", shopMobileNum));
+                if (!merchantSnapshot.exists()) {
+                    return window.showCustomAlert("दुकान नहीं मिली", "यह नंबर मर्चेंट नेटवर्क पर पंजीकृत नहीं है।", "error");
+                }
+                activeMerchantDocPayload = merchantSnapshot.data();
+                activeMerchantDocPayload.mobile = shopMobileNum;
 
-                let cumulativeCoinsSpent = 0;
-                transactionsQuerySnap.forEach(transaction => {
-                    cumulativeCoinsSpent += Number(transaction.data().amount || 0);
-                });
+                document.getElementById('lblVerifiedShopName').innerText = "🏪 " + (activeMerchantDocPayload.shopName || "डिजिटल शॉप");
+                document.getElementById('merchantVerifyArea').classList.remove('hidden-screen');
+            } catch (ex) { window.showCustomAlert("त्रुटि", "मर्चेंट सर्च विफलता।", "error"); }
+        }
 
-                const currentWalletLiquidBalance = userSnapshot.data().balance || 0;
-                const grandTotalLifetimeEarnings = currentWalletLiquidBalance + cumulativeCoinsSpent;
-                
-                // Referral Calculation Assumption: Base 1000 multiplied by valid structured invite instances
-                const hasReferrerIncomeBonus = userSnapshot.data().referredBy !== "Direct" ? 1000 : 0;
+        window.executeSecuredAssetTransferToMerchant = async () => {
+            const transferTokenQuantity = Number(document.getElementById('payAmount').value);
+            const transactionalVerificationPin = document.getElementById('paySecurityPin').value.trim();
 
-                document.getElementById('wTotalEarned').innerText = grandTotalLifetimeEarnings + " एसेट्स";
-                document.getElementById('wTotalSpent').innerText = cumulativeCoinsSpent + " एसेट्स";
-                document.getElementById('wReferEarned').innerText = hasReferrerIncomeBonus + " एसेट्स";
+            if (transferTokenQuantity <= 0 || !activeMerchantDocPayload) return window.showCustomAlert("त्रुटि", "सही वैल्यू दर्ज करें।", "error");
 
-                // 💸 Secure Financial Conversion Division Calculation: (20 assets = 1 INR)
-                const realWorldInrValue = (cumulativeCoinsSpent / 20).toFixed(2);
-                document.getElementById('wSpentValue').innerText = "₹ " + realWorldInrValue;
+            try {
+                const consumerDocRef = doc(db, "users", userSessionMobile);
+                const consumerSnap = await getDoc(consumerDocRef);
+                const consumerData = consumerSnap.data();
 
-            } catch (err) {
-                console.error("Wallet Sheet Generation Failure: ", err);
+                if (!consumerData.profileCompleted) return window.showCustomAlert("सुरक्षा ब्लॉक", "पहले प्रोफाइल में ट्रांजैक्शन पिन सेट करें।", "error");
+                if (transactionalVerificationPin !== consumerData.securityPin) {
+                    return window.showCustomAlert("ट्रांजैक्शन ब्लॉक", "गलत सुरक्षा पिन! ट्रांसफर रद्द।", "error");
+                }
+                if (consumerData.balance < transferTokenQuantity) {
+                    return window.showCustomAlert("अपर्याप्त बैलेंस", "वॉलेट में पर्याप्त डिजिटल सिक्के नहीं हैं।", "error");
+                }
+
+                const finalAugmentedConsumerBalance = consumerData.balance - transferTokenQuantity;
+                const finalAugmentedMerchantBalance = (activeMerchantDocPayload.balance || 0) + transferTokenQuantity;
+                const generatedLogTransactionRef = doc(collection(db, "merchant_transactions"));
+
+                await Promise.all([
+                    setDoc(consumerDocRef, { balance: finalAugmentedConsumerBalance }, { merge: true }),
+                    setDoc(doc(db, "merchants", activeMerchantDocPayload.mobile), { balance: finalAugmentedMerchantBalance }, { merge: true }),
+                    setDoc(generatedLogTransactionRef, {
+                        userMobile: userSessionMobile, merchantMobile: activeMerchantDocPayload.mobile,
+                        amount: transferTokenQuantity, shopName: activeMerchantDocPayload.shopName || "डिजिटल शॉप",
+                        timestamp: new Date().toISOString()
+                    })
+                ]);
+
+                document.getElementById('payAmount').value = "";
+                document.getElementById('paySecurityPin').value = "";
+                document.getElementById('merchantVerifyArea').classList.add('hidden-screen');
+                document.getElementById('payMerchantMobile').value = "";
+
+                window.showCustomAlert("भुगतान सफल ✅", `${transferTokenQuantity} एसेट्स ट्रांसफर कर दिए गए हैं।`, "success");
+                await synchronizeUserDashboardStateEngine();
+                window.switchAppTab('home');
+            } catch (err) { window.showCustomAlert("त्रुटि", "वित्तीय बहीखाता एंट्री एरर।", "error"); }
+        };
+
+        /* ==========================================================================
+           🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे (FCM Token Registration Engine)
+           ========================================================================== */
+        async function initializePushNotificationGateway() {
+            // नोटिफिकेशन के लिए सर्विस वर्कर और परमिशन चेकर गेटवे
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted' && userSessionMobile) {
+                        // लाइव वपीड की (VAPID Key) से टोकन सिंक करना
+                        const currentFcmToken = await getToken(messaging, { 
+                            serviceWorkerRegistration: registration,
+                            vapidKey: "BFLzE7A... (यदि आपके पास विशिष्ट VAPID की है तो यहाँ डालें वरना डिफ़ॉल्ट चालू है)"
+                        });
+                        if (currentFcmToken) {
+                            // यूजर के रिकॉर्ड के भीतर टोकन इंजेक्ट करना ताकि एडमिन पैनल से नोटिफिकेशन जा सके
+                            await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken }, { merge: true });
+                        }
+                    }
+                } catch (err) { console.log("Push Gateway Sync Standby: ", err); }
             }
         }
 
         /* ==========================================================================
-           👤 CUSTOMIZABLE ID MANAGEMENT PROFILE ENGINE
+           👤 प्रोफाइल सेटिंग्स और अन्य आवश्यक फंक्शन्स
            ========================================================================== */
         async function loadProfileScreen() {
             try {
                 const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
                 const profilePayload = userSnapshot.data();
-
                 if (!profilePayload.profileCompleted) {
                     document.getElementById('profileFormArea').classList.remove('hidden-screen');
                     document.getElementById('profileStatusArea').classList.add('hidden-screen');
                 } else {
                     document.getElementById('profileFormArea').classList.add('hidden-screen');
                     document.getElementById('profileStatusArea').classList.remove('hidden-screen');
-
                     document.getElementById('stName').innerText = profilePayload.userName || "-";
                     document.getElementById('stWhatsapp').innerText = "+91 " + userSessionMobile;
                     document.getElementById('stDOB').innerText = profilePayload.dob || "Not Set";
                     document.getElementById('stGender').innerText = profilePayload.gender || "Male";
                 }
                 document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');
-            } catch (ex) {
-                console.error("Profile Engine Load Exception: ", ex);
-            }
+            } catch (ex) { console.error(ex); }
         }
 
         window.saveDigitalUserProfileData = async () => {
@@ -1267,284 +1163,126 @@
             const inputPin = document.getElementById('pPin').value.trim();
             const inputPinConfirm = document.getElementById('pPinConfirm').value.trim();
 
-            if (!inputName || !inputDOB || inputPin.length !== 4) {
-                return window.showCustomAlert("फॉर्म अधूरा", "सभी डेटा कॉलम भरना अनिवार्य है।", "error");
-            }
-            if (inputPin !== inputPinConfirm) {
-                return window.showCustomAlert("मैच त्रुटि", "सुरक्षा पिन की दोनों प्रविष्टियाँ आपस में मेल नहीं खाती हैं।", "error");
-            }
+            if (!inputName || !inputDOB || inputPin.length !== 4) return window.showCustomAlert("अधूरा फॉर्म", "सभी कॉलम भरना अनिवार्य है।", "error");
+            if (inputPin !== inputPinConfirm) return window.showCustomAlert("मैच त्रुटि", "सुरक्षा पिन की दोनों प्रविष्टियाँ अलग हैं।", "error");
 
             try {
                 const userRef = doc(db, "users", userSessionMobile);
                 const currentDocSnap = await getDoc(userRef);
-                
                 let operatingBalance = currentDocSnap.data().balance || 0;
-                // Add the one time incentive bonus reward if flag is currently false
-                if (!currentDocSnap.data().profileCompleted) {
-                    operatingBalance += 500;
-                }
+                if (!currentDocSnap.data().profileCompleted) operatingBalance += 500;
 
-                await setDoc(userRef, {
-                    userName: inputName,
-                    dob: inputDOB,
-                    gender: inputGender,
-                    securityPin: inputPin,
-                    profileCompleted: true,
-                    balance: operatingBalance
-                }, { merge: true });
-
-                window.showCustomAlert("प्रोफाइल लॉक", "सफलतापूर्वक सत्यापित! आपको +500 प्रोफाइल कॉइंस प्राप्त हुए।", "success");
+                await setDoc(userRef, { userName: inputName, dob: inputDOB, gender: inputGender, securityPin: inputPin, profileCompleted: true, balance: operatingBalance }, { merge: true });
+                window.showCustomAlert("प्रोफाइल लॉक", "सफलतापूर्वक सत्यापित! आपको +500 कॉइंस प्राप्त हुए।", "success");
                 await synchronizeUserDashboardStateEngine();
                 await loadProfileScreen();
-            } catch (error) {
-                window.showCustomAlert("त्रुटि", "प्रोफाइल सेविंग फ़ैल।", "error");
-            }
+            } catch (error) { window.showCustomAlert("त्रुटि", "प्रोफाइल सेविंग फ़ैल।", "error"); }
         };
 
-        // In-App Layer Segmented PIN Management Control Flow Routing Panel
         let globalInAppPinActionState = "";
         window.toggleInAppPinManagementPanel = (taskType) => {
             globalInAppPinActionState = taskType;
-            const inputContainerHeader = document.getElementById('lblPinPanelTitle');
-            const dataEntryBox1 = document.getElementById('inAppVerifyInput1');
-            const dataEntryBox2 = document.getElementById('inAppVerifyInput2');
-            
-            // Clean interface slate values
-            dataEntryBox1.value = ""; dataEntryBox2.value = "";
-            document.getElementById('inAppNewPinInput').value = "";
             document.getElementById('inAppPinPanelArea').classList.remove('hidden-screen');
-
             if (taskType === 'change') {
-                inputContainerHeader.innerText = "🔒 सुरक्षा पिन संशोधन पैनल";
-                dataEntryBox1.setAttribute('placeholder', "वर्तमान पुराना सुरक्षा पिन दर्ज करें");
-                dataEntryBox1.setAttribute('type', "number");
-                dataEntryBox2.classList.add('hidden-screen');
-            } else if (taskType === 'forgot_in') {
-                inputContainerHeader.innerText = "🔄 सुरक्षा पिन पहचान रिकवरी पैनल";
-                dataEntryBox1.setAttribute('placeholder', "अपना पंजीकृत पूरा नाम डालें");
-                dataEntryBox1.setAttribute('type', "text");
-                dataEntryBox2.classList.remove('hidden-screen');
+                document.getElementById('lblPinPanelTitle').innerText = "🔒 सुरक्षा पिन संशोधन पैनल";
+                document.getElementById('inAppVerifyInput1').setAttribute('placeholder', "वर्तमान पुराना सुरक्षा पिन दर्ज करें");
+                document.getElementById('inAppVerifyInput2').classList.add('hidden-screen');
+            } else {
+                document.getElementById('lblPinPanelTitle').innerText = "🔄 सुरक्षा पिन पहचान रिकवरी पैनल";
+                document.getElementById('inAppVerifyInput1').setAttribute('placeholder', "अपना पंजीकृत पूरा नाम डालें");
+                document.getElementById('inAppVerifyInput2').classList.remove('hidden-screen');
             }
         };
 
         window.executeInAppPinModificationTransaction = async () => {
-            const verificationValue1 = document.getElementById('inAppVerifyInput1').value.trim();
-            const verificationValue2 = document.getElementById('inAppVerifyInput2').value;
-            const destinationNewPin = document.getElementById('inAppNewPinInput').value.trim();
+            const v1 = document.getElementById('inAppVerifyInput1').value.trim();
+            const v2 = document.getElementById('inAppVerifyInput2').value;
+            const newPin = document.getElementById('inAppNewPinInput').value.trim();
 
-            if (!verificationValue1 || destinationNewPin.length !== 4) {
-                return window.showCustomAlert("त्रुटि", "सत्यापन मान और ४-अंकीय नया पिन अवश्य डालें।", "error");
-            }
+            if (!v1 || newPin.length !== 4) return window.showCustomAlert("त्रुटि", "४-अंकीय नया पिन अवश्य डालें।", "error");
 
             try {
                 const userDocumentReference = doc(db, "users", userSessionMobile);
                 const userSnap = await getDoc(userDocumentReference);
                 const serverDataRef = userSnap.data();
 
-                if (globalInAppPinActionState === 'change') {
-                    if (verificationValue1 !== serverDataRef.securityPin) {
-                        return window.showCustomAlert("सत्यापन त्रुटि", "आपका पुराना सुरक्षा पिन सर्वर रिकॉर्ड से मैच नहीं हुआ।", "error");
-                    }
-                } else if (globalInAppPinActionState === 'forgot_in') {
-                    if (verificationValue1.toLowerCase() !== serverDataRef.userName.toLowerCase() || verificationValue2 !== serverDataRef.dob) {
-                        return window.showCustomAlert("रिकवरी विफल", "नाम या जन्मतिथि प्रोफाइल रिकॉर्ड से मेल नहीं खाती।", "error");
-                    }
-                }
+                if (globalInAppPinActionState === 'change' && v1 !== serverDataRef.securityPin) return window.showCustomAlert("त्रुटि", "पुराना पिन गलत है।", "error");
+                if (globalInAppPinActionState === 'forgot_in' && (v1.toLowerCase() !== serverDataRef.userName.toLowerCase() || v2 !== serverDataRef.dob)) return window.showCustomAlert("रिकवरी विफल", "डेटा रिकॉर्ड से मेल नहीं खाता।", "error");
 
-                await setDoc(userDocumentReference, { securityPin: destinationNewPin }, { merge: true });
-                window.showCustomAlert("संशोधन सफल", "आपका नया सुरक्षा पिन सुरक्षित रूप से सेव कर दिया गया है।", "success");
+                await setDoc(userDocumentReference, { securityPin: newPin }, { merge: true });
+                window.showCustomAlert("संशोधन सफल", "नया सुरक्षा पिन सुरक्षित रूप से सेव कर दिया गया है।", "success");
                 document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');
-            } catch (err) {
-                window.showCustomAlert("त्रुटि", "मॉडिफिकेशन विफलता।", "error");
-            }
+            } catch (err) { window.showCustomAlert("त्रुटि", "मॉडिफिकेशन विफलता।", "error"); }
         };
 
-        /* ==========================================================================
-           💸 SECURED MERCHANDISE TRANSACTION GATEWAY (POS)
-           ========================================================================== */
-        window.searchAndVerifyMerchantDatabase = async () => {
-            const targetMerchantPhone = document.getElementById('payMerchantMobile').value.trim();
-            if (targetMerchantPhone.length !== 10) return window.showCustomAlert("त्रुटि", "१०-अंकीय मर्चेंट नंबर डालें।", "error");
-
+        async function updateWalletSheet() {
             try {
-                const merchantSnapshot = await getDoc(doc(db, "merchants", targetMerchantPhone));
-                if (!merchantSnapshot.exists()) {
-                    return window.showCustomAlert("दुकान नहीं मिली", "यह नंबर मर्चेंट नेटवर्क पर पंजीकृत नहीं है।", "error");
-                }
+                const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
+                const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", userSessionMobile)));
+                let spent = 0; txSnap.forEach(t => spent += Number(t.data().amount || 0));
+                const bal = userSnapshot.data().balance || 0;
 
-                activeMerchantDocPayload = merchantSnapshot.data();
-                activeMerchantDocPayload.mobile = targetMerchantPhone;
+                document.getElementById('wTotalEarned').innerText = (bal + spent) + " एसेट्स";
+                document.getElementById('wTotalSpent').innerText = spent + " एसेट्स";
+                document.getElementById('wReferEarned').innerText = (userSnapshot.data().referredBy !== "Direct" ? 1000 : 0) + " एसेट्स";
+                document.getElementById('wSpentValue').innerText = "₹ " + (spent / 20).toFixed(2);
+            } catch (err) { console.error(err); }
+        }
 
-                document.getElementById('lblVerifiedShopName').innerText = "🏪 " + (activeMerchantDocPayload.shopName || "डिजिटल शॉप");
-                document.getElementById('merchantVerifyArea').classList.remove('hidden-screen');
-            } catch (ex) {
-                window.showCustomAlert("त्रुटि", "मर्चेंट सर्च विफलता।", "error");
-            }
-        };
-
-        window.executeSecuredAssetTransferToMerchant = async () => {
-            const transferTokenQuantity = Number(document.getElementById('payAmount').value);
-            const transactionalVerificationPin = document.getElementById('paySecurityPin').value.trim();
-
-            if (transferTokenQuantity <= 0) return window.showCustomAlert("त्रुटि", "वैध एसेट ट्रांसफर वैल्यू दर्ज करें।", "error");
-            if (!activeMerchantDocPayload) return window.showCustomAlert("त्रुटि", "मर्चेंट खाता अज्ञात है।", "error");
-
+        window.handleSocialTaskExecution = async (pKey) => {
             try {
-                const consumerDocRef = doc(db, "users", userSessionMobile);
-                const consumerSnap = await getDoc(consumerDocRef);
-                const consumerData = consumerSnap.data();
+                const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
+                const taskSnap = await getDoc(taskRef);
+                if (taskSnap.exists()) return window.showCustomAlert("पूर्ण", "यह रिवॉर्ड आप पहले ही ले चुके हैं।", "error");
 
-                if (!consumerData.profileCompleted) return window.showCustomAlert("सुरक्षा ब्लॉक", "लेन-देन करने से पहले अपनी प्रोफाइल और पिन सेट करें।", "error");
-                if (transactionalVerificationPin !== consumerData.securityPin) {
-                    return window.showCustomAlert("ट्रांजैक्शन ब्लॉक", "गलत सुरक्षा पिन! ट्रांसफर रद्द कर दिया गया।", "error");
-                }
-                if (consumerData.balance < transferTokenQuantity) {
-                    return window.showCustomAlert("अपर्याप्त बैलेंस", "आपके पास भुगतान करने हेतु पर्याप्त डिजिटल एसेट कॉइंस नहीं हैं।", "error");
-                }
-
-                // Atomic Distributed Network Asset Processing Execution Matrix Sequence
-                const finalAugmentedConsumerBalance = consumerData.balance - transferTokenQuantity;
-                const finalAugmentedMerchantBalance = (activeMerchantDocPayload.balance || 0) + transferTokenQuantity;
-
-                const generatedLogTransactionRef = doc(collection(db, "merchant_transactions"));
-
-                await Promise.all([
-                    setDoc(consumerDocRef, { balance: finalAugmentedConsumerBalance }, { merge: true }),
-                    setDoc(doc(db, "merchants", activeMerchantDocPayload.mobile), { balance: finalAugmentedMerchantBalance }, { merge: true }),
-                    setDoc(generatedLogTransactionRef, {
-                        userMobile: userSessionMobile,
-                        merchantMobile: activeMerchantDocPayload.mobile,
-                        amount: transferTokenQuantity,
-                        shopName: activeMerchantDocPayload.shopName || "डिजिटल शॉप",
-                        timestamp: new Date().toISOString()
-                    })
-                ]);
-
-                // Reset processing data points safely
-                document.getElementById('payAmount').value = "";
-                document.getElementById('paySecurityPin').value = "";
-                document.getElementById('merchantVerifyArea').classList.add('hidden-screen');
-                document.getElementById('payMerchantMobile').value = "";
-
-                window.showCustomAlert("भुगतान सफल ✅", `${transferTokenQuantity} एसेट्स दुकान को ट्रांसफर कर दिए गए हैं।`, "success");
+                window.open("https://youtube.com/@RehliTechnical", '_blank');
+                const uRef = doc(db, "users", userSessionMobile);
+                const uSnap = await getDoc(uRef);
+                
+                await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 1000 }, { merge: true });
+                await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
+                window.showCustomAlert("क्रेडिट सफल", "टास्क के +1000 सिक्के वॉलेट में जोड़े गए!", "success");
                 await synchronizeUserDashboardStateEngine();
-                switchAppTab('home');
-
-            } catch (err) {
-                console.error(err);
-                window.showCustomAlert("ट्रांजैक्शन फेल", "वित्तीय बहीखाता एंट्री एरर।", "error");
-            }
+            } catch (err) { console.error(err); }
         };
 
-        /* ==========================================================================
-           📱 SINGLE-TIME INCENTIVIZED SOCIAL TASKS MODULE
-           ========================================================================== */
-        window.handleSocialTaskExecution = async (platformNameKey) => {
-            try {
-                const trackingTaskDocRef = doc(db, "users", userSessionMobile, "social_tasks", platformNameKey);
-                const taskVerificationSnap = await getDoc(trackingTaskDocRef);
-
-                if (taskVerificationSnap.exists() && taskVerificationSnap.data().status === "completed") {
-                    return window.showCustomAlert("टास्क पूर्ण", "आप इस सोशल मीडिया टास्क का १000 कॉइन रिवॉर्ड पहले ही प्राप्त कर चुके हैं।", "error");
-                }
-
-                // Redirect the subscriber window fluidly to your target online digital brand networks
-                let platformDestinationUrl = "https://youtube.com/@RehliTechnical";
-                if(platformNameKey === 'facebook') platformDestinationUrl = "https://facebook.com";
-                if(platformNameKey === 'instagram') platformDestinationUrl = "https://instagram.com";
-                if(platformNameKey === 'telegram') platformDestinationUrl = "https://telegram.org";
-                if(platformNameKey === 'whatsapp') platformDestinationUrl = "https://whatsapp.com";
-
-                window.open(platformDestinationUrl, '_blank');
-
-                // Commit the database records securely
-                const currentUserDocRef = doc(db, "users", userSessionMobile);
-                const freshUserSnap = await getDoc(currentUserDocRef);
-                const updatedAssetPillBalance = (freshUserSnap.data().balance || 0) + 1000;
-
-                await setDoc(currentUserDocRef, { balance: updatedAssetPillBalance }, { merge: true });
-                await setDoc(trackingTaskDocRef, {
-                    status: "completed",
-                    rewardedAmount: 1000,
-                    completedAt: new Date().toISOString()
-                });
-
-                window.showCustomAlert("टास्क रिवॉर्ड क्रेडिट", "सफलतापूर्वक फॉलो करने पर +1000 सिक्के जोड़े गए!", "success");
-                await synchronizeUserDashboardStateEngine();
-            } catch (err) {
-                window.showCustomAlert("त्रुटि", "टास्क प्रोसेसिंग फ़ैल।", "error");
-            }
-        };
-
-        /* ==========================================================================
-           🔗 URL GENERATOR SHARING LINK MATRIX ROUTINE
-           ========================================================================== */
         window.generateAndShareModernReferralLink = () => {
-            const compiledReferralToken = "REHLI" + userSessionMobile.substring(6).toUpperCase();
-            const customizedDeploymentOriginLink = window.location.origin + window.location.pathname + "?ref=" + compiledReferralToken;
-            
-            const standardEncodedTextPayload = `*रहली डिजिटल एसेट नेटवर्क* 💎\n\nअपने स्मार्टफोन द्वारा चाबी क्लेम करें, मर्चेंट दुकानों पर भुगतान करें और सीधे सिक्के कमाएं!\n\nमेरे इस लिंक से अभी ज्वाइन करें, आपका स्पेशल रेफरल कोड ऑटोमेटिकली भर जाएगा: ${customizedDeploymentOriginLink}`;
-            
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(standardEncodedTextPayload)}`, '_blank');
+            const code = "REHLI" + userSessionMobile.substring(6).toUpperCase();
+            const link = window.location.origin + window.location.pathname + "?ref=" + code;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*रहली डिजिटल नेटवर्क* 💎\nमेरे लिंक से ज्वाइन करें और मुफ्त में +1000 सिक्के वेलकम बोनस पाएं: " + link)}`, '_blank');
         };
 
-        /* ==========================================================================
-           🎛 TABS VIEWPORT CONTROLLER SWITCHER MATRIX
-           ========================================================================== */
         window.switchAppTab = (targetTabId) => {
             window.toggleSidebar(false);
-            
-            // Toggle active visual CSS classes across the bottom navigation links
-            document.querySelectorAll('.nav-link').forEach(linkNode => linkNode.classList.remove('active'));
-            const activeNavButtonNode = document.getElementById('nav-' + targetTabId);
-            if (activeNavButtonNode) activeNavButtonNode.classList.add('active');
+            if (targetTabId === 'pay') startLiveQRScannerEngine();
+            else window.stopQRScanner();
 
-            // Manage viewport visibility configuration blocks
-            document.querySelectorAll('.app-tab-content').forEach(viewBlock => viewBlock.classList.add('hidden-screen'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const activeNav = document.getElementById('nav-' + targetTabId);
+            if (activeNav) activeNav.classList.add('active');
+
+            document.querySelectorAll('.app-tab-content').forEach(v => viewBlock.classList.add('hidden-screen'));
             document.getElementById('tab-' + targetTabId).classList.remove('hidden-screen');
 
-            // Trigger specific execution matrices based on context routing
             if (targetTabId === 'wallet') updateWalletSheet();
             if (targetTabId === 'profile') loadProfileScreen();
         };
 
-        window.toggleSidebar = (displayForceState) => {
-            const sidePanelNode = document.getElementById('appSidebar');
-            const sideOverlayNode = document.getElementById('sidebarOverlay');
-            if (displayForceState) {
-                sidePanelNode.classList.add('open');
-                sideOverlayNode.classList.remove('hidden-screen');
-            } else {
-                sidePanelNode.classList.remove('open');
-                sideOverlayNode.classList.add('hidden-screen');
-            }
+        window.toggleSidebar = (open) => {
+            document.getElementById('appSidebar').classList.toggle('open', open);
+            document.getElementById('sidebarOverlay').classList.toggle('hidden-screen', !open);
         };
 
-        window.showCustomAlert = (title, message, classificationType) => {
-            document.getElementById('alertTitle').innerText = title;
-            document.getElementById('alertMsg').innerText = message;
-            const iconRefNode = document.getElementById('alertIcon');
-            
-            if (classificationType === 'success') {
-                iconRefNode.innerText = "🎉";
-                iconRefNode.style.color = "var(--success)";
-            } else {
-                iconRefNode.innerText = "⚠️";
-                iconRefNode.style.color = "var(--danger)";
-            }
+        window.showCustomAlert = (t, m, type) => {
+            document.getElementById('alertTitle').innerText = t;
+            document.getElementById('alertMsg').innerText = m;
+            document.getElementById('alertIcon').innerText = type === 'success' ? "🎉" : "⚠️";
+            document.getElementById('alertIcon').style.color = type === 'success' ? "var(--success)" : "var(--danger)";
             document.getElementById('customAlert').classList.remove('hidden-screen');
         };
 
-        window.closeAlert = () => {
-            document.getElementById('customAlert').classList.add('hidden-screen');
-        };
-
-        window.processLogoutRoute = () => {
-            localStorage.clear();
-            sessionStorage.clear();
-            userSessionMobile = null;
-            location.reload();
-        };
+        window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
+        window.processLogoutRoute = () => { localStorage.clear(); sessionStorage.clear(); location.reload(); };
     </script>
 </body>
 </html>
