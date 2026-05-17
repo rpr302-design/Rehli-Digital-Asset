@@ -1335,38 +1335,45 @@
            🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे
            ========================================================================== */
        // 🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे (FCM Token Registration Matrix)
+// 🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे (FCM Token Registration Engine - Fixed)
 async function initializePushNotificationGateway() {
     if ('serviceWorker' in navigator) {
         try {
-            // सर्विस वर्कर फ़ाइल को रजिस्टर करें
-            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-            console.log('सर्विस वर्कर सफलतापूर्वक पंजीकृत हुआ:', registration);
+            // 1. गिटहब रूट पर रखी सर्विस वर्कर फाइल को रजिस्टर करें
+            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+                scope: '/' // पूरे ऐप पर नोटिफिकेशन कैच करने के लिए स्कोप सेट करें
+            });
+            console.log('सर्विस वर्कर सफलतापुर्वक पंजीकृत हुआ:', registration);
 
-            // उपभोक्ता से नोटिफिकेशन दिखाने की अनुमति मांगें
+            // 2. ब्राउज़र से पुश नोटिफिकेशन की अनुमति मांगें
             const permission = await Notification.requestPermission();
             
             if (permission === 'granted' && userSessionMobile) {
                 console.log('नोटिफिकेशन अनुमति प्राप्त हुई!');
                 
-                // फ़ायरबेस क्लाउड मैसेजिंग से यूनिक टोकन प्राप्त करें
+                // 3. [🔥 टोकन फिक्स लॉजिक]: यहाँ getToken के अंदर VAPID Key डालना अनिवार्य है
+                // अपनी असली VAPID Key प्राप्त करने के लिए: Firebase Console -> Project Settings -> Cloud Messaging -> Web Push settings में जाएँ।
                 const currentFcmToken = await getToken(messaging, { 
-                    serviceWorkerRegistration: registration
+                    serviceWorkerRegistration: registration,
+                    vapidKey: "BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk" // 👈 यहाँ अपनी असली Firebase Web Push 'Public Key' (VAPID Key) पेस्ट करें
                 });
 
                 if (currentFcmToken) {
-                    console.log('FCM टोकन जनरेट हुआ:', currentFcmToken);
-                    // टोकन को उपभोक्ता के फ़ायरस्टोर डॉक्यूमेंट के अंदर इंजेक्ट करें ताकि एडमिन इसे संदेश भेज सके
+                    console.log('FCM टोकन सफलतापूर्वक जनरेट हुआ:', currentFcmToken);
+                    
+                    // टोकन को उपभोक्ता के फ़ायरस्टोर डॉक्यूमेंट के अंदर इंजेक्ट करें ताकि एडमिन पैनल से नोटिफिकेशन भेजा जा सके
                     await setDoc(doc(db, "users", userSessionMobile), { 
                         fcmToken: currentFcmToken 
                     }, { merge: true });
+                    
                 } else {
-                    console.log('टोकन जनरेट नहीं हो सका, परमिशन चैक करें।');
+                    console.log('टोकन जनरेट नहीं हो सका, कृपया ब्राउज़र की सेटिंग्स या VAPID Key चेक करें।');
                 }
             } else {
-                console.log('उपभोक्ता ने नोटिफिकेशन अनुमति अस्वीकार कर दी।');
+                console.log('उपभोक्ता ने नोटिफिकेशन अनुमति अस्वीकार की या मोबाइल नंबर लोड नहीं था।');
             }
         } catch (err) { 
-            console.error("पुश नोटिफिकेशन गेटवे सिंक स्टैंडबाय त्रुटि: ", err); 
+            console.error("पुश नोटिफिकेशन टोकन जेनरेशन विफलता विवरणी: ", err); 
         }
     }
 }
