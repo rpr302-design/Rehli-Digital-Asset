@@ -1334,22 +1334,42 @@
         /* ==========================================================================
            🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे
            ========================================================================== */
-        async function initializePushNotificationGateway() {
-            if ('serviceWorker' in navigator) {
-                try {
-                    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-                    const permission = await Notification.requestPermission();
-                    if (permission === 'granted' && userSessionMobile) {
-                        const currentFcmToken = await getToken(messaging, { 
-                            serviceWorkerRegistration: registration
-                        });
-                        if (currentFcmToken) {
-                            await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken }, { merge: true });
-                        }
-                    }
-                } catch (err) { console.log("Push Gateway Standby"); }
+       // 🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे (FCM Token Registration Matrix)
+async function initializePushNotificationGateway() {
+    if ('serviceWorker' in navigator) {
+        try {
+            // सर्विस वर्कर फ़ाइल को रजिस्टर करें
+            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            console.log('सर्विस वर्कर सफलतापूर्वक पंजीकृत हुआ:', registration);
+
+            // उपभोक्ता से नोटिफिकेशन दिखाने की अनुमति मांगें
+            const permission = await Notification.requestPermission();
+            
+            if (permission === 'granted' && userSessionMobile) {
+                console.log('नोटिफिकेशन अनुमति प्राप्त हुई!');
+                
+                // फ़ायरबेस क्लाउड मैसेजिंग से यूनिक टोकन प्राप्त करें
+                const currentFcmToken = await getToken(messaging, { 
+                    serviceWorkerRegistration: registration
+                });
+
+                if (currentFcmToken) {
+                    console.log('FCM टोकन जनरेट हुआ:', currentFcmToken);
+                    // टोकन को उपभोक्ता के फ़ायरस्टोर डॉक्यूमेंट के अंदर इंजेक्ट करें ताकि एडमिन इसे संदेश भेज सके
+                    await setDoc(doc(db, "users", userSessionMobile), { 
+                        fcmToken: currentFcmToken 
+                    }, { merge: true });
+                } else {
+                    console.log('टोकन जनरेट नहीं हो सका, परमिशन चैक करें।');
+                }
+            } else {
+                console.log('उपभोक्ता ने नोटिफिकेशन अनुमति अस्वीकार कर दी।');
             }
+        } catch (err) { 
+            console.error("पुश नोटिफिकेशन गेटवे सिंक स्टैंडबाय त्रुटि: ", err); 
         }
+    }
+}
 
         /* ==========================================================================
            👤 प्रोफाइल सेटिंग्स और पिन मॉडिफिकेशन
