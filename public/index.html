@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v8.0</title>
+    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v9.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <style>
         /* ==========================================================================
            🎨 1. Premium Matte Color Theme & Mobile Layout (CSS)
@@ -148,6 +151,7 @@
             color: var(--dark);
             margin-bottom: 16px;
             outline: none;
+            transition: all 0.2s;
         }
 
         #authContainer input { background: rgba(255, 255, 255, 0.9); border: none; }
@@ -390,6 +394,29 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             border: 3px solid var(--primary);
         }
+
+        /* 🔮 मिस्ट्री बॉक्स ग्रिड और एनीमेशन */
+        .mystery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px; }
+        .mystery-card {
+            background: linear-gradient(135deg, #2c3a47 0%, #130f40 100%);
+            color: white; border-radius: 20px; padding: 20px; text-align: center;
+            cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .mystery-card:active { transform: scale(0.95); }
+        .mystery-card i { font-size: 40px; margin-bottom: 10px; color: var(--gold); }
+        
+        /* 🎁 सुंदर इनवाइट बॉक्स एनीमेशन यूआई */
+        .gift-box-container {
+            background: radial-gradient(circle, #ff7675 0%, #d63031 100%);
+            border-radius: 24px; padding: 25px; text-align: center; color: white;
+            box-shadow: 0 15px 30px rgba(214, 48, 49, 0.4); margin-bottom: 20px;
+            animation: pulseGift 2s infinite;
+        }
+        @keyframes pulseGift {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); box-shadow: 0 20px 40px rgba(214, 48, 49, 0.6); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -411,6 +438,16 @@
                     <i class="fa-solid fa-shield-halved" style="font-size:50px; color:var(--neon-blue);"></i>
                 </div>
                 
+                <div id="autoReferralGiftSection" class="hidden-screen">
+                    <div class="gift-box-container">
+                        <i class="fa-solid fa-box-open" style="font-size: 60px; color: var(--gold); margin-bottom: 15px; display: block;"></i>
+                        <h2>विशेष इनवाइट गिफ्ट! 🎉</h2>
+                        <h1 style="font-size: 38px; color: var(--gold); margin: 10px 0; font-weight: 800;">5,000 एसेट्स</h1>
+                        <p style="font-size: 12px; opacity: 0.9;">आपको रहली डिजिटल नेटवर्क पर आमंत्रित किया गया है। खाता खोलते ही यह रिवॉर्ड आपके वॉलेट में जुड़ जाएगा!</p>
+                    </div>
+                    <button class="btn-action" style="background: linear-gradient(135deg, #fbc531, #f5cd79); color: #000;" onclick="proceedToAutoReferralMobileStep()">आगे बढ़ें (Next) →</button>
+                </div>
+
                 <div id="keySection">
                     <h2>रहली डिजिटल एसेट</h2>
                     <p>वीडियो से प्राप्त की गयी 5 अंकों की एक्टिवेशन चाबी डालें</p>
@@ -462,6 +499,7 @@
                 </div>
                 <div class="sidebar-links">
                     <a href="#" id="side-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i> होम स्क्रीन</a>
+                    <a href="#" id="side-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i> जादुई मिस्ट्री बॉक्स</a>
                     <a href="#" id="side-wallet" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i> मेरा एसेट वॉलेट</a>
                     <a href="#" id="side-profile" onclick="switchAppTab('profile')"><i class="fa-solid fa-id-card"></i> डिजिटल प्रोफाइल</a>
                     <a href="#" id="side-social" onclick="switchAppTab('social')"><i class="fa-solid fa-hashtag"></i> सोशल मीडिया टास्क</a>
@@ -507,6 +545,33 @@
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">यदि आपके पास कोई नई वीडियो चाबी है तो यहाँ डालें:</p>
                         <input type="number" id="dashSecretKey" placeholder="५-अंकीय कोड दर्ज करें" style="text-align:center; font-size:16px; font-weight:600; letter-spacing:4px;">
                         <button class="btn-action" onclick="processDashboardKeyClaim()">सिक्के वॉलेट में जोड़ें</button>
+                    </div>
+                </div>
+
+                <div id="tab-mystery" class="app-tab-content hidden-screen">
+                    <div class="earn-box" style="text-align: center;">
+                        <h3 style="justify-content: center; color: var(--primary);"><i class="fa-solid fa-box-open"></i> दैनिक मिस्ट्री बॉक्स रैफ़ल</h3>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">
+                            प्रतिदिन अधिकतम **5 चांस**। प्रत्येक चांस के बीच **1 घंटे का अंतराल** अनिवार्य है (कोई शुल्क नहीं लगेगा)।
+                        </p>
+                        
+                        <div style="background: #f8f9fa; padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 13px; font-weight: 600;">
+                            <div>आज के बचे हुए चांस: <span id="lblMysteryChance" style="color: var(--success);">5</span> / 5</div>
+                            <div id="lblMysteryTimer" style="color: var(--danger); margin-top: 4px; font-size: 12px;"></div>
+                        </div>
+
+                        <div class="mystery-grid">
+                            <div class="mystery-card" onclick="triggerMysteryBoxOpening('Silver Box')">
+                                <i class="fa-solid fa-gift"></i>
+                                <h5>Silver Box</h5>
+                                <small style="color: var(--neon-blue); display:block; margin-top:4px;">खोलने का प्रयास करें</small>
+                            </div>
+                            <div class="mystery-card" style="background: linear-gradient(135deg, #4b6584 0%, #1e272e 100%);" onclick="triggerMysteryBoxOpening('Diamond Box')">
+                                <i class="fa-solid fa-gem" style="color: #00d2d3;"></i>
+                                <h5>Diamond Box</h5>
+                                <small style="color: var(--gold); display:block; margin-top:4px;">भाग्य आजमाएं</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -609,13 +674,18 @@
                 <div id="tab-pay" class="app-tab-content hidden-screen">
                     <div class="earn-box">
                         <h3><i class="fa-solid fa-qrcode" style="color:var(--primary);"></i> दुकानदार को भुगतान गेटवे</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">नीचे लाइव कैमरा स्कैनर से दुकान का QR कोड स्कैन करें या नंबर दर्ज करें:</p>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">नीचे लाइव कैमरा स्कैनर से दुकान का QR कोड स्कैन करें या मोबाइल नंबर दर्ज करें:</p>
                         
                         <div id="qrReaderBox" class="hidden-screen">
                             <div id="qrReader" style="width:100%;"></div>
                         </div>
+                        
+                        <button class="btn-action" id="btnTriggerCamera" style="background: #27ae60; margin-bottom:15px;" onclick="startLiveQRScannerEngine()">
+                            <i class="fa-solid fa-camera"></i> क्यूआर कोड स्कैनर चालू करें
+                        </button>
 
                         <div id="payManualInputArea">
+                            <div style="font-size:11px; color:#888; margin-bottom:8px; text-align:center;">या मैन्युअल नंबर से खोजें</div>
                             <input type="number" id="payMerchantMobile" placeholder="पंजीकृत मर्चेंट मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
                             <button class="btn-action" onclick="searchAndVerifyMerchantDatabase()">मर्चेंट खाता खोजें</button>
                         </div>
@@ -636,6 +706,7 @@
 
             <nav class="nav-bar">
                 <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i><span>होम</span></a>
+                <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
                 <div class="nav-pay-center" onclick="switchAppTab('pay')"><div><i class="fa-solid fa-qrcode"></i></div></div>
                 <a href="#" class="nav-link" id="nav-profile" onclick="switchAppTab('profile')"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
             </nav>
@@ -674,19 +745,37 @@
                 await initializePushNotificationGateway();
             } else {
                 renderApplicationShellInterface(false);
-                resetAuthStateToKey();
             }
         });
 
+        // 🔗 [इनवाइट उपहार फ्लो फिक्स]: लिंक से आने पर सुंदर बॉक्स दिखाना और चाबी/रेफरल कोड ऑटो-लॉक करना
         function parseIncomingUrlParametersForAutoReferrals() {
             const urlParams = new URLSearchParams(window.location.search);
             const refCode = urlParams.get('ref');
             if (refCode) {
+                // डिफ़ॉल्ट चाबी और रेफरल कोड को सत्र (Session) में सेव कर लें
+                sessionStorage.setItem('verified_activation_key', "94416");
+                sessionStorage.setItem('verified_key_asset_value', 500);
+                
                 const targetRefInput = document.getElementById('userReferralInput');
                 targetRefInput.value = refCode.trim().toUpperCase();
-                targetRefInput.style.display = "block";
+                
+                // चाबी प्रविष्टि स्क्रीन छुपाकर सीधा सुंदर गिफ्ट बॉक्स दिखाएँ
+                document.getElementById('keySection').classList.add('hidden-screen');
+                document.getElementById('autoReferralGiftSection').classList.remove('hidden-screen');
+            } else {
+                // अगर डायरेक्ट आया है तो सामान्य चाबी एंट्री दिखाएँ
+                document.getElementById('keySection').classList.remove('hidden-screen');
+                document.getElementById('autoReferralGiftSection').classList.add('hidden-screen');
             }
         }
+
+        window.proceedToAutoReferralMobileStep = () => {
+            document.getElementById('autoReferralGiftSection').classList.add('hidden-screen');
+            document.getElementById('rewardSection').classList.remove('hidden-screen');
+            document.getElementById('userReferralInput').style.display = "block";
+            document.getElementById('loginPinArea').classList.add('hidden-screen');
+        };
 
         function renderApplicationShellInterface(isLoggedIn) {
             document.getElementById('dashboardContainer').classList.toggle('hidden-screen', !isLoggedIn);
@@ -703,7 +792,6 @@
             }
 
             try {
-                // 🛠️ [डेटाटाइप फिक्स]: फ़ायरबेस आर्किटेक्चर ("94416") से सटीक मिलान करने का स्ट्रिंग फ़िल्टर
                 const targetStringKeyId = String(keyInput);
                 const keyDocumentSnap = await getDoc(doc(db, "assets", targetStringKeyId));
                 
@@ -734,6 +822,7 @@
             if (mode === 'login') {
                 sessionStorage.clear();
                 document.getElementById('keySection').classList.add('hidden-screen');
+                document.getElementById('autoReferralGiftSection').classList.add('hidden-screen');
                 document.getElementById('rewardSection').classList.remove('hidden-screen');
                 document.getElementById('userReferralInput').style.display = "none";
                 document.getElementById('loginPinArea').classList.remove('hidden-screen');
@@ -748,6 +837,7 @@
             document.getElementById('keySection').classList.remove('hidden-screen');
             document.getElementById('rewardSection').classList.add('hidden-screen');
             document.getElementById('forgotPinArea').classList.add('hidden-screen');
+            document.getElementById('autoReferralGiftSection').classList.add('hidden-screen');
         };
 
         window.showForgotPinGateway = () => {
@@ -793,7 +883,7 @@
                 const userDocRef = doc(db, "users", targetMobile);
                 const userSnap = await getDoc(userDocRef);
 
-                if (!cachedKey) { // लॉगिन पाथवे
+                if (!cachedKey) {
                     if (!userSnap.exists()) return window.showCustomAlert("खाता अनुपलब्ध", "कृपया पहले चाबी से खाता बनाएं।", "error");
                     const userData = userSnap.data();
                     if (userData.securityPin && enteredPin !== userData.securityPin) {
@@ -807,16 +897,16 @@
                     return;
                 }
 
-                if (!userSnap.exists()) { // 💎 [रिफ्रेश मैट्रिक्स]: नया रजिस्ट्रेशन होने पर दोनों को 5000-5000 सिक्के बोनस
+                if (!userSnap.exists()) { // 💎 इनवाइट लिंक पर दोनों खातों को 5,000 - 5,000 सिक्के बोनस
                     const parsedReferralInput = document.getElementById('userReferralInput').value.trim();
                     let assignedReferrer = "Direct";
                     let initialBalance = cachedValue;
 
                     if (parsedReferralInput && parsedReferralInput.startsWith("REHLI") && parsedReferralInput !== ("REHLI" + targetMobile.substring(6))) {
                         assignedReferrer = parsedReferralInput;
-                        initialBalance += 5000; // नए यूजर को +5000 बोनस
+                        initialBalance += 5000; // नए उपभोक्ता को +5000 सिक्के
 
-                        // रेफर करने वाले पुराने यूजर को ढूंढें और उसे भी +5000 सिक्के प्रदान करें
+                        // इनवाइट करने वाले पुराने यूजर को ढूंढकर उसे भी +5000 सिक्के ट्रांसफर करना
                         try {
                             const allUsersSnap = await getDocs(collection(db, "users"));
                             allUsersSnap.forEach(async (uDoc) => {
@@ -871,7 +961,7 @@
         }
 
         /* ==========================================================================
-            Bars सिंक और सेशन मेमोरी रीड्स ऑप्टिमाइज़र
+            Dashboard डेटा सिंक इंजन
            ========================================================================== */
         async function synchronizeUserDashboardStateEngine() {
             if (!userSessionMobile) return;
@@ -902,15 +992,15 @@
                 }
 
                 await renderDynamicUnusedPromoVideoWidget(userSessionMobile);
+                await evaluateMysteryBoxLimitsAndTimers(); // मिस्ट्री बॉक्स लिमिट लोड करें
             } catch (error) { console.error(error); }
         }
 
         /* ==========================================================================
-           📺 फ़िल्टर्ड प्रमोटेड वीडियो विजेट इंजन (Firestore आर्किटेक्चर सिंक)
+           📺 फ़िल्टर्ड प्रमोटेड वीडियो विजेट इंजन
            ========================================================================== */
         async function renderDynamicUnusedPromoVideoWidget(activeUserMobile) {
             try {
-                // एक्टिव एसेट्स की जांच
                 const assetsCollectionSnap = await getDocs(query(collection(db, "assets"), where("status", "==", "active")));
                 const usedKeysSnap = await getDocs(collection(db, "users", activeUserMobile, "used_keys"));
                 
@@ -919,7 +1009,6 @@
 
                 let discoveredValidPromoDoc = null;
                 assetsCollectionSnap.forEach(assetDoc => {
-                    // स्ट्रिंग कन्वर्शन मिलान चेकर नियम
                     if (!usedKeysList.includes(String(assetDoc.id)) && !discoveredValidPromoDoc) {
                         discoveredValidPromoDoc = assetDoc.data();
                     }
@@ -964,10 +1053,93 @@
         };
 
         /* ==========================================================================
-           📸 लाइव इन-ऐप कैमरा स्कैनर इंजन
+           🔮 [वापस जोड़ा गया]: इन-ऐप मिस्ट्री बॉक्स लॉजिक इंजन (एडमिन कंट्रोल + नो फीस)
            ========================================================================== */
-        function startLiveQRScannerEngine() {
+        async function evaluateMysteryBoxLimitsAndTimers() {
+            try {
+                const mysterySnap = await getDoc(doc(db, "users", userSessionMobile, "mystery_state", "tracker"));
+                let count = 5;
+                let lastTime = 0;
+
+                if (mysterySnap.exists()) {
+                    const mData = mysterySnap.data();
+                    if (mData.date === localCurrentDateISO) {
+                        count = mData.remainingChances !== undefined ? mData.remainingChances : 5;
+                    }
+                    lastTime = mData.lastClaimedTimestamp || 0;
+                }
+
+                document.getElementById('lblMysteryChance').innerText = count;
+
+                // 1 घंटे के अंतराल लॉक के लिए टाइमर चेक करें
+                const currentTimeMs = Date.now();
+                const diffTimeMs = currentTimeMs - lastTime;
+                const oneHourMs = 60 * 60 * 1000;
+
+                if (diffTimeMs < oneHourMs && count > 0 && lastTime !== 0) {
+                    const remainingSecs = Math.ceil((oneHourMs - diffTimeMs) / 1000);
+                    startMysteryBoxCooldownTimer(remainingSecs);
+                } else {
+                    document.getElementById('lblMysteryTimer').innerText = "";
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function startMysteryBoxCooldownTimer(seconds) {
+            const timerDiv = document.getElementById('lblMysteryTimer');
+            const intervalId = setInterval(() => {
+                if (seconds <= 0) {
+                    clearInterval(intervalId);
+                    timerDiv.innerText = "";
+                    return;
+                }
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timerDiv.innerText = `⏳ अगला चांस: ${mins} मिनट ${secs} सेकंड बाद उपलब्ध`;
+                seconds--;
+            }, 1000);
+        }
+
+        window.triggerMysteryBoxOpening = async (boxName) => {
+            const chanceEl = document.getElementById('lblMysteryChance');
+            let currentChances = Number(chanceEl.innerText);
+
+            if (currentChances <= 0) return window.showCustomAlert("सीमा समाप्त 🚨", "आपके आज के सभी 5 फ्री चांस समाप्त हो चुके हैं।", "error");
+            if (document.getElementById('lblMysteryTimer').innerText !== "") return window.showCustomAlert("अंतराल लॉक ⏳", "अगला मिस्ट्री बॉक्स खोलने के लिए कृपया 1 घंटे का इंतजार करें।", "error");
+
+            try {
+                // 📢 [एडमिन कंट्रोल]: एडमिन पैनल से मिस्ट्री ऑफर फेच करना
+                const offerSnap = await getDoc(doc(db, "announcements", "live_notice"));
+                let winRewardValue = Math.floor(Math.random() * 500) + 50; // डिफ़ॉल्ट रिवॉर्ड रैंडम
+
+                if (offerSnap.exists() && offerSnap.data().mysteryOfferValue) {
+                    winRewardValue = Number(offerSnap.data().mysteryOfferValue); // एडमिन द्वारा तय वैल्यू
+                }
+
+                const userDocRef = doc(db, "users", userSessionMobile);
+                const uSnap = await getDoc(userDocRef);
+                const finalBal = (uSnap.data().balance || 0) + winRewardValue;
+
+                // डेटाबेस में चांस और टाइमस्टैम्प अपडेट करें
+                await setDoc(userDocRef, { balance: finalBal }, { merge: true });
+                await setDoc(doc(db, "users", userSessionMobile, "mystery_state", "tracker"), {
+                    date: localCurrentDateISO,
+                    remainingChances: currentChances - 1,
+                    lastClaimedTimestamp: Date.now()
+                }, { merge: true });
+
+                window.showCustomAlert("बधाई हो! 🎉", `${boxName} से आपको जैकपॉट में मुफ्त +${winRewardValue} एसेट्स कॉइन मिले!`, "success");
+                await synchronizeUserDashboardStateEngine();
+
+            } catch (err) { console.error(err); }
+        };
+
+        /* ==========================================================================
+           📸 [वापस जोड़ा गया]: PhonePe Style Live QR Code Scanner Engine
+           ========================================================================== */
+        window.startLiveQRScannerEngine = () => {
             document.getElementById('qrReaderBox').classList.remove('hidden-screen');
+            document.getElementById('btnTriggerCamera').classList.add('hidden-screen');
             
             inAppHtml5Qrcode = new Html5Qrcode("qrReader");
             inAppHtml5Qrcode.start(
@@ -982,13 +1154,14 @@
                     }
                 },
                 (scanError) => { }
-            ).catch(err => console.error(err));
-        }
+            ).catch(err => console.error("Camera Open Error: ", err));
+        };
 
         window.stopQRScanner = () => {
             if (inAppHtml5Qrcode && inAppHtml5Qrcode.isScanning) {
                 inAppHtml5Qrcode.stop().then(() => {
                     document.getElementById('qrReaderBox').classList.add('hidden-screen');
+                    document.getElementById('btnTriggerCamera').classList.remove('hidden-screen');
                 }).catch(e => console.log(e));
             }
         };
@@ -996,6 +1169,7 @@
         window.searchAndVerifyMerchantDatabase = async () => {
             const targetMerchantPhone = document.getElementById('payMerchantMobile').value.trim();
             if (targetMerchantPhone.length !== 10) return window.showCustomAlert("त्रुटि", "१०-अंकीय मर्चेंट नंबर डालें।", "error");
+            window.stopQRScanner();
             await verifyMerchantEntryFlow(targetMerchantPhone);
         };
 
@@ -1058,7 +1232,7 @@
         };
 
         /* ==========================================================================
-           🔔 वेब पुश नोटिफिकेशन गेटवे सर्विस
+           🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे
            ========================================================================== */
         async function initializePushNotificationGateway() {
             if ('serviceWorker' in navigator) {
@@ -1073,7 +1247,7 @@
                             await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken }, { merge: true });
                         }
                     }
-                } catch (err) { console.log("Push Notification Gateway Ready."); }
+                } catch (err) { console.log("Push Gateway Standby"); }
             }
         }
 
@@ -1113,9 +1287,7 @@
                 const userRef = doc(db, "users", userSessionMobile);
                 const currentDocSnap = await getDoc(userRef);
                 let operatingBalance = currentDocSnap.data().balance || 0;
-                
-                // 💎 प्रोफाइल लॉक करने पर अब +2000 सिक्के बोनस
-                if (!currentDocSnap.data().profileCompleted) operatingBalance += 2000;
+                if (!currentDocSnap.data().profileCompleted) operatingBalance += 2000; // प्रोफाइल रिवॉर्ड 2000 फिक्स
 
                 await setDoc(userRef, { userName: inputName, dob: inputDOB, gender: inputGender, securityPin: inputPin, profileCompleted: true, balance: operatingBalance }, { merge: true });
                 window.showCustomAlert("प्रोफाइल लॉक", "सफलतापूर्वक सत्यापित! आपको +2000 प्रोफाइल कॉइंस प्राप्त हुए।", "success");
@@ -1157,7 +1329,7 @@
                 await setDoc(userDocumentReference, { securityPin: newPin }, { merge: true });
                 window.showCustomAlert("संशोधन सफल", "नया सुरक्षा पिन सुरक्षित रूप से सेव कर दिया गया है।", "success");
                 document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');
-            } catch (err) { window.showCustomAlert("त्रुटि", "मॉडिफिकेशन विफलता।", "error"); }
+            } catch (err) { window.showCustomAlert("त्रुटि", "मडिफिकेशन विफलता।", "error"); }
         };
 
         async function updateWalletSheet() {
@@ -1170,7 +1342,6 @@
                 document.getElementById('wTotalEarned').innerText = (bal + spent) + " एसेट्स";
                 document.getElementById('wTotalSpent').innerText = spent + " एसेट्स";
                 
-                // 💎 वॉलेट में रेफरल बोनस प्रदर्शित करने का काउंटर
                 const hasReferredBonus = userSnapshot.data().referredBy !== "Direct" ? 5000 : 0;
                 document.getElementById('wReferEarned').innerText = hasReferredBonus + " एसेट्स";
                 document.getElementById('wSpentValue').innerText = "₹ " + (spent / 20).toFixed(2);
@@ -1187,7 +1358,6 @@
                 const uRef = doc(db, "users", userSessionMobile);
                 const uSnap = await getDoc(uRef);
                 
-                // 💎 सोशल टास्क रिवॉर्ड क्लेम करने पर +1000 सिक्के
                 await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 1000 }, { merge: true });
                 await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
                 window.showCustomAlert("क्रेडिट सफल", "टास्क के +1000 सिक्के वॉलेट में जोड़े गए!", "success");
@@ -1203,7 +1373,7 @@
 
         window.switchAppTab = (targetTabId) => {
             window.toggleSidebar(false);
-            if (targetTabId === 'pay') startLiveQRScannerEngine();
+            if (targetTabId === 'pay') window.startLiveQRScannerEngine();
             else window.stopQRScanner();
 
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
@@ -1211,6 +1381,7 @@
             if (activeNav) activeNav.classList.add('active');
 
             document.getElementById('tab-home').classList.add('hidden-screen');
+            document.getElementById('tab-mystery').classList.add('hidden-screen');
             document.getElementById('tab-wallet').classList.add('hidden-screen');
             document.getElementById('tab-profile').classList.add('hidden-screen');
             document.getElementById('tab-social').classList.add('hidden-screen');
