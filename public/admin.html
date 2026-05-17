@@ -3,133 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो एडमिन v2.5</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>रहली डिजिटल एसेट - प्रो एडमिन v3.0 Ultimate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ==========================================================================
+           🎨 1. Premium Matte & Glassmorphism Admin Theme (CSS)
+           ========================================================================== */
         :root {
-            --sidebar-bg: #1e272e;
-            --topbar-grad: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --main-bg: #f1f2f6;
-            --accent: #3498db;
-            --white: #ffffff;
-            --success: #27ae60;
-            --danger: #e74c3c;
-            --warning: #f1c40f;
+            --sidebar-bg: #111424;
+            --main-bg: #0f1123;
+            --card-bg: #1a1d36;
+            --text-main: #f5f6fa;
+            --text-muted: #a29bfe;
+            --accent: #4e54c8;
+            --accent-gradient: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+            --success: #00b894;
+            --danger: #d63031;
+            --warning: #fbc531;
+            --border-color: rgba(255, 255, 255, 0.08);
         }
 
-        body { font-family: 'Poppins', sans-serif; margin: 0; display: flex; height: 100vh; background-color: var(--main-bg); overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--main-bg); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-        /* Sidebar Style */
-        .sidebar { width: 260px; background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; z-index: 100; transition: 0.3s; }
-        .sidebar-header { padding: 25px; text-align: center; font-weight: 600; font-size: 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid #34495e; }
-        .nav-link { padding: 15px 25px; color: #bdc3c7; text-decoration: none; display: flex; align-items: center; cursor: pointer; transition: 0.3s; border-left: 5px solid transparent; }
-        .nav-link i { margin-right: 15px; width: 20px; text-align: center; }
-        .nav-link:hover, .nav-link.active { background: #2f3640; color: white; border-left-color: #00f2fe; }
+        .hidden { display: none !important; }
 
-        /* Main Layout */
+        /* 🚪 Beautiful Admin Login Gateway */
+        #loginWrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1e272e 0%, #0f1123 100%);
+            display: flex; align-items: center; justify-content: center; z-index: 9999;
+        }
+        .login-box {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            padding: 40px; border-radius: 28px; width: 100%; max-width: 380px;
+            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .login-box h3 { font-size: 22px; margin: 15px 0; font-weight: 600; letter-spacing: -0.5px; }
+
+        /* 🍔 Professional Workspace Layout */
+        .sidebar {
+            width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color);
+            display: flex; flex-direction: column; z-index: 100; transition: 0.3s;
+        }
+        .sidebar-header {
+            padding: 25px; text-align: center; font-weight: 700; font-size: 20px;
+            background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--border-color); color: var(--text-main);
+        }
+        .nav-link {
+            padding: 14px 25px; color: #b2bec3; text-decoration: none;
+            display: flex; align-items: center; cursor: pointer; transition: 0.2s; border-left: 4px solid transparent;
+            font-size: 14px; font-weight: 500;
+        }
+        .nav-link i { margin-right: 15px; width: 20px; text-align: center; font-size: 16px; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.04); color: white; border-left-color: var(--text-muted); }
+
         .content-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .top-navbar { height: 70px; background: var(--topbar-grad); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        .top-navbar {
+            height: 70px; background: var(--sidebar-bg); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--border-color);
+        }
+        .top-navbar h2 { font-size: 20px; font-weight: 600; }
+        
         .main-content { flex: 1; overflow-y: auto; padding: 30px; }
 
-        /* Cards & Tables */
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); margin-bottom: 20px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
-        th { color: #888; font-weight: 600; }
+        /* 🎫 Cards & Modern Glass Tables Grid */
+        .card {
+            background: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 25px; border: 1px solid var(--border-color);
+        }
+        .card h3 { font-size: 18px; margin-bottom: 20px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 10px; }
 
-        /* Stats Grid */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: white; padding: 25px; border-radius: 20px; display: flex; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .stat-icon { font-size: 45px; margin-right: 20px; opacity: 0.8; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { text-align: left; padding: 14px; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+        th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+        td { color: #dfe6e9; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
 
-        /* Login */
-        #loginWrapper { position: fixed; top:0; left:0; width: 100%; height: 100%; background: #2c3e50; display: flex; align-items: center; justify-content: center; z-index: 2000; }
-        .login-box { background: white; padding: 40px; border-radius: 30px; width: 100%; max-width: 350px; text-align: center; }
+        /* 📊 Stat Metric Dashboard Grid Counter */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card {
+            background: var(--card-bg); padding: 25px; border-radius: 22px; display: flex;
+            align-items: center; border: 1px solid var(--border-color); box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .stat-icon { font-size: 40px; margin-right: 20px; background: rgba(255,255,255,0.05); width: 60px; height: 60px; border-radius: 16px; display: flex; justify-content: center; align-items: center; }
 
-        .btn { border: none; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.3s; font-size: 13px; }
-        .btn-primary { background: var(--accent); color: white; width: 100%; }
-        .btn-action-sm { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; padding: 6px 12px; border-radius: 8px; }
+        /* Form elements input controls fields styling */
+        label { display: block; margin-top: 14px; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+        input, select, textarea {
+            width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color);
+            border-radius: 12px; color: white; font-size: 14px; outline: none; transition: 0.2s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--secondary); box-shadow: 0 0 0 2px rgba(143, 148, 251, 0.2); }
 
-        input, select { width: 100%; padding: 12px; margin-top: 8px; border: 1.5px solid #eee; border-radius: 10px; box-sizing: border-box; }
-        .hidden { display: none !important; }
-        
-        .modal-card { background: #f9f9f9; padding: 20px; border-radius: 15px; border: 1px solid #e0e0e0; margin-top: 20px; }
+        .btn {
+            border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer;
+            font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;
+        }
+        .btn-primary { background: var(--accent-gradient); color: white; width: 100%; box-shadow: 0 6px 20px rgba(78, 84, 200, 0.3); }
+        .btn-action-sm { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; }
+
+        .badge-status { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .badge-active { background: rgba(0, 184, 148, 0.15); color: var(--success); }
     </style>
 </head>
 <body>
 
     <div id="loginWrapper">
         <div class="login-box">
-            <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" width="70" alt="Admin">
-            <h3>व्यवस्थापक लॉगिन</h3>
+            <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" width="75" alt="Admin Dashboard">
+            <h3>रहली डिजिटल कोर कंसोल</h3>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Secure Management Area</p>
             <input type="email" id="adminEmail" value="rpr302@gmail.com">
-            <input type="password" id="adminPass" value="Sammo*1234">
-            <button class="btn btn-primary" style="margin-top: 20px; padding: 12px;" onclick="login()">पहुंच प्राप्त करें</button>
+            <input type="password" id="adminPass" value="Sammo*1234" style="margin-top:10px;">
+            <button class="btn btn-primary" style="margin-top: 25px;" onclick="login()">पहुंच प्राप्त करें</button>
         </div>
     </div>
 
     <div id="adminPanel" style="display: none; width: 100%;">
         <div class="sidebar">
-            <div class="sidebar-header">REHLI DIGITAL</div>
-            <div class="nav-link active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> डैशबोर्ड</div>
-            <div class="nav-link" onclick="showTab('entry')"><i class="fas fa-plus-circle"></i> नया एसेट बनाएँ</div>
-            <div class="nav-link" onclick="showTab('users')"><i class="fas fa-users"></i> यूजर लिस्ट</div>
-            <div class="nav-link" onclick="showTab('tracking')"><i class="fas fa-search-location"></i> यूज़र ट्रैकिंग</div>
-            <div class="nav-link" onclick="showTab('history')"><i class="fas fa-history"></i> चाबी इतिहास 🔑</div>
-            <div class="nav-link" style="margin-top: auto; border-top: 1px solid #34495e;" onclick="logout()"><i class="fas fa-power-off"></i> लॉगआउट</div>
+            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM</div>
+            <div class="sidebar-links">
+                <a class="nav-link active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> मुख्य डैशबोर्ड</a>
+                <a class="nav-link" onclick="showTab('entry')"><i class="fas fa-plus-circle"></i> नया वीडियो एसेट बनाएं</a>
+                <a class="nav-link" onclick="showTab('announcement')"><i class="fas fa-bullhorn"></i> घोषणा / ऑफर सबमिट करें</a>
+                <a class="nav-link" onclick="showTab('users')"><i class="fas fa-users"></i> पंजीकृत यूजर लिस्ट</a>
+                <a class="nav-link" onclick="showTab('tracking')"><i class="fas fa-search-location"></i> यूजर अर्निंग ट्रैकर</a>
+                <a class="nav-link" onclick="showTab('history')"><i class="fas fa-history"></i> चाबी रिलीज इतिहास</a>
+                <a class="nav-link" style="margin-top: auto; border-top: 1px solid var(--border-color); color:var(--danger);" onclick="logout()"><i class="fas fa-power-off"></i> लॉगआउट पैनल</a>
+            </div>
         </div>
 
         <div class="content-wrapper">
             <div class="top-navbar">
                 <h2 id="pageTitle">मुख्य डैशबोर्ड</h2>
-                <div class="admin-profile"><i class="fas fa-user-circle"></i> रोशन प्रजापति</div>
+                <div style="font-weight:600; font-size:14px; color:var(--text-muted);"><i class="fas fa-user-shield"></i> रोशन प्रजापति (मास्टर एडमिन)</div>
             </div>
 
             <div class="main-content">
+                
                 <div id="tab-dashboard">
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <i class="fas fa-user-friends stat-icon" style="color: #6c5ce7;"></i>
-                            <div><h3 id="countUsers">0</h3><p style="margin:0; color:#888;">कुल यूजर्स</p></div>
+                            <div class="stat-icon" style="color: #6c5ce7;"><i class="fas fa-user-friends"></i></div>
+                            <div><h3 id="countUsers" style="font-size:24px; font-weight:700;">0</h3><p style="margin:0; color:var(--text-muted); font-size:13px;">कुल सक्रिय यूजर्स</p></div>
                         </div>
                         <div class="stat-card">
-                            <i class="fas fa-key stat-icon" style="color: #e67e22;"></i>
-                            <div><h3 id="countAssets">0</h3><p style="margin:0; color:#888;">कुल चाबियाँ</p></div>
+                            <div class="stat-icon" style="color: #e67e22;"><i class="fas fa-key"></i></div>
+                            <div><h3 id="countAssets" style="font-size:24px; font-weight:700;">0</h3><p style="margin:0; color:var(--text-muted); font-size:13px;">कुल जनरेटेड चाबियाँ</p></div>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-entry" class="hidden">
-                    <div class="card" style="max-width: 500px; margin: auto;">
-                        <h3>✨ नया एसेट रिवॉर्ड बनाएँ</h3>
-                        <label>प्लेटफार्म</label>
+                    <div class="card" style="max-width: 550px; margin: auto;">
+                        <h3>✨ नया वीडियो एसेट रिवॉर्ड लोड करें</h3>
+                        <label>वीडियो प्लेटफॉर्म मीडिया नेटवर्क</label>
                         <select id="platform">
-                            <option value="YouTube">YouTube Video</option>
-                            <option value="Facebook">Facebook Post</option>
-                            <option value="Other">Other</option>
+                            <option value="YouTube">YouTube Tutorials Video</option>
+                            <option value="Facebook">Facebook Video Post</option>
+                            <option value="Other">Other Assets Network</option>
                         </select>
+                        
                         <label>वीडियो / एसेट का शीर्षक (Title)</label>
-                        <input type="text" id="videoTitle" placeholder="Video Title">
+                        <input type="text" id="videoTitle" placeholder="उदाहरण: रहली डिजिटल एसेट से पैसे कैसे ट्रांसफर करें">
+                        
                         <label>वीडियो लिंक (URL)</label>
                         <input type="url" id="videoLink" placeholder="https://youtube.com/watch?v=...">
-                        <label>कॉइन वैल्यू (Value)</label>
-                        <input type="number" id="assetValue" placeholder="100">
                         
-                        <button class="btn btn-primary" id="genKeyBtn" style="margin-top:20px; background:#6c5ce7; padding: 12px;" onclick="generateUniqueKey()">चाबी जनरेट करें</button>
+                        <label>कॉइन एसेट वैल्यू (Value Price)</label>
+                        <input type="number" id="assetValue" placeholder="500">
                         
-                        <div id="keyArea" class="hidden" style="margin-top: 20px; padding: 15px; border: 2px dashed #3498db; text-align: center; border-radius: 10px;">
-                            <div id="keyDisplay" style="font-size: 30px; font-weight: bold; letter-spacing: 5px; margin: 10px 0;">00000</div>
-                            <button id="saveBtn" class="btn btn-primary" style="background: var(--success); padding: 12px;" onclick="submitData()">फायरबेस में सुरक्षित करें</button>
+                        <button class="btn btn-primary" id="genKeyBtn" style="margin-top:25px;" onclick="generateUniqueKey()">क्रिप्टोग्राफिक चाबी जनरेट करें</button>
+                        
+                        <div id="keyArea" class="hidden" style="margin-top: 25px; padding: 20px; border: 2px dashed var(--secondary); text-align: center; border-radius: 16px; background:rgba(0,0,0,0.15);">
+                            <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; font-weight:600;">यूनिक रैंडम कोड जेनरेटेड:</span>
+                            <div id="keyDisplay" style="font-size: 36px; font-weight: 800; letter-spacing: 6px; margin: 10px 0; color:var(--gold);">00000</div>
+                            <button id="saveBtn" class="btn btn-primary" style="background: var(--success); width:auto; padding:12px 30px;" onclick="submitData()">फायरबेस क्लाउड में लाइव सेव करें</button>
                         </div>
+                    </div>
+                </div>
+
+                <div id="tab-announcement" class="hidden">
+                    <div class="card" style="max-width: 550px; margin: auto;">
+                        <h3><i class="fa-solid fa-bullhorn" style="color:var(--success)"></i> नया ऑफर / घोषणा पत्र जारी करें</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">यहाँ टाइप किया हुआ टेक्स्ट उपभोक्ता मोबाइल एप्लीकेशन के मुख्य पृष्ठ पर तुरंत लाइव चमकने लगेगा।</p>
+                        
+                        <label>घोषणा / ऑफर संदेश विवरण</label>
+                        <textarea id="txtAnnouncementInput" rows="5" placeholder="उदाहरण: धमाका ऑफर! आज प्रोफाइल लॉक करने पर सभी रहली निवासियों को मिल रहे हैं सीधे +2000 सिक्के बिल्कुल मुफ्त..."></textarea>
+                        
+                        <button class="btn btn-primary" style="margin-top:20px; background:var(--success);" onclick="submitLiveAnnouncementToDatabase()">होम स्क्रीन पर लाइव ब्रॉडकास्ट करें</button>
                     </div>
                 </div>
 
                 <div id="tab-users" class="hidden">
                     <div class="card">
-                        <h3>👥 पंजीकृत यूजर लिस्ट</h3>
+                        <h3>👥 रहली डिजिटल नेटवर्क पंजीकृत यूजर डेटाबेस</h3>
                         <table>
-                            <thead><tr><th>नाम</th><th>मोबाइल</th><th>कुल एसेट</th><th>पंजीकरण तारीख</th></tr></thead>
+                            <thead><tr><th>यूजर का नाम</th><th>मोबाइल नंबर</th><th>कुल एसेट बैलेंस</th><th>पंजीकरण तिथि</th></tr></thead>
                             <tbody id="userListBody"></tbody>
                         </table>
                     </div>
@@ -137,15 +210,15 @@
 
                 <div id="tab-tracking" class="hidden">
                     <div class="card">
-                        <h3>🎯 यूजर चाबी अर्निंग ट्रैकर</h3>
-                        <div style="display:flex; gap:10px; margin-bottom: 20px;">
-                            <input type="number" id="searchMobile" placeholder="मोबाइल नंबर डालें" style="margin:0;">
-                            <button class="btn btn-primary" style="width:120px; margin:0;" onclick="trackUserKeys()">खोजें</button>
+                        <h3>🎯 यूजर डिजिटल चाबी अर्निंग ट्रैकर लेजर</h3>
+                        <div style="display:flex; gap:12px; margin-bottom: 25px; max-width:450px;">
+                            <input type="number" id="searchMobile" placeholder="उपभोक्ता का 10-अंकीय नंबर दर्ज करें" style="margin:0;">
+                            <button class="btn btn-primary" style="width:130px; margin:0;" onclick="trackUserKeys()">खोजबीन करें</button>
                         </div>
                         <div id="trackerResult" class="hidden">
-                            <h4 id="trackerInfo" style="color:var(--accent);">यूजर: N/A</h4>
+                            <h4 id="trackerInfo" style="color:var(--text-muted); font-weight:600; margin-bottom:15px;">यूज़र: N/A</h4>
                             <table>
-                                <thead><tr><th>चाबी Used</th><th>प्राप्त सिक्के</th><th>समय</th></tr></thead>
+                                <thead><tr><th>दावा की गई चाबी (Key Used)</th><th>प्राप्त कॉइन मूल्य</th><th>सटीक क्लेम समय</th></tr></thead>
                                 <tbody id="trackerListBody"></tbody>
                             </table>
                         </div>
@@ -154,22 +227,22 @@
 
                 <div id="tab-history" class="hidden">
                     <div class="card">
-                        <h3>🔑 जारी की गई सभी चाबियाँ और उनका लाइव खर्च</h3>
-                        <p style="font-size:12px; color:#666;">नीचे किसी भी चाबी के सामने <b>"खर्च ट्रैक करें"</b> बटन दबाकर देखें कि उसे कितने लोगों ने क्लेम किया है।</p>
+                        <h3>🔑 जारी की गई सभी चाबियाँ और उनका लाइव खर्च डिस्ट्रीब्यूशन</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">नीचे किसी भी चाबी के सामने बटन दबाकर रीयल-टाइम में ट्रैक करें कि उसे कितने उपभोक्ताओं ने क्लेम किया है।</p>
                         <table>
-                            <thead><tr><th>चाबी (Key)</th><th>शीर्षक (Title)</th><th>कॉइन वैल्यू</th><th>प्लेटफार्म</th><th>कार्रवाई</th></tr></thead>
+                            <thead><tr><th>चाबी कोड (Key)</th><th>शीर्षक (Title)</th><th>कॉइन वैल्यू</th><th>प्लेटफॉर्म</th><th>एक्शन</th></tr></thead>
                             <tbody id="historyListBody"></tbody>
                         </table>
                     </div>
 
-                    <div id="keyStatsSection" class="card modal-card hidden">
-                        <h3 style="color: var(--sidebar-bg); margin-top: 0;"><i class="fas fa-chart-pie"></i> चाबी <span id="activeStatKey" style="color:var(--accent);">00000</span> का लाइव खर्च ट्रैकर</h3>
-                        <div style="display:flex; gap:30px; margin-bottom: 15px; background: #fff; padding: 15px; border-radius: 10px; border-left: 5px solid var(--accent);">
-                            <div>कुल क्लेम करने वाले यूजर: <b id="statTotalUsers" style="color:var(--sidebar-bg); font-size:16px;">0</b></div>
-                            <div>कुल खर्च हुए कॉइन्स: <b id="statTotalCoins" style="color:var(--danger); font-size:16px;">0</b></div>
+                    <div id="keyStatsSection" class="card hidden" style="border-top: 4px solid var(--gold);">
+                        <h3><i class="fas fa-chart-pie"></i> चाबी <span id="activeStatKey" style="color:var(--gold);">00000</span> का लाइव क्लेम डिस्ट्रिब्यूशन बहीखाता</h3>
+                        <div style="display:flex; gap:30px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 14px;">
+                            <div>कुल क्लेम करने वाले यूजर: <b id="statTotalUsers" style="color:white; font-size:16px;">0</b></div>
+                            <div>कुल जारी हुए/खर्च कॉइन्स: <b id="statTotalCoins" style="color:var(--danger); font-size:16px;">0</b></div>
                         </div>
                         <table>
-                            <thead style="background:#eee;"><tr><th>यूजर मोबाइल नंबर</th><th>क्लेम किए सिक्के</th><th>तारीख और समय</th></tr></thead>
+                            <thead><tr><th>उपभोक्ता मोबाइल नंबर</th><th>प्राप्त किए गए सिक्के</th><th>दावा करने का समय</th></tr></thead>
                             <tbody id="keyStatsListBody"></tbody>
                         </table>
                     </div>
@@ -179,202 +252,253 @@
         </div>
     </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, orderBy, query, limit, collectionGroup, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs, orderBy, query, limit, collectionGroup, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
-        authDomain: "rehli-digital-asset.firebaseapp.com",
-        projectId: "rehli-digital-asset",
-        storageBucket: "rehli-digital-asset.firebasestorage.app",
-        messagingSenderId: "779415089179",
-        appId: "1:779415089179:web:4f6654088af999ed7ac8be"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
+            authDomain: "rehli-digital-asset.firebaseapp.com",
+            projectId: "rehli-digital-asset",
+            storageBucket: "rehli-digital-asset.firebasestorage.app",
+            messagingSenderId: "779415089179",
+            appId: "1:779415089179:web:4f6654088af999ed7ac8be"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    let genKey = "";
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let genKey = "";
 
-    window.login = async () => {
-        try { await signInWithEmailAndPassword(auth, document.getElementById('adminEmail').value, document.getElementById('adminPass').value); } 
-        catch (e) { alert("लॉगिन फेल!"); }
-    };
+        window.login = async () => {
+            try { await signInWithEmailAndPassword(auth, document.getElementById('adminEmail').value, document.getElementById('adminPass').value); } 
+            catch (e) { alert("लॉगिन क्रेडेंशियल अमान्य हैं!"); }
+        };
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            document.getElementById('loginWrapper').classList.add('hidden');
-            document.getElementById('adminPanel').style.display = 'flex';
-            loadDashboard();
-            if(localStorage.getItem('pendingAdminKey')) checkSavedKeyStatus();
-        } else {
-            document.getElementById('loginWrapper').classList.remove('hidden');
-            document.getElementById('adminPanel').style.display = 'none';
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('loginWrapper').classList.add('hidden');
+                document.getElementById('adminPanel').style.display = 'flex';
+                loadDashboard();
+                if(localStorage.getItem('pendingAdminKey')) checkSavedKeyStatus();
+            } else {
+                document.getElementById('loginWrapper').classList.remove('hidden');
+                document.getElementById('adminPanel').style.display = 'none';
+            }
+        });
+
+        window.showTab = (tab) => {
+            ['dashboard', 'entry', 'announcement', 'users', 'tracking', 'history'].forEach(t => document.getElementById('tab-'+t).classList.add('hidden'));
+            document.getElementById('tab-'+tab).classList.remove('hidden');
+            
+            // Sidebar menu links formatting
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            if(event && event.currentTarget) event.currentTarget.classList.add('active');
+            
+            // Router mapping logic targets loading
+            if(tab === 'users') loadUsers();
+            if(tab === 'history') {
+                loadHistory();
+                document.getElementById('keyStatsSection').classList.add('hidden');
+            }
+            if(tab === 'dashboard') loadDashboard();
+        };
+
+        async function loadDashboard() {
+            const uSnap = await getDocs(collection(db, "users"));
+            const aSnap = await getDocs(collection(db, "assets"));
+            document.getElementById('countUsers').innerText = uSnap.size;
+            document.getElementById('countAssets').innerText = aSnap.size;
         }
-    });
 
-    window.showTab = (tab) => {
-        ['dashboard', 'entry', 'users', 'tracking', 'history'].forEach(t => document.getElementById('tab-'+t).classList.add('hidden'));
-        document.getElementById('tab-'+tab).classList.remove('hidden');
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        event.currentTarget.classList.add('active');
-        if(tab === 'users') loadUsers();
-        if(tab === 'history') loadHistory();
-        if(tab === 'dashboard') loadDashboard();
-    };
-
-    async function loadDashboard() {
-        const uSnap = await getDocs(collection(db, "users"));
-        const aSnap = await getDocs(collection(db, "assets"));
-        document.getElementById('countUsers').innerText = uSnap.size;
-        document.getElementById('countAssets').innerText = aSnap.size;
-    }
-
-    async function loadUsers() {
-        const snap = await getDocs(query(collection(db, "users"), limit(50)));
-        const body = document.getElementById('userListBody');
-        body.innerHTML = "";
-        snap.forEach(d => {
-            const u = d.data();
-            body.innerHTML += `<tr><td>${u.userName || 'N/A'}</td><td>${u.mobile}</td><td>${u.balance || 0}</td><td>${u.regDate ? u.regDate.substring(0,10) : '-'}</td></tr>`;
-        });
-    }
-
-    window.trackUserKeys = async () => {
-        const searchMobile = document.getElementById('searchMobile').value.trim();
-        if(searchMobile.length !== 10) return alert("10 अंकों का नंबर डालें");
-        const body = document.getElementById('trackerListBody');
-        body.innerHTML = "<tr><td colspan='3'>खोज रहे हैं...</td></tr>";
-        document.getElementById('trackerResult').classList.remove('hidden');
-
-        const userSnap = await getDoc(doc(db, "users", searchMobile));
-        if(!userSnap.exists()) {
-            body.innerHTML = "<tr><td colspan='3' style='color:red;'>नंबर रजिस्टर्ड नहीं है।</td></tr>";
-            return;
+        async function loadUsers() {
+            const snap = await getDocs(query(collection(db, "users"), limit(100)));
+            const body = document.getElementById('userListBody');
+            body.innerHTML = "";
+            snap.forEach(d => {
+                const u = d.data();
+                body.innerHTML += `<tr><td><b>${u.userName || 'नया यूजर'}</b></td><td>${u.mobile}</td><td style="color:var(--success); font-weight:600;">${u.balance || 0}</td><td>${u.regDate ? u.regDate.substring(0,10) : '-'}</td></tr>`;
+            });
         }
-        document.getElementById('trackerInfo').innerText = `यूज़र: ${userSnap.data().userName || 'N/A'} | बैलेंस: ${userSnap.data().balance || 0}`;
-        
-        const keysSnap = await getDocs(collection(db, "users", searchMobile, "used_keys"));
-        body.innerHTML = "";
-        keysSnap.forEach(k => {
-            body.innerHTML += `<tr><td><b>${k.data().key}</b></td><td>+${k.data().amount}</td><td>${k.data().claimedAt ? k.data().claimedAt.substring(0,16).replace('T',' '):'-'}</td></tr>`;
-        });
-    };
 
-    async function loadHistory() {
-        const snap = await getDocs(query(collection(db, "assets"), orderBy("timestamp", "desc")));
-        const body = document.getElementById('historyListBody');
-        body.innerHTML = "";
-        snap.forEach(d => {
-            const a = d.data();
-            body.innerHTML += `<tr>
-                <td><b>${a.key}</b></td>
-                <td>${a.title || '<span style="color:red;">Pending Form...</span>'}</td>
-                <td>${a.value || 0} कॉइन</td>
-                <td>${a.platform || '-'}</td>
-                <td><button class="btn btn-action-sm" onclick="trackKeySpend('${a.key}')"><i class="fas fa-eye"></i> खर्च ट्रैक करें</button></td>
-            </tr>`;
-        });
-    }
+        window.trackUserKeys = async () => {
+            const searchMobileInput = document.getElementById('searchMobile').value.trim();
+            if(searchMobileInput.length !== 10) return alert("10 अंकों का नंबर डालें");
+            const body = document.getElementById('trackerListBody');
+            body.innerHTML = "<tr><td colspan='3'>डेटाबेस सर्च जारी है...</td></tr>";
+            document.getElementById('trackerResult').classList.remove('hidden');
 
-    // 🎯 REHLI SMART LOGIC: पूरे फायरबेस डेटाबेस से किसी एक चाबी का पूरा खर्च निकालना
-    window.trackKeySpend = async (keyNumber) => {
-        document.getElementById('activeStatKey').innerText = keyNumber;
-        const statsList = document.getElementById('keyStatsListBody');
-        statsList.innerHTML = "<tr><td colspan='3'>डेटाबेस खंगाला जा रहा है... कृपया रुकें।</td></tr>";
-        document.getElementById('keyStatsSection').classList.remove('hidden');
-
-        try {
-            // Firestore Collection Group Query का जादू जो सभी यूजर्स के 'used_keys' सब-कलेक्शन को एक साथ स्कैन करेगा
-            const usedKeysQuery = query(collectionGroup(db, "used_keys"), where("key", "==", keyNumber));
-            const querySnapshot = await getDocs(usedKeysQuery);
-
-            let totalUsers = 0;
-            let totalCoinsSpent = 0;
-            statsList.innerHTML = "";
-
-            if (querySnapshot.empty) {
-                statsList.innerHTML = "<tr><td colspan='3' style='color:orange; text-align:center;'>इस चाबी को अभी तक किसी भी यूजर ने क्लेम नहीं किया है।</td></tr>";
-                document.getElementById('statTotalUsers').innerText = "0";
-                document.getElementById('statTotalCoins').innerText = "0";
+            const userSnap = await getDoc(doc(db, "users", searchMobileInput));
+            if(!userSnap.exists()) {
+                body.innerHTML = "<tr><td colspan='3' style='color:var(--danger);'>यह मोबाइल नंबर नेटवर्क पर रजिस्टर्ड नहीं है।</td></tr>";
                 return;
             }
+            document.getElementById('trackerInfo').innerText = `यूज़र: ${userSnap.data().userName || 'नया यूजर'} | वर्तमान लाइव बैलेंस: ${userSnap.data().balance || 0} एसेट्स`;
+            
+            const keysSnap = await getDocs(collection(db, "users", searchMobileInput, "used_keys"));
+            body.innerHTML = "";
+            keysSnap.forEach(k => {
+                const data = k.data();
+                // Subcollection snapshot field tracking safely fallbacks 
+                const derivedKey = data.key || k.id;
+                body.innerHTML += `<tr><td><b style="color:var(--gold); font-size:15px;">${derivedKey}</b></td><td style="color:var(--success);">+${data.amount || 0}</td><td>${data.claimedAt ? data.claimedAt.substring(0,16).replace('T',' '):'-'}</td></tr>`;
+            });
+        };
 
-            querySnapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                totalUsers++;
-                totalCoinsSpent += (data.amount || 0);
-
-                // फायरबेस पाथ से यूजर का मोबाइल नंबर निकालना (users/NUMBER/used_keys/KEY)
-                const pathSegments = docSnap.ref.path.split('/');
-                const userMobileNumber = pathSegments[1]; 
-
-                const claimTime = data.claimedAt ? data.claimedAt.substring(0, 19).replace('T', ' ') : 'N/A';
-
-                statsList.innerHTML += `<tr>
-                    <td><i class="fas fa-phone-alt" style="color:#888; font-size:12px;"></i> <b>${userMobileNumber}</b></td>
-                    <td style="color:var(--danger); font-weight:600;">${data.amount || 0} कॉइन खर्च</td>
-                    <td>${claimTime}</td>
+        async function loadHistory() {
+            const snap = await getDocs(query(collection(db, "assets"), orderBy("timestamp", "desc")));
+            const body = document.getElementById('historyListBody');
+            body.innerHTML = "";
+            snap.forEach(d => {
+                const a = d.data();
+                body.innerHTML += `<tr>
+                    <td><b style="color:var(--gold); font-size:15px;">${a.key}</b></td>
+                    <td>${a.title || '<span style="color:var(--danger);">Pending Form Schema...</span>'}</td>
+                    <td>${a.value || 0} Assets</td>
+                    <td><i class="fa-brands fa-youtube" style="color:red;"></i> ${a.platform || '-'}</td>
+                    <td><button class="btn btn-action-sm" onclick="trackKeySpend('${a.key}')"><i class="fas fa-chart-pie"></i> ट्रैक बहीखाता</button></td>
                 </tr>`;
             });
-
-            // काउंटर्स अपडेट करें
-            document.getElementById('statTotalUsers').innerText = totalUsers;
-            document.getElementById('statTotalCoins').innerText = totalCoinsSpent;
-
-        } catch (e) {
-            alert("क्वेरी एरर: " + e.message + "\nध्यान दें: इसके लिए आपको Firebase Console में एक इंडेक्स (Index) इनेबल करने का लिंक आ सकता है, उस पर क्लिक कर दें।");
         }
-    };
 
-    function checkSavedKeyStatus() {
-        const savedKey = localStorage.getItem('pendingAdminKey');
-        if (savedKey) {
-            genKey = savedKey;
-            document.getElementById('keyDisplay').innerText = genKey;
-            document.getElementById('keyArea').classList.remove('hidden');
-            document.getElementById('genKeyBtn').disabled = true;
-            document.getElementById('genKeyBtn').innerText = "पुरानी चाबी लॉक है";
+        window.trackKeySpend = async (keyNumber) => {
+            const targetedStringKeyId = String(keyNumber);
+            document.getElementById('activeStatKey').innerText = targetedStringKeyId;
+            const statsList = document.getElementById('keyStatsListBody');
+            statsList.innerHTML = "<tr><td colspan='3'>क्लाउड क्लस्टर बहीखाता खंगाला जा रहा है...</td></tr>";
+            document.getElementById('keyStatsSection').classList.remove('hidden');
+
+            try {
+                const usedKeysQuery = query(collectionGroup(db, "used_keys"), where("key", "==", targetedStringKeyId));
+                const querySnapshot = await getDocs(usedKeysQuery);
+
+                let totalUsers = 0;
+                let totalCoinsSpent = 0;
+                statsList.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    statsList.innerHTML = "<tr><td colspan='3' style='color:var(--warning); text-align:center;'>इस चाबी कोड को अभी तक किसी उपभोक्ता ने क्लेम नहीं किया है।</td></tr>";
+                    document.getElementById('statTotalUsers').innerText = "0";
+                    document.getElementById('statTotalCoins').innerText = "0";
+                    return;
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    totalUsers++;
+                    totalCoinsSpent += (data.amount || 0);
+
+                    const pathSegments = docSnap.ref.path.split('/');
+                    const userMobileNumber = pathSegments[1]; 
+                    const claimTime = data.claimedAt ? data.claimedAt.substring(0, 19).replace('T', ' ') : 'N/A';
+
+                    statsList.innerHTML += `<tr>
+                        <td><b>+91 ${userMobileNumber}</b></td>
+                        <td style="color:var(--success); font-weight:600;">+${data.amount || 0} क्लेम</td>
+                        <td>${claimTime}</td>
+                    </tr>`;
+                });
+
+                document.getElementById('statTotalUsers').innerText = totalUsers;
+                document.getElementById('statTotalCoins').innerText = totalCoinsSpent;
+
+            } catch (e) {
+                // If Indexing issue occurs, handle it safely or parse the alternative structural check
+                const statsListFallback = document.getElementById('keyStatsListBody');
+                statsListFallback.innerHTML = "<tr><td colspan='3'>डेटा लोड करने के लिए अनुक्रमणिका (Index) तैयार की जा रही है... कृपया पुनः प्रयास करें।</td></tr>";
+                
+                // Fallback loop check scanner mapping
+                let fallbackCountUsers = 0;
+                let fallbackCountCoins = 0;
+                statsListFallback.innerHTML = "";
+                const usersCollectionSnap = await getDocs(collection(db, "users"));
+                for(const userDoc of usersCollectionSnap.docs){
+                    const checkUsedKeySubDoc = await getDoc(doc(db, "users", userDoc.id, "used_keys", targetedStringKeyId));
+                    if(checkUsedKeySubDoc.exists()){
+                        fallbackCountUsers++;
+                        const subKData = checkUsedKeySubDoc.data();
+                        fallbackCountCoins += (subKData.amount || 0);
+                        const cTime = subKData.claimedAt ? subKData.claimedAt.substring(0, 19).replace('T', ' ') : 'N/A';
+                        statsListFallback.innerHTML += `<tr><td><b>+91 ${userDoc.id}</b></td><td style="color:var(--success); font-weight:600;">+${subKData.amount || 0} क्लेम</td><td>${cTime}</td></tr>`;
+                    }
+                }
+                document.getElementById('statTotalUsers').innerText = fallbackCountUsers;
+                document.getElementById('statTotalCoins').innerText = fallbackCountCoins;
+                if(fallbackCountUsers === 0) {
+                    statsListFallback.innerHTML = "<tr><td colspan='3' style='color:var(--warning); text-align:center;'>इस चाबी को अभी तक किसी उपभोक्ता ने क्लेम नहीं किया है।</td></tr>";
+                }
+            }
+        };
+
+        function checkSavedKeyStatus() {
+            const savedKey = localStorage.getItem('pendingAdminKey');
+            if (savedKey) {
+                genKey = String(savedKey);
+                document.getElementById('keyDisplay').innerText = genKey;
+                document.getElementById('keyArea').classList.remove('hidden');
+                document.getElementById('genKeyBtn').disabled = true;
+                document.getElementById('genKeyBtn').innerText = "पुरानी चाबी लॉक है";
+            }
         }
-    }
 
-    window.generateUniqueKey = async () => {
-        if (localStorage.getItem('pendingAdminKey')) return alert("पहले पेंडिंग चाबी सबमिट करें!");
-        const btn = document.getElementById('genKeyBtn'); btn.disabled = true;
-        let isUnique = false, testKey = "";
-        while (!isUnique) {
-            testKey = Math.floor(10000 + Math.random() * 90000).toString();
-            const snap = await getDoc(doc(db, "assets", testKey));
-            if (!snap.exists()) isUnique = true;
-        }
-        genKey = testKey;
-        await setDoc(doc(db, "assets", genKey), { key: genKey, status: "pending_fields", timestamp: new Date().toISOString() });
-        localStorage.setItem('pendingAdminKey', genKey);
-        document.getElementById('keyDisplay').innerText = genKey; document.getElementById('keyArea').classList.remove('hidden');
-        btn.innerText = "चाबी डेटाबेस में लॉक हुई";
-    };
+        window.generateUniqueKey = async () => {
+            if (localStorage.getItem('pendingAdminKey')) return alert("पहले पेंडिंग चाबी सबमिट करें!");
+            const btn = document.getElementById('genKeyBtn'); btn.disabled = true;
+            let isUnique = false, testKey = "";
+            while (!isUnique) {
+                testKey = Math.floor(10000 + Math.random() * 90000).toString();
+                const snap = await getDoc(doc(db, "assets", testKey));
+                if (!snap.exists()) isUnique = true;
+            }
+            genKey = String(testKey);
+            await setDoc(doc(db, "assets", genKey), { key: genKey, status: "pending_fields", timestamp: new Date().toISOString() });
+            localStorage.setItem('pendingAdminKey', genKey);
+            document.getElementById('keyDisplay').innerText = genKey; document.getElementById('keyArea').classList.remove('hidden');
+            btn.innerText = "चाबी बफर में लॉक हुई";
+        };
 
-    window.submitData = async () => {
-        const title = document.getElementById('videoTitle').value.trim();
-        const url = document.getElementById('videoLink').value.trim();
-        const val = document.getElementById('assetValue').value;
-        if (!title || !url || !val) return alert("सभी फील्ड भरें!");
-        
-        await setDoc(doc(db, "assets", genKey), {
-            title: title, link: url, value: Number(val), platform: document.getElementById('platform').value, status: "active", timestamp: new Date().toISOString()
-        }, { merge: true });
+        window.submitData = async () => {
+            const title = document.getElementById('videoTitle').value.trim();
+            const url = document.getElementById('videoLink').value.trim();
+            const val = document.getElementById('assetValue').value;
+            if (!title || !url || !val) return alert("सभी फील्ड भरना अनिवार्य है!");
+            
+            // [🔥 String Type फिक्स Engine]: सदैव की-आईडी को स्ट्रिंग क्लस्टर बनाकर सिंक करना
+            const finalStringKey = String(genKey);
+            await setDoc(doc(db, "assets", finalStringKey), {
+                key: finalStringKey, title: title, link: url, value: Number(val), platform: document.getElementById('platform').value, status: "active", timestamp: new Date().toISOString()
+            }, { merge: true });
 
-        alert("सुरक्षित हुआ!");
-        localStorage.removeItem('pendingAdminKey');
-        document.getElementById('videoTitle').value = ""; document.getElementById('videoLink').value = ""; document.getElementById('assetValue').value = "";
-        document.getElementById('keyArea').classList.add('hidden');
-        const btn = document.getElementById('genKeyBtn'); btn.disabled = false; btn.innerText = "चाबी जनरेट करें";
-        showTab('dashboard');
-    };
+            alert("एसेट क्लाउड पर सफलतापूर्वक लाइव सक्रिय कर दिया गया है!");
+            localStorage.removeItem('pendingAdminKey');
+            document.getElementById('videoTitle').value = ""; document.getElementById('videoLink').value = ""; document.getElementById('assetValue').value = "";
+            document.getElementById('keyArea').classList.add('hidden');
+            const btn = document.getElementById('genKeyBtn'); btn.disabled = false; btn.innerText = "क्रिप्टोग्राफिक चाबी जनरेट करें";
+            window.showTab('dashboard');
+        };
 
-    window.logout = () => signOut(auth);
-</script>
+        // 📢 [नया फ़ंक्शन Matrix]: एडमिन पैनल से लाइव घोषणा सबमिट करने का इंजन
+        window.submitLiveAnnouncementToDatabase = async () => {
+            const announcementTextStr = document.getElementById('txtAnnouncementInput').value.trim();
+            if(!announcementTextStr) return alert("कृपया घोषणा या ऑफर संदेश टाइप करें!");
+
+            try {
+                // announcements कलेक्शन में 'live_notice' डॉक्यूमेंट आईडी पर डेटा को मर्ज करना
+                await setDoc(doc(db, "announcements", "live_notice"), {
+                    text: announcementTextStr,
+                    timestamp: new Date().toISOString()
+                }, { merge: true });
+
+                alert("घोषणा सफलतापूर्वक जारी कर दी गई है! यह सभी उपभोक्ताओं को रीयल-टाइम में दिखाई देगी।");
+                document.getElementById('txtAnnouncementInput').value = "";
+                window.showTab('dashboard');
+            } catch (err) {
+                alert("घोषणा ब्रॉडकास्ट विफलता: " + err.message);
+            }
+        };
+
+        window.logout = () => signOut(auth);
+    </script>
 </body>
 </html>
