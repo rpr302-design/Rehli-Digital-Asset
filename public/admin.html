@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो एडमिन v4.0 Ultimate Console</title>
+    <title>रहली डिजिटल एसेट - प्रो एडमिन v4.5 Ultimate Console</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -40,6 +40,7 @@
             padding: 40px; border-radius: 28px; width: 100%; max-width: 380px;
             text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
+        .login-box h3 { font-size: 22px; margin: 15px 0; font-weight: 600; letter-spacing: -0.5px; }
 
         /* 🍔 Professional Workspace Navigation Layout */
         .sidebar {
@@ -96,7 +97,6 @@
         .btn-primary { background: var(--accent-gradient); color: white; width: 100%; box-shadow: 0 6px 20px rgba(78, 84, 200, 0.3); }
         .btn-danger { background: var(--danger); color: white; }
         .btn-action-sm { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; border: none; cursor: pointer; }
-        .btn-delete-sm { background: linear-gradient(45deg, #ff4757, #ff6b81); color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -104,7 +104,7 @@
     <div id="loginWrapper">
         <div class="login-box">
             <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" width="75" alt="Admin Dashboard">
-            <h3>रहली डिजिटल कोर कंसोल v4.0</h3>
+            <h3>रहली डिजिटल कोर कंसोल v4.5</h3>
             <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px;">Master Control Operations</p>
             <input type="email" id="adminEmail" value="rpr302@gmail.com">
             <input type="password" id="adminPass" value="Sammo*1234" style="margin-top:10px;">
@@ -114,7 +114,7 @@
 
     <div id="adminPanel" style="display: none; width: 100%;">
         <div class="sidebar">
-            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM v4.0</div>
+            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM v4.5</div>
             <div class="sidebar-links">
                 <a class="nav-link active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> मुख्य डैशबोर्ड</a>
                 <a class="nav-link" onclick="showTab('entry')"><i class="fas fa-plus-circle"></i> नया वीडियो एसेट बनाएं</a>
@@ -180,7 +180,7 @@
                 </div>
 
                 <div id="tab-announcement" class="hidden">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px;">
                         
                         <div class="card">
                             <h3><i class="fa-solid fa-bullhorn" style="color:var(--success)"></i> घोषणा / धमाका ऑफर बोर्ड</h3>
@@ -202,20 +202,44 @@
                         </div>
 
                         <div class="card">
-                            <h3><i class="fa-solid fa-box-open" style="color:var(--warning)"></i> जादुई मिस्ट्री बॉक्स सेटिंग्स</h3>
-                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">उपभोक्ता ऐप में मिस्ट्री बॉक्स रैफ़ल से निकलने वाले कॉइंस की निश्चित वैल्यू सेट या डिलीट करें।</p>
+                            <h3><i class="fa-solid fa-box-open" style="color:var(--warning)"></i> जादुई मिस्ट्री बॉक्स कॉन्फ़िगरेशन</h3>
+                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">उपभोक्ता ऐप हेतु पिन लॉक्ड या फ्री मल्टीपल मिस्ट्री बॉक्स लाइव जेनरेट करें।</p>
                             
-                            <label>निश्चित जैकपॉट कॉइन वैल्यू (Incentive Value)</label>
-                            <input type="number" id="numMysteryValueInput" placeholder="उदाहरण: 1500">
-                            
-                            <div style="display:flex; gap:10px; margin-top:20px;">
-                                <button class="btn" style="background:var(--accent-gradient); color:white; flex:2;" onclick="submitMysteryValueToDatabase()">मिस्ट्री बॉक्स वैल्यू लॉक करें</button>
-                                <button class="btn btn-danger" style="flex:1;" onclick="deleteMysteryValueFromDatabase()"><i class="fa-solid fa-ban"></i> रीसेट</button>
+                            <label>मिस्ट्री बॉक्स का नाम (Box Display Name)</label>
+                            <input type="text" id="txtMBoxName" placeholder="उदाहरण: Silver Box / Mega Jackpot">
+
+                            <label>रिवॉर्ड का प्रकार (Reward Type)</label>
+                            <select id="selMBoxRewardType">
+                                <option value="assets">डिजिटल सिक्के (Assets Coins Node)</option>
+                                <option value="currency">नकद रुपया खाता (Rupee ₹ Node)</option>
+                            </select>
+
+                            <label>पुरस्कार राशि मूल्य (Reward Amount Value)</label>
+                            <input type="number" id="numMBoxRewardValue" placeholder="पुरस्कार मात्रा दर्ज करें">
+
+                            <label>सुरक्षा लॉक व्यवस्था (Security Lock Requirement)</label>
+                            <select id="selMBoxPinRequired" onchange="togglePinConfigFields(this.value)">
+                                <option value="false">🔓 डायरेक्ट खोलें (फ्री / नो पिन कोड)</option>
+                                <option value="true">🔒 पिन कोड लॉक अनिवार्य करें</option>
+                            </select>
+
+                            <div id="mboxPinConfigArea" class="hidden" style="margin-top:10px; background:rgba(0,0,0,0.12); padding:12px; border-radius:10px;">
+                                <label>पिन कोड अंक आकार (PIN Digits Size)</label>
+                                <select id="selMBoxPinLength">
+                                    <option value="4">4-अंकीय न्यूमेरिकल पिन लॉक</option>
+                                    <option value="6">6-अंकीय न्यूमेरिकल पिन लॉक</option>
+                                </select>
+                                <label>गुप्त बॉक्स अनलॉक पिन (Secret Box Open PIN)</label>
+                                <input type="number" id="numMBoxSecretPin" placeholder="उदाहरण: 1234">
                             </div>
                             
-                            <div style="margin-top:20px; background:rgba(0,0,0,0.15); padding:12px; border-radius:10px; font-size:12px;">
-                                <span style="color:var(--gold); font-weight:600;"><i class="fa-solid fa-circle-info"></i> वर्तमान विन्यास नियम:</span>
-                                <p style="color:var(--text-main); margin-top:4px; opacity:0.85;">पॉलिसी के अनुसार उपभोक्ताओं को बिना किसी फीस के प्रतिदिन अधिकतम 5 चांस 1-1 घंटे के अंतराल पर मिलेंगे।</p>
+                            <button class="btn" style="background:var(--accent-gradient); color:white; width:100%; margin-top:20px;" onclick="submitNewCustomMysteryBoxToDatabase()">मिस्ट्री बॉक्स लाइव पब्लिश करें</button>
+                            
+                            <hr style="opacity:0.08; margin:20px 0;">
+                            
+                            <h4 style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">सक्रिय मिस्ट्री बॉक्सेस (Live Matrix):</h4>
+                            <div id="liveActiveMysteryBoxesListArea" style="max-height:180px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+                                <div style="font-size:12px; color:var(--text-muted);">कोई बॉक्स वर्तमान में उपलब्ध नहीं है।</div>
                             </div>
                         </div>
 
@@ -224,14 +248,28 @@
 
                 <div id="tab-users" class="hidden">
                     <div class="card">
-                        <h3>👥 उपभोक्ता एसेट विस्तृत लेखा-जोखा रिपोर्ट शीट</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">यहाँ प्रत्येक यूजर का कुल एसेट, रेफरल से हुई कमाई और उनके द्वारा कुल खर्च एसेट्स का पूरा हिसाब लाइव प्रदर्शित है।</p>
+                        <h3>👥 उपभोक्ता एसेट विस्तृत रिपोर्ट शीट (Grand Ledger)</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">यहाँ सभी व्यक्तिगत उपयोगकर्ताओं का कुल एसेट, रेफरल बोनस कमाई, तथा मर्चेंट लेन-देन खर्च का विवरण ग्रैंड टोटल काउंटर्स के साथ दिया गया है।</p>
+                        
+                        <div class="stats-grid" style="margin-bottom:20px;">
+                            <div class="stat-card" style="background:#132237; padding:15px 20px;">
+                                <div><h4 id="gtUsersBalance" style="font-size:18px; color:var(--success);">0 Assets</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">नेटवर्क कुल उपभोक्ता शेष</p></div>
+                            </div>
+                            <div class="stat-card" style="background:#132237; padding:15px 20px;">
+                                <div><h4 id="gtUsersRupeeBalance" style="font-size:18px; color:#2ecc71;">₹ 0</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">नेटवर्क कुल रुपया नकद शेष</p></div>
+                            </div>
+                            <div class="stat-card" style="background:#132237; padding:15px 20px;">
+                                <div><h4 id="gtUsersSpent" style="font-size:18px; color:var(--danger);">0 Spent</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">नेटवर्क कुल उपभोग व्यय</p></div>
+                            </div>
+                        </div>
+
                         <table>
                             <thead>
                                 <tr>
                                     <th>नाम</th>
                                     <th>मोबाइल नंबर</th>
-                                    <th>इनवाइट बोनस</th>
+                                    <th>इनवाइट बोनस एसेट</th>
+                                    <th>नकद रुपया खाता (₹)</th>
                                     <th>कुल खर्च एसेट्स</th>
                                     <th>वर्तमान शेष बैलेंस</th>
                                     <th>पंजीकरण तिथि</th>
@@ -245,7 +283,13 @@
                 <div id="tab-merchants" class="hidden">
                     <div class="card">
                         <h3>🏪 पंजीकृत डिजिटल दुकानदार नेटवर्क बहीखाता</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">स्थानीय पंजीकृत व्यापारियों द्वारा उपभोक्ताओं से प्राप्त किए गए सिक्कों की कुल लाइव स्थिति।</p>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">व्यापारियों के खातों की संचयी स्थिति और संपूर्ण नेटवर्क पर मर्चेंट होल्डिंग्स का ग्रैंड टोटल काउंटर।</p>
+                        
+                        <div style="background:rgba(0, 184, 148, 0.08); padding:15px 20px; border-radius:15px; margin-bottom:20px; border-left:4px solid var(--success); display:inline-block;">
+                            <span style="font-size:11px; color:var(--success); font-weight:600; text-transform:uppercase; display:block;">समग्र मर्चेंट एसेट होल्डिंग्स (Grand Total Collected)</span>
+                            <h3 id="gtMerchantTotalAssets" style="font-size:24px; font-weight:700; color:white; margin-top:4px;">0 एसेट्स</h3>
+                        </div>
+
                         <table>
                             <thead>
                                 <tr>
@@ -253,7 +297,7 @@
                                     <th>मर्चेंट मोबाइल नंबर</th>
                                     <th>न्यूनतम बिल (₹)</th>
                                     <th>ट्रांजैक्शन लिमिट</th>
-                                    <th>कुल प्राप्त एसेट्स (Balance)</th>
+                                    <th>कुल प्राप्त एसेट्स (Merchant Balance)</th>
                                 </tr>
                             </thead>
                             <tbody id="merchantListBody"></tbody>
@@ -349,6 +393,7 @@
             
             if(tab === 'users') loadUsersAndCalculateReportSheet();
             if(tab === 'merchants') loadMerchantsDataEngine();
+            if(tab === 'announcement') loadActiveMysteryBoxesInAdminDashboardList();
             if(tab === 'history') {
                 loadHistory();
                 document.getElementById('keyStatsSection').classList.add('hidden');
@@ -366,17 +411,16 @@
         }
 
         /* ==========================================================================
-           📊 उपभोक्ता एसेट रिपोर्ट शीट: (कुल कमाई, रेफरल, कुल खर्च कैलकुलेशन इंजन)
+           📊 उपभोक्ता एसेट रिपोर्ट शीट: (विस्तृत ग्रैंड टोटल नोड्स गणना इंजन)
            ========================================================================== */
         async function loadUsersAndCalculateReportSheet() {
             const body = document.getElementById('userListBody');
-            body.innerHTML = "<tr><td colspan='6'>सर्वर से वित्तीय डेटा संगृहीत किया जा रहा है...</td></tr>";
+            body.innerHTML = "<tr><td colspan='7'>सर्वर से वित्तीय डेटा संगृहीत किया जा रहा है...</td></tr>";
 
             try {
                 const usersSnap = await getDocs(collection(db, "users"));
                 const transactionsSnap = await getDocs(collection(db, "merchant_transactions"));
 
-                // सभी ट्रांजैक्शन्स को उपभोक्ता मोबाइल नंबर के आधार पर समूहीकृत (Group) करें
                 const spentMap = {};
                 transactionsSnap.forEach(tDoc => {
                     const tData = tDoc.data();
@@ -386,31 +430,47 @@
                     }
                 });
 
+                // ग्रैंड टोटल संचयी वेरिएबल नोड्स
+                let netNetworkAssetBalance = 0;
+                let netNetworkRupeeBalance = 0;
+                let netNetworkSpentExpenses = 0;
+
                 body.innerHTML = "";
                 usersSnap.forEach(d => {
                     const u = d.data();
                     const uMobileKey = d.id;
 
                     const currentLiquidBalance = Number(u.balance || 0);
+                    const currentRupeeBalance = Number(u.rupeeBalance || 0);
                     const totalSpent = Number(spentMap[uMobileKey] || 0);
-                    
-                    // इनवाइट बोनस सिंक संकेतक
                     const inviteBonusEarned = (u.referredBy && u.referredBy !== "Direct") ? 5000 : 0;
+
+                    // ग्रैंड टोटल संचय योग क्रिया
+                    netNetworkAssetBalance += currentLiquidBalance;
+                    netNetworkRupeeBalance += currentRupeeBalance;
+                    netNetworkSpentExpenses += totalSpent;
 
                     body.innerHTML += `<tr>
                         <td><b>${u.userName || 'नया यूजर'}</b></td>
                         <td>+91 ${uMobileKey}</td>
                         <td style="color:var(--warning); font-weight:600;">+${inviteBonusEarned}</td>
+                        <td style="color:#2ecc71; font-weight:700;">₹ ${currentRupeeBalance}</td>
                         <td style="color:var(--danger); font-weight:600;">${totalSpent} Spent</td>
                         <td style="color:var(--success); font-weight:700; font-size:14px;">${currentLiquidBalance} Assets</td>
                         <td>${u.regDate ? u.regDate.substring(0,10) : '-'}</td>
                     </tr>`;
                 });
-            } catch (err) { body.innerHTML = "<tr><td colspan='6' style='color:red;'>डेटा लोड विफलता!</td></tr>"; }
+
+                // काउंटर अपडेट नोड्स
+                document.getElementById('gtUsersBalance').innerText = netNetworkAssetBalance + " एसेट्स";
+                document.getElementById('gtUsersRupeeBalance').innerText = "₹ " + netNetworkRupeeBalance;
+                document.getElementById('gtUsersSpent').innerText = netNetworkSpentExpenses + " खर्च व्यय";
+
+            } catch (err) { body.innerHTML = "<tr><td colspan='7' style='color:red;'>डेटा लोड विफलता!</td></tr>"; }
         }
 
         /* ==========================================================================
-           🏪 मर्चेंट बहीखाता डेटाबेस लोडर
+           🏪 मर्चेंट बहीखाता डेटाबेस लोडर (ग्रैंड टोटल सिंक)
            ========================================================================== */
         async function loadMerchantsDataEngine() {
             const mBody = document.getElementById('merchantListBody');
@@ -418,22 +478,29 @@
 
             try {
                 const merchantSnap = await getDocs(collection(db, "merchants"));
+                let cumulativeMerchantAssets = 0;
                 mBody.innerHTML = "";
+                
                 merchantSnap.forEach(mDoc => {
                     const m = mDoc.data();
+                    const mBal = Number(m.balance || 0);
+                    cumulativeMerchantAssets += mBal;
+
                     mBody.innerHTML += `<tr>
                         <td><b>${m.shopName || 'डिजिटल शॉप'} 🏪</b></td>
                         <td>+91 ${mDoc.id}</td>
                         <td>₹${m.minBillAmount || 100}</td>
                         <td>${m.perTxnLimit || 5000} Limit</td>
-                        <td style="color:var(--success); font-weight:700;">${m.balance || 0} Assets</td>
+                        <td style="color:var(--success); font-weight:700;">${mBal} Assets</td>
                     </tr>`;
                 });
-            } catch (e) { mBody.innerHTML = "<tr><td colspan='5' style='color:red;'>मर्चेंट डेटा त्रुटि!</td></tr>"; }
+
+                document.getElementById('gtMerchantTotalAssets').innerText = cumulativeMerchantAssets + " एसेट्स";
+            } catch (e) { mBodyBody.innerHTML = "<tr><td colspan='5' style='color:red;'>मर्चेंट डेटा त्रुटि!</td></tr>"; }
         }
 
         /* ==========================================================================
-           📢 एडमिन लाइव ब्रॉडकास्ट एवं मिस्ट्री बॉक्स सेटिंग इंजन (हटाने के विकल्प सहित)
+           📢 एडमिन लाइव ब्रॉडकास्ट एवं घोषणा प्रबंधन नियंत्रण बोर्ड
            ========================================================================== */
         window.submitLiveAnnouncementToDatabase = async () => {
             const annText = document.getElementById('txtAnnouncementInput').value.trim();
@@ -461,7 +528,6 @@
         window.deleteLiveAnnouncementFromDatabase = async () => {
             if (!confirm("क्या आप वर्तमान लाइव घोषणा/ऑफर को उपभोक्ताओं की स्क्रीन से हटाना चाहते हैं?")) return;
             try {
-                // डॉक्यूमेंट के भीतर घोषणा के प्रमुख फ़ील्ड्स को डिलीट/हटाना
                 await setDoc(doc(db, "announcements", "live_notice"), {
                     text: "", title: "", link: ""
                 }, { merge: true });
@@ -470,35 +536,93 @@
             } catch (e) { alert("डिलीट विफलता!"); }
         };
 
-        window.submitMysteryValueToDatabase = async () => {
-            const mysteryVal = document.getElementById('numMysteryValueInput').value.trim();
-            if (!mysteryVal) return alert("कृपया मिस्ट्री बॉक्स के लिए निश्चित जैकपॉट कॉइन वैल्यू डालें!");
-
-            try {
-                await setDoc(doc(db, "announcements", "live_notice"), {
-                    mysteryOfferValue: Number(mysteryVal)
-                }, { merge: true });
-
-                alert("मिस्ट्री बॉक्स जैकपॉट रिवॉर्ड वैल्यू लॉक कर दी गई है!");
-                document.getElementById('numMysteryValueInput').value = "";
-                window.showTab('dashboard');
-            } catch (err) { alert("एरर: " + err.message); }
-        };
-
-        window.deleteMysteryValueFromDatabase = async () => {
-            if (!confirm("क्या आप मिस्ट्री बॉक्स की लॉक की गई वैल्यू हटाकर वापस रैंडम रिवॉर्ड मोड पर सेट करना चाहते हैं?")) return;
-            try {
-                await setDoc(doc(db, "announcements", "live_notice"), {
-                    mysteryOfferValue: ""
-                }, { merge: true });
-                alert("मिस्ट्री बॉक्स कस्टमाइज़्ड वैल्यू हटा दी गई है। अब उपभोक्ताओं को रैंडम रिवॉर्ड मिलेंगे।");
-                window.showTab('dashboard');
-            } catch (e) { alert("रीसेट विफलता!"); }
-        };
-
         /* ==========================================================================
-           🔑 उपभोक्ता अर्निंग ट्रैकर एवं चाबी इतिहास (यथावत)
+           🔮 मल्टी-कस्टम मिस्ट्री बॉक्स लोडिंग एवं डिलीट ट्रांजैक्शन मॉड्यूल
            ========================================================================== */
+        window.togglePinConfigFields = (isRequired) => {
+            document.getElementById('mboxPinConfigArea').classList.toggle('hidden', isRequired !== "true");
+        };
+
+        window.submitNewCustomMysteryBoxToDatabase = async () => {
+            const bName = document.getElementById('txtMBoxName').value.trim();
+            const rType = document.getElementById('selMBoxRewardType').value;
+            const rVal = document.getElementById('numMBoxRewardValue').value.trim();
+            const pinReq = document.getElementById('selMBoxPinRequired').value === "true";
+            const pLength = document.getElementById('selMBoxPinLength').value;
+            const sPin = document.getElementById('numMBoxSecretPin').value.trim();
+
+            if(!bName || !rVal) return alert("बॉक्स का नाम और पुरस्कार राशि भरना अनिवार्य है!");
+            if(pinReq && !sPin) return alert("पिन लॉक इनेबल होने पर गुप्त कोड सेट करना आवश्यक है!");
+
+            try {
+                // डॉक्यूमेंट जेनरेशन आईडी हेतु रैंडम की
+                const boxCustomDocId = "BOX_" + Math.floor(1000 + Math.random() * 9000);
+                const customBoxRef = doc(db, "announcements", "live_notice", "mystery_boxes", boxCustomDocId);
+
+                await setDoc(customBoxRef, {
+                    boxName: bName,
+                    rewardType: rType,
+                    rewardValue: Number(rVal),
+                    pinRequired: pinReq,
+                    pinLength: pinReq ? Number(pLength) : 0,
+                    boxPin: pinReq ? Number(sPin) : 0,
+                    createdAt: new Date().toISOString()
+                });
+
+                alert("बधाई हो! नया मिस्ट्री बॉक्स लाइव उपभोक्ता ऐप पर जारी कर दिया गया है।");
+                
+                // क्लियर फॉर्म फ़ील्ड्स
+                document.getElementById('txtMBoxName').value = "";
+                document.getElementById('numMBoxRewardValue').value = "";
+                document.getElementById('numMBoxSecretPin').value = "";
+                document.getElementById('selMBoxPinRequired').value = "false";
+                togglePinConfigFields("false");
+                
+                await loadActiveMysteryBoxesInAdminDashboardList();
+            } catch (err) { alert("बॉक्स निर्माण विफल: " + err.message); }
+        };
+
+        async function loadActiveMysteryBoxesInAdminDashboardList() {
+            const listArea = document.getElementById('liveActiveMysteryBoxesListArea');
+            listArea.innerHTML = "<div style='font-size:12px;'>सक्रिय बॉक्स लोड हो रहे हैं...</div>";
+
+            try {
+                const boxesSnap = await getDocs(collection(db, "announcements", "live_notice", "mystery_boxes"));
+                listArea.innerHTML = "";
+
+                if(boxesSnap.empty) {
+                    listArea.innerHTML = "<div style='font-size:12px; color:var(--text-muted);'>कोई बॉक्स सक्रिय नहीं है।</div>";
+                    return;
+                }
+
+                boxesSnap.forEach(bDoc => {
+                    const box = bDoc.data();
+                    const unitName = box.rewardType === "currency" ? "₹" : "Coins";
+                    const isSecureLabel = box.pinRequired ? `🔒 PIN: ${box.boxPin}` : "🔓 Open Free";
+
+                    listArea.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.04); padding:10px 14px; border-radius:10px; font-size:12px; border:1px solid var(--border-color);">
+                            <div>
+                                <b>${box.boxName}</b> (Value: ${unitName} ${box.rewardValue}) <br>
+                                <small style="color:var(--text-muted);">${isSecureLabel}</small>
+                            </div>
+                            <button class="btn-delete-sm" onclick="executeDeleteMysteryBoxTransaction('${bDoc.id}')"><i class="fa-solid fa-trash-can"></i> हटाएं</button>
+                        </div>
+                    `;
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        window.executeDeleteMysteryBoxTransaction = async (boxDocId) => {
+            if(!confirm("क्या आप इस मिस्ट्री बॉक्स को पूरी तरह उपभोक्ताओं की स्क्रीन से हटाना (Delete) चाहते हैं?")) return;
+            try {
+                await deleteDoc(doc(db, "announcements", "live_notice", "mystery_boxes", boxDocId));
+                alert("बॉक्स सफलतापूर्वक डेटाबेस से डिलीट कर दिया गया है!");
+                await loadActiveMysteryBoxesInAdminDashboardList();
+            } catch (err) { alert("डिलीट विफलता!"); }
+        };
+
+        // अर्निंग ट्रैकर एवं अन्य कोर फंक्शन्स (यथावत सिन्क)
         window.trackUserKeys = async () => {
             const searchMobileInput = document.getElementById('searchMobile').value.trim();
             if(searchMobileInput.length !== 10) return alert("10 अंकों का नंबर डालें");
@@ -625,6 +749,10 @@
             const btn = document.getElementById('genKeyBtn'); btn.disabled = false; btn.innerText = "क्रिप्टोग्राफिक चाबी जनरेट करें";
             window.showTab('dashboard');
         };
+
+        // विंडेक्स मैपिंग अटैचमेंट
+        window.executeDeleteMysteryBoxTransaction = executeDeleteMysteryBoxTransaction;
+        window.togglePinConfigFields = togglePinConfigFields;
 
         window.logout = () => signOut(auth);
     </script>
