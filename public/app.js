@@ -1,326 +1,278 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v4.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
-    authDomain: "rehli-digital-asset.firebaseapp.com",
-    projectId: "rehli-digital-asset",
-    storageBucket: "rehli-digital-asset.firebasestorage.app",
-    messagingSenderId: "779415089179",
-    appId: "1:779415089179:web:4f6654088af999ed7ac8be"
-};
+<!-- 🔔 प्रीमियम रंगीन सेन्टर मेसेज बॉक्स -->
+<div id="customAlert" class="alert-overlay hidden-screen">
+    <div class="alert-card">
+        <div id="alertIcon">🎁</div>
+        <h3 id="alertTitle">Status</h3>
+        <p id="alertMsg">Message...</p>
+        <button class="btn-alert-close" onclick="closeAlert()">ठीक है (OK)</button>
+    </div>
+</div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<!-- [भाग 1: नया यूजर - गेटवे स्क्रीन] -->
+<div id="authContainer" class="hidden-screen">
+    <div class="container">
+        <!-- स्टेप 1: चाबी एंट्री -->
+        <div id="keySection">
+            <h2>नमस्ते! रिवॉर्ड्स अनलॉक करें 🎁</h2>
+            <span class="lang-en">Welcome! Unlock Your Rewards</span>
+            <p style="font-size: 13px;">कृपया वीडियो से प्राप्त 5 अंकों की चाबी डालें</p>
+            <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+            <button class="btn-action" onclick="verifyKey()">चाबी की जाँच करें (Check Key)</button>
+        </div>
 
-let html5QrcodeScanner = null;
-let globalActiveMerchant = null; 
+        <!-- स्टेप 2: मोबाइल एंट्री और ऑटो-रेफरल कोड डिटेक्शन -->
+        <div id="rewardSection" class="hidden-screen">
+            <div class="coin-display" id="winAmount">🔑 KEY NOTED</div>
+            <p style="color:var(--gold); font-weight: bold; margin-bottom: 20px;">VERIFICATION GATEWAY</p>
+            <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" class="safe-img" alt="Vault" style="width:110px; margin:0 auto 15px;">
+            
+            <div id="mobileBox">
+                <!-- ऑटोमैटिक भरा हुआ रेफरल कोड (यदि लिंक से आया है) -->
+                <label style="font-size: 11px; font-weight: 600; color: #fff; text-align: left; display: block;">रेफरल कोड (Auto-Filled)</label>
+                <input type="text" id="userReferralInput" placeholder="कोई रेफरल कोड नहीं मिला" style="background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4);" readonly>
 
-let mBoxType = 0, mDigits = 0, mReward = 0;
-const mobile = localStorage.getItem('userMobile');
-const todayDate = new Date().toISOString().substring(0, 10);
+                <label style="font-size: 11px; font-weight: 600; color: #fff; text-align: left; display: block; margin-top: 5px;">आपका मोबाइल नंबर</label>
+                <input type="number" id="userMobile" placeholder="10 अंकों का मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                <button class="btn-action" style="background: linear-gradient(to right, #11998e, #38ef7d);" onclick="saveMobile()">खाता बनाएं और लॉगिन करें</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-// 🎯 [स्मार्ट गेटकीपर]
-window.addEventListener('DOMContentLoaded', async () => {
-    if (mobile) {
-        document.getElementById('dashboardContainer').classList.remove('hidden-screen');
-        document.getElementById('authContainer').classList.add('hidden-screen');
-        window.switchAppTab('home');
-        await loadCachedDashboard();
-    } else {
-        document.getElementById('authContainer').classList.remove('hidden-screen');
-        document.getElementById('dashboardContainer').classList.add('hidden-screen');
+<!-- [भाग 2: मुख्य स्मार्टफोन एप्लीकेशन लेआउट] -->
+<div id="dashboardContainer" class="hidden-screen">
+    <div class="dashboard-wrapper">
         
-        const urlParams = new URLSearchParams(window.location.search);
-        const refCode = urlParams.get('ref');
-        if (refCode) {
-            const refInput = document.getElementById('userReferralInput');
-            if (refInput) {
-                refInput.value = refCode.trim().toUpperCase();
-                refInput.style.background = "#d4edda"; 
-            }
-        }
-    }
-});
+        <!-- 🍔 [प्रोफेशनल साइडबार मेनू (Hamburger Sidebar)] -->
+        <div id="appSidebar" class="sidebar-menu">
+            <div class="sidebar-header">
+                <div class="avatar" style="width:60px; height:60px;"><i class="fa-solid fa-user-shield"></i></div>
+                <h3 id="sideMenuUser" style="margin:10px 0 0; font-size:16px;">User Name</h3>
+                <span id="sideMenuPhone" style="font-size:12px; opacity:0.8;">+91 000</span>
+            </div>
+            <div class="sidebar-links">
+                <a href="#" onclick="openSidebarBonus('profile_tab')"><i class="fa-solid fa-id-card" style="color:#3498db;"></i> 🛠️ प्रोफाइल सेटअप करें <span class="side-badge">+500</span></a>
+                <a href="#" onclick="openSidebarBonus('refer_tab')"><i class="fa-solid fa-gift" style="color:#e67e22;"></i> 🎁 इनवाइट लिंक और रेफरल</a>
+                <a href="#" onclick="openSidebarBonus('social_tab')"><i class="fa-solid fa-hashtag" style="color:#e74c3c;"></i> 📱 सोशल मीडिया टास्क</a>
+                <a href="#" onclick="openSidebarBonus('settings_tab')"><i class="fa-solid fa-gear" style="color:#95a5a6;"></i> ⚙️ ऐप सेटिंग्स</a>
+                <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+                <a href="#" onclick="logout()" style="color:#e74c3c;"><i class="fa-solid fa-power-off"></i> लॉगआउट (Logout)</a>
+            </div>
+        </div>
+        <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
 
-window.toggleSidebar = (open) => {
-    document.getElementById('appSidebar').classList.toggle('open', open);
-    document.getElementById('sidebarOverlay').classList.toggle('hidden-screen', !open);
-};
+        <!-- टॉप एक्शन हेडर बार -->
+        <div class="header-bg">
+            <div class="user-badge">
+                <div class="menu-trigger-btn" onclick="toggleSidebar(true)">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <div>
+                    <h2 id="dashUserName" style="margin:0; font-size: 16px;">नमस्ते!</h2>
+                    <span id="dashUserPhone" style="opacity: 0.8; font-size: 11px;">+91 0000</span>
+                </div>
+            </div>
+            <div class="balance-pill">
+                <i class="fa-solid fa-coins" style="color:var(--gold)"></i> 
+                <span id="dashBalance">0</span>
+            </div>
+        </div>
 
-// 🔒 सेशन मेमोरी 
-async function loadCachedDashboard(forceRefresh = false) {
-    const cachedName = sessionStorage.getItem('cash_name');
-    const cachedBal = sessionStorage.getItem('cash_balance');
+        <!-- 🏠 टैब 1: मुख्य होम स्क्रीन -->
+        <div id="tab-home" class="app-tab-content">
+            <div class="section hidden-screen" id="promoVideoSection">
+                <div class="video-promo-box">
+                    <div class="v-badge">NEW VIDEO 🔴</div>
+                    <h4 id="lblPromoTitle" style="margin: 8px 0 2px 0; font-size: 13px;">लेटेस्ट वीडियो देखें और चाबी कमाएं</h4>
+                    <a id="btnPromoLink" href="#" target="_blank" class="btn-watch"><i class="fa-brands fa-youtube"></i> वीडियो देखें (Watch Now)</a>
+                </div>
+            </div>
 
-    if (cachedName && cachedBal && !forceRefresh) {
-        renderDashboardUI(cachedName, cachedBal);
-        renderCachedPromoVideo();
-    } else {
-        try {
-            const userSnap = await getDoc(doc(db, "users", mobile));
-            if (userSnap.exists()) {
-                const data = userSnap.data();
-                const name = data.userName || "यूज़र";
-                const balance = data.balance || 0;
+            <div class="section" style="margin-top:20px;">
+                <div class="earn-box">
+                    <h3 style="margin-top:0; font-size: 14px;"><i class="fa-solid fa-key" style="color:var(--primary)"></i> वीडियो कोड से सिक्के जोड़ें</h3>
+                    <input type="number" id="dashSecretKey" class="key-input" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+                    <button class="btn-action" style="padding: 12px; font-size:14px; background:linear-gradient(45deg, var(--primary), var(--secondary));" onclick="processDashKey()">सिक्के क्लेम करें (+ Coins)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔮 टैब 2: मिस्ट्री बॉक्स गेम स्क्रीन -->
+        <div id="tab-mystery" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <h3 style="margin:0; color:#333;">जादुई मिस्ट्री बॉक्स 🔮</h3>
+                    <span style="font-size:11px; color:#666;">फीस: 1,000 सिक्के | दैनिक लिमिट: <b id="remainingAttempts">3</b>/3</span>
+                </div>
                 
-                sessionStorage.setItem('cash_name', name);
-                sessionStorage.setItem('cash_balance', balance);
-                
-                renderDashboardUI(name, balance);
-                await fetchAndCachePromoVideo();
-            } else {
-                window.logout();
-            }
-        } catch (e) { console.error("Cache Error:", e); }
-    }
-}
+                <div class="mystery-grid">
+                    <div class="m-box-card" onclick="openMysteryPinModal(1, 1, 10000, 'Silver Box')">
+                        <div class="m-icon">🎁</div>
+                        <h4>Silver Box</h4>
+                        <span style="color:#2ecc71; font-size:12px; font-weight:600;">Win 10K Coins</span>
+                    </div>
+                    <div class="m-box-card" style="border-color:var(--gold);" onclick="openMysteryPinModal(2, 3, 100000, 'Golden Box')">
+                        <div class="m-icon">💎</div>
+                        <h4>Golden Box</h4>
+                        <span style="color:var(--gold); font-size:12px; font-weight:600;">Win 100K Coins</span>
+                    </div>
+                    <div class="m-box-card" style="border-color:#ff4757;" onclick="openMysteryPinModal(3, 8, 0, 'Mega Jackpot')">
+                        <div class="m-icon">👑</div>
+                        <h4>Mega Box</h4>
+                        <span style="color:#ff4757; font-size:12px; font-weight:600;">₹1 लाख नकद</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-function renderDashboardUI(name, balance) {
-    document.getElementById('dashUserName').innerText = `नमस्ते, ${name}! 👋`;
-    document.getElementById('dashUserPhone').innerText = "+91 " + mobile;
-    document.getElementById('dashBalance').innerText = balance;
-    document.getElementById('sideMenuUser').innerText = name;
-    document.getElementById('sideMenuPhone').innerText = "+91 " + mobile;
-}
+        <!-- 💸 टैब 3: दुकानदार पेमेंट गेटवे स्क्रीन -->
+        <div id="tab-pay" class="app-tab-content hidden-screen">
+            <div class="section">
+                <div class="earn-box">
+                    <h3 style="margin-top:0;"><i class="fa-solid fa-store" style="color:var(--success)"></i> लोकल दुकानों पर पेमेंट करें</h3>
+                    
+                    <div id="qrReaderContainer" class="hidden-screen" style="margin-bottom:10px;">
+                        <div id="qrReader"></div>
+                        <button class="btn-action" style="background:#e74c3c; padding:6px; font-size:11px; margin-top:5px;" onclick="stopQRScanner()">कैमरा ऑफ करें</button>
+                    </div>
 
-function renderCachedPromoVideo() {
-    const pTitle = localStorage.getItem('promo_title');
-    const pLink = localStorage.getItem('promo_link');
-    if (pTitle && pLink) {
-        const titleEl = document.getElementById('lblPromoTitle');
-        const linkEl = document.getElementById('btnPromoLink');
-        if (titleEl) titleEl.innerText = pTitle;
-        if (linkEl) linkEl.href = pLink;
-        document.getElementById('promoVideoSection').classList.remove('hidden-screen');
-    }
-}
+                    <button class="btn-action" id="btnStartScan" style="background:#27ae60; margin-bottom:15px;" onclick="startQRScanner()">
+                        <i class="fa-solid fa-camera"></i> दुकान का QR कोड स्कैन करें
+                    </button>
 
-async function fetchAndCachePromoVideo() {
-    try {
-        const qAssets = query(collection(db, "assets"), where("status", "==", "active"), orderBy("timestamp", "desc"), limit(3));
-        const [assetsSnap, usedKeysSnap] = await Promise.all([
-            getDocs(qAssets),
-            getDocs(collection(db, "users", mobile, "used_keys"))
-        ]);
-        const usedKeysList = [];
-        usedKeysSnap.forEach(dk => usedKeysList.push(dk.id));
+                    <div style="font-size:11px; color:#888; margin-bottom:10px;">या मैन्युअल नंबर से खोजें</div>
+                    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                        <input type="number" id="payMerchantMobile" placeholder="दुकानदार का नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" style="margin:0; padding:10px; font-size:14px;">
+                        <button class="btn-action" style="width: 80px; margin:0; background:var(--primary); padding:10px; font-size:12px;" onclick="searchMerchant()">खोजें</button>
+                    </div>
 
-        let found = false;
-        assetsSnap.forEach(dk => {
-            if (!usedKeysList.includes(dk.id) && !found) {
-                const asset = dk.data();
-                localStorage.setItem('promo_title', asset.title || "नया वीडियो क्लेम करें");
-                localStorage.setItem('promo_link', asset.link);
-                renderCachedPromoVideo();
-                found = true;
-            }
-        });
-        if (!found) {
-            localStorage.removeItem('promo_title');
-            localStorage.removeItem('promo_link');
-            document.getElementById('promoVideoSection').classList.add('hidden-screen');
-        }
-    } catch (e) { console.error("Video Error:", e); }
-}
+                    <!-- दुकानदार सत्यापन कार्ड -->
+                    <div id="merchantVerifyArea" class="hidden-screen" style="background: #f8f9fa; padding: 12px; border-radius: 12px; text-align: left; margin-bottom: 15px; border-left: 4px solid #27ae60;">
+                        <h4 id="lblVerifiedShopName" style="margin:0; font-size:14px;">Shop Name</h4>
+                        <span id="lblVerifiedShopPhone" style="font-size:11px; color:#666;">+91 00</span>
+                        <p id="lblShopRulesInfo" style="font-size:10px; color:var(--primary); margin:3px 0 0 0; font-weight:600;"></p>
+                    </div>
 
-// --- 📱 स्मार्ट टैब स्विचर ---
-window.switchAppTab = async (tabName) => {
-    window.toggleSidebar(false);
-    document.querySelectorAll('.app-tab-content').forEach(t => t.classList.add('hidden-screen'));
-    const targetTab = document.getElementById('tab-' + tabName);
-    if (targetTab) targetTab.classList.remove('hidden-screen');
-    
-    if (tabName === 'wallet') updateWalletSheet();
-    if (tabName === 'profile') loadProfileScreen();
-};
+                    <!-- फाइनल पेमेंट फॉर्म (सिक्योरिटी पिन के साथ) -->
+                    <div id="paymentFormArea" class="hidden-screen">
+                        <input type="number" id="payAmount" placeholder="कितने सिक्के भेजने हैं?">
+                        <input type="number" id="payBillAmount" placeholder="कुल बिल राशि (₹)">
+                        
+                        <!-- 🔒 पेमेंट करने के लिए आवश्यक पिन फ़ील्ड -->
+                        <label style="font-size:11px; font-weight:600; color:#ff4757; display:block; text-align:left; margin-bottom:3px;">अपना 4 अंकों का सिक्योरिटी पिन डालें</label>
+                        <input type="number" id="paySecurityPin" placeholder="• • • •" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc; text-security: disc;">
+                        
+                        <button class="btn-action" style="background: linear-gradient(135deg, #27ae60, #11998e); margin-top:5px;" onclick="processPayment()">सुरक्षित भुगतान करें (Pay Now)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-// --- 👤 प्रोफाइल लोड करने का लॉजिक ---
-async function loadProfileScreen() {
-    const userSnap = await getDoc(doc(db, "users", mobile));
-    const uData = userSnap.data();
+        <!-- 📱 इन-ऐप बॉटम स्मार्ट नेविगेशन बार -->
+        <nav class="nav-bar">
+            <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house-chimney"></i><span>होम</span></a>
+            <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>मिस्ट्री</span></a>
+            
+            <div class="nav-pay-center" onclick="switchAppTab('pay')"><div class="pay-circle" id="nav-pay-circle"><i class="fa-solid fa-qrcode"></i></div><span style="font-size:10px; font-weight:600; color:var(--primary); display:block; margin-top:2px;">पे (Pay)</span></div>
+            
+            <a href="#" class="nav-link" id="nav-profile" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars"></i><span>मेनू</span></a>
+            <a href="#" class="nav-link" onclick="logout()"><i class="fa-solid fa-power-off"></i><span>निकास</span></a>
+        </nav>
+    </div>
+</div>
 
-    const formArea = document.getElementById('profileFormArea');
-    const statusArea = document.getElementById('profileStatusArea');
-
-    if (!uData.profileCompleted) {
-        formArea.classList.remove('hidden-screen');
-        statusArea.classList.add('hidden-screen');
-    } else {
-        formArea.classList.add('hidden-screen');
-        statusArea.classList.remove('hidden-screen');
-        document.getElementById('stName').innerText = uData.userName;
-        document.getElementById('stDOB').innerText = uData.dob || "Not Set";
-        document.getElementById('stWhatsapp').innerText = uData.whatsapp || mobile;
-    }
-    document.getElementById('pinPanelArea').classList.add('hidden-screen');
-}
-
-// --- 🔒 प्रोफाइल सेव (+500 बोनस) ---
-window.saveFullProfile = async () => {
-    const name = document.getElementById('pName').value.trim();
-    const dob = document.getElementById('pDOB').value;
-    const pin = document.getElementById('pPin').value;
-    const conf = document.getElementById('pPinConfirm').value;
-
-    if (!name || !dob || pin.length !== 4) return window.showCustomAlert("त्रुटि", "सभी जानकारी भरें!");
-    if (pin !== conf) return window.showCustomAlert("Error", "पिन मैच नहीं हुआ!");
-
-    try {
-        const userRef = doc(db, "users", mobile);
-        const snap = await getDoc(userRef);
-        let finalBal = (snap.data().balance || 0);
+<!-- ⚙️ साइडबार बोनस पॉप-अप मॉड्यूल्स (उसी स्क्रीन पर डिटेल में दिखाने के लिए) -->
+<div id="bonusModal" class="modal-overlay hidden-screen">
+    <div class="modal-box" style="max-width: 350px;">
+        <div class="close-btn" onclick="closeBonusModal()">×</div>
         
-        if (!snap.data().profileCompleted) finalBal += 500;
+        <!-- 📝 1. 2-Step सिक्योरिटी पिन के साथ एडवांस प्रोफाइल सेटअप -->
+        <div id="widget-profile_tab" class="hidden-screen" style="text-align: left;">
+            <h3 style="text-align: center; margin-top: 0; color: var(--primary);"><i class="fa-solid fa-user-shield"></i> प्रोफाइल और एसेट सुरक्षा</h3>
+            <p style="font-size:11px; color:#666; text-align: center; margin-top: -5px;">विवरण लॉक करते ही आपको मिलेंगे <b style="color:var(--success);">+500 एसेट्स बोनस</b></p>
+            
+            <label style="font-size: 11px; font-weight: 600; color: #555;">पंजीकृत मोबाइल नंबर (Locked)</label>
+            <input type="text" id="profUserMobileLocked" readonly style="background: #e9ecef; color: #6c757d; cursor: not-allowed;">
 
-        await setDoc(userRef, {
-            userName: name, dob: dob, securityPin: pin, whatsapp: mobile,
-            balance: finalBal, profileCompleted: true
-        }, { merge: true });
+            <label style="font-size: 11px; font-weight: 600; color: #555;">आपका पूरा नाम (Full Name)</label>
+            <input type="text" id="profFullNameInp" placeholder="आपका पूरा नाम दर्ज करें">
 
-        sessionStorage.setItem('cash_name', name);
-        sessionStorage.setItem('cash_balance', finalBal);
-        renderDashboardUI(name, finalBal);
-        window.showCustomAlert("सफल!", "प्रोफाइल सुरक्षित हुई और +500 सिक्के मिले!", "success");
-        loadProfileScreen();
-    } catch (e) { console.error(e); }
-};
+            <label style="font-size: 11px; font-weight: 600; color: #555;">व्हाट्सएप नंबर (WhatsApp Number)</label>
+            <input type="number" id="profWhatsappInp" placeholder="10 अंकों का व्हाट्सएप नंबर">
 
-// --- 💰 वॉलेट कैलकुलेटर ---
-async function updateWalletSheet() {
-    const userSnap = await getDoc(doc(db, "users", mobile));
-    const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", mobile)));
-    
-    let spent = 0;
-    txSnap.forEach(d => spent += (d.data().amount || 0));
-    const bal = userSnap.data().balance || 0;
+            <!-- 🔒 पिन रिएंटर सिस्टम -->
+            <label style="font-size: 11px; font-weight: 600; color: #ff4757;">4 अंकों का सुरक्षा पिन बनाएं</label>
+            <input type="number" id="profSecurityPinInp" placeholder="नया पिन बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc; text-security: disc;">
 
-    document.getElementById('wTotalEarned').innerText = bal + spent;
-    document.getElementById('wTotalSpent').innerText = spent;
-    document.getElementById('wSpentValue').innerText = "₹ " + (spent / 20).toFixed(2);
-}
+            <label style="font-size: 11px; font-weight: 600; color: #ff4757;">सुरक्षा पिन दोबारा डालें (Re-enter PIN)</label>
+            <input type="number" id="profSecurityPinConfirmInp" placeholder="पिन दोबारा दर्ज करें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc; text-security: disc;">
 
-// --- 🔑 चाबी वेरिफिकेशन ---
-window.verifyKey = async () => {
-    const key = document.getElementById('userKey').value.trim();
-    if (key.length !== 5) return window.showCustomAlert("अमान्य ❌", "5 अंकों की सही चाबी डालें।", "error");
+            <button class="btn-action" style="background: linear-gradient(135deg, #3498db, #2980b9); margin-top: 10px;" onclick="claimProfileBonus()">प्रोफाइल लॉक करें (+500)</button>
+        </div>
 
-    try {
-        const assetSnap = await getDoc(doc(db, "assets", key));
-        if (!assetSnap.exists()) return window.showCustomAlert("गलत चाबी ❌", "चाबी मान्य नहीं है!", "error");
+        <!-- 🎁 2. इनवाइट लिंक और रेफरल विजेट -->
+        <div id="widget-refer_tab" class="hidden-screen">
+            <h3>🎁 रेफरल नेटवर्क इनवाइट</h3>
+            <p style="font-size:12px; color:#666;">अपने दोस्तों को नीचे दिए गए बटन से इनवाइट करें। लिंक पर क्लिक करते ही उनका रेफरल कोड अपने आप भर जाएगा!</p>
+            <div id="lblReferralCodeBox" style="background:#f1f2f6; padding:12px; font-size:18px; font-weight:bold; letter-spacing:2px; border-radius:10px; margin-bottom:15px; color:var(--primary);">REHLI-000</div>
+            <button class="btn-action" style="background:#e67e22;" onclick="shareReferralCode()">व्हाट्सएप पर इनवाइट लिंक भेजें</button>
+        </div>
 
-        sessionStorage.setItem('temp_key', key);
-        sessionStorage.setItem('temp_coins', assetSnap.data().value || 100);
+        <!-- 📱 3. सोशल मीडिया टास्क विजेट (One-Time Claim Logic) -->
+        <div id="widget-social_tab" class="hidden-screen" style="text-align: left;">
+            <h3 style="text-align:center;">🔴 सोशल मीडिया टास्क</h3>
+            <p style="font-size:11px; color:#666; text-align:center; margin-top:-5px;">प्रत्येक प्लेटफार्म को फॉलो करने पर अलग-अलग सिक्के मिलेंगे (केवल 1 बार):</p>
+            
+            <div style="margin-top:15px; display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8f9fa; padding:10px; border-radius:12px;">
+                    <span style="font-size:13px; font-weight:600;"><i class="fa-brands fa-youtube" style="color:#e74c3c;"></i> यूट्यूब सब्सक्राइब (+100)</span>
+                    <button class="side-badge" style="border:none; cursor:pointer; background:#e74c3c; color:white; padding:5px 10px;" onclick="claimMediaBonus('youtube', 100, 'https://youtube.com/')">Follow</button>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8f9fa; padding:10px; border-radius:12px;">
+                    <span style="font-size:13px; font-weight:600;"><i class="fa-brands fa-telegram" style="color:#3498db;"></i> टेलीग्राम ग्रुप (+100)</span>
+                    <button class="side-badge" style="border:none; cursor:pointer; background:#3498db; color:white; padding:5px 10px;" onclick="claimMediaBonus('telegram', 100, 'https://telegram.org/')">Join</button>
+                </div>
+            </div>
+        </div>
 
-        document.getElementById('keySection').classList.add('hidden-screen');
-        document.getElementById('rewardSection').classList.remove('hidden-screen');
-    } catch (e) { window.showCustomAlert("Error", "सर्वर एरर!", "error"); }
-};
+        <!-- ⚙️ 4. ऐप सेटिंग्स विजेट -->
+        <div id="widget-settings_tab" class="hidden-screen">
+            <h3>⚙️ Application Settings</h3>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• ऐप वर्जन: v4.0 अल्टीमेट प्रो (2026)</p>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:5px;">• पेमेंट गेटवे सुरक्षा: एसेट लॉक एक्टिव 🔒</p>
+            <p style="font-size:12px; color:#666; text-align:left; margin-bottom:15px;">• सर्वर स्टेटस: ऑनलाइन 🟢</p>
+            <button class="btn-action" style="background:#7f8c8d;" onclick="closeBonusModal()">वापस जाएँ</button>
+        </div>
+    </div>
+</div>
 
-// =================== 📱 [खाता निर्माण + लॉगिन] ===================
-window.saveMobile = async () => {
-    const inputMobile = document.getElementById('userMobile').value.trim();
-    const refCodeUsed = document.getElementById('userReferralInput').value.trim();
-    const savedKey = sessionStorage.getItem('temp_key');
-    const savedCoins = Number(sessionStorage.getItem('temp_coins') || 0);
+<!-- 🔐 मिस्ट्री बॉक्स पॉप-अप -->
+<div id="mysteryModal" class="modal-overlay hidden-screen">
+    <div class="modal-box">
+        <div class="close-btn" onclick="closeMysteryModal()">×</div>
+        <h3 id="mModalTitle">Unlock Box</h3>
+        <p style="font-size: 11px; color:#666; margin-bottom: 12px;">गेम खेलने पर आपके वॉलेट से 1,000 सिक्के काट लिए जाएंगे।</p>
+        <input type="number" id="mPinInput" placeholder="Enter PIN" autocomplete="off">
+        <button class="btn-action" id="mSubmitBtn" style="background: linear-gradient(45deg, #4e54c8, #8f94fb);" onclick="attemptMysteryUnlock()">Claim Reward (-1000)</button>
+    </div>
+</div>
 
-    if (inputMobile.length !== 10) return window.showCustomAlert("त्रुटि ❌", "10 अंकों का मोबाइल नंबर डालें!", "error");
-    if (!savedKey) return window.showCustomAlert("त्रुटि ❌", "सत्र समाप्त! दोबारा चाबी दर्ज करें।", "error");
+<audio id="winSound"><source src="https://docs.google.com/uc?export=download&id=1IG486iet9kCnOR3aWcV1rSsS6XTyckhX" type="audio/mpeg"></audio>
+<audio id="failSound"><source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg"></audio>
 
-    try {
-        const userRef = doc(db, "users", inputMobile);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) {
-            let welcomeCoins = savedCoins + 1000;
-            await setDoc(userRef, { 
-                mobile: inputMobile, balance: welcomeCoins, userName: "नया यूजर", referredBy: refCodeUsed || "Direct", regDate: new Date().toISOString() 
-            });
-            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() });
-            localStorage.setItem('userMobile', inputMobile);
-            document.getElementById('winSound').play();
-            window.showCustomAlert("अकाउंट बन गया!", `स्वागत बोनस +1000 और वीडियो के +${savedCoins} सिक्के मिले!`, "success");
-            setTimeout(() => location.reload(), 2500);
-            return;
-        }
-
-        const isKeyFresh = await checkKeyMonthLock(inputMobile, savedKey);
-        if (isKeyFresh) {
-            const currentBal = userSnap.data().balance || 0;
-            await setDoc(userRef, { balance: currentBal + savedCoins }, { merge: true });
-            await setDoc(doc(db, "users", inputMobile, "used_keys", savedKey), { key: savedKey, amount: savedCoins, claimedAt: new Date().toISOString() });
-            window.showCustomAlert("सफलता 🎉", `चाबी वेरिफाई हुई! +${savedCoins} सिक्के क्रेडिट हुए।`, "success");
-        } else {
-            window.showCustomAlert("लॉगिन सफल 👋", "अकाउंट लॉगिन कर दिया गया है!", "success");
-        }
-        localStorage.setItem('userMobile', inputMobile);
-        setTimeout(() => location.reload(), 2000);
-    } catch (e) { window.showCustomAlert("Error", "प्रोसेसिंग विफल!", "error"); }
-};
-
-// =================== 💸 [पेमेंट गेटवे] ===================
-window.processPayment = async () => {
-    if (!globalActiveMerchant) return;
-    
-    const payAmount = Number(document.getElementById('payAmount').value);
-    const billAmount = Number(document.getElementById('payBillAmount').value);
-    const inputPin = document.getElementById('paySecurityPin').value.trim();
-
-    if (!payAmount || !billAmount || inputPin.length !== 4) {
-        return window.showCustomAlert("अधूरा फॉर्म ❌", "पूरी जानकारी और 4 अंकों का पिन डालें!", "error");
-    }
-
-    try {
-        const userRef = doc(db, "users", mobile);
-        const userDoc = await getDoc(userRef);
-        const uData = userDoc.data();
-
-        if (uData.securityPin !== inputPin) return window.showCustomAlert("गलत पिन ❌", "पिन गलत है!", "error");
-        if ((uData.balance || 0) < payAmount) return window.showCustomAlert("लो बैलेंस ❌", "सिक्के पर्याप्त नहीं हैं!", "error");
-
-        const newTxRef = doc(collection(db, "merchant_transactions"));
-        const finalUserBal = (uData.balance || 0) - payAmount;
-        const merchantRef = doc(db, "merchants", globalActiveMerchant.mobile);
-        const currentMerchantBal = (globalActiveMerchant.balance || 0);
-
-        await Promise.all([
-            setDoc(userRef, { balance: finalUserBal }, { merge: true }),
-            setDoc(merchantRef, { balance: currentMerchantBal + payAmount }, { merge: true }),
-            setDoc(newTxRef, { txId: newTxRef.id, userMobile: mobile, merchantMobile: globalActiveMerchant.mobile, amount: payAmount, billAmount: billAmount, timestamp: new Date().toISOString() })
-        ]);
-
-        sessionStorage.setItem('cash_balance', finalUserBal);
-        window.openPaymentArea();
-        window.showCustomAlert("भुगतान सफल!", `+${payAmount} ट्रांसफर हो गए।`, "success");
-        renderDashboardUI(uData.userName, finalUserBal);
-    } catch (e) { window.showCustomAlert("Error", "भुगतान विफल!", "error"); }
-};
-
-// बाकी के छोटे फंक्शंस (Alert, Logout, SideBar)
-window.showCustomAlert = (title, msg, type) => {
-    document.getElementById('alertTitle').innerText = title;
-    document.getElementById('alertMsg').innerText = msg;
-    const iconEl = document.getElementById('alertIcon');
-    iconEl.innerText = type === 'success' ? '🎉' : '❌';
-    document.getElementById('customAlert').classList.remove('hidden-screen');
-};
-window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
-
-async function checkKeyMonthLock(userMobile, key) {
-    const snap = await getDoc(doc(db, "users", userMobile, "used_keys", key));
-    if (snap.exists()) {
-        const claimTime = snap.data().claimedAt;
-        if (claimTime) {
-            const diff = Math.abs(new Date() - new Date(claimTime));
-            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            if (days <= 30) return false;
-        }
-    }
-    return true;
-}
-
-window.logout = () => {
-    localStorage.removeItem('userMobile');
-    sessionStorage.clear();
-    location.reload();
-};
+<script type="module" src="app.js"></script>
+</body>
+</html>
