@@ -210,7 +210,40 @@ window.verifyKey = async () => {
         document.getElementById('rewardSection').classList.remove('hidden-screen');
     } catch (e) { showCustomAlert("Error", "सर्वर एरर!", "error"); }
 };
+// --- 👤 Profile & Pin Management ---
 
+async function loadProfileStatus() {
+    try {
+        const userSnap = await getDoc(doc(db, "users", mobile));
+        const data = userSnap.data();
+        if (!data.profileCompleted) {
+            document.getElementById('profileForm').classList.remove('hidden-screen');
+            document.getElementById('profileStatus').classList.add('hidden-screen');
+        } else {
+            document.getElementById('profileForm').classList.add('hidden-screen');
+            document.getElementById('profileStatus').classList.remove('hidden-screen');
+            document.getElementById('stName').innerText = data.userName;
+        }
+    } catch (e) { console.error(e); }
+}
+
+window.submitProfile = async () => {
+    const name = document.getElementById('profName').value.trim();
+    const dob = document.getElementById('profDOB').value;
+    const pin = document.getElementById('profPin').value.trim();
+    if (!name || !dob || pin.length !== 4) return window.showCustomAlert("त्रुटि", "सभी जानकारी और 4 अंकों का पिन भरें!");
+
+    try {
+        const userRef = doc(db, "users", mobile);
+        const snap = await getDoc(userRef);
+        let newBal = snap.data().balance || 0;
+        if(!snap.data().profileCompleted) newBal += 500;
+
+        await setDoc(userRef, { userName: name, dob: dob, securityPin: pin, balance: newBal, profileCompleted: true }, { merge: true });
+        window.showCustomAlert("सफल!", "प्रोफाईल लॉक हो गई और +500 रिवॉर्ड मिला!", "success");
+        await loadProfileStatus();
+    } catch(e) { console.error(e); }
+};
 // =================== 📱 [खाता निर्माण + ऑटो रेफरल नियम] ===================
 window.saveMobile = async () => {
     const inputMobile = document.getElementById('userMobile').value.trim();
