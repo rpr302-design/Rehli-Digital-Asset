@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v10.0 Ultimate</title>
+    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v10.1 Fixed</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -193,12 +193,7 @@
             cursor: pointer;
         }
 
-        /* 👑 वित्तीय हेडर्स - एसेट तथा रुपया वॉलेट नोड्स */
-        .wallets-display-pill {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
+        .wallets-display-pill { display: flex; gap: 10px; align-items: center; }
 
         .balance-pill {
             background: rgba(255, 255, 255, 0.16);
@@ -347,7 +342,6 @@
             width: 100%;
         }
 
-        /* 📱 5-आइकन बॉटम स्मार्टफोन बार स्टाइलिंग */
         .nav-bar {
             position: absolute;
             bottom: 0;
@@ -406,13 +400,7 @@
             border: 3px solid var(--primary);
         }
 
-        /* 🔮 मिस्ट्री बॉक्स ग्रिड और डायनामिक कंटेनर */
-        .mystery-grid-dynamic {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-top: 15px;
-        }
+        .mystery-grid-dynamic { display: flex; flex-direction: column; gap: 14px; margin-top: 15px; }
         .mystery-element-row {
             background: linear-gradient(135deg, #1e272e 0%, #2c3e50 100%);
             border: 1px solid rgba(255,255,255,0.08);
@@ -433,13 +421,11 @@
         .m-text-details p { font-size: 11px; color: #b2bec3; margin-top: 2px; }
         .m-right-badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.1); color: var(--gold); }
 
-        /* 🔐 इन-ऐप पिन सबमिशन कार्ड विजेट */
         .inline-input-widget {
             background: #f8f9fa; border: 1px dashed var(--primary);
             padding: 15px; border-radius: 16px; margin-top: 12px; text-align: left;
         }
 
-        /* 🎁 सुंदर इनवाइट बॉक्स एनीमेशन यूआई */
         .gift-box-container {
             background: radial-gradient(circle, #ff7675 0%, #d63031 100%);
             border-radius: 24px; padding: 25px; text-align: center; color: white;
@@ -704,7 +690,7 @@
                         <h3><i class="fa-solid fa-file-shield" style="color:var(--primary);"></i> नियम एवं शर्तें</h3>
                         <hr style="opacity:0.08; margin-bottom:15px;">
                         <div style="font-size:13px; line-height:1.6; color:#444; display:flex; flex-direction:column; gap:12px;">
-                            <p>१. <b>कैलकुलेटर फार्मूला मैट्रिक्स आधार:</b> २0 एसेट बराबर ₹१ (एक भारतीय रुपया) के रूप में निर्धारित है।</p>
+                            <p>१. <b>कैलकुलेटर फार्मूला :</b> २0 एसेट बराबर ₹१ (एक भारतीय रुपया) के रूप में निर्धारित है।</p>
                             <p>२. <b>सुरक्षा:</b> लेन-देन रोकने के लिए अपना पिन किसी से साझा न करें।</p>
                         </div>
                     </div>
@@ -778,7 +764,6 @@
         let activeMerchantDocPayload = null;
         let inAppHtml5Qrcode = null;
         
-        // एक्टिव मिस्ट्री बॉक्स होल्डर स्टेट एरे
         let globalDynamicBoxesArray = [];
         let selectedTargetBoxIndexToUnlock = null;
 
@@ -940,7 +925,7 @@
                     return;
                 }
 
-                if (!userSnap.exists()) {
+                if (!userSnap.exists()) { 
                     const parsedReferralInput = document.getElementById('userReferralInput').value.trim();
                     let assignedReferrer = "Direct";
                     let initialBalance = cachedValue;
@@ -1003,7 +988,7 @@
         }
 
         /* ==========================================================================
-            Dashboard डेटा सिंक इंजन (Dual Wallet Synced)
+            Dashboard डेटा सिंक इंजन
            ========================================================================== */
         async function synchronizeUserDashboardStateEngine() {
             if (!userSessionMobile) return;
@@ -1013,7 +998,6 @@
 
                 const coreUserData = userSnapshot.data();
                 
-                // एसेट्स तथा रुपया दोनों खातों का सिंक
                 document.getElementById('dashBalance').innerText = coreUserData.balance || 0;
                 document.getElementById('dashRupeeBalance').innerText = coreUserData.rupeeBalance || 0;
 
@@ -1023,7 +1007,6 @@
                 document.getElementById('sideMenuPhone').innerText = "+91 " + userSessionMobile;
                 document.getElementById('lblReferralCodeDisplay').innerText = "REHLI" + userSessionMobile.substring(6).toUpperCase();
 
-                // घोषणा बोर्ड लोड तथा शीर्षक/लिंक मैपिंग
                 const noticeSnap = await getDoc(doc(db, "announcements", "live_notice"));
                 if (noticeSnap.exists()) {
                     const nData = noticeSnap.data();
@@ -1108,7 +1091,7 @@
         };
 
         /* ==========================================================================
-           🔮 2. [डायनामिक अपडेट]: इन-ऐप मिस्ट्री बॉक्स लॉजिक (एडमिन पैनल नियंत्रित मोड)
+           🔮 इन-ऐप मिस्ट्री बॉक्स लॉजिक इंजन
            ========================================================================== */
         async function evaluateMysteryBoxLimitsAndTimers() {
             try {
@@ -1133,21 +1116,21 @@
                     document.getElementById('lblMysteryTimer').innerText = "";
                 }
 
-                // 📢 [एडमिन पैनल सिंक]: एडमिन द्वारा बनाये गए सभी बॉक्सेस की सूची लाइव जनरेट करना
+                // एडमिन द्वारा बनाये गए सभी बॉक्सेस की सूची लाइव जनरेट करना
                 const boxesCollectionSnap = await getDocs(collection(db, "announcements", "live_notice", "mystery_boxes"));
                 const boxContainer = document.getElementById('boxContainerArea');
                 boxContainer.innerHTML = "";
                 globalDynamicBoxesArray = [];
 
                 if(boxesCollectionSnap.empty) {
-                    boxContainer.innerHTML = "<div style='font-size:12px; color:var(--text-muted);'>एडमिन द्वारा कोई बॉक्स लाइव नहीं किया गया है।</div>";
+                    boxContainer.innerHTML = "<div style='font-size:12px; color:var(--text-muted);'>कोई एक्टिव मिस्ट्री बॉक्स उपलब्ध नहीं है।</div>";
                     return;
                 }
 
                 let idx = 0;
                 boxesCollectionSnap.forEach(boxDoc => {
                     const b = boxDoc.data();
-                    b.docId = boxDoc.id; // स्टोर आईडी रेफरेंस
+                    b.docId = boxDoc.id; 
                     globalDynamicBoxesArray.push(b);
 
                     const unitType = b.rewardType === "currency" ? "₹ रुपये" : "Assets सिक्के";
@@ -1171,7 +1154,21 @@
             } catch (e) { console.error(e); }
         }
 
-        // मिस्ट्री बॉक्स क्लिक गेटवे हैंडलर
+        function startMysteryBoxCooldownTimer(seconds) {
+            const timerDiv = document.getElementById('lblMysteryTimer');
+            const intervalId = setInterval(() => {
+                if (seconds <= 0) {
+                    clearInterval(intervalId);
+                    timerDiv.innerText = "";
+                    return;
+                }
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timerDiv.innerText = `⏳ अगला चांस: ${mins} मिनट ${secs} सेकंड बाद उपलब्ध`;
+                seconds--;
+            }, 1000);
+        }
+
         window.initiateMysteryBoxUnlockProcess = (index) => {
             const chanceCount = Number(document.getElementById('lblMysteryChance').innerText);
             if (chanceCount <= 0) return window.showCustomAlert("सीमा समाप्त 🚨", "आपके आज के सभी 5 फ्री चांस समाप्त हो चुके हैं।", "error");
@@ -1180,7 +1177,6 @@
             selectedTargetBoxIndexToUnlock = index;
             const targetBoxConfig = globalDynamicBoxesArray[index];
 
-            // अगर पिन आवश्यक है तो पिन विजेट खोलें
             if(targetBoxConfig.pinRequired) {
                 const pinInp = document.getElementById('numBoxVerificationPin');
                 pinInp.value = "";
@@ -1189,7 +1185,7 @@
                 document.getElementById('inlinePinWidgetCard').classList.remove('hidden-screen');
             } else {
                 document.getElementById('inlinePinWidgetCard').classList.add('hidden-screen');
-                executeSecuredMysteryBoxUnlockTransaction(null); // बिना पिन के डायरेक्ट ओपन
+                executeSecuredMysteryBoxUnlockTransaction(); 
             }
         };
 
@@ -1198,7 +1194,6 @@
             const targetBox = globalDynamicBoxesArray[selectedTargetBoxIndexToUnlock];
             const chanceCount = Number(document.getElementById('lblMysteryChance').innerText);
 
-            // अगर पिन अनिवार्य है तो उसका मिलान चेक करें
             if(targetBox.pinRequired) {
                 const inputPinVal = document.getElementById('numBoxVerificationPin').value.trim();
                 if(inputPinVal !== String(targetBox.boxPin)) {
@@ -1216,15 +1211,14 @@
                 const rVal = Number(targetBox.rewardValue || 100);
                 let updatePayload = {};
 
-                if (targetBox.rewardType === "currency") { // 💵 रुपया खाता नोड क्रेडिट
+                if (targetBox.rewardType === "currency") { 
                     const currentRupeeBal = uData.rupeeBalance || 0;
                     updatePayload.rupeeBalance = currentRupeeBal + rVal;
-                } else { // एसेट्स कॉइन नोड क्रेडिट
+                } else { 
                     const currentAssetBal = uData.balance || 0;
                     updatePayload.balance = currentAssetBal + rVal;
                 }
 
-                // कमिट चेंजेस टू फायरबेस
                 await setDoc(userDocRef, updatePayload, { merge: true });
                 await setDoc(doc(db, "users", userSessionMobile, "mystery_state", "tracker"), {
                     date: localCurrentDateISO,
@@ -1260,7 +1254,7 @@
                     }
                 },
                 (scanError) => { }
-            ).catch(err => console.error(err));
+            ).catch(err => console.error("Camera Open Error: ", err));
         };
 
         window.stopQRScanner = () => {
@@ -1283,7 +1277,7 @@
             try {
                 const merchantSnapshot = await getDoc(doc(db, "merchants", shopMobileNum));
                 if (!merchantSnapshot.exists()) {
-                    return window.showCustomAlert("दुकान नहीं मिली", "यह नंबर पंजीकृत नहीं है।", "error");
+                    return window.showCustomAlert("दुकान नहीं मिली", "यह नंबर मर्चेंट नेटवर्क पर पंजीकृत नहीं है।", "error");
                 }
                 activeMerchantDocPayload = merchantSnapshot.data();
                 activeMerchantDocPayload.mobile = shopMobileNum;
