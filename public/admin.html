@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो एडमिन v4.5 Ultimate Console</title>
+    <title>रहली डिजिटल एसेट - प्रो एडमिन v5.0 Master Console</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -97,6 +97,7 @@
         .btn-primary { background: var(--accent-gradient); color: white; width: 100%; box-shadow: 0 6px 20px rgba(78, 84, 200, 0.3); }
         .btn-danger { background: var(--danger); color: white; }
         .btn-action-sm { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; border: none; cursor: pointer; }
+        .btn-delete-sm { background: linear-gradient(45deg, #ff4757, #ff6b81); color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -104,7 +105,7 @@
     <div id="loginWrapper">
         <div class="login-box">
             <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" width="75" alt="Admin Dashboard">
-            <h3>रहली डिजिटल कोर कंसोल v4.5</h3>
+            <h3>रहली डिजिटल कोर कंसोल v5.0</h3>
             <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px;">Master Control Operations</p>
             <input type="email" id="adminEmail" value="rpr302@gmail.com">
             <input type="password" id="adminPass" value="Sammo*1234" style="margin-top:10px;">
@@ -114,7 +115,7 @@
 
     <div id="adminPanel" style="display: none; width: 100%;">
         <div class="sidebar">
-            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM v4.5</div>
+            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM v5.0</div>
             <div class="sidebar-links">
                 <a class="nav-link active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> मुख्य डैशबोर्ड</a>
                 <a class="nav-link" onclick="showTab('entry')"><i class="fas fa-plus-circle"></i> नया वीडियो एसेट बनाएं</a>
@@ -203,7 +204,7 @@
 
                         <div class="card">
                             <h3><i class="fa-solid fa-box-open" style="color:var(--warning)"></i> जादुई मिस्ट्री बॉक्स कॉन्फ़िगरेशन</h3>
-                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">उपभोक्ता ऐप हेतु पिन लॉक्ड या फ्री मल्टीपल मिस्ट्री बॉक्स लाइव जेनरेट करें।</p>
+                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">उपभोक्ता ऐप हेतु पिन लॉक्ड या फ्री और रुपया/एसेट आधारित मल्टीपल मिस्ट्री बॉक्स लाइव जेनरेट करें।</p>
                             
                             <label>मिस्ट्री बॉक्स का नाम (Box Display Name)</label>
                             <input type="text" id="txtMBoxName" placeholder="उदाहरण: Silver Box / Mega Jackpot">
@@ -411,7 +412,7 @@
         }
 
         /* ==========================================================================
-           📊 उपभोक्ता एसेट रिपोर्ट शीट: (विस्तृत ग्रैंड टोटल नोड्स गणना इंजन)
+           📊 उपभोक्ता एसेट रिपोर्ट शीट: (ग्रैंड टोटल क्युमुलेटिव इंजन नोड्स सिंक)
            ========================================================================== */
         async function loadUsersAndCalculateReportSheet() {
             const body = document.getElementById('userListBody');
@@ -430,7 +431,6 @@
                     }
                 });
 
-                // ग्रैंड टोटल संचयी वेरिएबल नोड्स
                 let netNetworkAssetBalance = 0;
                 let netNetworkRupeeBalance = 0;
                 let netNetworkSpentExpenses = 0;
@@ -445,7 +445,6 @@
                     const totalSpent = Number(spentMap[uMobileKey] || 0);
                     const inviteBonusEarned = (u.referredBy && u.referredBy !== "Direct") ? 5000 : 0;
 
-                    // ग्रैंड टोटल संचय योग क्रिया
                     netNetworkAssetBalance += currentLiquidBalance;
                     netNetworkRupeeBalance += currentRupeeBalance;
                     netNetworkSpentExpenses += totalSpent;
@@ -461,7 +460,6 @@
                     </tr>`;
                 });
 
-                // काउंटर अपडेट नोड्स
                 document.getElementById('gtUsersBalance').innerText = netNetworkAssetBalance + " एसेट्स";
                 document.getElementById('gtUsersRupeeBalance').innerText = "₹ " + netNetworkRupeeBalance;
                 document.getElementById('gtUsersSpent').innerText = netNetworkSpentExpenses + " खर्च व्यय";
@@ -496,7 +494,7 @@
                 });
 
                 document.getElementById('gtMerchantTotalAssets').innerText = cumulativeMerchantAssets + " एसेट्स";
-            } catch (e) { mBodyBody.innerHTML = "<tr><td colspan='5' style='color:red;'>मर्चेंट डेटा त्रुटि!</td></tr>"; }
+            } catch (e) { mBody.innerHTML = "<tr><td colspan='5' style='color:red;'>मर्चेंट डेटा त्रुटि!</td></tr>"; }
         }
 
         /* ==========================================================================
@@ -555,7 +553,6 @@
             if(pinReq && !sPin) return alert("पिन लॉक इनेबल होने पर गुप्त कोड सेट करना आवश्यक है!");
 
             try {
-                // डॉक्यूमेंट जेनरेशन आईडी हेतु रैंडम की
                 const boxCustomDocId = "BOX_" + Math.floor(1000 + Math.random() * 9000);
                 const customBoxRef = doc(db, "announcements", "live_notice", "mystery_boxes", boxCustomDocId);
 
@@ -571,12 +568,11 @@
 
                 alert("बधाई हो! नया मिस्ट्री बॉक्स लाइव उपभोक्ता ऐप पर जारी कर दिया गया है।");
                 
-                // क्लियर फॉर्म फ़ील्ड्स
                 document.getElementById('txtMBoxName').value = "";
                 document.getElementById('numMBoxRewardValue').value = "";
                 document.getElementById('numMBoxSecretPin').value = "";
                 document.getElementById('selMBoxPinRequired').value = "false";
-                togglePinConfigFields("false");
+                window.togglePinConfigFields("false");
                 
                 await loadActiveMysteryBoxesInAdminDashboardList();
             } catch (err) { alert("बॉक्स निर्माण विफल: " + err.message); }
@@ -622,7 +618,7 @@
             } catch (err) { alert("डिलीट विफलता!"); }
         };
 
-        // अर्निंग ट्रैकर एवं अन्य कोर फंक्शन्स (यथावत सिन्क)
+        // अर्निंग ट्रैकर एवं चाबी इतिहास
         window.trackUserKeys = async () => {
             const searchMobileInput = document.getElementById('searchMobile').value.trim();
             if(searchMobileInput.length !== 10) return alert("10 अंकों का नंबर डालें");
@@ -750,7 +746,6 @@
             window.showTab('dashboard');
         };
 
-        // विंडेक्स मैपिंग अटैचमेंट
         window.executeDeleteMysteryBoxTransaction = executeDeleteMysteryBoxTransaction;
         window.togglePinConfigFields = togglePinConfigFields;
 
