@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v10.1 Fixed</title>
+    <title>रहली डिजिटल एसेट - प्रो सुपर ऐप v11.0 Ultimate</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -29,6 +29,7 @@
             --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
             --neon-blue: #00d2d3;
             --rupee-color: #2ecc71;
+            --leaderboard-bg: #2c3a47;
         }
 
         * {
@@ -152,7 +153,6 @@
             color: var(--dark);
             margin-bottom: 16px;
             outline: none;
-            transition: all 0.2s;
         }
 
         #authContainer input { background: rgba(255, 255, 255, 0.9); border: none; }
@@ -342,6 +342,7 @@
             width: 100%;
         }
 
+        /* 📱 5-आइकन स्मार्टफोन बॉटम नेविगेशन बार */
         .nav-bar {
             position: absolute;
             bottom: 0;
@@ -365,7 +366,7 @@
             text-decoration: none;
             font-size: 10.5px;
             font-weight: 600;
-            width: 65px;
+            width: 62px;
             gap: 2px;
         }
 
@@ -426,6 +427,34 @@
             padding: 15px; border-radius: 16px; margin-top: 12px; text-align: left;
         }
 
+        /* 🏆 लीडरबोर्ड यूआई घटक स्टाइल */
+        .stage-selector {
+            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px;
+            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+        }
+        .stage-tab {
+            background: #e2e8f0; color: var(--dark); padding: 8px 16px; border-radius: 12px;
+            font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; border: none;
+        }
+        .stage-tab.active-stage {
+            background: var(--primary-gradient); color: white; box-shadow: 0 4px 10px rgba(78,84,200,0.2);
+        }
+        .leaderboard-list { display: flex; flex-direction: column; gap: 10px; }
+        .leader-row {
+            background: white; padding: 12px 16px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02); border: 1px solid #edf2f7;
+        }
+        .leader-left { display: flex; align-items: center; gap: 12px; }
+        .rank-number {
+            width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+            display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: 700;
+        }
+        .rank-1 { background: #fbc531; color: #fff; }
+        .rank-2 { background: #dcdde1; color: #000; }
+        .rank-3 { background: #e15f41; color: #fff; }
+
+        /* 🎁 सुंदर इनवाइट बॉक्स एनीमेशन यूआई */
         .gift-box-container {
             background: radial-gradient(circle, #ff7675 0%, #d63031 100%);
             border-radius: 24px; padding: 25px; text-align: center; color: white;
@@ -461,9 +490,10 @@
                 <div id="autoReferralGiftSection" class="hidden-screen">
                     <div class="gift-box-container">
                         <i class="fa-solid fa-box-open" style="font-size: 60px; color: var(--gold); margin-bottom: 15px; display: block;"></i>
-                        <h2>विशेष इनवाइट गिफ्ट! 🎉</h2>
-                        <h1 style="font-size: 38px; color: var(--gold); margin: 10px 0; font-weight: 800;">5,000 एसेट्स</h1>
-                        <p style="font-size: 12px; opacity: 0.9;">आपको रहली डिजिटल नेटवर्क पर आमंत्रित किया गया है। खाता खोलते ही यह रिवॉर्ड आपके वॉलेट में जुड़ जाएगा!</p>
+                        <h2>विशेष इनवाइट महाउपहार! 🎉</h2>
+                        <h1 style="font-size: 32px; color: var(--gold); margin: 5px 0; font-weight: 800;">50,000 एसेट्स</h1>
+                        <h2 style="font-size: 26px; color: #2ecc71; margin-bottom: 15px; font-weight: 700;">+ ₹500 कैश मनी</h2>
+                        <p style="font-size: 11.5px; opacity: 0.9;">बधाई हो! खाता खोलते ही ये दोनों धनराशि आपके खातों में रीयल-टाइम क्रेडिट कर दी जाएंगी।</p>
                     </div>
                     <button class="btn-action" style="background: linear-gradient(135deg, #fbc531, #f5cd79); color: #000;" onclick="proceedToAutoReferralMobileStep()">आगे बढ़ें (Next) →</button>
                 </div>
@@ -520,6 +550,7 @@
                 <div class="sidebar-links">
                     <a href="#" id="side-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i> होम स्क्रीन</a>
                     <a href="#" id="side-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i> जादुई मिस्ट्री बॉक्स</a>
+                    <a href="#" id="side-leaderboard" onclick="switchAppTab('leaderboard')"><i class="fa-solid fa-trophy"></i> वीर लीडरबोर्ड</a>
                     <a href="#" id="side-wallet" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i> मेरा एसेट वॉलेट</a>
                     <a href="#" id="side-profile" onclick="switchAppTab('profile')"><i class="fa-solid fa-id-card"></i> डिजिटल प्रोफाइल</a>
                     <a href="#" id="side-social" onclick="switchAppTab('social')"><i class="fa-solid fa-hashtag"></i> सोशल मीडिया टास्क</a>
@@ -554,7 +585,6 @@
             <div class="app-body">
 
                 <div id="tab-home" class="app-tab-content">
-                    
                     <div id="announcementBoard" class="notice-board hidden-screen">
                         <h4 style="font-size:14px; font-weight:700;" id="lblNoticeTitle"><i class="fa-solid fa-bullhorn"></i> घोषणा!</h4>
                         <p id="lblAnnouncementText" style="font-size:12px; margin-top:5px; font-weight:500; opacity:0.95;">ऑफर विवरण...</p>
@@ -594,7 +624,28 @@
                         <div id="inlinePinWidgetCard" class="inline-input-widget hidden-screen">
                             <span id="lblBoxPinHeader" style="font-size:11.5px; font-weight:600; color:var(--primary); display:block; margin-bottom:6px;">पिन कोड प्रमाणित करें</span>
                             <input type="number" id="numBoxVerificationPin" placeholder="सुरक्षा कोड दर्ज करें">
-                            <button class="btn-action" style="padding:10px; font-size:13px;" onclick="executeSecuredMysteryBoxUnlockTransaction()">बॉक्स ओपन करें</button>
+                            <button class="btn-action" style="padding:10px; font-size:13px;" onclick="executeSecuredMysteryBoxUnlockTransaction()">BOX ओपन करें</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-leaderboard" class="app-tab-content hidden-screen">
+                    <div class="earn-box" style="padding: 15px;">
+                        <h3 style="color:var(--primary);"><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> रहली डिजिटल लीडरबोर्ड</h3>
+                        <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">सिक्कों के साम्राज्य के आधार पर 7 सर्वोच्च वीर स्तर। शीर्ष 10 योद्धाओं की लाइव सूची:</p>
+                        
+                        <div class="stage-selector">
+                            <button class="stage-tab active-stage" onclick="renderLeaderboardStageWise(0)">रहली योद्धा</button>
+                            <button class="stage-tab" onclick="renderLeaderboardStageWise(1)">सिक्का रक्षक</button>
+                            <button class="stage-tab" onclick="renderLeaderboardStageWise(2)">डिजिटल नायक</button>
+                            <button class="stage-tab" onclick="renderLeaderboardStageWise(3)">एसेट महागुरु</button>
+                            <button class="stage-tab" onclick="renderLeaderboardStageWise(4)">रहस्य खोजी</button>
+                            <button class="stage-tab" onclick="renderLeaderboardStageWise(5)">तिजोरी विजेता</button>
+                            <button class="stage-tab" onclick="renderLeaderboardStageWise(6)">डिजिटल सम्राट</button>
+                        </div>
+
+                        <div class="leaderboard-list" id="lblBoardItemsContainer">
+                            <div style="font-size:12px; color:var(--text-muted); text-align:center; padding:20px;">योद्धाओं की बहीखाता सूची लोड हो रही है...</div>
                         </div>
                     </div>
                 </div>
@@ -604,13 +655,17 @@
                         <h3 style="color:var(--success);"><i class="fa-solid fa-chart-line"></i> एसेट बैलेंस शीट</h3>
                         <div class="info-row"><span>वर्तमान मुख्य एसेट सिक्के Balance:</span><b id="wTotalLiquidCoins" style="color:var(--primary);">0 Assets</b></div>
                         <div class="info-row"><span>सत्यापित नकद रुपया खाता (Rupee ₹):</span><b id="wTotalLiquidRupees" style="color:var(--rupee-color);">₹ 0</b></div>
-                        <div class="info-row"><span>रेफरल बोनस इनकम इतिहास:</span><b id="wReferEarned">0 एसेट्स</b></div>
+                        
+                        <div class="info-row" style="background:#fcfcfc; border-left:3px solid var(--gold); padding-left:8px;">
+                            <span>👥 कुल रेफरल इनकम बोनस:</span><b id="wReferEarned" style="color:#d35400;">0 Assets</b>
+                        </div>
+                        
                         <div class="info-row"><span>कुल खर्च सिक्के (Spent History):</span><b id="wTotalSpent">0 एसेट्स</b></div>
                         
                         <div style="margin-top:22px; padding:18px; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius:18px; text-align:center; border:1px solid rgba(0, 184, 148, 0.15);">
-                            <span style="font-size:12px; color:#2e7d32; font-weight:500;">खर्च किए गए एसेट्स की कुल वैल्यू</span>
+                            <span style="font-size:12px; color:#2e7d32; font-weight:500;">खर्च किए गए एसेट्स की कुल रिडीम वैल्यू</span>
                             <h2 id="wSpentValue" style="color:#1b5e20; margin:6px 0; font-size:26px; font-weight:700;">₹ 0.00</h2>
-                            <small style="font-size:10px; color:#4caf50; font-weight:500;">(20 एसेट = ₹1)</small>
+                            <small style="font-size:10px; color:#4caf50; font-weight:500;">(नया बहीखाता नियम कनवर्टर: 100 एसेट = ₹1)</small>
                         </div>
                     </div>
                 </div>
@@ -620,7 +675,6 @@
                         <div id="profileFormArea" class="earn-box hidden-screen">
                             <h3><i class="fa-solid fa-user-plus" style="color:var(--primary);"></i> प्रोफाइल पंजीकरण (+2000 बोनस)</h3>
                             <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">पहली बार प्रोफाइल पूर्ण करने पर 2000 सिक्के आपके खाते में जुड़ेंगे।</p>
-                            
                             <input type="text" id="pName" placeholder="नाम दर्ज करें">
                             <input type="date" id="pDOB">
                             <select id="pGender">
@@ -630,7 +684,7 @@
                             </select>
                             <input type="number" id="pPin" placeholder="4-अंकीय नया पिन बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
                             <input type="number" id="pPinConfirm" placeholder="पिन की पुष्टि दोबारा दर्ज करें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
-                            <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल लॉक करें और बोनस पाएं</button>
+                            <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल锁 करें और बोनस पाएं</button>
                         </div>
 
                         <div id="profileStatusArea" class="earn-box hidden-screen">
@@ -690,7 +744,7 @@
                         <h3><i class="fa-solid fa-file-shield" style="color:var(--primary);"></i> नियम एवं शर्तें</h3>
                         <hr style="opacity:0.08; margin-bottom:15px;">
                         <div style="font-size:13px; line-height:1.6; color:#444; display:flex; flex-direction:column; gap:12px;">
-                            <p>१. <b>कैलकुलेटर फार्मूला :</b> २0 एसेट बराबर ₹१ (एक भारतीय रुपया) के रूप में निर्धारित है।</p>
+                            <p>१. <b>कैलकुलेटर फार्मूला :</b> १00 एसेट बराबर ₹१ (एक भारतीय रुपया) के रूप में निर्धारित है।</p>
                             <p>२. <b>सुरक्षा:</b> लेन-देन रोकने के लिए अपना पिन किसी से साझा न करें।</p>
                         </div>
                     </div>
@@ -699,7 +753,7 @@
                 <div id="tab-pay" class="app-tab-content hidden-screen">
                     <div class="earn-box">
                         <h3><i class="fa-solid fa-qrcode" style="color:var(--primary);"></i> दुकानदार को भुगतान गेटवे</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">नीचे लाइव कैमरा स्कैनर से दुकान का QR कोड स्कैन करें या मोबाइल नंबर दर्ज करें:</p>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">नीचे लाइव कामना स्कैनर से दुकान का QR कोड स्कैन करें या मोबाइल नंबर दर्ज करें:</p>
                         
                         <div id="qrReaderBox" class="hidden-screen">
                             <div id="qrReader" style="width:100%;"></div>
@@ -735,8 +789,8 @@
                 
                 <div class="nav-pay-center" onclick="switchAppTab('pay')"><div><i class="fa-solid fa-qrcode"></i></div></div>
                 
+                <a href="#" class="nav-link" id="nav-leaderboard" onclick="switchAppTab('leaderboard')"><i class="fa-solid fa-trophy"></i><span>रैंक</span></a>
                 <a href="#" class="nav-link" id="nav-wallet" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i><span>वॉलेट</span></a>
-                <a href="#" class="nav-link" id="nav-profile" onclick="switchAppTab('profile')"><i class="fa-solid fa-user-gear"></i><span>प्रोफाइल</span></a>
             </nav>
 
         </div>
@@ -744,7 +798,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, limit, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
         const firebaseConfig = {
@@ -766,6 +820,9 @@
         
         let globalDynamicBoxesArray = [];
         let selectedTargetBoxIndexToUnlock = null;
+        
+        // लीडरबोर्ड हेतु ग्लोबल यूजर डेटा कैश एरे प्रदाता नोड
+        let globalCachedLeaderboardUsersList = [];
 
         const localCurrentDateISO = new Date().toISOString().substring(0, 10);
 
@@ -785,7 +842,7 @@
             const refCode = urlParams.get('ref');
             if (refCode) {
                 sessionStorage.setItem('verified_activation_key', "94416");
-                sessionStorage.setItem('verified_key_asset_value', 500);
+                sessionStorage.setItem('verified_key_asset_value', 50000); // इनवाइट चाबी बेस मूल्य 50,000 एसेट फिक्स
                 
                 const targetRefInput = document.getElementById('userReferralInput');
                 targetRefInput.value = refCode.trim().toUpperCase();
@@ -811,7 +868,7 @@
         }
 
         /* ==========================================================================
-           🔑 ऑथेंटिकेशन और सख्त चाबी चेकर नियम (String Datatype फिक्स)
+           🔑 ऑथेंटिकेशन और सख्त चाबी चेकर नियम
            ========================================================================== */
         window.verifyKey = async () => {
             const keyInput = document.getElementById('userKey').value.trim();
@@ -928,12 +985,15 @@
                 if (!userSnap.exists()) { 
                     const parsedReferralInput = document.getElementById('userReferralInput').value.trim();
                     let assignedReferrer = "Direct";
-                    let initialBalance = cachedValue;
+                    
+                    // ✨ [निर्देशानुसार आवंटन मैट्रिक्स]: ज्वाइन करते ही बेस 50,000 एसेट्स और ₹500 नकद प्रदान करना
+                    let initialBalance = 50000;
+                    let initialRupeeBalance = 500;
 
                     if (parsedReferralInput && parsedReferralInput.startsWith("REHLI") && parsedReferralInput !== ("REHLI" + targetMobile.substring(6))) {
                         assignedReferrer = parsedReferralInput;
-                        initialBalance += 5000;
 
+                        // इनवाइट करने वाले पुराने यूजर को ढूंढकर उसे भी +5000 सिक्के ट्रांसफर करना
                         try {
                             const allUsersSnap = await getDocs(collection(db, "users"));
                             allUsersSnap.forEach(async (uDoc) => {
@@ -947,12 +1007,12 @@
                     }
 
                     await setDoc(userDocRef, {
-                        mobile: targetMobile, balance: initialBalance, rupeeBalance: 0, userName: "नया यूजर",
+                        mobile: targetMobile, balance: initialBalance, rupeeBalance: initialRupeeBalance, userName: "नया यूजर",
                         regDate: localCurrentDateISO, profileCompleted: false, referredBy: assignedReferrer
                     });
 
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
-                    window.showCustomAlert("रजिस्ट्रेशन सफल", "आपका खाता बन गया और दोनों खातों में 5,000 बोनस सिक्के क्रेडिट हुए!", "success");
+                    window.showCustomAlert("रजिस्ट्रेशन सफल 🎉", "ज्वाइनिंग बोनस के रूप में 50,000 एसेट्स और ₹500 आपके खातों में जोड़ दिए गए हैं!", "success");
                 } else { 
                     const keyIsFreshAndValid = await evaluateKeyUniquenessConstraints(targetMobile, cachedKey);
                     if (!keyIsFreshAndValid) {
@@ -1031,8 +1091,69 @@
 
                 await renderDynamicUnusedPromoVideoWidget(userSessionMobile);
                 await evaluateMysteryBoxLimitsAndTimers(); 
+                await preFetchAllUsersDataForLeaderboardMatrix(); // लीडरबोर्ड हेतु बफर सिंक
             } catch (error) { console.error(error); }
         }
+
+        /* ==========================================================================
+           🥇 [नया फीचर मॉड्यूल]: 7-स्टेज वीर लीडरबोर्ड गणना एल्गोरिथम इंजन
+           ========================================================================== */
+        async function preFetchAllUsersDataForLeaderboardMatrix() {
+            try {
+                const allUsersQuerySnapshot = await getDocs(collection(db, "users"));
+                globalCachedLeaderboardUsersList = [];
+                allUsersQuerySnapshot.forEach(uDoc => {
+                    const data = uDoc.data();
+                    globalCachedLeaderboardUsersList.push({
+                        name: data.userName || "नया योद्धा",
+                        balance: Number(data.balance || 0)
+                    });
+                });
+                
+                // सिक्कों के घटते क्रम (Descending Order) में सॉर्ट करें
+                globalCachedLeaderboardUsersList.sort((a, b) => b.balance - a.balance);
+            } catch(e) { console.error("लीडरबोर्ड बफर सिंक फेल: ", e); }
+        }
+
+        window.renderLeaderboardStageWise = (stageIndex) => {
+            // एक्टिव क्लास टॉगल करें
+            document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
+            if(event && event.currentTarget) event.currentTarget.classList.add('active-stage');
+
+            const container = document.getElementById('lblBoardItemsContainer');
+            container.innerHTML = "";
+
+            // 7 यूनिक वीर स्टेज स्तरों का एरे सेगमेंटेशन (विभाजन सीमा नियम)
+            // प्रत्येक स्टेज में १० क्रमिक रैंक वाले उपयोगकर्ताओं का प्रदर्शन
+            const startRangeIdx = stageIndex * 10;
+            const endRangeIdx = startRangeIdx + 10;
+            
+            const sliceSubList = globalCachedLeaderboardUsersList.slice(startRangeIdx, endRangeIdx);
+
+            if(sliceSubList.length === 0) {
+                container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:20px;'>इस उच्च स्तर पर अभी कोई योद्धा नहीं पहुँच सका है।</div>";
+                return;
+            }
+
+            let rankLoopCounter = startRangeIdx + 1;
+            sliceSubList.forEach(userItem => {
+                let medalBadgeSelectorClass = "";
+                if(rankLoopCounter === 1) medalBadgeSelectorClass = "rank-1";
+                if(rankLoopCounter === 2) medalBadgeSelectorClass = "rank-2";
+                if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
+
+                container.innerHTML += `
+                    <div class="leader-row">
+                        <div class="leader-left">
+                            <div class="rank-number ${medalBadgeSelectorClass}">${rankLoopCounter}</div>
+                            <span style="font-size:13.5px; font-weight:600; color:var(--dark);">${userItem.name}</span>
+                        </div>
+                        <b style="font-size:13.5px; color:var(--primary); font-weight:700;">${userItem.balance} 🪙</b>
+                    </div>
+                `;
+                rankLoopCounter++;
+            });
+        };
 
         /* ==========================================================================
            📺 फ़िल्टर्ड प्रमोटेड वीडियो विजेट इंजन
@@ -1090,9 +1211,6 @@
             } catch (error) { window.showCustomAlert("त्रुटि", "दावा प्रविष्टि असफल।", "error"); }
         };
 
-        /* ==========================================================================
-           🔮 इन-ऐप मिस्ट्री बॉक्स लॉजिक इंजन
-           ========================================================================== */
         async function evaluateMysteryBoxLimitsAndTimers() {
             try {
                 const mysterySnap = await getDoc(doc(db, "users", userSessionMobile, "mystery_state", "tracker"));
@@ -1116,7 +1234,6 @@
                     document.getElementById('lblMysteryTimer').innerText = "";
                 }
 
-                // एडमिन द्वारा बनाये गए सभी बॉक्सेस की सूची लाइव जनरेट करना
                 const boxesCollectionSnap = await getDocs(collection(db, "announcements", "live_notice", "mystery_boxes"));
                 const boxContainer = document.getElementById('boxContainerArea');
                 boxContainer.innerHTML = "";
@@ -1331,56 +1448,24 @@
             } catch (err) { window.showCustomAlert("त्रुटि", "वित्तीय बहीखाता एंट्री एरर।", "error"); }
         };
 
-        /* ==========================================================================
-           🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे
-           ========================================================================== */
-       // 🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे (FCM Token Registration Matrix)
-// 🔔 वेब पुश नोटिफिकेशन सर्विस गेटवे (FCM Token Registration Engine - Fixed)
-async function initializePushNotificationGateway() {
-    if ('serviceWorker' in navigator) {
-        try {
-            // 1. गिटहब रूट पर रखी सर्विस वर्कर फाइल को रजिस्टर करें
-            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
-                scope: '/' // पूरे ऐप पर नोटिफिकेशन कैच करने के लिए स्कोप सेट करें
-            });
-            console.log('सर्विस वर्कर सफलतापुर्वक पंजीकृत हुआ:', registration);
-
-            // 2. ब्राउज़र से पुश नोटिफिकेशन की अनुमति मांगें
-            const permission = await Notification.requestPermission();
-            
-            if (permission === 'granted' && userSessionMobile) {
-                console.log('नोटिफिकेशन अनुमति प्राप्त हुई!');
-                
-                // 3. [🔥 टोकन फिक्स लॉजिक]: यहाँ getToken के अंदर VAPID Key डालना अनिवार्य है
-                // अपनी असली VAPID Key प्राप्त करने के लिए: Firebase Console -> Project Settings -> Cloud Messaging -> Web Push settings में जाएँ।
-                const currentFcmToken = await getToken(messaging, { 
-                    serviceWorkerRegistration: registration,
-                    vapidKey: "BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk" // 👈 यहाँ अपनी असली Firebase Web Push 'Public Key' (VAPID Key) पेस्ट करें
-                });
-
-                if (currentFcmToken) {
-                    console.log('FCM टोकन सफलतापूर्वक जनरेट हुआ:', currentFcmToken);
-                    
-                    // टोकन को उपभोक्ता के फ़ायरस्टोर डॉक्यूमेंट के अंदर इंजेक्ट करें ताकि एडमिन पैनल से नोटिफिकेशन भेजा जा सके
-                    await setDoc(doc(db, "users", userSessionMobile), { 
-                        fcmToken: currentFcmToken 
-                    }, { merge: true });
-                    
-                } else {
-                    console.log('टोकन जनरेट नहीं हो सका, कृपया ब्राउज़र की सेटिंग्स या VAPID Key चेक करें।');
-                }
-            } else {
-                console.log('उपभोक्ता ने नोटिफिकेशन अनुमति अस्वीकार की या मोबाइल नंबर लोड नहीं था।');
+        async function initializePushNotificationGateway() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted' && userSessionMobile) {
+                        const currentFcmToken = await getToken(messaging, { 
+                            serviceWorkerRegistration: registration,
+                            vapidKey: "BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk"
+                        });
+                        if (currentFcmToken) {
+                            await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken }, { merge: true });
+                        }
+                    }
+                } catch (err) { console.log("Push Gateway Standby"); }
             }
-        } catch (err) { 
-            console.error("पुश नोटिफिकेशन टोकन जेनरेशन विफलता विवरणी: ", err); 
         }
-    }
-}
 
-        /* ==========================================================================
-           👤 प्रोफाइल सेटिंग्स और पिन मॉडिफिकेशन
-           ========================================================================== */
         async function loadProfileScreen() {
             try {
                 const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
@@ -1474,7 +1559,9 @@ async function initializePushNotificationGateway() {
                 
                 const hasReferredBonus = userSnapshot.data().referredBy !== "Direct" ? 5000 : 0;
                 document.getElementById('wReferEarned').innerText = hasReferredBonus + " एसेट्स";
-                document.getElementById('wSpentValue').innerText = "₹ " + (spent / 20).toFixed(2);
+                
+                // ✨ [नया एसेट रिडीम मूल्य कनवर्टर फार्मूला]: spent / 100 = ₹ रुपया वैल्यू फिक्स
+                document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
             } catch (err) { console.error(err); }
         }
 
@@ -1512,6 +1599,7 @@ async function initializePushNotificationGateway() {
 
             document.getElementById('tab-home').classList.add('hidden-screen');
             document.getElementById('tab-mystery').classList.add('hidden-screen');
+            document.getElementById('tab-leaderboard').classList.add('hidden-screen');
             document.getElementById('tab-wallet').classList.add('hidden-screen');
             document.getElementById('tab-profile').classList.add('hidden-screen');
             document.getElementById('tab-social').classList.add('hidden-screen');
@@ -1521,9 +1609,13 @@ async function initializePushNotificationGateway() {
             
             document.getElementById('tab-' + targetTabId).classList.remove('hidden-screen');
 
+            if (targetTabId === 'leaderboard') window.renderLeaderboardStageWise(0); // डिफ़ॉल्ट रूप से स्टेज 1 लोड करें
             if (targetTabId === 'wallet') updateWalletSheet();
             if (targetTabId === 'profile') loadProfileScreen();
         };
+
+        // विंडोज़ मैपिंग ग्लोबल डिक्लेरेशन सिंक
+        window.renderLeaderboardStageWise = renderLeaderboardStageWise;
 
         window.toggleSidebar = (open) => {
             document.getElementById('appSidebar').classList.toggle('open', open);
