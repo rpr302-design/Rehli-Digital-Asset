@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो एडमिन v5.0 Master Console</title>
+    <title>रहली डिजिटल एसेट - प्रो एडमिन v6.0 Master Console</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -98,6 +98,7 @@
         .btn-danger { background: var(--danger); color: white; }
         .btn-action-sm { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; border: none; cursor: pointer; }
         .btn-delete-sm { background: linear-gradient(45deg, #ff4757, #ff6b81); color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; border: none; cursor: pointer; }
+        .stage-grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     </style>
 </head>
 <body>
@@ -105,7 +106,7 @@
     <div id="loginWrapper">
         <div class="login-box">
             <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" width="75" alt="Admin Dashboard">
-            <h3>रहली डिजिटल कोर कंसोल v5.0</h3>
+            <h3>रहली डिजिटल कोर कंसोल v6.0</h3>
             <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px;">Master Control Operations</p>
             <input type="email" id="adminEmail" value="rpr302@gmail.com">
             <input type="password" id="adminPass" value="Sammo*1234" style="margin-top:10px;">
@@ -115,7 +116,7 @@
 
     <div id="adminPanel" style="display: none; width: 100%;">
         <div class="sidebar">
-            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM v5.0</div>
+            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM v6.0</div>
             <div class="sidebar-links">
                 <a class="nav-link active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> मुख्य डैशबोर्ड</a>
                 <a class="nav-link" onclick="showTab('entry')"><i class="fas fa-plus-circle"></i> नया वीडियो एसेट बनाएं</a>
@@ -171,7 +172,10 @@
                         <label>कॉइन एसेट वैल्यू (Value Price)</label>
                         <input type="number" id="assetValue" placeholder="500">
                         
-                        <button class="btn btn-primary" id="genKeyBtn" style="margin-top:25px;" onclick="generateUniqueKey()">क्रिप्टोग्राफिक चाबी जनरेट करें</button>
+                        <div style="display: flex; gap: 10px; margin-top: 25px;">
+                            <button class="btn btn-primary" id="genKeyBtn" onclick="generateUniqueKey('random')">यूनिक रैंडम चाबी बनाएँ</button>
+                            <button class="btn" style="background: linear-gradient(135deg, #fbc531, #f5cd79); color:#000; font-weight:700; flex:1;" id="genDefaultKeyBtn" onclick="generateUniqueKey('default')">🔑 डिफ़ॉल्ट चाबी लॉक करें (94416)</button>
+                        </div>
                         
                         <div id="keyArea" class="hidden" style="margin-top: 25px; padding: 20px; border: 2px dashed var(--secondary); text-align: center; border-radius: 16px; background:rgba(0,0,0,0.15);">
                             <div id="keyDisplay" style="font-size: 36px; font-weight: 800; letter-spacing: 6px; margin: 10px 0; color:var(--gold);">00000</div>
@@ -181,7 +185,7 @@
                 </div>
 
                 <div id="tab-announcement" class="hidden">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px;">
                         
                         <div class="card">
                             <h3><i class="fa-solid fa-bullhorn" style="color:var(--success)"></i> घोषणा / धमाका ऑफर बोर्ड</h3>
@@ -203,43 +207,73 @@
                         </div>
 
                         <div class="card">
-                            <h3><i class="fa-solid fa-box-open" style="color:var(--warning)"></i> जादुई मिस्ट्री बॉक्स कॉन्फ़िगरेशन</h3>
-                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">उपभोक्ता ऐप हेतु पिन लॉक्ड या फ्री और रुपया/एसेट आधारित मल्टीपल मिस्ट्री बॉक्स लाइव जेनरेट करें।</p>
+                            <h3><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> वीर लीडरबोर्ड एग्रीगेटर (1-Read Tech)</h3>
+                            <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:15px;">सातों स्टेज के सिक्कों की संख्या बदलें। रिफ्रेश करने पर सारा डेटा सिंगल डॉक्यूमेंट फ़ील्ड में संपीड़ित होकर अपलोड होगा ताकि उपभोक्ता ऐप का सिर्फ 1 रीड काउंट हो।</p>
                             
-                            <label>मिस्ट्री बॉक्स का नाम (Box Display Name)</label>
-                            <input type="text" id="txtMBoxName" placeholder="उदाहरण: Silver Box / Mega Jackpot">
+                            <div class="stage-grid-inputs">
+                                <div>
+                                    <label>स्टेज 1 (रहली योद्धा)</label>
+                                    <input type="number" id="numStage1" value="100000">
+                                </div>
+                                <div>
+                                    <label>स्टेज 2 (सिक्का रक्षक)</label>
+                                    <input type="number" id="numStage2" value="500000">
+                                </div>
+                                <div>
+                                    <label>स्टेज 3 (डिजिटल नायक)</label>
+                                    <input type="number" id="numStage3" value="1000000">
+                                </div>
+                                <div>
+                                    <label>स्टेज 4 (एसेट महागुरु)</label>
+                                    <input type="number" id="numStage4" value="10000000">
+                                </div>
+                                <div>
+                                    <label>स्टेज 5 (रहस्य खोजी)</label>
+                                    <input type="number" id="numStage5" value="25000000">
+                                </div>
+                                <div>
+                                    <label>स्टेज 6 (तिजोरी विजेता)</label>
+                                    <input type="number" id="numStage6" value="50000000">
+                                </div>
+                            </div>
+                            <label>स्टेज 7 (डिजिटल सम्राट)</label>
+                            <input type="number" id="numStage7" value="100000000">
 
-                            <label>रिवॉर्ड का प्रकार (Reward Type)</label>
+                            <button class="btn btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #fbc531, #e1b12c); color:#000; font-weight:700;" onclick="executeCloudLeaderboardAggregationPipeline()">
+                                <i class="fa-solid fa-arrows-rotate"></i> लीडरबोर्ड मैट्रिक्स डेटा रिफ्रेश करें
+                            </button>
+                        </div>
+
+                        <div class="card" style="grid-column: span 1;">
+                            <h3><i class="fa-solid fa-box-open" style="color:var(--warning)"></i> जादुई मिस्ट्री बॉक्स कॉन्फ़िगरेशन</h3>
+                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">उपभोक्ता ऐप हेतु पिन लॉक्ड या फ्री और रुपया/एसेट आधारित मिस्ट्री बॉक्स लाइव जेनरेट करें।</p>
+                            <label>मिस्ट्री बॉक्स का नाम</label>
+                            <input type="text" id="txtMBoxName" placeholder="उदाहरण: Silver Box">
+                            <label>रिवॉर्ड का प्रकार</label>
                             <select id="selMBoxRewardType">
-                                <option value="assets">डिजिटल सिक्के (Assets Coins Node)</option>
-                                <option value="currency">नकद रुपया खाता (Rupee ₹ Node)</option>
+                                <option value="assets">डिजिटल सिक्के (Assets Coins)</option>
+                                <option value="currency">नकद रुपया खाता (Rupee ₹)</option>
                             </select>
-
-                            <label>पुरस्कार राशि मूल्य (Reward Amount Value)</label>
+                            <label>पुरस्कार राशि मूल्य</label>
                             <input type="number" id="numMBoxRewardValue" placeholder="पुरस्कार मात्रा दर्ज करें">
-
-                            <label>सुरक्षा लॉक व्यवस्था (Security Lock Requirement)</label>
+                            <label>सुरक्षा लॉक व्यवस्था</label>
                             <select id="selMBoxPinRequired" onchange="togglePinConfigFields(this.value)">
-                                <option value="false">🔓 डायरेक्ट खोलें (फ्री / नो पिन कोड)</option>
+                                <option value="false">🔓 डायरेक्ट खोलें (फ्री / नो पिन)</option>
                                 <option value="true">🔒 पिन कोड लॉक अनिवार्य करें</option>
                             </select>
-
                             <div id="mboxPinConfigArea" class="hidden" style="margin-top:10px; background:rgba(0,0,0,0.12); padding:12px; border-radius:10px;">
-                                <label>पिन कोड अंक आकार (PIN Digits Size)</label>
+                                <label>पिन कोड अंक आकार</label>
                                 <select id="selMBoxPinLength">
-                                    <option value="4">4-अंकीय न्यूमेरिकल पिन लॉक</option>
-                                    <option value="6">6-अंकीय न्यूमेरिकल पिन लॉक</option>
+                                    <option value="4">4-अंकीय पिन</option>
+                                    <option value="6">6-अंकीय पिन</option>
                                 </select>
-                                <label>गुप्त बॉक्स अनलॉक पिन (Secret Box Open PIN)</label>
+                                <label>गुप्त बॉक्स अनलॉक पिन</label>
                                 <input type="number" id="numMBoxSecretPin" placeholder="उदाहरण: 1234">
                             </div>
-                            
                             <button class="btn" style="background:var(--accent-gradient); color:white; width:100%; margin-top:20px;" onclick="submitNewCustomMysteryBoxToDatabase()">मिस्ट्री बॉक्स लाइव पब्लिश करें</button>
-                            
                             <hr style="opacity:0.08; margin:20px 0;">
-                            
-                            <h4 style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">सक्रिय मिस्ट्री बॉक्सेस (Live Matrix):</h4>
-                            <div id="liveActiveMysteryBoxesListArea" style="max-height:180px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+                            <h4 style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">सक्रिय मिस्ट्री बॉक्सेस:</h4>
+                            <div id="liveActiveMysteryBoxesListArea" style="max-height:150px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
                                 <div style="font-size:12px; color:var(--text-muted);">कोई बॉक्स वर्तमान में उपलब्ध नहीं है।</div>
                             </div>
                         </div>
@@ -250,20 +284,18 @@
                 <div id="tab-users" class="hidden">
                     <div class="card">
                         <h3>👥 उपभोक्ता एसेट विस्तृत रिपोर्ट शीट (Grand Ledger)</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">यहाँ सभी व्यक्तिगत उपयोगकर्ताओं का कुल एसेट, रेफरल बोनस कमाई, तथा मर्चेंट लेन-देन खर्च का विवरण ग्रैंड टोटल काउंटर्स के साथ दिया गया है।</p>
-                        
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">यहाँ सभी व्यक्तिगत उपयोगकर्ताओं का विवरण ग्रैंड टोटल काउंटर्स के साथ दिया गया है।</p>
                         <div class="stats-grid" style="margin-bottom:20px;">
                             <div class="stat-card" style="background:#132237; padding:15px 20px;">
-                                <div><h4 id="gtUsersBalance" style="font-size:18px; color:var(--success);">0 Assets</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">नेटवर्क कुल उपभोक्ता शेष</p></div>
+                                <div><h4 id="gtUsersBalance" style="font-size:18px; color:var(--success);">0 Assets</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">कुल उपभोक्ता शेष एसेट्स</p></div>
                             </div>
                             <div class="stat-card" style="background:#132237; padding:15px 20px;">
-                                <div><h4 id="gtUsersRupeeBalance" style="font-size:18px; color:#2ecc71;">₹ 0</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">नेटवर्क कुल रुपया नकद शेष</p></div>
+                                <div><h4 id="gtUsersRupeeBalance" style="font-size:18px; color:#2ecc71;">₹ 0</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">कुल रुपया नकद शेष</p></div>
                             </div>
                             <div class="stat-card" style="background:#132237; padding:15px 20px;">
-                                <div><h4 id="gtUsersSpent" style="font-size:18px; color:var(--danger);">0 Spent</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">नेटवर्क कुल उपभोग व्यय</p></div>
+                                <div><h4 id="gtUsersSpent" style="font-size:18px; color:var(--danger);">0 Spent</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">कुल उपभोग व्यय</p></div>
                             </div>
                         </div>
-
                         <table>
                             <thead>
                                 <tr>
@@ -284,13 +316,10 @@
                 <div id="tab-merchants" class="hidden">
                     <div class="card">
                         <h3>🏪 पंजीकृत डिजिटल दुकानदार नेटवर्क बहीखाता</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">व्यापारियों के खातों की संचयी स्थिति और संपूर्ण नेटवर्क पर मर्चेंट होल्डिंग्स का ग्रैंड टोटल काउंटर।</p>
-                        
                         <div style="background:rgba(0, 184, 148, 0.08); padding:15px 20px; border-radius:15px; margin-bottom:20px; border-left:4px solid var(--success); display:inline-block;">
                             <span style="font-size:11px; color:var(--success); font-weight:600; text-transform:uppercase; display:block;">समग्र मर्चेंट एसेट होल्डिंग्स (Grand Total Collected)</span>
                             <h3 id="gtMerchantTotalAssets" style="font-size:24px; font-weight:700; color:white; margin-top:4px;">0 एसेट्स</h3>
                         </div>
-
                         <table>
                             <thead>
                                 <tr>
@@ -298,7 +327,7 @@
                                     <th>मर्चेंट मोबाइल नंबर</th>
                                     <th>न्यूनतम बिल (₹)</th>
                                     <th>ट्रांजैक्शन लिमिट</th>
-                                    <th>कुल प्राप्त एसेट्स (Merchant Balance)</th>
+                                    <th>कुल प्राप्त एसेट्स</th>
                                 </tr>
                             </thead>
                             <tbody id="merchantListBody"></tbody>
@@ -310,7 +339,7 @@
                     <div class="card">
                         <h3>🎯 उपभोक्ता डिजिटल चाबी अर्निंग ट्रैकर लेजर</h3>
                         <div style="display:flex; gap:12px; margin-bottom: 25px; max-width:450px;">
-                            <input type="number" id="searchMobile" placeholder="उपभोक्ता का 10-अंकीय नंबर दर्ज करें" style="margin:0;">
+                            <input type="number" id="searchMobile" placeholder="उपभोक्ता का नंबर दर्ज करें" style="margin:0;">
                             <button class="btn btn-primary" style="width:130px; margin:0;" onclick="trackUserKeys()">खोजबीन करें</button>
                         </div>
                         <div id="trackerResult" class="hidden">
@@ -331,7 +360,6 @@
                             <tbody id="historyListBody"></tbody>
                         </table>
                     </div>
-
                     <div id="keyStatsSection" class="card hidden" style="border-top: 4px solid var(--gold);">
                         <h3><i class="fas fa-chart-pie"></i> चाबी <span id="activeStatKey" style="color:var(--gold);">00000</span> का लाइव क्लेम डिस्ट्रिब्यूशन बहीखाता</h3>
                         <div style="display:flex; gap:30px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 14px;">
@@ -388,7 +416,6 @@
         window.showTab = (tab) => {
             ['dashboard', 'entry', 'announcement', 'users', 'merchants', 'tracking', 'history'].forEach(t => document.getElementById('tab-'+t).classList.add('hidden'));
             document.getElementById('tab-'+tab).classList.remove('hidden');
-            
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             if(event && event.currentTarget) event.currentTarget.classList.add('active');
             
@@ -411,35 +438,23 @@
             document.getElementById('countMerchants').innerText = mSnap.size;
         }
 
-        /* ==========================================================================
-           📊 उपभोक्ता एसेट रिपोर्ट शीट: (ग्रैंड टोटल क्युमुलेटिव इंजन नोड्स सिंक)
-           ========================================================================== */
         async function loadUsersAndCalculateReportSheet() {
             const body = document.getElementById('userListBody');
             body.innerHTML = "<tr><td colspan='7'>सर्वर से वित्तीय डेटा संगृहीत किया जा रहा है...</td></tr>";
-
             try {
                 const usersSnap = await getDocs(collection(db, "users"));
                 const transactionsSnap = await getDocs(collection(db, "merchant_transactions"));
-
                 const spentMap = {};
                 transactionsSnap.forEach(tDoc => {
                     const tData = tDoc.data();
                     const uMob = tData.userMobile;
-                    if (uMob) {
-                        spentMap[uMob] = (spentMap[uMob] || 0) + Number(tData.amount || 0);
-                    }
+                    if (uMob) spentMap[uMob] = (spentMap[uMob] || 0) + Number(tData.amount || 0);
                 });
 
-                let netNetworkAssetBalance = 0;
-                let netNetworkRupeeBalance = 0;
-                let netNetworkSpentExpenses = 0;
-
+                let netNetworkAssetBalance = 0; let netNetworkRupeeBalance = 0; let netNetworkSpentExpenses = 0;
                 body.innerHTML = "";
                 usersSnap.forEach(d => {
-                    const u = d.data();
-                    const uMobileKey = d.id;
-
+                    const u = d.data(); const uMobileKey = d.id;
                     const currentLiquidBalance = Number(u.balance || 0);
                     const currentRupeeBalance = Number(u.rupeeBalance || 0);
                     const totalSpent = Number(spentMap[uMobileKey] || 0);
@@ -459,31 +474,20 @@
                         <td>${u.regDate ? u.regDate.substring(0,10) : '-'}</td>
                     </tr>`;
                 });
-
                 document.getElementById('gtUsersBalance').innerText = netNetworkAssetBalance + " एसेट्स";
                 document.getElementById('gtUsersRupeeBalance').innerText = "₹ " + netNetworkRupeeBalance;
                 document.getElementById('gtUsersSpent').innerText = netNetworkSpentExpenses + " खर्च व्यय";
-
             } catch (err) { body.innerHTML = "<tr><td colspan='7' style='color:red;'>डेटा लोड विफलता!</td></tr>"; }
         }
 
-        /* ==========================================================================
-           🏪 मर्चेंट बहीखाता डेटाबेस लोडर (ग्रैंड टोटल सिंक)
-           ========================================================================== */
         async function loadMerchantsDataEngine() {
             const mBody = document.getElementById('merchantListBody');
             mBody.innerHTML = "<tr><td colspan='5'>दुकानदारों की लाइव बहीखाता रिपोर्ट लोड हो रही है...</td></tr>";
-
             try {
                 const merchantSnap = await getDocs(collection(db, "merchants"));
-                let cumulativeMerchantAssets = 0;
-                mBody.innerHTML = "";
-                
+                let cumulativeMerchantAssets = 0; mBody.innerHTML = "";
                 merchantSnap.forEach(mDoc => {
-                    const m = mDoc.data();
-                    const mBal = Number(m.balance || 0);
-                    cumulativeMerchantAssets += mBal;
-
+                    const m = mDoc.data(); const mBal = Number(m.balance || 0); cumulativeMerchantAssets += mBal;
                     mBody.innerHTML += `<tr>
                         <td><b>${m.shopName || 'डिजिटल शॉप'} 🏪</b></td>
                         <td>+91 ${mDoc.id}</td>
@@ -492,33 +496,21 @@
                         <td style="color:var(--success); font-weight:700;">${mBal} Assets</td>
                     </tr>`;
                 });
-
                 document.getElementById('gtMerchantTotalAssets').innerText = cumulativeMerchantAssets + " एसेट्स";
             } catch (e) { mBody.innerHTML = "<tr><td colspan='5' style='color:red;'>मर्चेंट डेटा त्रुटि!</td></tr>"; }
         }
 
-        /* ==========================================================================
-           📢 एडमिन लाइव ब्रॉडकास्ट एवं घोषणा प्रबंधन नियंत्रण बोर्ड
-           ========================================================================== */
         window.submitLiveAnnouncementToDatabase = async () => {
             const annText = document.getElementById('txtAnnouncementInput').value.trim();
             const annTitle = document.getElementById('txtAnnTitleInput').value.trim();
             const annLink = document.getElementById('txtAnnLinkInput').value.trim();
-
             if (!annText) return alert("कृपया घोषणा संदेश विवरण टाइप करें!");
-
             try {
                 await setDoc(doc(db, "announcements", "live_notice"), {
-                    text: annText,
-                    title: annTitle || "विशेष नोटिफिकेशन",
-                    link: annLink || "",
-                    timestamp: new Date().toISOString()
+                    text: annText, title: annTitle || "विशेष नोटिफिकेशन", link: annLink || "", timestamp: new Date().toISOString()
                 }, { merge: true });
-
-                alert("घोषणा (शीर्षक व लिंक सहित) उपभोक्ताओं के होम स्क्रीन पर लाइव ब्रॉडकास्ट कर दी गई है!");
-                document.getElementById('txtAnnouncementInput').value = "";
-                document.getElementById('txtAnnTitleInput').value = "";
-                document.getElementById('txtAnnLinkInput').value = "";
+                alert("घोषणा होम स्क्रीन पर लाइव ब्रॉडकास्ट कर दी गई है!");
+                document.getElementById('txtAnnouncementInput').value = ""; document.getElementById('txtAnnTitleInput').value = ""; document.getElementById('txtAnnLinkInput').value = "";
                 window.showTab('dashboard');
             } catch (err) { alert("त्रुटि: " + err.message); }
         };
@@ -526,17 +518,77 @@
         window.deleteLiveAnnouncementFromDatabase = async () => {
             if (!confirm("क्या आप वर्तमान लाइव घोषणा/ऑफर को उपभोक्ताओं की स्क्रीन से हटाना चाहते हैं?")) return;
             try {
-                await setDoc(doc(db, "announcements", "live_notice"), {
-                    text: "", title: "", link: ""
-                }, { merge: true });
-                alert("लाइव घोषणा बोर्ड को सफलतापूर्वक साफ़ (Delete) कर दिया गया है!");
-                window.showTab('dashboard');
+                await setDoc(doc(db, "announcements", "live_notice"), { text: "", title: "", link: "" }, { merge: true });
+                alert("लाइव घोषणा बोर्ड साफ़ कर दिया गया है!"); window.showTab('dashboard');
             } catch (e) { alert("डिलीट विफलता!"); }
         };
 
         /* ==========================================================================
-           🔮 मल्टी-कस्टम मिस्ट्री बॉक्स लोडिंग एवं डिलीट ट्रांजैक्शन मॉड्यूल
+           🥇 [नया फीचर]: 1-रीड संपीड़ित क्लाउड लीडरबोर्ड एग्रीगेटर पाइपलाइन इंजन
            ========================================================================== */
+        window.executeCloudLeaderboardAggregationPipeline = async () => {
+            if(!confirm("क्या आप पूरे नेटवर्क का लीडरबोर्ड डेटा संपीड़ित करके 1-रीड मोड पर रिफ्रेश करना चाहते हैं?")) return;
+            
+            try {
+                // एडमिन द्वारा इनपुट फील्ड्स से बदली गयीं सातों स्टेज की सीमाएं पढ़ें
+                const limits = [
+                    Number(document.getElementById('numStage1').value),
+                    Number(document.getElementById('numStage2').value),
+                    Number(document.getElementById('numStage3').value),
+                    Number(document.getElementById('numStage4').value),
+                    Number(document.getElementById('numStage5').value),
+                    Number(document.getElementById('numStage6').value),
+                    Number(document.getElementById('numStage7').value)
+                ];
+
+                // पूर यूज़र्स की लिस्ट फेच करें
+                const usersCollectionSnapshot = await getDocs(collection(db, "users"));
+                let rawUsersArray = [];
+                
+                usersCollectionSnapshot.forEach(uDoc => {
+                    const uData = uDoc.data();
+                    rawUsersArray.push({
+                        name: uData.userName || "नया योद्धा",
+                        balance: Number(uData.balance || 0)
+                    });
+                });
+
+                // सिक्कों के घटते क्रम में सॉर्ट करें
+                rawUsersArray.sort((a, b) => b.balance - a.balance);
+
+                // सातों चरणों का बकेट एरे बनाएं (प्रत्येक में मैक्स 10 रैंक होल्ड करने के लिए)
+                let compressedStagesArray = [[], [], [], [], [], [], []];
+
+                rawUsersArray.forEach(user => {
+                    let assignedStageIndex = -1;
+                    // उच्चतम चरण से नीचे की ओर पात्रता की जांच करें
+                    for (let i = 6; i >= 0; i--) {
+                        if (user.balance >= limits[i]) {
+                            assignedStageIndex = i;
+                            break;
+                        }
+                    }
+
+                    // यदि किसी स्टेज के लिए पात्र है और उस स्टेज में अभी 10 से कम लोग हैं
+                    if (assignedStageIndex !== -1 && compressedStagesArray[assignedStageIndex].length < 10) {
+                        compressedStagesArray[assignedStageIndex].push(user);
+                    }
+                });
+
+                // अब इस पूरे 7-स्टेज के कस्टमाइज़्ड डेटा को सिंगल डॉक्यूमेंट के अंदर कंप्रेस करके सेव करें
+                await setDoc(doc(db, "announcements", "live_notice"), {
+                    leaderboard_matrix: JSON.stringify(compressedStagesArray),
+                    leaderboard_last_sync: new Date().toISOString()
+                }, { merge: true });
+
+                alert("बधाई हो! पूरे नेटवर्क का लीडरबोर्ड 7-स्टेज फ़ॉर्मेट में सफलतापूर्वक संपीड़ित (Compressed) होकर 1-रीड नोड पर अपडेट हो गया है।");
+                window.showTab('dashboard');
+
+            } catch (err) {
+                alert("लीडरबोर्ड पाइपलाइन प्रोसेसिंग एरर: " + err.message);
+            }
+        };
+
         window.togglePinConfigFields = (isRequired) => {
             document.getElementById('mboxPinConfigArea').classList.toggle('hidden', isRequired !== "true");
         };
@@ -548,32 +600,17 @@
             const pinReq = document.getElementById('selMBoxPinRequired').value === "true";
             const pLength = document.getElementById('selMBoxPinLength').value;
             const sPin = document.getElementById('numMBoxSecretPin').value.trim();
-
-            if(!bName || !rVal) return alert("बॉक्स का नाम और पुरस्कार राशि भरना अनिवार्य है!");
-            if(pinReq && !sPin) return alert("पिन लॉक इनेबल होने पर गुप्त कोड सेट करना आवश्यक है!");
-
+            if(!bName || !rVal) return alert("बॉक्स का नाम और पुरस्कार राशि अनिवार्य है!");
+            if(pinReq && !sPin) return alert("पिन लॉक इनेबल होने पर गुप्त कोड आवश्यक है!");
             try {
                 const boxCustomDocId = "BOX_" + Math.floor(1000 + Math.random() * 9000);
                 const customBoxRef = doc(db, "announcements", "live_notice", "mystery_boxes", boxCustomDocId);
-
                 await setDoc(customBoxRef, {
-                    boxName: bName,
-                    rewardType: rType,
-                    rewardValue: Number(rVal),
-                    pinRequired: pinReq,
-                    pinLength: pinReq ? Number(pLength) : 0,
-                    boxPin: pinReq ? Number(sPin) : 0,
-                    createdAt: new Date().toISOString()
+                    boxName: bName, rewardType: rType, rewardValue: Number(rVal), pinRequired: pinReq, pinLength: pinReq ? Number(pLength) : 0, boxPin: pinReq ? Number(sPin) : 0, createdAt: new Date().toISOString()
                 });
-
-                alert("बधाई हो! नया मिस्ट्री बॉक्स लाइव उपभोक्ता ऐप पर जारी कर दिया गया है।");
-                
-                document.getElementById('txtMBoxName').value = "";
-                document.getElementById('numMBoxRewardValue').value = "";
-                document.getElementById('numMBoxSecretPin').value = "";
-                document.getElementById('selMBoxPinRequired').value = "false";
+                alert("नया मिस्ट्री बॉक्स लाइव जारी कर दिया गया है।");
+                document.getElementById('txtMBoxName').value = ""; document.getElementById('numMBoxRewardValue').value = ""; document.getElementById('numMBoxSecretPin').value = ""; document.getElementById('selMBoxPinRequired').value = "false";
                 window.togglePinConfigFields("false");
-                
                 await loadActiveMysteryBoxesInAdminDashboardList();
             } catch (err) { alert("बॉक्स निर्माण विफल: " + err.message); }
         };
@@ -581,71 +618,54 @@
         async function loadActiveMysteryBoxesInAdminDashboardList() {
             const listArea = document.getElementById('liveActiveMysteryBoxesListArea');
             listArea.innerHTML = "<div style='font-size:12px;'>सक्रिय बॉक्स लोड हो रहे हैं...</div>";
-
             try {
                 const boxesSnap = await getDocs(collection(db, "announcements", "live_notice", "mystery_boxes"));
                 listArea.innerHTML = "";
-
                 if(boxesSnap.empty) {
-                    listArea.innerHTML = "<div style='font-size:12px; color:var(--text-muted);'>कोई बॉक्स सक्रिय नहीं है।</div>";
-                    return;
+                    listArea.innerHTML = "<div style='font-size:12px; color:var(--text-muted);'>कोई बॉक्स सक्रिय नहीं है।</div>"; return;
                 }
-
                 boxesSnap.forEach(bDoc => {
-                    const box = bDoc.data();
-                    const unitName = box.rewardType === "currency" ? "₹" : "Coins";
+                    const box = bDoc.data(); const unitName = box.rewardType === "currency" ? "₹" : "Coins";
                     const isSecureLabel = box.pinRequired ? `🔒 PIN: ${box.boxPin}` : "🔓 Open Free";
-
                     listArea.innerHTML += `
                         <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.04); padding:10px 14px; border-radius:10px; font-size:12px; border:1px solid var(--border-color);">
-                            <div>
-                                <b>${box.boxName}</b> (Value: ${unitName} ${box.rewardValue}) <br>
-                                <small style="color:var(--text-muted);">${isSecureLabel}</small>
-                            </div>
+                            <div><b>${box.boxName}</b> (Value: ${unitName} ${box.rewardValue}) <br><small style="color:var(--text-muted);">${isSecureLabel}</small></div>
                             <button class="btn-delete-sm" onclick="executeDeleteMysteryBoxTransaction('${bDoc.id}')"><i class="fa-solid fa-trash-can"></i> हटाएं</button>
-                        </div>
-                    `;
+                        </div>`;
                 });
             } catch (e) { console.error(e); }
         }
 
         window.executeDeleteMysteryBoxTransaction = async (boxDocId) => {
-            if(!confirm("क्या आप इस मिस्ट्री बॉक्स को पूरी तरह उपभोक्ताओं की स्क्रीन से हटाना (Delete) चाहते हैं?")) return;
+            if(!confirm("क्या आप इसे हटाना चाहते हैं?")) return;
             try {
                 await deleteDoc(doc(db, "announcements", "live_notice", "mystery_boxes", boxDocId));
-                alert("बॉक्स सफलतापूर्वक डेटाबेस से डिलीट कर दिया गया है!");
-                await loadActiveMysteryBoxesInAdminDashboardList();
+                alert("बॉक्स डिलीट हुआ!"); await loadActiveMysteryBoxesInAdminDashboardList();
             } catch (err) { alert("डिलीट विफलता!"); }
         };
 
-        // अर्निंग ट्रैकर एवं चाबी इतिहास
         window.trackUserKeys = async () => {
             const searchMobileInput = document.getElementById('searchMobile').value.trim();
             if(searchMobileInput.length !== 10) return alert("10 अंकों का नंबर डालें");
             const body = document.getElementById('trackerListBody');
             body.innerHTML = "<tr><td colspan='3'>डेटाबेस सर्च जारी है...</td></tr>";
             document.getElementById('trackerResult').classList.remove('hidden');
-
             const userSnap = await getDoc(doc(db, "users", searchMobileInput));
             if(!userSnap.exists()) {
-                body.innerHTML = "<tr><td colspan='3' style='color:var(--danger);'>यह नंबर पंजीकृत नहीं है।</td></tr>";
-                return;
+                body.innerHTML = "<tr><td colspan='3' style='color:var(--danger);'>यह नंबर पंजीकृत नहीं है।</td></tr>"; return;
             }
             document.getElementById('trackerInfo').innerText = `यूज़र: ${userSnap.data().userName || 'नया यूजर'} | बैलेंस: ${userSnap.data().balance || 0} Assets`;
-            
             const keysSnap = await getDocs(collection(db, "users", searchMobileInput, "used_keys"));
             body.innerHTML = "";
             keysSnap.forEach(k => {
-                const data = k.data();
-                const derivedKey = data.key || k.id;
+                const data = k.data(); const derivedKey = data.key || k.id;
                 body.innerHTML += `<tr><td><b style="color:var(--gold); font-size:15px;">${derivedKey}</b></td><td style="color:var(--success);">+${data.amount || 0}</td><td>${data.claimedAt ? data.claimedAt.substring(0,16).replace('T',' '):'-'}</td></tr>`;
             });
         };
 
         async function loadHistory() {
             const snap = await getDocs(query(collection(db, "assets"), orderBy("timestamp", "desc")));
-            const body = document.getElementById('historyListBody');
-            body.innerHTML = "";
+            const body = document.getElementById('historyListBody'); body.innerHTML = "";
             snap.forEach(d => {
                 const a = d.data();
                 body.innerHTML += `<tr>
@@ -659,33 +679,25 @@
         }
 
         window.trackKeySpend = async (keyNumber) => {
-            const targetedStringKeyId = String(keyNumber);
-            document.getElementById('activeStatKey').innerText = targetedStringKeyId;
-            const statsList = document.getElementById('keyStatsListBody');
-            statsList.innerHTML = "<tr><td colspan='3'>क्लाउड बहीखाता खंगाला जा रहा है...</td></tr>";
+            const targetedStringKeyId = String(keyNumber); document.getElementById('activeStatKey').innerText = targetedStringKeyId;
+            const statsList = document.getElementById('keyStatsListBody'); statsList.innerHTML = "<tr><td colspan='3'>क्लाउड बहीखाता खंगाला जा रहा है...</td></tr>";
             document.getElementById('keyStatsSection').classList.remove('hidden');
-
             try {
                 const usedKeysQuery = query(collectionGroup(db, "used_keys"), where("key", "==", targetedStringKeyId));
-                const querySnapshot = await getDocs(usedKeysQuery);
-                let totalUsers = 0; let totalCoinsSpent = 0; statsList.innerHTML = "";
-
+                const querySnapshot = await getDocs(usedKeysQuery); let totalUsers = 0; let totalCoinsSpent = 0; statsList.innerHTML = "";
                 if (querySnapshot.empty) {
                     statsList.innerHTML = "<tr><td colspan='3' style='color:var(--warning); text-align:center;'>इस चाबी को अभी तक किसी उपभोक्ता ने क्लेम नहीं किया है।</td></tr>";
-                    document.getElementById('statTotalUsers').innerText = "0"; document.getElementById('statTotalCoins').innerText = "0";
-                    return;
+                    document.getElementById('statTotalUsers').innerText = "0"; document.getElementById('statTotalCoins').innerText = "0"; return;
                 }
-
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data(); totalUsers++; totalCoinsSpent += (data.amount || 0);
-                    const pathSegments = docSnap.ref.path.split('/'); const userMobileNumber = pathSegments[1]; 
+                    const pathSegments = docSnap.ref.path.split('/'); const userMobileNumber = pathSegments[1]; 
                     const claimTime = data.claimedAt ? data.claimedAt.substring(0, 19).replace('T', ' ') : 'N/A';
                     statsList.innerHTML += `<tr><td><b>+91 ${userMobileNumber}</b></td><td style="color:var(--success); font-weight:600;">+${data.amount || 0} क्लेम</td><td>${claimTime}</td></tr>`;
                 });
                 document.getElementById('statTotalUsers').innerText = totalUsers; document.getElementById('statTotalCoins').innerText = totalCoinsSpent;
             } catch (e) {
-                const statsListFallback = document.getElementById('keyStatsListBody');
-                let fbUsers = 0; let fbCoins = 0; statsListFallback.innerHTML = "";
+                const statsListFallback = document.getElementById('keyStatsListBody'); let fbUsers = 0; let fbCoins = 0; statsListFallback.innerHTML = "";
                 const usersCollectionSnap = await getDocs(collection(db, "users"));
                 for(const userDoc of usersCollectionSnap.docs){
                     const checkUsedKeySubDoc = await getDoc(doc(db, "users", userDoc.id, "used_keys", targetedStringKeyId));
@@ -703,24 +715,28 @@
         function checkSavedKeyStatus() {
             const savedKey = localStorage.getItem('pendingAdminKey');
             if (savedKey) {
-                genKey = String(savedKey);
-                document.getElementById('keyDisplay').innerText = genKey;
-                document.getElementById('keyArea').classList.remove('hidden');
-                document.getElementById('genKeyBtn').disabled = true;
-                document.getElementById('genKeyBtn').innerText = "पुरानी चाबी लॉक है";
+                genKey = String(savedKey); document.getElementById('keyDisplay').innerText = genKey; document.getElementById('keyArea').classList.remove('hidden');
+                document.getElementById('genKeyBtn').disabled = true; document.getElementById('genKeyBtn').innerText = "पुरानी चाबी लॉक है";
             }
         }
 
-        window.generateUniqueKey = async () => {
+        // 🔑 [डिफ़ॉल्ट चाबी फिक्स]: 'default' आर्गुमेंट पास होने पर चाबी को '94416' सेट करना
+        window.generateUniqueKey = async (type) => {
             if (localStorage.getItem('pendingAdminKey')) return alert("पहले पेंडिंग चाबी सबमिट करें!");
             const btn = document.getElementById('genKeyBtn'); btn.disabled = true;
-            let isUnique = false, testKey = "";
-            while (!isUnique) {
-                testKey = Math.floor(10000 + Math.random() * 90000).toString();
-                const snap = await getDoc(doc(db, "assets", testKey));
-                if (!snap.exists()) isUnique = true;
+            
+            if (type === 'default') {
+                genKey = "94416";
+            } else {
+                let isUnique = false, testKey = "";
+                while (!isUnique) {
+                    testKey = Math.floor(10000 + Math.random() * 90000).toString();
+                    const snap = await getDoc(doc(db, "assets", testKey));
+                    if (!snap.exists()) isUnique = true;
+                }
+                genKey = String(testKey);
             }
-            genKey = String(testKey);
+
             await setDoc(doc(db, "assets", genKey), { key: genKey, status: "pending_fields", timestamp: new Date().toISOString() });
             localStorage.setItem('pendingAdminKey', genKey);
             document.getElementById('keyDisplay').innerText = genKey; document.getElementById('keyArea').classList.remove('hidden');
@@ -728,18 +744,13 @@
         };
 
         window.submitData = async () => {
-            const title = document.getElementById('videoTitle').value.trim();
-            const url = document.getElementById('videoLink').value.trim();
-            const val = document.getElementById('assetValue').value;
+            const title = document.getElementById('videoTitle').value.trim(); const url = document.getElementById('videoLink').value.trim(); const val = document.getElementById('assetValue').value;
             if (!title || !url || !val) return alert("सभी फील्ड भरना अनिवार्य है!");
-            
             const finalStringKey = String(genKey);
             await setDoc(doc(db, "assets", finalStringKey), {
                 key: finalStringKey, title: title, link: url, value: Number(val), platform: document.getElementById('platform').value, status: "active", timestamp: new Date().toISOString()
             }, { merge: true });
-
-            alert("एसेट क्लाउड पर लाइव सक्रिय कर दिया गया है!");
-            localStorage.removeItem('pendingAdminKey');
+            alert("एसेट क्लाउड पर लाइव सक्रिय कर दिया गया है!"); localStorage.removeItem('pendingAdminKey');
             document.getElementById('videoTitle').value = ""; document.getElementById('videoLink').value = ""; document.getElementById('assetValue').value = "";
             document.getElementById('keyArea').classList.add('hidden');
             const btn = document.getElementById('genKeyBtn'); btn.disabled = false; btn.innerText = "क्रिप्टोग्राफिक चाबी जनरेट करें";
@@ -748,7 +759,6 @@
 
         window.executeDeleteMysteryBoxTransaction = executeDeleteMysteryBoxTransaction;
         window.togglePinConfigFields = togglePinConfigFields;
-
         window.logout = () => signOut(auth);
     </script>
 </body>
