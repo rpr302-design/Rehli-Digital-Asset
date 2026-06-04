@@ -9,8 +9,7 @@
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
-    <style>
-        /* ==========================================================================
+  /* ==========================================================================
            🎨 1. Premium Dark Fintech Theme & Variables
            ========================================================================== */
         :root {
@@ -50,33 +49,31 @@
         }
 
        /* ==========================================================================
-   📱 1. PHONE WRAPPER - इसे खोजें और इससे बदलें (overflow-y चालू किया)
-   ========================================================================== */
-.phone-wrapper {
-    width: 100%;
-    max-width: 420px;
-    height: 100vh;
-    background: linear-gradient(180deg, #090a15 0%, #131529 100%);
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: auto; /* पूरे फ्रेम को स्क्रोल होने की अनुमति दी */
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-    -webkit-overflow-scrolling: touch;
-}
+        📱 1. PHONE WRAPPER - (फिक्स्ड लेआउट स्ट्रक्चर के लिए अपडेटेड)
+       ========================================================================== */
+        .phone-wrapper {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            background: linear-gradient(180deg, #090a15 0%, #131529 100%);
+            position: relative;
+            overflow: hidden; /* यहाँ स्क्रोल बंद किया ताकि हेडर और नेवबार स्थिर रहें */
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
 
-@media (min-height: 700px) and (min-width: 450px) {
-    .phone-wrapper {
-        height: 850px;
-        border-radius: 35px;
-        border: 8px solid #1e213a;
-    }
-}
+        @media (min-height: 700px) and (min-width: 450px) {
+            .phone-wrapper {
+                height: 850px;
+                border-radius: 35px;
+                border: 8px solid #1e213a;
+            }
+        }
         .hidden-screen { display: none !important; }
 
         /* ==========================================================================
-           💎 2. Premium Core UI Kit (Glassmorphism & Shadows)
+            💎 2. Premium Core UI Kit (Glassmorphism & Shadows)
            ========================================================================== */
         .premium-card {
             background: var(--bg-card-glass);
@@ -145,7 +142,7 @@
         }
 
         /* ==========================================================================
-           🔐 3. Authentication Screens Style
+            🔐 3. Authentication Screens Style
            ========================================================================== */
         #authContainer {
             width: 100%; height: 100%;
@@ -164,29 +161,23 @@
         }
 
         /* ==========================================================================
-           🚀 4. WhatsApp-style Dynamic App Header Redesign
+            🚀 4. APP HEADER - हमेशा ऊपर फिक्स रखने के लिए
            ========================================================================== */
-        /* ==========================================================================
-   🚀 4. APP HEADER - हमेशा ऊपर फिक्स रखने के लिए (व्हाट्सएप इफ़ेक्ट के साथ)
-   ========================================================================== */
-.app-header {
-    background: linear-gradient(135deg, #131429 0%, #090a15 100%);
-    border-bottom: 1px solid var(--border-glass);
-    padding: 14px 16px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    
-    /* ये तीन लाइनें इसे हमेशा ऊपर लॉक रखेंगी, चाहे पेज जितना स्क्रोल हो */
-    position: sticky;
-    top: 0;
-    z-index: 9999; 
-    
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-    max-height: 120px;
-}
+        .app-header {
+            background: linear-gradient(135deg, #131429 0%, #090a15 100%);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 14px 16px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            position: relative;
+            top: 0;
+            z-index: 999; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            max-height: 120px;
+            flex-shrink: 0;
+        }
 
-        /* व्हाट्सएप जैसा कोलैप्स इफ़ेक्ट क्लास */
         .app-header.collapsed-header {
             padding: 8px 16px;
             max-height: 60px;
@@ -217,7 +208,6 @@
             transition: all 0.3s ease;
         }
 
-        /* कोलैप्स होने पर तीन लाइन बटन और पिल्स थोड़े छोटे हो जाएंगे */
         .collapsed-header .menu-trigger-btn {
             width: 32px; height: 32px; font-size: 12px;
         }
@@ -240,7 +230,6 @@
             padding: 4px 8px; font-size: 10.5px;
         }
 
-        /* यूजर इन्फो एरिया जो नीचे स्क्रोल करने पर स्मूथली गायब/छोटा होगा */
         .user-intro { 
             margin-top: 12px; 
             display: flex; 
@@ -251,7 +240,6 @@
             transform: translateY(0);
         }
 
-        /* व्हाट्सएप कोलैप्स होने पर यूजर का नाम छिपाने के बजाय केवल छोटा और कॉम्पैक्ट हो जाएगा */
         .collapsed-header .user-intro {
             margin-top: 0;
             position: absolute;
@@ -275,11 +263,11 @@
             transition: all 0.3s ease;
         }
         .collapsed-header .user-intro p {
-            display: none; /* छोटा होने पर फोन नंबर छिप जाएगा */
+            display: none;
         }
 
         /* ==========================================================================
-           📦 5. User Asset Welcome Box Redesign
+            📦 5. User Asset Welcome Box Redesign
            ========================================================================== */
         .asset-welcome-box {
             background: linear-gradient(135deg, #1e1b4b 0%, #111224 100%);
@@ -322,7 +310,7 @@
         }
 
         /* ==========================================================================
-           🏆 6. WhatsApp Chat-style Leaderboard Layer
+            🏆 6. WhatsApp Chat-style Leaderboard Layer
            ========================================================================== */
         .leaderboard-container { background: transparent; padding: 0; border: none; box-shadow: none; }
         .leaderboard-list {
@@ -393,7 +381,7 @@
         }
 
         /* ==========================================================================
-           📡 7. Futuristic QR Scanner Screen
+            📡 7. Futuristic QR Scanner Screen
            ========================================================================== */
         .scanner-futuristic-container { text-align: center; padding: 15px 5px; }
 
@@ -419,15 +407,17 @@
 
         .scanner-instruction-text span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
 
-     /* ==========================================================================
-   🧱 2. APP BODY - इसे खोजें और इससे बदलें (इसका खुद का स्क्रोल बंद किया)
-   ========================================================================== */
-.app-body { 
-    flex: 1; 
-    overflow-y: visible; /* खुद का स्क्रोल बंद करके इसे मुख्य फ्रेम के साथ बहने दिया */
-    padding: 20px; 
-    padding-bottom: 20px; 
-}
+       /* ==========================================================================
+        🧱 2. APP BODY - (केवल इसी हिस्से को स्क्रोल करने के लिए अपडेटेड)
+       ========================================================================== */
+        .app-body { 
+            flex: 1; 
+            overflow-y: auto; /* अब सारा स्क्रॉलिंग का काम केवल ये बॉडी करेगी */
+            padding: 20px; 
+            padding-bottom: 90px; /* नीचे थोड़ा एक्स्ट्रा स्पेस ताकि आखरी कार्ड नेवबार के पीछे न दबे */
+            -webkit-overflow-scrolling: touch;
+        }
+        
         .notice-board {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             border-radius: 18px; padding: 14px; color: white; margin-bottom: 18px;
@@ -446,23 +436,24 @@
         .info-row b { color: white; font-weight: 600; }
 
        /* ==========================================================================
-   ⚓ 3. NAV BAR - इसे खोजें और इससे बदलें (absolute हटाकर सामान्य ब्लॉक बनाया)
-   ========================================================================== */
-.nav-bar {
-    position: relative; /* absolute हटा दिया ताकि यह कंटेंट के नीचे आए */
-    width: 100%; 
-    height: 76px;
-    background: #0d0f1d; 
-    border-top: 1px solid var(--border-glass);
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    z-index: 9000; 
-    padding: 0 16px;
-    margin-top: auto; /* यदि कंटेंट कम हो तो भी यह सबसे नीचे रहेगा */
-    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.7);
-    flex-shrink: 0;
-}
+        ⚓ 3. NAV BAR - (हमेशा नीचे लॉक रखने के लिए absolute किया)
+       ========================================================================== */
+        .nav-bar {
+            position: absolute; /* इसे पूरे मोबाइल स्क्रीन फ्रेम के नीचे लॉक कर दिया */
+            bottom: 0;
+            left: 0;
+            width: 100%; 
+            height: 76px;
+            background: #0d0f1d; 
+            border-top: 1px solid var(--border-glass);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 999; 
+            padding: 0 16px;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.7);
+            flex-shrink: 0;
+        }
 
         .nav-link {
             display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
@@ -511,7 +502,6 @@
             background-size: 200% 100%; animation: skeletonMove 1.5s infinite; border-radius: 16px; margin-bottom: 8px;
         }
         @keyframes skeletonMove { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    </style>
 </head>
 <body>
 
