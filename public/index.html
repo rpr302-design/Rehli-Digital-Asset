@@ -718,7 +718,15 @@
                             <button class="stage-tab" data-amount="₹50k-1L" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
                             <button class="stage-tab" data-amount="₹1L+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
                         </div>
+<!-- ✨ यूजर की अपनी रैंक दिखाने के लिए नया स्टिकी कार्ड -->
+<div id="myPersonalRankCard" class="hidden-screen" style="margin-bottom: 12px; border: 1.5px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12); border-radius: 18px; padding: 12px;">
+    <div style="font-size: 10px; color: var(--accent-purple); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px;">आपकी वर्तमान स्थिति (My Rank)</div>
+    <div id="myRankRowPlaceholder"></div>
+</div>
 
+<div class="leaderboard-list" id="lblBoardItemsContainer">
+    <!-- टॉप 10 लिस्ट यहाँ आएगी -->
+</div>
                         <div class="leaderboard-list" id="lblBoardItemsContainer">
                             <div class="skeleton-row"></div>
                             <div class="skeleton-row"></div>
@@ -1227,17 +1235,19 @@
             } catch (error) { console.error(error); }
         }
 
-        /* ==========================================================================
-           🥇 [फिक्स मॉड्यूल]: सातों बकेट की सही कंडीशन रेंज के आधार पर सॉर्टिंग इंजन
+       /* ==========================================================================
+           🥇 [सुधरा हुआ मॉड्यूल]: 1-Read मोड और 3-घंटे ऑटो-रिफ्रेश सिंक्रोनाइजेशन इंजन
            ========================================================================== */
         async function preFetchAllUsersDataForLeaderboardMatrix() {
             try {
-                // पहले 'live_notice' डॉक्यूमेंट से एडमीन द्वारा पहले से कंप्रेस किया हुआ बंडल डेटा लोड करने की कोशिश करें
+                // 1. क्लाउड से एडमीन द्वारा पहले से कंप्रेस किया हुआ बंडल डेटा लोड करें (सिर्फ 1 Read काउंट होगा)
                 const liveNoticeBundleSnap = await getDoc(doc(db, "announcements", "live_notice"));
+                
                 if (liveNoticeBundleSnap.exists() && liveNoticeBundleSnap.data().leaderboard_matrix) {
                     globalCachedLeaderboardMatrix = JSON.parse(liveNoticeBundleSnap.data().leaderboard_matrix);
+                    console.log("लीडरबोर्ड डेटा सुरक्षित रूप से 1-Read मोड पर सिंक हो गया है।");
                 } else {
-                    // फॉलबैक व्यवस्था: अगर एडमिन पैनल से पाइपलाइन नहीं चली है, तो क्लाइंट-साइड पर लाइव कंडीशन बकेटिंग करें
+                    // फॉलबैक व्यवस्था: अगर एडमिन डॉक्युमेंट खाली है तो ही डेटाबेस से लाइव बकेटिंग करें
                     const allUsersQuerySnapshot = await getDocs(collection(db, "users"));
                     let rawSortedUsers = [];
                     allUsersQuerySnapshot.forEach(uDoc => {
@@ -1249,7 +1259,6 @@
                     });
                     rawSortedUsers.sort((a, b) => b.balance - a.balance);
 
-                    // एडमिन कंसोल v6.0 के बकेट स्लैब के अनुसार सटीक कंडीशंस (0, 1k, 5k, 10k, 25k, 50k, 1L)
                     const limits = [0, 1000, 5000, 10000, 25000, 50000, 100000];
                     globalCachedLeaderboardMatrix = [[], [], [], [], [], [], []];
 
@@ -1267,7 +1276,7 @@
                     });
                 }
 
-                // लीडरबोर्ड टैब एक्टिव होने पर करंट एक्टिव स्टेज को रिफ्रेश करें
+                // लीडरबोर्ड टैब स्क्रीन पर एक्टिव होने पर करंट सिलेक्टेड स्टेज को तुरंत रिफ्रेश करें
                 if(document.getElementById('tab-leaderboard').classList.contains('hidden-screen') === false) {
                     const activeTab = document.querySelector('.stage-tab.active-stage');
                     let currentStageIndex = 0;
@@ -1278,8 +1287,10 @@
                     renderLeaderboardStageWise(currentStageIndex >= 0 ? currentStageIndex : 0);
                 }
 
+                // 🔄 फिक्स: बिना पेज रीलोड किए प्रत्येक 3 घंटे में बैकएंड बफर को स्वतः अपडेट करना
                 if(!currentLeaderboardInterval) {
                     currentLeaderboardInterval = setInterval(async () => {
+                        console.log("3-Hour Refresh Triggered: डेटाबेस रीड्स को सुरक्षित रखते हुए ऑटो-सिंक एक्टिव।");
                         await preFetchAllUsersDataForLeaderboardMatrix();
                     }, 3 * 60 * 60 * 1000); 
                 }
@@ -1287,7 +1298,7 @@
         }
 
         /* ==========================================================================
-           🏆 [फिक्स मॉड्यूल]: चुनी गई स्टेज बकेट के टॉप 10 लीडर्स रेंडर करने का सुधरा पाइपलाइन
+           🏆 [सुधरा हुआ मॉड्यूल]: यूजर हाईलाइटिंग और टॉप/बॉटम स्टिकी रैंक डिस्प्ले पाइपलाइन
            ========================================================================== */
         window.renderLeaderboardStageWise = (stageIndex) => {
             document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
@@ -1300,17 +1311,24 @@
             }
 
             const container = document.getElementById('lblBoardItemsContainer');
+            const myRankCard = document.getElementById('myPersonalRankCard');
+            const myRankPlaceholder = document.getElementById('myRankRowPlaceholder');
+            
             container.innerHTML = "";
+            
+            // डिफ़ॉल्ट रूप से यूजर रैंक कार्ड को छिपाकर रखें (यदि यूजर उस स्टेज में नहीं है तो नहीं दिखेगा)
+            if(myRankCard) myRankCard.classList.add('hidden-screen'); 
 
-            // 🛠️ फिक्स: इंडेक्स स्लाइस करने के बजाय सीधे उस स्टेज बकेट का फ़िल्टर्ड एरे उठाएं
             const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
+            // साइड मेनू से वर्तमान लॉगिन यूजर का नाम प्राप्त करें
+            const currentUserName = document.getElementById('sideMenuUser').innerText.trim();
 
             if(sliceSubList.length === 0) {
                 container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>इस स्टेज की कंडीशन में फिलहाल कोई योद्धा मौजूद नहीं है।</div>";
                 return;
             }
 
-            let rankLoopCounter = 1; // हर स्टेज बकेट के लिए रैंक काउंटर 1 से शुरू होगा
+            let rankLoopCounter = 1;
             sliceSubList.forEach(userItem => {
                 let medalBadgeSelectorClass = "";
                 if(rankLoopCounter === 1) medalBadgeSelectorClass = "rank-1";
@@ -1318,16 +1336,20 @@
                 if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
 
                 const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
+                
+                // 🛠️ फिक्स: चेक करें कि क्या यह लूप वाला ऑब्जेक्ट वर्तमान लॉगिन यूजर का ही है
+                const isMe = (userItem.name.trim() === currentUserName);
+                const myHighlightStyle = isMe ? "border: 1px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12);" : "";
 
-                container.innerHTML += `
-                    <div class="leader-row ${medalBadgeSelectorClass}">
+                const rowHtml = `
+                    <div class="leader-row ${medalBadgeSelectorClass}" style="${myHighlightStyle}">
                         <div class="leader-left">
                             <div class="leader-avatar-wrapper">
                                 <div class="leader-avatar">${firstInitialCharacter}</div>
                                 <div class="rank-badge-pill">${rankLoopCounter}</div>
                             </div>
                             <div class="leader-info">
-                                <h4>${userItem.name}</h4>
+                                <h4>${userItem.name} ${isMe ? '<span style="color:var(--accent-purple); font-size:10px; font-weight:700;">(YOU)</span>' : ''}</h4>
                                 <p>Network Tier Member</p>
                             </div>
                         </div>
@@ -1336,6 +1358,14 @@
                         </div>
                     </div>
                 `;
+
+                // 🛠️ फिक्स: अगर यूजर टॉप 10 लिस्ट के अंदर मिल जाता है, तो उसे सबसे ऊपर स्टिकी कार्ड में भी लाइव दिखाएं
+                if(isMe && myRankCard && myRankPlaceholder) {
+                    myRankPlaceholder.innerHTML = rowHtml;
+                    myRankCard.classList.remove('hidden-screen');
+                }
+
+                container.innerHTML += rowHtml;
                 rankLoopCounter++;
             });
         };
