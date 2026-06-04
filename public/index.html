@@ -51,17 +51,18 @@
        /* ==========================================================================
         📱 1. PHONE WRAPPER - (फिक्स्ड लेआउट स्ट्रक्चर के लिए अपडेटेड)
        ========================================================================== */
-        .phone-wrapper {
-            width: 100%;
-            max-width: 420px;
-            height: 100vh;
-            background: linear-gradient(180deg, #090a15 0%, #131529 100%);
-            position: relative;
-            overflow: hidden; /* यहाँ स्क्रोल बंद किया ताकि हेडर और नेवबार स्थिर रहें */
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-        }
+       .phone-wrapper {
+    width: 100%;
+    max-width: 420px;
+    height: 100vh; /* पुराने ब्राउज़र्स के लिए बैकअप */
+    height: 100dvh; /* 👑 यह क्रोम के एड्रेस बार के हिसाब से हाइट को बिल्कुल परफेक्ट सेट कर देगा */
+    background: linear-gradient(180deg, #090a15 0%, #131529 100%);
+    position: relative;
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+}
 
         @media (min-height: 700px) and (min-width: 450px) {
             .phone-wrapper {
@@ -1795,6 +1796,15 @@
 
         window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
         window.processLogoutRoute = () => { localStorage.clear(); sessionStorage.clear(); location.reload(); };
+        function setAppHeight() {
+        // ब्राउज़र के अंदरूनी हिस्से की असली हाइट निकालकर 1% की वैल्यू सेट करना
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+
+    // पेज लोड होने पर और स्क्रीन रोटेट होने पर हाइट दोबारा सेट करें
+    window.addEventListener('resize', setAppHeight);
+    window.addEventListener('DOMContentLoaded', setAppHeight);
     </script>
 </body>
 </html>
