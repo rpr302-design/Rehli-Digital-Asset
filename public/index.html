@@ -9,501 +9,532 @@
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
  <style>
-  /* ==========================================================================
-           🎨 1. Premium Dark Fintech Theme & Variables
-           ========================================================================== */
-        :root {
-            --bg-main: #090a15;
-            --bg-card-glass: rgba(30, 39, 46, 0.45);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --primary: #6c5ce7;
-            --primary-gradient: linear-gradient(135deg, #4e54c8 0%, #a29bfe 100%);
-            --accent-purple: #a29bfe;
-            --success: #00b894;
-            --success-gradient: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
-            --danger: #ff7675;
-            --light-text: #f5f6fa;
-            --text-muted: #a4b0be;
-            --gold: #fbc531;
-            --gold-glow: 0 0 15px rgba(251, 197, 49, 0.4);
-            --purple-glow: 0 0 20px rgba(108, 92, 231, 0.3);
-            --rupee-color: #2ecc71;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: var(--light-text);
-            overflow: hidden;
-        }
-
-       /* ==========================================================================
-        📱 1. PHONE WRAPPER - (फिक्स्ड लेआउट स्ट्रक्चर के लिए अपडेटेड)
+    /* ==========================================================================
+       🎨 1. Premium Dark Fintech Theme & Variables
        ========================================================================== */
-       .phone-wrapper {
-    width: 100%;
-    max-width: 420px;
-    height: 100vh; /* पुराने ब्राउज़र्स के लिए बैकअप */
-    height: 100dvh; /* 👑 यह क्रोम के एड्रेस बार के हिसाब से हाइट को बिल्कुल परफेक्ट सेट कर देगा */
-    background: linear-gradient(180deg, #090a15 0%, #131529 100%);
-    position: relative;
-    overflow: hidden; 
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-}
+    :root {
+        --bg-main: #090a15;
+        --bg-card-glass: rgba(30, 39, 46, 0.45);
+        --border-glass: rgba(255, 255, 255, 0.08);
+        --primary: #6c5ce7;
+        --primary-gradient: linear-gradient(135deg, #4e54c8 0%, #a29bfe 100%);
+        --accent-purple: #a29bfe;
+        --success: #00b894;
+        --success-gradient: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        --danger: #ff7675;
+        --light-text: #f5f6fa;
+        --text-muted: #a4b0be;
+        --gold: #fbc531;
+        --gold-glow: 0 0 15px rgba(251, 197, 49, 0.4);
+        --purple-glow: 0 0 20px rgba(108, 92, 231, 0.3);
+        --rupee-color: #2ecc71;
+    }
 
-        @media (min-height: 700px) and (min-width: 450px) {
-            .phone-wrapper {
-                height: 850px;
-                border-radius: 35px;
-                border: 8px solid #1e213a;
-            }
-        }
-        .hidden-screen { display: none !important; }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        -webkit-tap-highlight-color: transparent;
+    }
 
-        /* ==========================================================================
-            💎 2. Premium Core UI Kit (Glassmorphism & Shadows)
-           ========================================================================== */
-        .premium-card {
-            background: var(--bg-card-glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glass);
-            border-radius: 20px;
-            padding: 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
+    /* ब्राउज़र की डिफ़ॉल्ट एक्स्ट्रा पैडिंग और मार्जिन को खत्म करने के लिए फिक्स */
+    html, body {
+        width: 100%;
+        height: 100%;
+        height: 100dvh; 
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: var(--bg-main);
+    }
 
-        input[type="number"], input[type="text"], input[type="date"], select {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px 16px;
-            border-radius: 14px;
-            font-size: 14px;
-            color: white;
-            margin-bottom: 16px;
-            outline: none;
-        }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--light-text);
+    }
 
-        .btn-action {
-            width: 100%;
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
-        }
+    /* ==========================================================================
+       📱 2. PHONE WRAPPER - ऊपर और नीचे से परफेक्ट फिटिंग के लिए अपडेटेड
+       ========================================================================== */
+    .phone-wrapper {
+        width: 100%;
+        max-width: 420px;
+        height: 100%;
+        height: 100dvh; /* क्रोम एड्रेस बार के अनुसार परफेक्ट हाइट */
+        background: linear-gradient(180deg, #090a15 0%, #131529 100%);
+        position: absolute; /* मोबाइल पर क्रोम के ऊपरी हिस्से से चिपकाने के लिए */
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        overflow: hidden; 
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+    }
 
-        .alert-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 6, 12, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .alert-card {
-            background: #131529;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 320px;
-            border-radius: 24px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        /* ==========================================================================
-            🔐 3. Authentication Screens Style
-           ========================================================================== */
-        #authContainer {
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at top, #1e1b4b 0%, #090a15 100%);
-            display: flex; flex-direction: column; justify-content: center; padding: 30px; overflow-y: auto;
-        }
-
-        .auth-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
-            padding: 35px 24px;
-            text-align: center;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.4);
-        }
-
-        /* ==========================================================================
-            🚀 4. APP HEADER - हमेशा ऊपर फिक्स रखने के लिए
-           ========================================================================== */
-        .app-header {
-            background: linear-gradient(135deg, #131429 0%, #090a15 100%);
-            border-bottom: 1px solid var(--border-glass);
-            padding: 14px 16px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
+    /* बड़ी स्क्रीन (डेस्कटॉप/टैबलेट) पर यह खूबसूरत फ्रेम के रूप में दिखेगा */
+    @media (min-height: 700px) and (min-width: 450px) {
+        .phone-wrapper {
             position: relative;
-            top: 0;
-            z-index: 999; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-            max-height: 120px;
-            flex-shrink: 0;
+            height: 850px;
+            top: auto;
+            left: auto;
+            transform: none;
+            border-radius: 35px;
+            border: 8px solid #1e213a;
         }
+    }
+    
+    .hidden-screen { display: none !important; }
 
-        .app-header.collapsed-header {
-            padding: 8px 16px;
-            max-height: 60px;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
-
-        .header-top { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .menu-trigger-btn {
-            width: 36px;
-            height: 36px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            cursor: pointer;
-            color: white;
-            transition: all 0.3s ease;
-        }
-
-        .collapsed-header .menu-trigger-btn {
-            width: 32px; height: 32px; font-size: 12px;
-        }
-
-        .wallets-display-pill { display: flex; gap: 6px; align-items: center; }
-
-        .balance-pill {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 5px 10px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s ease;
-        }
-        .collapsed-header .balance-pill {
-            padding: 4px 8px; font-size: 10.5px;
-        }
-
-        .user-intro { 
-            margin-top: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .collapsed-header .user-intro {
-            margin-top: 0;
-            position: absolute;
-            left: 60px;
-            top: 13px;
-            width: calc(100% - 200px);
-        }
-        
-        .user-intro h2 { 
-            font-size: 14px; 
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .collapsed-header .user-intro h2 {
-            font-size: 12px;
-        }
-
-        .user-intro p { 
-            font-size: 10.5px; 
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-        }
-        .collapsed-header .user-intro p {
-            display: none;
-        }
-
-        /* ==========================================================================
-            📦 5. User Asset Welcome Box Redesign
-           ========================================================================== */
-        .asset-welcome-box {
-            background: linear-gradient(135deg, #1e1b4b 0%, #111224 100%);
-            border: 1px solid rgba(108, 92, 231, 0.3);
-            border-radius: 24px;
-            padding: 22px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: var(--purple-glow);
-        }
-
-        .asset-welcome-box span {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .asset-welcome-box h1 {
-            font-size: 30px;
-            font-weight: 800;
-            color: #ffffff;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .asset-welcome-box h1 .asset-symbol {
-            color: var(--gold);
-            font-size: 16px;
-            font-weight: 700;
-            background: rgba(251, 197, 49, 0.1);
-            padding: 2px 6px;
-            border-radius: 8px;
-        }
-
-        /* ==========================================================================
-            🏆 6. WhatsApp Chat-style Leaderboard Layer
-           ========================================================================== */
-        .leaderboard-container { background: transparent; padding: 0; border: none; box-shadow: none; }
-        .leaderboard-list {
-            display: flex; flex-direction: column;
-            background: rgba(20, 22, 41, 0.6); border-radius: 24px; padding: 6px; border: 1px solid var(--border-glass);
-        }
-
-        .leader-row {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 14px; border-radius: 16px; transition: all 0.2s ease; margin-bottom: 2px;
-        }
-
-        .leader-row:hover { background: rgba(255, 255, 255, 0.04); transform: translateX(3px); }
-        .leader-left { display: flex; align-items: center; gap: 14px; }
-        .leader-avatar-wrapper { position: relative; width: 44px; height: 44px; }
-
-        .leader-avatar {
-            width: 100%; height: 100%; border-radius: 50%;
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            display: flex; justify-content: center; align-items: center; font-size: 16px; color: white; border: 2px solid rgba(255,255,255,0.1);
-        }
-
-        .rank-badge-pill {
-            position: absolute; bottom: -2px; right: -2px; width: 18px; height: 18px;
-            border-radius: 50%; background: #4b6584; color: white; font-size: 9px; font-weight: 700;
-            display: flex; justify-content: center; align-items: center; border: 1.5px solid #131529;
-        }
-
-        .rank-1 .leader-avatar { border-color: var(--gold); background: radial-gradient(#d4af37, #8a6f27); box-shadow: var(--gold-glow); }
-        .rank-1 .rank-badge-pill { background: var(--gold); color: black; }
-        .rank-2 .leader-avatar { border-color: #dcdde1; background: radial-gradient(#b8bfc2, #7f8c8d); }
-        .rank-2 .rank-badge-pill { background: #dcdde1; color: black; }
-        .rank-3 .leader-avatar { border-color: #cd7f32; background: radial-gradient(#a05822, #6e3a13); }
-        .rank-3 .rank-badge-pill { background: #cd7f32; color: white; }
-
-        .leader-info h4 { font-size: 13.5px; font-weight: 600; color: #ffffff; }
-        .leader-info p { font-size: 11px; color: var(--text-muted); }
-        .leader-right-value b { font-size: 13.5px; font-weight: 700; color: var(--accent-purple); }
-
-        /* 🏆 STAGE SELECTOR FIX - PHONEPE STYLE COMPACT GRID SHEEPS */
-        .stage-selector {
-            display: flex; gap: 6px; overflow-x: auto; padding: 5px 2px 22px 2px; margin-bottom: 5px;
-            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
-        }
-        .stage-selector::-webkit-scrollbar { display: none; }
-
-        .stage-tab {
-            position: relative; width: 38px; height: 38px; min-width: 38px; border-radius: 11px;
-            background: rgba(255,255,255,0.04); color: var(--text-muted); display: flex; justify-content: center;
-            align-items: center; font-size: 13px; cursor: pointer; border: 1px solid var(--border-glass);
-            transition: all 0.25s ease;
-        }
-
-        .stage-tab::after {
-            content: attr(data-amount);
-            position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%) scale(0.9);
-            background: #131529; color: var(--text-muted); font-size: 9.5px; font-weight: 600;
-            padding: 2px 5px; border-radius: 5px; white-space: nowrap; opacity: 0.6;
-            border: 1px solid rgba(255, 255, 255, 0.05); pointer-events: none;
-        }
-
-        .stage-tab.active-stage {
-            background: var(--primary-gradient); color: white; border-color: var(--accent-purple);
-            box-shadow: var(--purple-glow); transform: translateY(-1px);
-        }
-        .stage-tab.active-stage::after { 
-            opacity: 1; transform: translateX(-50%) scale(1); color: #ffffff; background: var(--primary); border-color: var(--accent-purple);
-        }
-
-        /* ==========================================================================
-            📡 7. Futuristic QR Scanner Screen
-           ========================================================================== */
-        .scanner-futuristic-container { text-align: center; padding: 15px 5px; }
-
-        #qrReaderBox {
-            width: 100%; max-width: 280px; margin: 20px auto; border-radius: 24px; overflow: hidden;
-            background: #05060c; box-shadow: 0 15px 40px rgba(0,0,0,0.5); border: 2px solid rgba(108, 92, 231, 0.4); position: relative;
-        }
-
-        #qrReaderBox::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            border: 2px solid var(--accent-purple); animation: radarPulse 2.5s infinite linear; box-sizing: border-box; pointer-events: none;
-        }
-
-        @keyframes radarPulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.02); opacity: 0.3; border-color: var(--gold); }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        .scanner-instruction-text {
-            font-size: 13.5px; font-weight: 500; color: var(--light-text); margin-top: 24px; padding: 0 15px; line-height: 1.6;
-        }
-
-        .scanner-instruction-text span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
-
-       /* ==========================================================================
-        🧱 2. APP BODY - (केवल इसी हिस्से को स्क्रोल करने के लिए अपडेटेड)
+    /* ==========================================================================
+       💎 3. Premium Core UI Kit (Glassmorphism & Shadows)
        ========================================================================== */
-        .app-body { 
-            flex: 1; 
-            overflow-y: auto; /* अब सारा स्क्रॉलिंग का काम केवल ये बॉडी करेगी */
-            padding: 20px; 
-            padding-bottom: 90px; /* नीचे थोड़ा एक्स्ट्रा स्पेस ताकि आखरी कार्ड नेवबार के पीछे न दबे */
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .notice-board {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            border-radius: 18px; padding: 14px; color: white; margin-bottom: 18px;
-        }
+    .premium-card {
+        background: var(--bg-card-glass);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-glass);
+        border-radius: 20px;
+        padding: 18px;
+        margin-bottom: 18px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
 
-        .video-card {
-            background: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
-            color: white; border-radius: 18px; padding: 16px; margin-bottom: 18px;
-        }
+    input[type="number"], input[type="text"], input[type="date"], select {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 14px 16px;
+        border-radius: 14px;
+        font-size: 14px;
+        color: white;
+        margin-bottom: 16px;
+        outline: none;
+    }
 
-        .info-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13.5px;
-        }
-        .info-row span { color: var(--text-muted); }
-        .info-row b { color: white; font-weight: 600; }
+    .btn-action {
+        width: 100%;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
+    }
 
-       /* ==========================================================================
-        ⚓ 3. NAV BAR - (हमेशा नीचे लॉक रखने के लिए absolute किया)
+    .alert-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(5, 6, 12, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .alert-card {
+        background: #131529;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        max-width: 320px;
+        border-radius: 24px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    /* ==========================================================================
+       🔐 4. Authentication Screens Style
        ========================================================================== */
-        .nav-bar {
-            position: absolute; /* इसे पूरे मोबाइल स्क्रीन फ्रेम के नीचे लॉक कर दिया */
-            bottom: 0;
-            left: 0;
-            width: 100%; 
-            height: 76px;
-            background: #0d0f1d; 
-            border-top: 1px solid var(--border-glass);
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            z-index: 999; 
-            padding: 0 16px;
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.7);
-            flex-shrink: 0;
-        }
+    #authContainer {
+        width: 100%; height: 100%;
+        background: radial-gradient(circle at top, #1e1b4b 0%, #090a15 100%);
+        display: flex; flex-direction: column; justify-content: center; padding: 30px; overflow-y: auto;
+    }
 
-        .nav-link {
-            display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
-            text-decoration: none; font-size: 10px; font-weight: 500; width: 60px; gap: 4px;
-        }
+    .auth-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        padding: 35px 24px;
+        text-align: center;
+        box-shadow: 0 25px 45px rgba(0,0,0,0.4);
+    }
 
-        .nav-link i { font-size: 18px; }
-        .nav-link.active { color: var(--accent-purple); text-shadow: var(--purple-glow); }
+    /* ==========================================================================
+       🚀 5. APP HEADER - स्थिर और सुव्यवस्थित
+       ========================================================================== */
+    .app-header {
+        background: linear-gradient(135deg, #131429 0%, #090a15 100%);
+        border-bottom: 1px solid var(--border-glass);
+        padding: 14px 16px;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        position: relative;
+        top: 0;
+        z-index: 999; 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        max-height: 120px;
+        flex-shrink: 0;
+    }
 
-        .nav-pay-center {
-            position: relative; top: -16px; width: 60px; height: 60px;
-            background: var(--primary-gradient); border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: var(--purple-glow); cursor: pointer;
-            border: 5px solid #090a15;
-        }
-        .nav-pay-center i { color: white; font-size: 20px; }
+    .app-header.collapsed-header {
+        padding: 8px 16px;
+        max-height: 60px;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
 
-        .sidebar-menu {
-            position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
-            background: #0f1124; z-index: 9999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; box-shadow: 25px 0 50px rgba(0,0,0,0.5);
-            border-right: 1px solid var(--border-glass);
-        }
-        .sidebar-menu.open { left: 0; }
-        .sidebar-header { background: rgba(255,255,255,0.02); padding: 35px 24px; text-align: center; border-bottom: 1px solid var(--border-glass); }
-        .sidebar-header .avatar {
-            width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%;
-            margin: 0 auto 12px auto; display: flex; justify-content: center; align-items: center; font-size: 22px; color: white;
-        }
-        .sidebar-links { padding: 15px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; flex: 1; }
-        .sidebar-links a {
-            display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: var(--text-muted);
-            text-decoration: none; font-size: 13.5px; font-weight: 500; border-radius: 12px;
-        }
-        .sidebar-links a:hover, .sidebar-links a.active-link { background: rgba(255,255,255,0.04); color: white; }
-        .sidebar-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 998; }
+    .header-top { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        transition: all 0.3s ease;
+    }
 
-        .social-btn {
-            display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-radius: 14px;
-            margin-bottom: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; border: none; width: 100%;
-        }
+    .menu-trigger-btn {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        color: white;
+        transition: all 0.3s ease;
+    }
 
-        .skeleton-row {
-            height: 60px; width: 100%; background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
-            background-size: 200% 100%; animation: skeletonMove 1.5s infinite; border-radius: 16px; margin-bottom: 8px;
-        }
-        @keyframes skeletonMove { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-      </style>
+    .collapsed-header .menu-trigger-btn {
+        width: 32px; height: 32px; font-size: 12px;
+    }
+
+    .wallets-display-pill { display: flex; gap: 6px; align-items: center; }
+
+    .balance-pill {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.3s ease;
+    }
+    .collapsed-header .balance-pill {
+        padding: 4px 8px; font-size: 10.5px;
+    }
+
+    .user-intro { 
+        margin-top: 12px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .collapsed-header .user-intro {
+        margin-top: 0;
+        position: absolute;
+        left: 60px;
+        top: 13px;
+        width: calc(100% - 200px);
+    }
+    
+    .user-intro h2 { 
+        font-size: 14px; 
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    .collapsed-header .user-intro h2 {
+        font-size: 12px;
+    }
+
+    .user-intro p { 
+        font-size: 10.5px; 
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+    }
+    .collapsed-header .user-intro p {
+        display: none;
+    }
+
+    /* ==========================================================================
+       📦 6. User Asset Welcome Box Redesign
+       ========================================================================== */
+    .asset-welcome-box {
+        background: linear-gradient(135deg, #1e1b4b 0%, #111224 100%);
+        border: 1px solid rgba(108, 92, 231, 0.3);
+        border-radius: 24px;
+        padding: 22px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 20px;
+        box-shadow: var(--purple-glow);
+    }
+
+    .asset-welcome-box span {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text-muted);
+        font-weight: 600;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .asset-welcome-box h1 {
+        font-size: 30px;
+        font-weight: 800;
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .asset-welcome-box h1 .asset-symbol {
+        color: var(--gold);
+        font-size: 16px;
+        font-weight: 700;
+        background: rgba(251, 197, 49, 0.1);
+        padding: 2px 6px;
+        border-radius: 8px;
+    }
+
+    /* ==========================================================================
+       🏆 7. WhatsApp Chat-style Leaderboard Layer
+       ========================================================================== */
+    .leaderboard-container { background: transparent; padding: 0; border: none; box-shadow: none; }
+    .leaderboard-list {
+        display: flex; flex-direction: column;
+        background: rgba(20, 22, 41, 0.6); border-radius: 24px; padding: 6px; border: 1px solid var(--border-glass);
+    }
+
+    .leader-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 12px 14px; border-radius: 16px; transition: all 0.2s ease; margin-bottom: 2px;
+    }
+
+    .leader-row:hover { background: rgba(255, 255, 255, 0.04); transform: translateX(3px); }
+    .leader-left { display: flex; align-items: center; gap: 14px; }
+    .leader-avatar-wrapper { position: relative; width: 44px; height: 44px; }
+
+    .leader-avatar {
+        width: 100%; height: 100%; border-radius: 50%;
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+        display: flex; justify-content: center; align-items: center; font-size: 16px; color: white; border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .rank-badge-pill {
+        position: absolute; bottom: -2px; right: -2px; width: 18px; height: 18px;
+        border-radius: 50%; background: #4b6584; color: white; font-size: 9px; font-weight: 700;
+        display: flex; justify-content: center; align-items: center; border: 1.5px solid #131529;
+    }
+
+    .rank-1 .leader-avatar { border-color: var(--gold); background: radial-gradient(#d4af37, #8a6f27); box-shadow: var(--gold-glow); }
+    .rank-1 .rank-badge-pill { background: var(--gold); color: black; }
+    .rank-2 .leader-avatar { border-color: #dcdde1; background: radial-gradient(#b8bfc2, #7f8c8d); }
+    .rank-2 .rank-badge-pill { background: #dcdde1; color: black; }
+    .rank-3 .leader-avatar { border-color: #cd7f32; background: radial-gradient(#a05822, #6e3a13); }
+    .rank-3 .rank-badge-pill { background: #cd7f32; color: white; }
+
+    .leader-info h4 { font-size: 13.5px; font-weight: 600; color: #ffffff; }
+    .leader-info p { font-size: 11px; color: var(--text-muted); }
+    .leader-right-value b { font-size: 13.5px; font-weight: 700; color: var(--accent-purple); }
+
+    /* 🏆 STAGE SELECTOR FIX - PHONEPE STYLE COMPACT GRID SHEEPS */
+    .stage-selector {
+        display: flex; gap: 6px; overflow-x: auto; padding: 5px 2px 22px 2px; margin-bottom: 5px;
+        scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+    }
+    .stage-selector::-webkit-scrollbar { display: none; }
+
+    .stage-tab {
+        position: relative; width: 38px; height: 38px; min-width: 38px; border-radius: 11px;
+        background: rgba(255,255,255,0.04); color: var(--text-muted); display: flex; justify-content: center;
+        align-items: center; font-size: 13px; cursor: pointer; border: 1px solid var(--border-glass);
+        transition: all 0.25s ease;
+    }
+
+    .stage-tab::after {
+        content: attr(data-amount);
+        position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%) scale(0.9);
+        background: #131529; color: var(--text-muted); font-size: 9.5px; font-weight: 600;
+        padding: 2px 5px; border-radius: 5px; white-space: nowrap; opacity: 0.6;
+        border: 1px solid rgba(255, 255, 255, 0.05); pointer-events: none;
+    }
+
+    .stage-tab.active-stage {
+        background: var(--primary-gradient); color: white; border-color: var(--accent-purple);
+        box-shadow: var(--purple-glow); transform: translateY(-1px);
+    }
+    .stage-tab.active-stage::after { 
+        opacity: 1; transform: translateX(-50%) scale(1); color: #ffffff; background: var(--primary); border-color: var(--accent-purple);
+    }
+
+    /* ==========================================================================
+       📡 8. Futuristic QR Scanner Screen
+       ========================================================================== */
+    .scanner-futuristic-container { text-align: center; padding: 15px 5px; }
+
+    #qrReaderBox {
+        width: 100%; max-width: 280px; margin: 20px auto; border-radius: 24px; overflow: hidden;
+        background: #05060c; box-shadow: 0 15px 40px rgba(0,0,0,0.5); border: 2px solid rgba(108, 92, 231, 0.4); position: relative;
+    }
+
+    #qrReaderBox::after {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        border: 2px solid var(--accent-purple); animation: radarPulse 2.5s infinite linear; box-sizing: border-box; pointer-events: none;
+    }
+
+    @keyframes radarPulse {
+        0% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.02); opacity: 0.3; border-color: var(--gold); }
+        100% { transform: scale(1); opacity: 0.8; }
+    }
+
+    .scanner-instruction-text {
+        font-size: 13.5px; font-weight: 500; color: var(--light-text); margin-top: 24px; padding: 0 15px; line-height: 1.6;
+    }
+
+    .scanner-instruction-text span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
+
+    /* ==========================================================================
+       🧱 9. APP BODY - केवल यही हिस्सा स्वतंत्र रूप से स्क्रोल होगा
+       ========================================================================== */
+    .app-body { 
+        flex: 1; 
+        overflow-y: auto; 
+        padding: 20px; 
+        /* नीचे थोड़ा एक्स्ट्रा स्पेस ताकि आखरी कार्ड नेवबार के पीछे न दबे */
+        padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); 
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .notice-board {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        border-radius: 18px; padding: 14px; color: white; margin-bottom: 18px;
+    }
+
+    .video-card {
+        background: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
+        color: white; border-radius: 18px; padding: 16px; margin-bottom: 18px;
+    }
+
+    .info-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13.5px;
+    }
+    .info-row span { color: var(--text-muted); }
+    .info-row b { color: white; font-weight: 600; }
+
+    /* ==========================================================================
+       ⚓ 10. NAV BAR - मोबाइल जेस्चर और एड्रेस बार से सुरक्षित
+       ========================================================================== */
+    .nav-bar {
+        position: absolute; /* इसे पूरे मोबाइल स्क्रीन फ्रेम के सबसे निचले हिस्से पर लॉक किया */
+        bottom: 0;
+        left: 0;
+        width: 100%; 
+        /* बॉटम पैडिंग सेफ एरिया के बराबर दी ताकि बटन ऊपर रहें और मोबाइल नेविगेशन बार से न टकराएं */
+        height: calc(76px + env(safe-area-inset-bottom, 0px));
+        background: #0d0f1d; 
+        border-top: 1px solid var(--border-glass);
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        z-index: 999; 
+        padding: 0 16px env(safe-area-inset-bottom, 0px) 16px;
+        box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.7);
+        flex-shrink: 0;
+        box-sizing: border-box;
+    }
+
+    .nav-link {
+        display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
+        text-decoration: none; font-size: 10px; font-weight: 500; width: 60px; gap: 4px;
+    }
+
+    .nav-link i { font-size: 18px; }
+    .nav-link.active { color: var(--accent-purple); text-shadow: var(--purple-glow); }
+
+    /* बीच वाले पे (Pay) बटन को भी सेफ एरिया के अनुसार ऊपर शिफ्ट किया */
+    .nav-pay-center {
+        position: relative; 
+        top: calc(-16px - env(safe-area-inset-bottom, 0px) / 2); 
+        width: 60px; 
+        height: 60px;
+        background: var(--primary-gradient); 
+        border-radius: 50%;
+        display: flex; 
+        justify-content: center; 
+        align-items: center;
+        box-shadow: var(--purple-glow); 
+        cursor: pointer;
+        border: 5px solid #090a15;
+    }
+    .nav-pay-center i { color: white; font-size: 20px; }
+
+    /* ==========================================================================
+       📂 11. Sidebar, Overlay & Miscellaneous
+       ========================================================================== */
+    .sidebar-menu {
+        position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
+        background: #0f1124; z-index: 9999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex; flex-direction: column; box-shadow: 25px 0 50px rgba(0,0,0,0.5);
+        border-right: 1px solid var(--border-glass);
+    }
+    .sidebar-menu.open { left: 0; }
+    .sidebar-header { background: rgba(255,255,255,0.02); padding: 35px 24px; text-align: center; border-bottom: 1px solid var(--border-glass); }
+    .sidebar-header .avatar {
+        width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%;
+        margin: 0 auto 12px auto; display: flex; justify-content: center; align-items: center; font-size: 22px; color: white;
+    }
+    .sidebar-links { padding: 15px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; flex: 1; }
+    .sidebar-links a {
+        display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: var(--text-muted);
+        text-decoration: none; font-size: 13.5px; font-weight: 500; border-radius: 12px;
+    }
+    .sidebar-links a:hover, .sidebar-links a.active-link { background: rgba(255,255,255,0.04); color: white; }
+    .sidebar-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 998; }
+
+    .social-btn {
+        display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-radius: 14px;
+        margin-bottom: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; border: none; width: 100%;
+    }
+
+    .skeleton-row {
+        height: 60px; width: 100%; background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+        background-size: 200% 100%; animation: skeletonMove 1.5s infinite; border-radius: 16px; margin-bottom: 8px;
+    }
+    @keyframes skeletonMove { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+</style>
 </head>
 <body>
 
