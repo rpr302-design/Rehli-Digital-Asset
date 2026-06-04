@@ -49,30 +49,27 @@
             overflow: hidden;
         }
 
-/* ==========================================================================
-   📱 1. PHONE WRAPPER - इसे खोजें और इससे बदलें (overflow-y चालू किया)
-   ========================================================================== */
-.phone-wrapper {
-    width: 100%;
-    max-width: 420px;
-    height: 100vh;
-    background: linear-gradient(180deg, #090a15 0%, #131529 100%);
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: auto; /* पूरे फ्रेम को स्क्रोल होने की अनुमति दी */
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-    -webkit-overflow-scrolling: touch;
-}
+        /* 📱 Phone Layout Frame Controls */
+        .phone-wrapper {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            background: linear-gradient(180deg, #090a15 0%, #131529 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
 
-@media (min-height: 700px) and (min-width: 450px) {
-    .phone-wrapper {
-        height: 850px;
-        border-radius: 35px;
-        border: 8px solid #1e213a;
-    }
-}
+        @media (min-height: 700px) and (min-width: 450px) {
+            .phone-wrapper {
+                height: 850px;
+                border-radius: 35px;
+                border: 8px solid #1e213a;
+            }
+        }
+
         .hidden-screen { display: none !important; }
 
         /* ==========================================================================
@@ -412,15 +409,16 @@
 
         .scanner-instruction-text span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
 
-       /* ==========================================================================
-   🧱 2. APP BODY - इसे खोजें और इससे बदलें (इसका खुद का स्क्रोल बंद किया)
-   ========================================================================== */
-.app-body { 
-    flex: 1; 
-    overflow-y: visible; /* खुद का स्क्रोल बंद करके इसे मुख्य फ्रेम के साथ बहने दिया */
-    padding: 20px; 
-    padding-bottom: 20px; 
-}
+        /* ==========================================================================
+           🛠️ 8. Infrastructure Layout Elements - STABLE MOBILE VIEW
+           ========================================================================== */
+        .app-body { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+            padding-bottom: 100px; /* सुरक्षित बॉटम एरिया ताकि कंटेंट दबे नहीं */
+            -webkit-overflow-scrolling: touch; 
+        }
 
         .notice-board {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
@@ -439,27 +437,22 @@
         .info-row span { color: var(--text-muted); }
         .info-row b { color: white; font-weight: 600; }
 
-    /* ==========================================================================
-   ⚓ 2. NAV BAR - इसे खोजें और इससे बदलें (इसे बॉटम में इनसेट लॉक किया गया है)
-   ========================================================================== */
-/* ==========================================================================
-   ⚓ 3. NAV BAR - इसे खोजें और इससे बदलें (absolute हटाकर सामान्य ब्लॉक बनाया)
-   ========================================================================== */
-.nav-bar {
-    position: relative; /* absolute हटा दिया ताकि यह कंटेंट के नीचे आए */
-    width: 100%; 
-    height: 76px;
-    background: #0d0f1d; 
-    border-top: 1px solid var(--border-glass);
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    z-index: 9000; 
-    padding: 0 16px;
-    margin-top: auto; /* यदि कंटेंट कम हो तो भी यह सबसे नीचे रहेगा */
-    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.7);
-    flex-shrink: 0;
-}
+        /* ⚓ NAVIGATION BAR LOCK - स्क्रोल करने पर कभी नहीं छिपेगा (स्थाई रहेगा) */
+        .nav-bar {
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 76px;
+            background: #0d0f1d; 
+            border-top: 1px solid var(--border-glass);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 9000; 
+            padding: 0 16px;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.7);
+        }
 
         .nav-link {
             display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
@@ -913,7 +906,7 @@
             requestAnimationFrame(updateCounter);
         }
 
-       window.addEventListener('DOMContentLoaded', async () => {
+   window.addEventListener('DOMContentLoaded', async () => {
             parseIncomingUrlParametersForAutoReferrals();
             if (userSessionMobile) {
                 renderApplicationShellInterface(true);
@@ -925,24 +918,25 @@
             document.getElementById('inviteAssetLbl').innerText = formatSmartAmount(50000) + " Assets";
         });
 
-       // ==========================================================================
-        // 📜 व्हाट्सएप स्टाइल हेडर कोलैप्स लॉजिक (नए स्क्रोल स्ट्रक्चर के लिए फिक्स)
+        // ==========================================================================
+        // 📜 व्हाट्सएप स्टाइल हेडर कोलैप्स (WhatsApp-style Shrink) लॉजिक
         // ==========================================================================
         setTimeout(() => {
-            const phoneWrapper = document.querySelector('.phone-wrapper');
+            const appBodyContainer = document.querySelector('.app-body');
             const appHeaderBlock = document.querySelector('.app-header');
 
-            if (phoneWrapper && appHeaderBlock) {
-                phoneWrapper.addEventListener('scroll', () => {
-                    // अब स्क्रोल मुख्य फोन रैपर पर डिटेक्ट होगा
-                    if (phoneWrapper.scrollTop > 30) {
+            if (appBodyContainer && appHeaderBlock) {
+                appBodyContainer.addEventListener('scroll', () => {
+                    // यदि यूजर नीचे स्क्रोल करता है (30px से ज़्यादा), तो हेडर छोटा हो जाएगा
+                    if (appBodyContainer.scrollTop > 30) {
                         appHeaderBlock.classList.add('collapsed-header');
                     } else {
+                        // वापस सबसे ऊपर आने पर हेडर बड़ा और सामान्य हो जाएगा
                         appHeaderBlock.classList.remove('collapsed-header');
                     }
                 });
             }
-        }, 1000);
+        }, 1000); // 1 सेकंड का डिले ताकि पूरा DOM और फायरबेस डेटा लोड हो जाए
 
         function parseIncomingUrlParametersForAutoReferrals() {
             const urlParams = new URLSearchParams(window.location.search);
