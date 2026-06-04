@@ -878,7 +878,7 @@
         </div>
     </div>
 
-    <script type="module">
+   <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, limit, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
@@ -902,7 +902,9 @@
         
         let globalDynamicBoxesArray = [];
         let selectedTargetBoxIndexToUnlock = null;
-        let globalCachedLeaderboardUsersList = [];
+        
+        // 🛠️ फिक्स: सातों स्टेज का अलग-अलग कंप्रेस्ड बकेट डेटा होल्ड करने के लिए मैट्रिक्स एरे
+        let globalCachedLeaderboardMatrix = [[], [], [], [], [], [], []];
         let currentLeaderboardInterval = null;
 
         const localCurrentDateISO = new Date().toISOString().substring(0, 10);
@@ -915,7 +917,6 @@
             return parsed.toString();
         }
 
-        // Requirement #3: Smooth Global Counter Animation Trigger Engine
         function animateCounterSequence(targetValue) {
             const element = document.getElementById('animatedAssetCounter');
             if(!element) return;
@@ -939,7 +940,7 @@
             requestAnimationFrame(updateCounter);
         }
 
-   window.addEventListener('DOMContentLoaded', async () => {
+        window.addEventListener('DOMContentLoaded', async () => {
             parseIncomingUrlParametersForAutoReferrals();
             if (userSessionMobile) {
                 renderApplicationShellInterface(true);
@@ -951,19 +952,12 @@
             document.getElementById('inviteAssetLbl').innerText = formatSmartAmount(50000) + " Assets";
         });
 
-        // ==========================================================================
-        // 📜 व्हाट्सएप स्टाइल हेडर कोलैप्स (WhatsApp-style Shrink) लॉजिक
-        // ==========================================================================
-       // ==========================================================================
-        // 📜 व्हाट्सएप स्टाइल हेडर कोलैप्स लॉजिक (नए स्क्रोल स्ट्रक्चर के लिए फिक्स)
-        // ==========================================================================
         setTimeout(() => {
             const phoneWrapper = document.querySelector('.phone-wrapper');
             const appHeaderBlock = document.querySelector('.app-header');
 
             if (phoneWrapper && appHeaderBlock) {
                 phoneWrapper.addEventListener('scroll', () => {
-                    // अब स्क्रोल मुख्य फोन रैपर पर डिटेक्ट होगा
                     if (phoneWrapper.scrollTop > 30) {
                         appHeaderBlock.classList.add('collapsed-header');
                     } else {
@@ -1046,7 +1040,7 @@
                 document.getElementById('loginPinArea').classList.remove('hidden-screen');
                 document.getElementById('forgotPinArea').classList.add('hidden-screen');
                 document.getElementById('authTitle').innerText = "लॉगिन गेटवे / Login Gateway";
-                document.getElementById('authSubtitle').innerText = "आगे बढ़ने के लिए अपना रजिस्टर्ड नंबर और पिन दर्ज करें।";
+                document.getElementById('authSubtitle').innerText = "आगे बढ़ने के लिए अपना रजिस्टर्ड नंबर and पिन दर्ज करें।";
             }
         };
 
@@ -1196,7 +1190,6 @@
                 document.getElementById('dashBalance').innerText = formatSmartAmount(coreUserData.balance || 0);
                 document.getElementById('dashRupeeBalance').innerText = formatSmartAmount(coreUserData.rupeeBalance || 0);
 
-                // Initialize counter animation sequence trigger on dashboard synchronization
                 animateCounterSequence(coreUserData.balance || 0);
 
                 const processedHeaderName = coreUserData.userName || "User";
@@ -1234,36 +1227,68 @@
             } catch (error) { console.error(error); }
         }
 
-        // Requirement #5: Auto Update Engine Initialization Matrix (Every 3 Hours Cycle Loop)
+        /* ==========================================================================
+           🥇 [फिक्स मॉड्यूल]: सातों बकेट की सही कंडीशन रेंज के आधार पर सॉर्टिंग इंजन
+           ========================================================================== */
         async function preFetchAllUsersDataForLeaderboardMatrix() {
             try {
-                const allUsersQuerySnapshot = await getDocs(collection(db, "users"));
-                globalCachedLeaderboardUsersList = [];
-                allUsersQuerySnapshot.forEach(uDoc => {
-                    const data = uDoc.data();
-                    globalCachedLeaderboardUsersList.push({
-                        name: data.userName || "Warrior",
-                        balance: Number(data.balance || 0)
+                // पहले 'live_notice' डॉक्यूमेंट से एडमीन द्वारा पहले से कंप्रेस किया हुआ बंडल डेटा लोड करने की कोशिश करें
+                const liveNoticeBundleSnap = await getDoc(doc(db, "announcements", "live_notice"));
+                if (liveNoticeBundleSnap.exists() && liveNoticeBundleSnap.data().leaderboard_matrix) {
+                    globalCachedLeaderboardMatrix = JSON.parse(liveNoticeBundleSnap.data().leaderboard_matrix);
+                } else {
+                    // फॉलबैक व्यवस्था: अगर एडमिन पैनल से पाइपलाइन नहीं चली है, तो क्लाइंट-साइड पर लाइव कंडीशन बकेटिंग करें
+                    const allUsersQuerySnapshot = await getDocs(collection(db, "users"));
+                    let rawSortedUsers = [];
+                    allUsersQuerySnapshot.forEach(uDoc => {
+                        const data = uDoc.data();
+                        rawSortedUsers.push({
+                            name: data.userName || "Warrior",
+                            balance: Number(data.balance || 0)
+                        });
                     });
-                });
-                globalCachedLeaderboardUsersList.sort((a, b) => b.balance - a.balance);
-                
-                // Switch default stage 0 render safely without reload interference rules
-                if(document.getElementById('tab-leaderboard').classList.contains('hidden-screen') === false) {
-                    renderLeaderboardStageWise(0);
+                    rawSortedUsers.sort((a, b) => b.balance - a.balance);
+
+                    // एडमिन कंसोल v6.0 के बकेट स्लैब के अनुसार सटीक कंडीशंस (0, 1k, 5k, 10k, 25k, 50k, 1L)
+                    const limits = [0, 1000, 5000, 10000, 25000, 50000, 100000];
+                    globalCachedLeaderboardMatrix = [[], [], [], [], [], [], []];
+
+                    rawSortedUsers.forEach(user => {
+                        let assignedStageIndex = -1;
+                        for (let i = 6; i >= 0; i--) {
+                            if (user.balance >= limits[i]) {
+                                assignedStageIndex = i;
+                                break;
+                            }
+                        }
+                        if (assignedStageIndex !== -1 && globalCachedLeaderboardMatrix[assignedStageIndex].length < 10) {
+                            globalCachedLeaderboardMatrix[assignedStageIndex].push(user);
+                        }
+                    });
                 }
 
-                // Set interval mapping structural loop securely once
+                // लीडरबोर्ड टैब एक्टिव होने पर करंट एक्टिव स्टेज को रिफ्रेश करें
+                if(document.getElementById('tab-leaderboard').classList.contains('hidden-screen') === false) {
+                    const activeTab = document.querySelector('.stage-tab.active-stage');
+                    let currentStageIndex = 0;
+                    if(activeTab) {
+                        const tabsArray = Array.from(document.querySelectorAll('.stage-tab'));
+                        currentStageIndex = tabsArray.indexOf(activeTab);
+                    }
+                    renderLeaderboardStageWise(currentStageIndex >= 0 ? currentStageIndex : 0);
+                }
+
                 if(!currentLeaderboardInterval) {
                     currentLeaderboardInterval = setInterval(async () => {
-                        console.log("3 Hour Cycle Loop: Leaderboard sync triggered automatically.");
                         await preFetchAllUsersDataForLeaderboardMatrix();
                     }, 3 * 60 * 60 * 1000); 
                 }
-            } catch(e) { console.error(e); }
+            } catch(e) { console.error("लीडरबोर्ड सिंक्रोनाइजेशन एरर: ", e); }
         }
 
-        // Requirement #4 & #5: Refreshed WhatsApp-style Active Row Render Pipeline
+        /* ==========================================================================
+           🏆 [फिक्स मॉड्यूल]: चुनी गई स्टेज बकेट के टॉप 10 लीडर्स रेंडर करने का सुधरा पाइपलाइन
+           ========================================================================== */
         window.renderLeaderboardStageWise = (stageIndex) => {
             document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
             
@@ -1277,23 +1302,21 @@
             const container = document.getElementById('lblBoardItemsContainer');
             container.innerHTML = "";
 
-            const startRangeIdx = stageIndex * 10;
-            const endRangeIdx = startRangeIdx + 10;
-            const sliceSubList = globalCachedLeaderboardUsersList.slice(startRangeIdx, endRangeIdx);
+            // 🛠️ फिक्स: इंडेक्स स्लाइस करने के बजाय सीधे उस स्टेज बकेट का फ़िल्टर्ड एरे उठाएं
+            const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
 
             if(sliceSubList.length === 0) {
-                container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>इस स्टेज पर फिलहाल कोई लीडर मौजूद नहीं है।</div>";
+                container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>इस स्टेज की कंडीशन में फिलहाल कोई योद्धा मौजूद नहीं है।</div>";
                 return;
             }
 
-            let rankLoopCounter = startRangeIdx + 1;
+            let rankLoopCounter = 1; // हर स्टेज बकेट के लिए रैंक काउंटर 1 से शुरू होगा
             sliceSubList.forEach(userItem => {
                 let medalBadgeSelectorClass = "";
                 if(rankLoopCounter === 1) medalBadgeSelectorClass = "rank-1";
                 if(rankLoopCounter === 2) medalBadgeSelectorClass = "rank-2";
                 if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
 
-                // Generate First Initial for Avatar Placeholder look layer safely
                 const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
 
                 container.innerHTML += `
@@ -1828,14 +1851,12 @@
         window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
         window.processLogoutRoute = () => { localStorage.clear(); sessionStorage.clear(); location.reload(); };
         function setAppHeight() {
-        // ब्राउज़र के अंदरूनी हिस्से की असली हाइट निकालकर 1% की वैल्यू सेट करना
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
 
-    // पेज लोड होने पर और स्क्रीन रोटेट होने पर हाइट दोबारा सेट करें
-    window.addEventListener('resize', setAppHeight);
-    window.addEventListener('DOMContentLoaded', setAppHeight);
+        window.addEventListener('resize', setAppHeight);
+        window.addEventListener('DOMContentLoaded', setAppHeight);
     </script>
 </body>
 </html>
