@@ -559,21 +559,30 @@
         .info-row b { color: white; font-weight: 600; }
 
         /* ⚓ NAVIGATION CORE FIXED - हमेशा मोबाइल स्क्रीन में पूरा और साफ दिखेगा */
-        .nav-bar {
-            position: absolute; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 76px;
-            background: #0d0f1d; 
-            border-top: 1px solid var(--border-glass);
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            z-index: 9000; 
-            padding: 0 16px;
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6); /* प्रीमियम डार्क शैडो इफेक्ट */
-        }
+        /* ⚓ NAVIGATION - स्क्रोल एनिमेटेड इफ़ेक्ट के साथ */
+.nav-bar {
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 76px;
+    background: #0d0f1d; 
+    border-top: 1px solid var(--border-glass);
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    z-index: 9000; 
+    padding: 0 16px;
+    box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6);
+    
+    /* स्मूथ ऊपर-नीचे होने के लिए ट्रांजिशन */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+/* जब यह क्लास जुड़ेगी तो नेविगेशन बार नीचे छिप जाएगा */
+.nav-bar.nav-hidden {
+    transform: translateY(100%);
+}
 
         .nav-link {
             display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
@@ -1040,7 +1049,32 @@
             }
             document.getElementById('inviteAssetLbl').innerText = formatSmartAmount(50000) + " Assets";
         });
+// ==========================================================================
+// 📜 नेविगेशन बार को स्क्रोल के साथ ऊपर-नीचे (Hide/Show) करने का लॉजिक
+// ==========================================================================
+const appBody = document.querySelector('.app-body');
+const navBar = document.querySelector('.nav-bar');
+let lastScrollTop = 0;
 
+if (appBody && navBar) {
+    appBody.addEventListener('scroll', () => {
+        let scrollTop = appBody.scrollTop;
+
+        // अचानक से होने वाले बाउंस इफ़ेक्ट को रोकने के लिए
+        if (scrollTop < 0) scrollTop = 0; 
+
+        // अगर नीचे स्क्रोल कर रहे हैं, तो छुपाओ (Hide)
+        if (scrollTop > lastScrollTop && scrollTop > 50) {
+            navBar.classList.add('nav-hidden');
+        } 
+        // अगर ऊपर स्क्रोल कर रहे हैं, तो दिखाओ (Show)
+        else {
+            navBar.classList.remove('nav-hidden');
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+}
         function parseIncomingUrlParametersForAutoReferrals() {
             const urlParams = new URLSearchParams(window.location.search);
             const refCode = urlParams.get('ref');
