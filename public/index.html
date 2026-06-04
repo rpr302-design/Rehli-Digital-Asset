@@ -3,33 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rehli Digital Asset - Easy Super App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Rehli Digital Asset - Premium Super App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <style>
         /* ==========================================================================
-           🎨 1. Premium Color Theme & Layout
+           🎨 1. Premium Dark Fintech Theme & Variables
            ========================================================================== */
         :root {
-            --primary: #4e54c8;
-            --primary-gradient: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
-            --secondary: #8f94fb;
+            --bg-main: #090a15;
+            --bg-card-glass: rgba(30, 39, 46, 0.45);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --primary: #6c5ce7;
+            --primary-gradient: linear-gradient(135deg, #4e54c8 0%, #a29bfe 100%);
+            --accent-purple: #a29bfe;
             --success: #00b894;
             --success-gradient: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
-            --danger: #d63031;
-            --dark: #2d3436;
-            --dark-card: #1e272e;
-            --light: #f5f6fa;
+            --danger: #ff7675;
+            --light-text: #f5f6fa;
+            --text-muted: #a4b0be;
             --gold: #fbc531;
-            --text-muted: #7f8c8d;
-            --border-color: #edf2f7;
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            --neon-blue: #00d2d3;
+            --gold-glow: 0 0 15px rgba(251, 197, 49, 0.4);
+            --purple-glow: 0 0 20px rgba(108, 92, 231, 0.3);
             --rupee-color: #2ecc71;
-            --leaderboard-bg: #2c3a47;
         }
 
         * {
@@ -41,121 +40,78 @@
         }
 
         body {
-            background-color: #0f1123;
+            background-color: var(--bg-main);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--dark);
+            color: var(--light-text);
+            overflow: hidden;
         }
 
+        /* 📱 Phone Layout Frame Controls - FIXED NAV CONTEXT */
         .phone-wrapper {
             width: 100%;
             max-width: 420px;
             height: 100vh;
-            background: var(--light);
-            position: relative;
+            background: linear-gradient(180deg, #090a15 0%, #131529 100%);
+            position: relative; /* नेविगेशन बार को नीचे रोकने के लिए जरूरी */
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
         }
 
         @media (min-height: 700px) and (min-width: 450px) {
             .phone-wrapper {
                 height: 850px;
                 border-radius: 35px;
-                border: 8px solid #2c3e50;
+                border: 8px solid #1e213a;
             }
         }
 
         .hidden-screen { display: none !important; }
 
-        .alert-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 17, 35, 0.75);
-            backdrop-filter: blur(5px);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        /* ==========================================================================
+           💎 2. Premium Core UI Kit (Glassmorphism & Shadows)
+           ========================================================================== */
+        .premium-card {
+            background: var(--bg-card-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .alert-card {
-            background: white;
-            width: 100%;
-            max-width: 320px;
-            border-radius: 24px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .premium-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
         }
 
-        @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        #alertIcon { font-size: 45px; margin-bottom: 15px; }
-        .alert-card h3 { font-size: 20px; margin-bottom: 8px; color: var(--dark); }
-        .alert-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
-
-        .btn-alert-close {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 12px 35px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 5px 15px rgba(78, 84, 200, 0.4);
-        }
-
-        #authContainer {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #1f1c2c 0%, #928dab 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 30px;
-            overflow-y: auto;
-        }
-
-        .auth-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 28px;
-            padding: 30px 24px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .auth-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
-        .auth-card p { font-size: 13px; opacity: 0.9; margin-bottom: 25px; }
-
+        /* Rounded Form Inputs Architecture */
         input[type="number"], input[type="text"], input[type="date"], select {
             width: 100%;
-            background: white;
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 14px 16px;
             border-radius: 14px;
             font-size: 14px;
-            color: var(--dark);
+            color: white;
             margin-bottom: 16px;
             outline: none;
+            transition: all 0.2s ease;
         }
 
-        #authContainer input { background: rgba(255, 255, 255, 0.9); border: none; }
+        input:focus, select:focus {
+            border-color: var(--accent-purple);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.2);
+        }
 
         .btn-action {
             width: 100%;
@@ -167,321 +123,507 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 6px 18px rgba(78, 84, 200, 0.3);
+            box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
+            transition: all 0.2s ease;
         }
 
+        .btn-action:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* Custom Alert System Overlay */
+        .alert-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 6, 12, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .alert-card {
+            background: #131529;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 320px;
+            border-radius: 24px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* ==========================================================================
+           🔐 3. Authentication Screens Style
+           ========================================================================== */
+        #authContainer {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top, #1e1b4b 0%, #090a15 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 35px 24px;
+            text-align: center;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.4);
+        }
+
+        .auth-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .auth-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 25px; }
+
+        /* ==========================================================================
+           🚀 4. App Shell & Header Redesign
+           ========================================================================== */
         .app-header {
-            background: linear-gradient(135deg, #1e3799 0%, #2e51bb 100%);
-            padding: 12px 16px 14px 16px;
-            color: white;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            position: relative;
+            background: linear-gradient(135deg, #131429 0%, #090a15 100%);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 16px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
         }
 
         .header-top { display: flex; justify-content: space-between; align-items: center; }
 
         .menu-trigger-btn {
-            width: 36px;
-            height: 36px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 16px;
             cursor: pointer;
+            color: white;
         }
 
         .wallets-display-pill { display: flex; gap: 8px; align-items: center; }
 
         .balance-pill {
-            background: rgba(255, 255, 255, 0.16);
-            padding: 5px 10px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 14px;
             font-weight: 700;
             font-size: 12px;
             display: flex;
             align-items: center;
-            gap: 4px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.08);
+            gap: 5px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .user-intro { margin-top: 8px; display: flex; align-items: center; justify-content: space-between; }
-        .user-intro h2 { font-size: 14px; font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; max-width: 180px; }
-        .user-intro p { font-size: 10.5px; opacity: 0.75; }
+        .user-intro { margin-top: 14px; display: flex; align-items: center; justify-content: space-between; }
+        .user-intro h2 { font-size: 15px; font-weight: 600; }
+        .user-intro p { font-size: 11px; color: var(--text-muted); }
 
-        .sidebar-menu {
+        /* ==========================================================================
+           📦 5. User Asset Welcome Box Redesign (Requirement #3)
+           ========================================================================== */
+        .asset-welcome-box {
+            background: linear-gradient(135deg, #1e1b4b 0%, #111224 100%);
+            border: 1px solid rgba(108, 92, 231, 0.3);
+            border-radius: 26px;
+            padding: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 22px;
+            box-shadow: var(--purple-glow);
+        }
+
+        .asset-welcome-box::before {
+            content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 290px;
-            height: 100%;
-            background: #1e213a;
-            z-index: 9999;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .asset-welcome-box span {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .asset-welcome-box h1 {
+            font-size: 34px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .asset-welcome-box h1 .asset-symbol {
+            color: var(--gold);
+            font-size: 18px;
+            font-weight: 700;
+            background: rgba(251, 197, 49, 0.1);
+            padding: 2px 8px;
+            border-radius: 8px;
+            letter-spacing: 0;
+        }
+
+        /* ==========================================================================
+           🏆 6. WhatsApp Chat-style Leaderboard Layer (Requirement #4)
+           ========================================================================== */
+        .leaderboard-container {
+            background: transparent;
+            padding: 0;
+            border: none;
+            box-shadow: none;
+        }
+
+        .leaderboard-list {
             display: flex;
             flex-direction: column;
-            box-shadow: 15px 0 30px rgba(0,0,0,0.25);
+            background: rgba(20, 22, 41, 0.6);
+            border-radius: 24px;
+            padding: 8px;
+            border: 1px solid var(--border-glass);
         }
 
-        .sidebar-menu.open { left: 0; }
-        .sidebar-header { background: linear-gradient(135deg, #2b2e4a 0%, #1e213a 100%); padding: 35px 24px; color: white; text-align: center; }
-
-        .sidebar-header .avatar {
-            width: 65px;
-            height: 65px;
-            background: var(--primary-gradient);
-            border-radius: 50%;
-            margin: 0 auto 12px auto;
+        .leader-row {
             display: flex;
-            justify-content: center;
             align-items: center;
-            font-size: 26px;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+            background: transparent;
         }
 
-        .sidebar-links { padding: 15px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; flex: 1; }
-        .sidebar-links a {
+        .leader-row:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateX(3px);
+        }
+
+        .leader-left {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 14px 16px;
-            color: #b2bec3;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 12px;
         }
 
-        .sidebar-links a:hover, .sidebar-links a.active-link { background: rgba(255, 255, 255, 0.06); color: white; }
-        .sidebar-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Image/Avatar Component Placeholder */
+        .leader-avatar-wrapper {
+            position: relative;
+            width: 46px;
+            height: 46px;
+        }
+
+        .leader-avatar {
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(3px);
-            z-index: 998;
-        }
-
-        .app-body { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 95px; }
-        .app-tab-content { animation: fadeView 0.25s ease-out; }
-        @keyframes fadeView { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-        .earn-box {
-            background: white;
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-        }
-
-        .earn-box h3 { font-size: 16px; font-weight: 600; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-
-        .notice-board {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            border-radius: 20px;
-            padding: 15px;
-            color: white;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 16px rgba(56, 239, 125, 0.25);
-            border-left: 5px solid #fff;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f1f2f6;
-            font-size: 14px;
-        }
-        .info-row:last-child { border-bottom: none; }
-        .info-row span { color: var(--text-muted); }
-        .info-row b { color: var(--dark); font-weight: 600; }
-
-        .video-card {
-            background: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
-            color: white;
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 10px 20px rgba(255, 82, 82, 0.2);
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .btn-play {
-            display: inline-block;
-            background: white;
-            color: #ff5252;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 18px;
-            border-radius: 14px;
-            margin-bottom: 12px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            border: none;
-            width: 100%;
-        }
-
-        .nav-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 76px;
-            background: white;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 9000;
-            padding: 0 12px;
-        }
-
-        .nav-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 10.5px;
-            font-weight: 600;
-            width: 62px;
-            gap: 2px;
-        }
-
-        .nav-link i { font-size: 19px; }
-        .nav-link.active { color: var(--primary); }
-
-        .nav-pay-center {
-            position: relative;
-            top: -16px;
-            width: 62px;
-            height: 62px;
-            background: var(--primary-gradient);
             border-radius: 50%;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 8px 20px rgba(78, 84, 200, 0.35);
-            cursor: pointer;
-            border: 5px solid var(--light);
-        }
-
-        .nav-pay-center i { color: white; font-size: 22px; }
-
-        #qrReaderBox {
-            width: 100%;
-            max-width: 280px;
-            margin: 15px auto;
-            border-radius: 20px;
-            overflow: hidden;
-            background: #000;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 3px solid var(--primary);
-        }
-
-        .mystery-grid-dynamic { display: flex; flex-direction: column; gap: 14px; margin-top: 15px; }
-        .mystery-element-row {
-            background: linear-gradient(135deg, #1e272e 0%, #2c3e50 100%);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 18px;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            font-size: 18px;
             color: white;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .mystery-element-row:active { transform: scale(0.97); }
-        .m-left-box { display: flex; align-items: center; gap: 15px; }
-        .m-left-box i { font-size: 32px; color: var(--gold); }
-        .m-text-details { text-align: left; }
-        .m-text-details h4 { font-size: 14px; font-weight: 600; color: #fff; }
-        .m-text-details p { font-size: 11px; color: #b2bec3; margin-top: 2px; }
-        .m-right-badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.1); color: var(--gold); }
-
-        .inline-input-widget {
-            background: #f8f9fa; border: 1px dashed var(--primary);
-            padding: 15px; border-radius: 16px; margin-top: 12px; text-align: left;
+            border: 2px solid rgba(255,255,255,0.1);
         }
 
-        /* 🏆 लीडरबोर्ड न्यू मॉडर्न 7 स्टेज डिज़ाइन */
+        /* Rank Badge Style Overlaying WhatsApp Layout */
+        .rank-badge-pill {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4b6584;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1.5px solid #131529;
+        }
+
+        .rank-1 .leader-avatar { border-color: var(--gold); background: radial-gradient(#d4af37, #8a6f27); box-shadow: var(--gold-glow); }
+        .rank-1 .rank-badge-pill { background: var(--gold); color: black; }
+
+        .rank-2 .leader-avatar { border-color: #dcdde1; background: radial-gradient(#b8bfc2, #7f8c8d); }
+        .rank-2 .rank-badge-pill { background: #dcdde1; color: black; }
+
+        .rank-3 .leader-avatar { border-color: #cd7f32; background: radial-gradient(#a05822, #6e3a13); }
+        .rank-3 .rank-badge-pill { background: #cd7f32; color: white; }
+
+        .leader-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .leader-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .leader-right-value {
+            text-align: right;
+        }
+
+        .leader-right-value b {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-purple);
+        }
+
+        /* 🏆 STAGE SELECTOR FIX - PHONEPE STYLE COMPACT GRID SHEEPS */
         .stage-selector {
-            display: flex; gap: 10px; overflow-x: auto; padding: 10px 5px 15px 5px; margin-bottom: 15px;
-            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
-            justify-content: flex-start;
+            display: flex; 
+            gap: 6px; 
+            overflow-x: auto; 
+            padding: 5px 2px 22px 2px; 
+            margin-bottom: 5px;
+            scroll-behavior: smooth; 
+            -webkit-overflow-scrolling: touch;
         }
         .stage-selector::-webkit-scrollbar { display: none; }
 
         .stage-tab {
-            position: relative; width: 50px; height: 50px; min-width: 50px; border-radius: 50%;
-            background: #ffffff; color: var(--dark); display: flex; justify-content: center;
-            align-items: center; font-size: 16px; cursor: pointer; border: 2px solid #e2e8f0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; 
+            width: 40px;          /* PhonePe जैसा छोटा और यूनिक आकार किया */
+            height: 40px; 
+            min-width: 40px; 
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04); 
+            color: var(--text-muted); 
+            display: flex; 
+            justify-content: center;
+            align-items: center; 
+            font-size: 14px; 
+            cursor: pointer; 
+            border: 1px solid var(--border-glass);
+            transition: all 0.25s ease;
         }
-        
-        /* स्टेज की राशि दिखाने वाला सुंदर तैरता हुआ टैग */
+
+        /* तैरते हुए टेक्स्ट (अक्षर) का साइज फिक्स और स्पष्ट किया ताकि कटे नहीं */
         .stage-tab::after {
             content: attr(data-amount);
-            position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%) scale(0.8);
-            background: #2d3436; color: #fff; font-size: 9px; font-weight: 700;
-            padding: 2px 6px; border-radius: 6px; white-space: nowrap; opacity: 0.7;
+            position: absolute; 
+            bottom: -22px; 
+            left: 50%; 
+            transform: translateX(-50%) scale(0.9);
+            background: #131529; 
+            color: var(--text-muted); 
+            font-size: 10px;      /* फॉन्ट साइज को स्पष्ट और सटीक किया */
+            font-weight: 600;
+            padding: 2px 6px; 
+            border-radius: 6px; 
+            white-space: nowrap; 
+            opacity: 0.6;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.2s ease;
+            pointer-events: none;
         }
 
         .stage-tab.active-stage {
-            background: linear-gradient(135deg, #00d2d3 0%, #4e54c8 100%); color: white; border-color: var(--gold);
-            box-shadow: 0 6px 15px rgba(78,84,200,0.4); transform: scale(1.1) translateY(-2px);
+            background: var(--primary-gradient); 
+            color: white; 
+            border-color: var(--accent-purple);
+            box-shadow: var(--purple-glow); 
+            transform: translateY(-1px);
         }
-        .stage-tab.active-stage::after {
-            background: var(--gold); color: #000; opacity: 1; transform: translateX(-50%) scale(1);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        .stage-tab.active-stage::after { 
+            opacity: 1; 
+            transform: translateX(-50%) scale(1); 
+            color: #ffffff;
+            background: var(--primary);
+            border-color: var(--accent-purple);
         }
 
-        .leaderboard-list { display: flex; flex-direction: column; gap: 10px; }
-        .leader-row {
-            background: white; padding: 12px 16px; border-radius: 16px;
-            display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02); border: 1px solid #edf2f7;
+        /* ==========================================================================
+           📡 7. Futuristic QR Scanner Screen (Requirement #6)
+           ========================================================================== */
+        .scanner-futuristic-container {
+            text-align: center;
+            padding: 15px 5px;
         }
-        .leader-left { display: flex; align-items: center; gap: 12px; }
-        .rank-number {
-            width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
-            display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: 700;
-        }
-        .rank-1 { background: #fbc531; color: #fff; }
-        .rank-2 { background: #dcdde1; color: #000; }
-        .rank-3 { background: #e15f41; color: #fff; }
 
-        .gift-box-container {
-            background: radial-gradient(circle, #ff7675 0%, #d63031 100%);
-            border-radius: 24px; padding: 25px; text-align: center; color: white;
-            box-shadow: 0 15px 30px rgba(214, 48, 49, 0.4); margin-bottom: 20px;
-            animation: pulseGift 2s infinite;
+        #qrReaderBox {
+            width: 100%;
+            max-width: 280px;
+            margin: 20px auto;
+            border-radius: 24px;
+            overflow: hidden;
+            background: #05060c;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            border: 2px solid rgba(108, 92, 231, 0.4);
+            position: relative;
         }
-        @keyframes pulseGift {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); box-shadow: 0 20px 40px rgba(214, 48, 49, 0.6); }
-            100% { transform: scale(1); }
+
+        /* Scanner Frame Neon Overlay Effect */
+        #qrReaderBox::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: 2px solid var(--accent-purple);
+            animation: radarPulse 2.5s infinite linear;
+            box-sizing: border-box;
+            pointer-events: none;
         }
+
+        @keyframes radarPulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.02); opacity: 0.3; border-color: var(--gold); }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .scanner-instruction-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--light-text);
+            margin-top: 24px;
+            padding: 0 15px;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .scanner-instruction-text span {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ==========================================================================
+           🛠️ 8. Infrastructure Layout Elements - FIXED FOR MOBILE VIEW
+           ========================================================================== */
+        .app-body { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+            padding-bottom: 100px; /* एक्स्ट्रा बॉटम पैडिंग दी ताकि स्क्रोल करने पर कंटेंट नेविगेशन के पीछे न दबे */
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        .app-tab-content { animation: fadeView 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes fadeView { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Notice & Promo Cards Extensions */
+        .notice-board {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 18px; padding: 14px; color: white; margin-bottom: 18px;
+            box-shadow: 0 8px 20px rgba(56, 239, 125, 0.2);
+        }
+
+        .video-card {
+            background: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
+            color: white; border-radius: 18px; padding: 16px; margin-bottom: 18px;
+        }
+
+        .info-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13.5px;
+        }
+        .info-row span { color: var(--text-muted); }
+        .info-row b { color: white; font-weight: 600; }
+
+        /* ⚓ NAVIGATION CORE FIXED - हमेशा मोबाइल स्क्रीन में पूरा और साफ दिखेगा */
+        .nav-bar {
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 76px;
+            background: #0d0f1d; 
+            border-top: 1px solid var(--border-glass);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 9000; 
+            padding: 0 16px;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6); /* प्रीमियम डार्क शैडो इफेक्ट */
+        }
+
+        .nav-link {
+            display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
+            text-decoration: none; font-size: 10px; font-weight: 500; width: 60px; gap: 4px; transition: all 0.2s;
+        }
+
+        .nav-link i { font-size: 18px; }
+        .nav-link.active { color: var(--accent-purple); text-shadow: var(--purple-glow); }
+
+        .nav-pay-center {
+            position: relative; top: -16px; width: 60px; height: 60px;
+            background: var(--primary-gradient); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: var(--purple-glow); cursor: pointer;
+            border: 5px solid #090a15; /* ओरिजिनल डार्क बैकग्राउंड मैचिंग बॉर्डर */
+        }
+        .nav-pay-center i { color: white; font-size: 20px; }
+
+        /* Sidebar Control Matrix */
+        .sidebar-menu {
+            position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
+            background: #0f1124; z-index: 9999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; box-shadow: 25px 0 50px rgba(0,0,0,0.5);
+            border-right: 1px solid var(--border-glass);
+        }
+        .sidebar-menu.open { left: 0; }
+        .sidebar-header { background: rgba(255,255,255,0.02); padding: 35px 24px; text-align: center; border-bottom: 1px solid var(--border-glass); }
+        .sidebar-header .avatar {
+            width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%;
+            margin: 0 auto 12px auto; display: flex; justify-content: center; align-items: center; font-size: 22px; color: white;
+        }
+        .sidebar-links { padding: 15px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; flex: 1; }
+        .sidebar-links a {
+            display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: var(--text-muted);
+            text-decoration: none; font-size: 13.5px; font-weight: 500; border-radius: 12px;
+        }
+        .sidebar-links a:hover, .sidebar-links a.active-link { background: rgba(255,255,255,0.04); color: white; }
+        .sidebar-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 998; }
+
+        .social-btn {
+            display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-radius: 14px;
+            margin-bottom: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; border: none; width: 100%;
+        }
+
+        /* Skeleton Loading Effect Matrix Component */
+        .skeleton-row {
+            height: 60px; width: 100%; background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+            background-size: 200% 100%; animation: skeletonMove 1.5s infinite; border-radius: 16px; margin-bottom: 8px;
+        }
+        @keyframes skeletonMove { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body>
@@ -490,38 +632,38 @@
 
         <div id="customAlert" class="alert-overlay hidden-screen">
             <div class="alert-card">
-                <div id="alertIcon">🎁</div>
-                <h3 id="alertTitle">Status</h3>
-                <p id="alertMsg">Loading...</p>
-                <button class="btn-alert-close" onclick="closeAlert()">OK</button>
+                <div id="alertIcon" style="font-size: 45px; margin-bottom: 12px;">🎁</div>
+                <h3 id="alertTitle" style="font-size: 19px; margin-bottom: 8px;">Status</h3>
+                <p id="alertMsg" style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Loading...</p>
+                <button class="btn-alert-close btn-action" onclick="closeAlert()">OK</button>
             </div>
         </div>
 
         <div id="authContainer">
             <div class="auth-card">
                 <div id="authBrand" style="margin-bottom:20px;">
-                    <i class="fa-solid fa-shield-halved" style="font-size:50px; color:var(--neon-blue);"></i>
+                    <i class="fa-solid fa-shield-halved" style="font-size:48px; color:var(--accent-purple); filter: drop-shadow(var(--purple-glow));"></i>
                 </div>
                 
                 <div id="autoReferralGiftSection" class="hidden-screen">
-                    <div class="gift-box-container">
-                        <i class="fa-solid fa-box-open" style="font-size: 60px; color: var(--gold); margin-bottom: 15px; display: block;"></i>
-                        <h2>Exclusive Invite Gift! 🎉</h2>
-                        <h1 style="font-size: 32px; color: var(--gold); margin: 5px 0; font-weight: 800;" id="inviteAssetLbl">50k Assets</h1>
-                        <h2 style="font-size: 26px; color: #2ecc71; margin-bottom: 15px; font-weight: 700;">+ ₹500 Cash</h2>
-                        <p style="font-size: 12px; opacity: 0.95;">बधाई हो! अकाउंट चालू होते ही दोनों इनाम आपके वॉलेट में तुरंत डाल दिए जाएंगे।</p>
+                    <div style="background: radial-gradient(circle, #ff7675 0%, #d63031 100%); border-radius: 22px; padding: 25px; text-align: center; color: white; box-shadow: 0 12px 30px rgba(214, 48, 49, 0.4); margin-bottom: 20px;">
+                        <i class="fa-solid fa-box-open" style="font-size: 55px; color: var(--gold); margin-bottom: 12px; display: block;"></i>
+                        <h2 style="font-size: 20px;">Exclusive Invite Gift! 🎉</h2>
+                        <h1 style="font-size: 30px; color: var(--gold); margin: 5px 0; font-weight: 800;" id="inviteAssetLbl">50k Assets</h1>
+                        <h2 style="font-size: 24px; color: #2ecc71; margin-bottom: 12px; font-weight: 700;">+ ₹500 Cash</h2>
+                        <p style="font-size: 12px; opacity: 0.9;">बधाई हो! अकाउंट चालू होते ही दोनों इनाम आपके वॉलेट में ट्रांसफर कर दिए जाएंगे।</p>
                     </div>
-                    <button class="btn-action" style="background: linear-gradient(135deg, #fbc531, #f5cd79); color: #000;" onclick="proceedToAutoReferralMobileStep()">आगे बढ़ें / Proceed Next →</button>
+                    <button class="btn-action" style="background: linear-gradient(135deg, #fbc531, #f5cd79); color: #000; font-weight:700;" onclick="proceedToAutoReferralMobileStep()">आगे बढ़ें / Proceed Next →</button>
                 </div>
 
                 <div id="keySection">
                     <h2>Rehli Digital Asset</h2>
-                    <p style="margin-bottom: 15px; color: #f5f6fa;">वीडियो में मिला 5-अंकों का गुप्त कोड (Key) यहाँ डालें:</p>
-                    <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);" style="text-align: center; font-size: 18px; letter-spacing: 5px;">
+                    <p style="margin-bottom: 20px;">वीडियो में मिला 5-अंकों का गुप्त कोड (Key) यहाँ डालें:</p>
+                    <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);" style="text-align: center; font-size: 20px; letter-spacing: 6px; font-weight:700;">
                     <button class="btn-action" onclick="verifyKey()">कोड चेक करें / Verify Key</button>
                     
-                    <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 20px;">
-                        <button onclick="toggleAuthRoute('login')" style="background:transparent; border:1px solid rgba(255,255,255,0.6); color:white; padding:10px 20px; border-radius:12px; font-size:13px; cursor:pointer; width:100%;">
+                    <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;">
+                        <button onclick="toggleAuthRoute('login')" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:white; padding:12px 20px; border-radius:14px; font-size:12.5px; cursor:pointer; width:100%;">
                             पुराना अकाउंट है? यहाँ से लॉगिन करें (Login)
                         </button>
                     </div>
@@ -529,28 +671,28 @@
 
                 <div id="rewardSection" class="hidden-screen">
                     <h3 id="authTitle" style="font-size:20px; margin-bottom:6px;">Verification</h3>
-                    <p id="authSubtitle" style="margin-bottom:20px;">अकाउंट सुरक्षित करने के लिए अपना नंबर जोड़ें।</p>
+                    <p id="authSubtitle" style="margin-bottom:20px;">अकाउंट सुरक्षित करने के लिए अपना नंबर जोड़ें।</p>
                     
-                    <input type="text" id="userReferralInput" placeholder="👥 No referral code attached" readonly style="background:rgba(255,255,255,0.15); color:white; display:none; text-align:center;">
+                    <input type="text" id="userReferralInput" placeholder="👥 No referral code attached" readonly style="background:rgba(255,255,255,0.05); color:white; display:none; text-align:center;">
                     <input type="number" id="userMobile" placeholder="10-अंकों का मोबाइल नंबर (Mobile)" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
                     
                     <div id="loginPinArea" class="hidden-screen" style="margin-top:4px;">
                         <input type="number" id="loginSecurityPin" placeholder="अपना 4-अंकों का PIN डालें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc;">
-                        <p onclick="showForgotPinGateway()" style="text-align:right; color:var(--neon-blue); font-size:12px; margin-top:-8px; margin-bottom:15px; cursor:pointer;">
+                        <p onclick="showForgotPinGateway()" style="text-align:right; color:var(--accent-purple); font-size:12px; margin-top:-8px; margin-bottom:15px; cursor:pointer;">
                             PIN भूल गए? (Forgot PIN)
                         </p>
                     </div>
 
-                    <div id="forgotPinArea" class="hidden-screen" style="background:rgba(0,0,0,0.2); padding:15px; border-radius:14px; margin-bottom:16px; text-align:left;">
-                        <h5 style="color:var(--gold); margin-bottom:8px; font-size:13px;"><i class="fa-solid fa-key"></i> पिन रीसेट करें (Reset PIN):</h5>
-                        <input type="text" id="forgotName" placeholder="प्रोफाइल में लिखा पूरा नाम" style="padding:8px; margin-bottom:8px; font-size:12px;">
-                        <input type="date" id="forgotDOB" style="padding:8px; margin-bottom:10px; font-size:12px;">
-                        <input type="number" id="forgotNewPin" placeholder="नया 4-अंकों का PIN बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="padding:8px; margin-bottom:10px; font-size:12px;">
-                        <button class="btn-action" onclick="processForgotPinRecovery()" style="padding:8px; font-size:12px; background:var(--success-gradient);">पिन बदलें / Reset PIN</button>
+                    <div id="forgotPinArea" class="hidden-screen" style="background:rgba(0,0,0,0.2); padding:15px; border-radius:16px; margin-bottom:16px; text-align:left; border:1px solid rgba(255,255,255,0.05);">
+                        <h5 style="color:var(--gold); margin-bottom:10px; font-size:13px;"><i class="fa-solid fa-key"></i> पिन रीसेट करें (Reset PIN):</h5>
+                        <input type="text" id="forgotName" placeholder="प्रोफाइल में लिखा पूरा नाम" style="padding:10px; margin-bottom:8px; font-size:12px;">
+                        <input type="date" id="forgotDOB" style="padding:10px; margin-bottom:10px; font-size:12px;">
+                        <input type="number" id="forgotNewPin" placeholder="नया 4-अंकों का PIN बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="padding:10px; margin-bottom:10px; font-size:12px;">
+                        <button class="btn-action" onclick="processForgotPinRecovery()" style="padding:10px; font-size:12px; background:var(--success-gradient);">पिन बदलें / Reset PIN</button>
                     </div>
 
                     <button class="btn-action" id="btnFinalAuth" style="background:var(--success-gradient);" onclick="handleFinalAuthRoute()">ऐप के अंदर जाएँ / Enter Dashboard</button>
-                    <p onclick="resetAuthStateToKey()" style="font-size:13px; opacity:0.8; margin-top:20px; cursor:pointer; text-decoration:underline;">← पीछे जाएँ (Go Back)</p>
+                    <p onclick="resetAuthStateToKey()" style="font-size:12.5px; color:var(--text-muted); margin-top:20px; cursor:pointer; text-decoration:underline;">← पीछे जाएँ (Go Back)</p>
                 </div>
             </div>
         </div>
@@ -560,8 +702,8 @@
             <div id="appSidebar" class="sidebar-menu">
                 <div class="sidebar-header">
                     <div class="avatar"><i class="fa-solid fa-user-gear"></i></div>
-                    <h3 id="sideMenuUser">Loading User...</h3>
-                    <span id="sideMenuPhone" style="font-size:11px; opacity:0.6;">+91 ----------</span>
+                    <h3 id="sideMenuUser" style="font-size:15px; font-weight:600;">Loading User...</h3>
+                    <span id="sideMenuPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
                 </div>
                 <div class="sidebar-links">
                     <a href="#" id="side-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i> Home Screen</a>
@@ -573,7 +715,7 @@
                     <a href="#" id="side-refer" onclick="switchAppTab('refer')"><i class="fa-solid fa-share-nodes"></i> Invite & Earn</a>
                     <a href="#" id="side-terms" onclick="switchAppTab('terms')"><i class="fa-solid fa-file-shield"></i> Terms & Conditions</a>
                     <a href="#" id="side-notify-toggle" onclick="togglePushNotificationState()"><i class="fa-solid fa-bell"></i> Notification: On/Off</a>
-                    <hr style="opacity:0.08; margin:10px 0;">
+                    <hr style="opacity:0.05; margin:10px 0;">
                     <a href="#" onclick="processLogoutRoute()" style="color:var(--danger);"><i class="fa-solid fa-power-off"></i> Exit App</a>
                 </div>
             </div>
@@ -587,8 +729,8 @@
                             <i class="fa-solid fa-coins" style="color:var(--gold)"></i> 
                             <span id="dashBalance">0</span>
                         </div>
-                        <div class="balance-pill" style="border-color: rgba(46, 204, 113, 0.4); background: rgba(46, 204, 113, 0.15);">
-                            <span style="color:var(--rupee-color); font-weight:800;">₹</span>
+                        <div class="balance-pill" style="border-color: rgba(46, 204, 113, 0.2); background: rgba(46, 204, 113, 0.1);">
+                            <span style="color:var(--rupee-color); font-weight:800; font-size:11px;">₹</span>
                             <span id="dashRupeeBalance" style="color:var(--rupee-color);">0</span>
                         </div>
                     </div>
@@ -602,95 +744,103 @@
             <div class="app-body">
 
                 <div id="tab-home" class="app-tab-content">
+                    
+                    <div class="asset-welcome-box">
+                        <span>आपके कुल एसेट</span>
+                        <h1 id="animatedAssetCounter">0 <span class="asset-symbol">ASSET</span></h1>
+                    </div>
+
                     <div id="announcementBoard" class="notice-board hidden-screen">
                         <h4 style="font-size:14px; font-weight:700;" id="lblNoticeTitle"><i class="fa-solid fa-bullhorn"></i> Notice Update!</h4>
                         <p id="lblAnnouncementText" style="font-size:12px; margin-top:5px; font-weight:500; opacity:0.95;">Offer Details...</p>
-                        <a id="lnkNoticeAnchor" href="#" target="_blank" class="btn-play hidden-screen" style="margin-top:10px; background:#fff; color:#11998e; padding:5px 12px; font-size:11px;">Open Link Details</a>
+                        <a id="lnkNoticeAnchor" href="#" target="_blank" style="display:inline-block; margin-top:10px; background:#fff; color:#11998e; padding:6px 14px; font-size:11px; border-radius:8px; font-weight:700; text-decoration:none;" class="hidden-screen">Open Link Details</a>
                     </div>
 
                     <div class="video-card hidden-screen" id="promoVideoSection">
-                        <h4>📺 Promoted Video: <span id="lblPromoTitle">Loading...</span></h4>
-                        <p>वीडियो को पूरा ध्यान से देखें और 5-अंकों का गुप्त कोड पता करें!</p>
-                        <a id="btnPromoLink" href="#" target="_blank" class="btn-play"><i class="fa-solid fa-circle-play"></i> Watch & Earn</a>
+                        <h4 style="font-size:14px; font-weight:600;">📺 Promoted Video: <span id="lblPromoTitle">Loading...</span></h4>
+                        <p style="font-size:12px; opacity:0.9; margin:4px 0 12px 0;">वीडियो को पूरा ध्यान से देखें और 5-अंकों का गुप्त कोड पता करें!</p>
+                        <a id="btnPromoLink" href="#" target="_blank" style="display:inline-block; background:white; color:#ff5252; padding:8px 16px; border-radius:10px; font-size:12px; font-weight:700; text-decoration:none;"><i class="fa-solid fa-circle-play"></i> Watch & Earn</a>
                     </div>
 
-                    <div class="earn-box">
-                        <h3><i class="fa-solid fa-key" style="color:var(--primary);"></i> कोड डालकर Assets कमाएं</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">अगर आपको नया वीडियो कोड मिला है, तो यहाँ नीचे दर्ज करें:</p>
-                        <input type="number" id="dashSecretKey" placeholder="00000" style="text-align:center; font-size:16px; font-weight:600; letter-spacing:4px;">
-                        <button class="btn-action" onclick="processDashboardKeyClaim()">वॉलेट में कॉइन्स जोड़ें / Add Coins</button>
+                    <div class="premium-card">
+                        <h3 style="font-size:15px; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-key" style="color:var(--accent-purple);"></i> कोड डालकर Assets कमाएं</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">अगर आपको नया वीडियो कोड मिला है, तो यहाँ नीचे दर्ज करें:</p>
+                        <input type="number" id="dashSecretKey" placeholder="00000" style="text-align:center; font-size:18px; font-weight:600; letter-spacing:5px;">
+                        <button class="btn-action" onclick="processDashboardKeyClaim()">वॉलेट में कॉइन्स जोड़ें / Add Coins</button>
                     </div>
                 </div>
 
                 <div id="tab-mystery" class="app-tab-content hidden-screen">
-                    <div class="earn-box" style="text-align: center;">
-                        <h3 style="justify-content: center; color: var(--primary);"><i class="fa-solid fa-box-open"></i> Magic Mystery Box</h3>
-                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">
+                    <div class="premium-card" style="text-align: center;">
+                        <h3 style="justify-content: center; display:flex; align-items:center; gap:8px; font-size:16px; color: var(--accent-purple);"><i class="fa-solid fa-box-open"></i> Magic Mystery Box</h3>
+                        <p style="font-size: 12px; color: var(--text-muted); margin: 8px 0 15px 0; line-height:1.5;">
                             रोजाना अधिकतम **5 मौके** मिलेंगे। हर बार बॉक्स खोलने के बाद **1 घंटे का इंतजार** करना होगा (कोई फीस नहीं)।
                         </p>
                         
-                        <div style="background: #f8f9fa; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 13px; font-weight: 600;">
-                            <div>आज के बचे हुए मौके (Chances Left): <span id="lblMysteryChance" style="color: var(--success);">5</span> / 5</div>
-                            <div id="lblMysteryTimer" style="color: var(--danger); margin-top: 4px; font-size: 12px;"></div>
+                        <div style="background: rgba(255,255,255,0.03); border:1px solid var(--border-glass); padding:12px; border-radius:14px; margin-bottom:18px; font-size:13px;">
+                            <div>आज के बचे हुए मौके (Chances): <span id="lblMysteryChance" style="color: var(--success); font-weight:700;">5</span> / 5</div>
+                            <div id="lblMysteryTimer" style="color: var(--danger); margin-top:4px; font-size:12px; font-weight:500;"></div>
                         </div>
 
                         <div class="mystery-grid-dynamic" id="boxContainerArea">
                             <div style="font-size:12px; color:var(--text-muted);">फिलहाल कोई बॉक्स उपलब्ध नहीं है।</div>
                         </div>
 
-                        <div id="inlinePinWidgetCard" class="inline-input-widget hidden-screen">
-                            <span id="lblBoxPinHeader" style="font-size:11.5px; font-weight:600; color:var(--primary); display:block; margin-bottom:6px;">पिन कोड वेरिफिकेशन</span>
+                        <div id="inlinePinWidgetCard" class="premium-card hidden-screen" style="margin-top:15px; text-align:left; background:rgba(108,92,231,0.08); border-color:rgba(108,92,231,0.3)">
+                            <span id="lblBoxPinHeader" style="font-size:12.5px; font-weight:600; color:var(--accent-purple); display:block; margin-bottom:8px;">पिन कोड वेरिफिकेशन</span>
                             <input type="number" id="numBoxVerificationPin" placeholder="Enter secure key">
-                            <button class="btn-action" style="padding:10px; font-size:13px;" onclick="executeSecuredMysteryBoxUnlockTransaction()">बॉक्स खोलें / Unlock BOX</button>
+                            <button class="btn-action" style="padding:12px; font-size:14px;" onclick="executeSecuredMysteryBoxUnlockTransaction()">बॉक्स खोलें / Unlock BOX</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-leaderboard" class="app-tab-content hidden-screen">
-                    <div class="earn-box" style="padding: 15px;">
-                        <h3 style="color:var(--primary);"><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> Elite Leaderboard</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">कुल Assets के आधार पर 7 स्टेज बांटे गए हैं। हर स्टेज के टॉप 10 लीडर्स देखें:</p>
+                    <div class="premium-card leaderboard-container">
+                        <h3 style="font-size:16px; margin-bottom:4px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> Elite Leaderboard</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">7 स्टेज बांटे गए हैं। हर स्टेज के टॉप 10 लीडर्स देखें (3 घंटे में स्वतः अपडेट):</p>
                         
                         <div class="stage-selector">
-                            <button class="stage-tab active-stage" data-amount="₹0 - ₹1k" title="Rehli Warrior (Stage 1)" onclick="renderLeaderboardStageWise(0)"><i class="fa-solid fa-shield"></i></button>
-                            <button class="stage-tab" data-amount="₹1k - ₹5k" title="Coin Guardian (Stage 2)" onclick="renderLeaderboardStageWise(1)"><i class="fa-solid fa-coins"></i></button>
-                            <button class="stage-tab" data-amount="₹5k - ₹10k" title="Digital Hero (Stage 3)" onclick="renderLeaderboardStageWise(2)"><i class="fa-solid fa-bolt"></i></button>
-                            <button class="stage-tab" data-amount="₹10k - ₹25k" title="Grandmaster (Stage 4)" onclick="renderLeaderboardStageWise(3)"><i class="fa-solid fa-gem"></i></button>
-                            <button class="stage-tab" data-amount="₹25k - ₹50k" title="Mystery Finder (Stage 5)" onclick="renderLeaderboardStageWise(4)"><i class="fa-solid fa-compass"></i></button>
-                            <button class="stage-tab" data-amount="₹50k - ₹1L" title="Vault Conqueror (Stage 6)" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
-                            <button class="stage-tab" data-amount="₹1L+" title="Digital Emperor (Stage 7)" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
+                            <button class="stage-tab active-stage" data-amount="₹0-1k" onclick="renderLeaderboardStageWise(0)"><i class="fa-solid fa-shield"></i></button>
+                            <button class="stage-tab" data-amount="₹1k-5k" onclick="renderLeaderboardStageWise(1)"><i class="fa-solid fa-coins"></i></button>
+                            <button class="stage-tab" data-amount="₹5k-10k" onclick="renderLeaderboardStageWise(2)"><i class="fa-solid fa-bolt"></i></button>
+                            <button class="stage-tab" data-amount="₹10k-25k" onclick="renderLeaderboardStageWise(3)"><i class="fa-solid fa-gem"></i></button>
+                            <button class="stage-tab" data-amount="₹25k-50k" onclick="renderLeaderboardStageWise(4)"><i class="fa-solid fa-compass"></i></button>
+                            <button class="stage-tab" data-amount="₹50k-1L" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
+                            <button class="stage-tab" data-amount="₹1L+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
                         </div>
 
                         <div class="leaderboard-list" id="lblBoardItemsContainer">
-                            <div style="font-size:12px; color:var(--text-muted); text-align:center; padding:20px;">लाइव डेटा लोड हो रहा है...</div>
+                            <div class="skeleton-row"></div>
+                            <div class="skeleton-row"></div>
+                            <div class="skeleton-row"></div>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-wallet" class="app-tab-content hidden-screen">
-                    <div class="earn-box">
-                        <h3 style="color:var(--success);"><i class="fa-solid fa-chart-line"></i> Asset Balance Sheet</h3>
+                    <div class="premium-card">
+                        <h3 style="color:var(--success); font-size:15px; margin-bottom:10px;"><i class="fa-solid fa-chart-line"></i> Asset Balance Sheet</h3>
                         <div class="info-row"><span>Current Coin Assets:</span><b id="wTotalLiquidCoins" style="color:var(--primary);">0 Assets</b></div>
                         <div class="info-row"><span>Verified Rupee Account (₹):</span><b id="wTotalLiquidRupees" style="color:var(--rupee-color);">₹ 0</b></div>
                         
-                        <div class="info-row" style="background:#fcfcfc; border-left:3px solid var(--gold); padding-left:8px;">
+                        <div class="info-row" style="padding-left:4px;">
                             <span>👥 Total Invite Bonus:</span><b id="wReferEarned" style="color:#d35400;">0 Assets</b>
                         </div>
                         
                         <div class="info-row"><span>Spent Assets History:</span><b id="wTotalSpent">0 Assets</b></div>
                         
-                        <div style="margin-top:22px; padding:18px; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius:18px; text-align:center; border:1px solid rgba(0, 184, 148, 0.15);">
-                            <span style="font-size:12px; color:#2e7d32; font-weight:500;">टोटल रिडीम की गई राशि (Redeemed Amount)</span>
-                            <h2 id="wSpentValue" style="color:#1b5e20; margin:6px 0; font-size:26px; font-weight:700;">₹ 0.00</h2>
-                            <small style="font-size:11px; color:#4caf50; font-weight:500;">(हिसाब का नियम: 100 Assets = ₹1 Rupee)</small>
+                        <div style="margin-top:22px; padding:20px; background:rgba(46, 204, 113, 0.06); border-radius:18px; text-align:center; border:1px solid rgba(46, 204, 113, 0.15);">
+                            <span style="font-size:12px; color:var(--rupee-color); font-weight:500;">टोटल रिडीम की गई राशि (Redeemed)</span>
+                            <h2 id="wSpentValue" style="color:white; margin:6px 0; font-size:28px; font-weight:700;">₹ 0.00</h2>
+                            <small style="font-size:11px; color:var(--text-muted);">(हिसाब का नियम: 100 Assets = ₹1 Rupee)</small>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-profile" class="app-tab-content hidden-screen">
                     <div class="section">
-                        <div id="profileFormArea" class="earn-box hidden-screen">
-                            <h3><i class="fa-solid fa-user-plus" style="color:var(--primary);"></i> Complete Profile (+2k Bonus)</h3>
+                        <div id="profileFormArea" class="premium-card hidden-screen">
+                            <h3><i class="fa-solid fa-user-plus" style="color:var(--accent-purple);"></i> Complete Profile (+2k Bonus)</h3>
                             <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">अपनी प्रोफाइल पूरी लॉक करें और तुरंत 2000 कॉइन्स का बोनस पाएं।</p>
                             <input type="text" id="pName" placeholder="अपना पूरा नाम दर्ज करें">
                             <input type="date" id="pDOB">
@@ -704,9 +854,9 @@
                             <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल लॉक करें और बोनस लें</button>
                         </div>
 
-                        <div id="profileStatusArea" class="earn-box hidden-screen">
-                            <div style="text-align:center; margin-bottom:15px;">
-                                <h3 style="justify-content:center; margin-bottom:2px;">Verified Profile</h3>
+                        <div id="profileStatusArea" class="premium-card hidden-screen">
+                            <div style="text-align:center; margin-bottom:18px;">
+                                <h3 style="font-size:17px; margin-bottom:2px;">Verified Profile</h3>
                                 <span style="font-size:12px; color:var(--success); font-weight:600;">वेरिफाइड अकाउंट ✅</span>
                             </div>
                             <div class="info-row"><span>नाम / Legal Name:</span><b id="stName">-</b></div>
@@ -714,28 +864,28 @@
                             <div class="info-row"><span>जन्मतिथि / DOB:</span><b id="stDOB">-</b></div>
                             <div class="info-row"><span>लिंग / Gender:</span><b id="stGender">-</b></div>
                             <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
-                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('change')" style="padding:12px;"><i class="fa-solid fa-lock-open"></i> सुरक्षा PIN बदलें (Modify PIN)</button>
-                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('forgot_in')" style="background:#747d8c; padding:12px;"><i class="fa-solid fa-circle-question"></i> PIN भूल गए? रिकवरी करें</button>
+                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('change')" style="padding:12px; font-size:13.5px;"><i class="fa-solid fa-lock-open"></i> सुरक्षा PIN बदलें (Modify PIN)</button>
+                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('forgot_in')" style="background:#4b5563; padding:12px; font-size:13.5px;"><i class="fa-solid fa-circle-question"></i> PIN भूल गए? रिकवरी करें</button>
                             </div>
                         </div>
 
-                        <div id="inAppPinPanelArea" class="earn-box hidden-screen">
+                        <div id="inAppPinPanelArea" class="premium-card hidden-screen">
                             <h4 id="lblPinPanelTitle" style="font-size:14px; font-weight:600; margin-bottom:12px;">PIN Management</h4>
                             <input type="text" id="inAppVerifyInput1" placeholder="Validation metadata">
                             <input type="date" id="inAppVerifyInput2" class="hidden-screen">
                             <input type="number" id="inAppNewPinInput" placeholder="नया 4-अंकों का PIN डालें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
                             <div style="display:flex; gap:10px; margin-top:5px;">
-                                <button class="btn-action" onclick="executeInAppPinModificationTransaction()" style="flex:2; padding:10px;">बदलाव सेव करें</button>
-                                <button class="btn-action" onclick="document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');" style="flex:1; background:#ced6e0; color:var(--dark); padding:10px;">रद्द करें</button>
+                                <button class="btn-action" onclick="executeInAppPinModificationTransaction()" style="flex:2; padding:12px; font-size:13.5px;">बदलाव सेव करें</button>
+                                <button class="btn-action" onclick="document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');" style="flex:1; background:rgba(255,255,255,0.1); color:white; padding:12px; font-size:13.5px;">रद्द करें</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="tab-social" class="app-tab-content hidden-screen">
-                    <div class="earn-box">
-                        <h3><i class="fa-solid fa-hashtag" style="color:#e4405f;"></i> Social Tasks</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">हमारे ऑफिशियल सोशल मीडिया हैंडल्स को फॉलो करें। हर टास्क को पूरा करने पर तुरंत +1000 Assets मिलेंगे:</p>
+                    <div class="premium-card">
+                        <h3 style="font-size:15px; margin-bottom:4px;"><i class="fa-solid fa-hashtag" style="color:#e4405f;"></i> Social Tasks</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">हमारे ऑफिशियल हैंडल्स को फॉलो करें। तुरंत +1000 Assets मिलेंगे:</p>
                         <button class="social-btn" style="background:#ff0000;" onclick="handleSocialTaskExecution('youtube')"><span><i class="fa-brands fa-youtube"></i> YouTube Channel</span><small id="lbl-social-youtube">+1k Assets</small></button>
                         <button class="social-btn" style="background:#1877f2;" onclick="handleSocialTaskExecution('facebook')"><span><i class="fa-brands fa-facebook"></i> Facebook Page</span><small id="lbl-social-facebook">+1k Assets</small></button>
                         <button class="social-btn" style="background:#e4405f;" onclick="handleSocialTaskExecution('instagram')"><span><i class="fa-brands fa-instagram"></i> Instagram Hub</span><small id="lbl-social-instagram">+1k Assets</small></button>
@@ -745,22 +895,22 @@
                 </div>
 
                 <div id="tab-refer" class="app-tab-content hidden-screen">
-                    <div class="earn-box" style="text-align:center;">
-                        <div style="font-size:50px; color:var(--gold); margin-bottom:10px;"><i class="fa-solid fa-gift"></i></div>
+                    <div class="premium-card" style="text-align:center; padding:25px 15px;">
+                        <div style="font-size:48px; color:var(--gold); margin-bottom:10px; filter:drop-shadow(var(--gold-glow));"><i class="fa-solid fa-gift"></i></div>
                         <h3>Invite Friends & Earn</h3>
-                        <p style="font-size:13px; color:var(--text-muted); padding:0 10px; margin-bottom:15px;">
+                        <p style="font-size:12.5px; color:var(--text-muted); padding:5px 10px 0 10px; margin-bottom:18px; line-height:1.5;">
                             जब कोई आपकी इनवाइट लिंक से पहली बार रजिस्टर करेगा, तो आप दोनों को सीधे **5,000 Assets** का फ्री बोनस तुरंत मिलेगा।
                         </p>
-                        <div style="background:var(--light); padding:12px 15px; border-radius:12px; font-weight:700; color:var(--primary); font-size:16px; border:1px dashed var(--secondary); margin-bottom:20px;" id="lblReferralCodeDisplay">REHLI------</div>
-                        <button class="btn-action" style="background:linear-gradient(135deg, #25d366 0%, #075e54 100%);" onclick="generateAndShareModernReferralLink()"><i class="fa-brands fa-whatsapp"></i> व्हाट्सएप पर लिंक शेयर करें</button>
+                        <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:14px; font-weight:700; color:var(--accent-purple); font-size:16px; border:1px dashed rgba(108,92,231,0.4); margin-bottom:20px;" id="lblReferralCodeDisplay">REHLI------</div>
+                        <button class="btn-action" style="background:linear-gradient(135deg, #25d366 0%, #075e54 100%); gap:8px; display:flex; justify-content:center; align-items:center;" onclick="generateAndShareModernReferralLink()"><i class="fa-brands fa-whatsapp" style="font-size:18px;"></i> व्हाट्सएप पर लिंक शेयर करें</button>
                     </div>
                 </div>
 
                 <div id="tab-terms" class="app-tab-content hidden-screen">
-                    <div class="earn-box" style="text-align: left;">
-                        <h3><i class="fa-solid fa-file-shield" style="color:var(--primary);"></i> नियम और गाइडलाइंस</h3>
-                        <hr style="opacity:0.08; margin-bottom:15px;">
-                        <div style="font-size:13px; line-height:1.6; color:#444; display:flex; flex-direction:column; gap:12px;">
+                    <div class="premium-card">
+                        <h3><i class="fa-solid fa-file-shield" style="color:var(--accent-purple);"></i> नियम और गाइडलाइंस</h3>
+                        <hr style="opacity:0.05; margin:12px 0;">
+                        <div style="font-size:13px; line-height:1.6; color:var(--text-muted); display:flex; flex-direction:column; gap:12px;">
                             <p>1. <b>कन्वर्शन रेट:</b> 100 Assets की वैल्यू कानूनी तौर पर ₹1 भारतीय रुपया (INR) के बराबर मानी जाएगी।</p>
                             <p>2. <b>सुरक्षा नियम:</b> अपने अकाउंट के लेनदेन को सुरक्षित रखने के लिए अपना 4-अंकों का पिन कोड कभी किसी को न बताएं।</p>
                         </div>
@@ -768,33 +918,38 @@
                 </div>
 
                 <div id="tab-pay" class="app-tab-content hidden-screen">
-                    <div class="earn-box">
-                        <h3><i class="fa-solid fa-qrcode" style="color:var(--primary);"></i> QR पेमेंट गेटवे</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">दुकानदार का QR कोड स्कैन करें या उसका रजिस्टर्ड मोबाइल नंबर डालें:</p>
+                    <div class="premium-card scanner-futuristic-container">
+                        <h3 style="font-size:15px; display:flex; align-items:center; gap:8px; justify-content:center;"><i class="fa-solid fa-qrcode" style="color:var(--accent-purple);"></i> QR पेमेंट गेटवे</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">दुकानदार का QR कोड स्कैन करें या उसका रजिस्टर्ड मोबाइल नंबर डालें</p>
                         
                         <div id="qrReaderBox" class="hidden-screen">
                             <div id="qrReader" style="width:100%;"></div>
                         </div>
                         
-                        <button class="btn-action" id="btnTriggerCamera" style="background: #27ae60; margin-bottom:15px;" onclick="startLiveQRScannerEngine()">
+                        <button class="btn-action" id="btnTriggerCamera" style="background: #27ae60; margin: 15px 0 5px 0;" onclick="startLiveQRScannerEngine()">
                             <i class="fa-solid fa-camera"></i> QR कैमरा स्कैनर चालू करें
                         </button>
 
-                        <div id="payManualInputArea">
-                            <div style="font-size:11px; color:#888; margin-bottom:8px; text-align:center;">अथवा नंबर से ढूँढें</div>
+                        <div id="payManualInputArea" style="margin-top:15px;">
+                            <div style="font-size:11px; color:var(--text-muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">अथवा नंबर से ढूँढें</div>
                             <input type="number" id="payMerchantMobile" placeholder="दुकानदार का मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
                             <button class="btn-action" onclick="searchAndVerifyMerchantDatabase()">सर्च करें / Find Merchant</button>
                         </div>
                         
-                        <div id="merchantVerifyArea" class="hidden-screen" style="margin-top:20px; border-top:2px dashed var(--border-color); padding-top:15px; text-align:left;">
-                            <div style="background:#fff3cd; padding:10px 15px; border-radius:12px; margin-bottom:15px;">
-                                <small style="font-size:11px; color:#b7791f; font-weight:600; display:block;">वेरिफाइड दुकान का नाम:</small>
-                                <span id="lblVerifiedShopName" style="font-size:15px; font-weight:700; color:#744210;">Shop Name Loaded</span>
+                        <div id="merchantVerifyArea" class="hidden-screen" style="margin-top:20px; border-top:1px dashed var(--border-glass); padding-top:15px; text-align:left;">
+                            <div style="background:rgba(251, 197, 49, 0.08); border:1px solid rgba(251, 197, 49, 0.2); padding:12px; border-radius:14px; margin-bottom:15px;">
+                                <small style="font-size:11px; color:var(--gold); font-weight:600; display:block; text-transform:uppercase;">वेरिफाइड दुकान का नाम:</small>
+                                <span id="lblVerifiedShopName" style="font-size:15px; font-weight:700; color:white;">Shop Name Loaded</span>
                             </div>
                             <input type="number" id="payAmount" placeholder="जितने Assets भेजने हैं लिखें">
                             <input type="number" id="paySecurityPin" placeholder="अपना 4-अंकों का सुरक्षा Pin डालें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="-webkit-text-security: disc;">
                             <button class="btn-action" style="background:var(--success-gradient);" onclick="executeSecuredAssetTransferToMerchant()">पेमेंट कन्फर्म करें / Pay Now</button>
                         </div>
+
+                        <p class="scanner-instruction-text">
+                            "QR कोड स्कैन करें और अपने डिजिटल एसेट तुरंत प्राप्त करें"
+                            <span>Scan QR Code To Access Your Digital Assets Securely</span>
+                        </p>
                     </div>
                 </div>
 
@@ -838,19 +993,40 @@
         let globalDynamicBoxesArray = [];
         let selectedTargetBoxIndexToUnlock = null;
         let globalCachedLeaderboardUsersList = [];
+        let currentLeaderboardInterval = null;
 
         const localCurrentDateISO = new Date().toISOString().substring(0, 10);
 
         function formatSmartAmount(num) {
             const parsed = parseFloat(num);
             if (isNaN(parsed)) return "0";
-            if (parsed >= 1000000) {
-                return (parsed / 1000000).toFixed(1).replace(/\.0$/, '') + 'm';
-            }
-            if (parsed >= 1000) {
-                return (parsed / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-            }
+            if (parsed >= 1000000) return (parsed / 1000000).toFixed(1).replace(/\.0$/, '') + 'm';
+            if (parsed >= 1000) return (parsed / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
             return parsed.toString();
+        }
+
+        // Requirement #3: Smooth Global Counter Animation Trigger Engine
+        function animateCounterSequence(targetValue) {
+            const element = document.getElementById('animatedAssetCounter');
+            if(!element) return;
+            
+            let startValue = 0;
+            const duration = 1200; 
+            const startTime = performance.now();
+
+            function updateCounter(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                if (elapsedTime >= duration) {
+                    element.innerHTML = `${targetValue.toLocaleString()} <span class="asset-symbol">ASSET</span>`;
+                } else {
+                    const progress = elapsedTime / duration;
+                    const easeOutQuad = progress * (2 - progress); 
+                    const currentValue = Math.floor(easeOutQuad * targetValue);
+                    element.innerHTML = `${currentValue.toLocaleString()} <span class="asset-symbol">ASSET</span>`;
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+            requestAnimationFrame(updateCounter);
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
@@ -938,7 +1114,7 @@
                 document.getElementById('loginPinArea').classList.remove('hidden-screen');
                 document.getElementById('forgotPinArea').classList.add('hidden-screen');
                 document.getElementById('authTitle').innerText = "लॉगिन गेटवे / Login Gateway";
-                document.getElementById('authSubtitle').innerText = "आगे बढ़ने के लिए अपना रजिस्टर्ड नंबर और पिन दर्ज करें।";
+                document.getElementById('authSubtitle').innerText = "आगे बढ़ने के लिए अपना रजिस्टर्ड नंबर और पिन दर्ज करें।";
             }
         };
 
@@ -1042,7 +1218,7 @@
                     });
 
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
-                    window.showCustomAlert("रजिस्ट्रेशन सफल! 🎉", "स्वागत बोनस 50k टोकन और ₹500 कैश आपके वॉलेट में जोड़ दिए गए हैं!", "success");
+                    window.showCustomAlert("रजिस्ट्रेशन सफल! 🎉", "स्वागत बोनस 50k टोकन और ₹500 कैश आपके वॉलेट में जोड़ दिए गए हैं!", "success");
                 } else { 
                     const keyIsFreshAndValid = await evaluateKeyUniquenessConstraints(targetMobile, cachedKey);
                     if (!keyIsFreshAndValid) {
@@ -1053,7 +1229,7 @@
                     await setDoc(userDocRef, { balance: currentBalance + cachedValue }, { merge: true });
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
 
-                    window.showCustomAlert("सफल / Processed", "टोकन्स आपके ऐतिहासिक लेजर में सुरक्षित जोड़ दिए गए हैं।", "success");
+                    window.showCustomAlert("सफल / Processed", "टोकन्स आपके ऐतिहासिक लेजर में सुरक्षित जोड़ दिए गए हैं।", "success");
                 }
 
                 localStorage.setItem('userMobile', targetMobile);
@@ -1087,6 +1263,9 @@
                 
                 document.getElementById('dashBalance').innerText = formatSmartAmount(coreUserData.balance || 0);
                 document.getElementById('dashRupeeBalance').innerText = formatSmartAmount(coreUserData.rupeeBalance || 0);
+
+                // Initialize counter animation sequence trigger on dashboard synchronization
+                animateCounterSequence(coreUserData.balance || 0);
 
                 const processedHeaderName = coreUserData.userName || "User";
                 document.getElementById('dashUserName').innerText = "Hi, " + (processedHeaderName.length > 12 ? processedHeaderName.substring(0, 10) + ".." : processedHeaderName);
@@ -1123,6 +1302,7 @@
             } catch (error) { console.error(error); }
         }
 
+        // Requirement #5: Auto Update Engine Initialization Matrix (Every 3 Hours Cycle Loop)
         async function preFetchAllUsersDataForLeaderboardMatrix() {
             try {
                 const allUsersQuerySnapshot = await getDocs(collection(db, "users"));
@@ -1135,9 +1315,23 @@
                     });
                 });
                 globalCachedLeaderboardUsersList.sort((a, b) => b.balance - a.balance);
+                
+                // Switch default stage 0 render safely without reload interference rules
+                if(document.getElementById('tab-leaderboard').classList.contains('hidden-screen') === false) {
+                    renderLeaderboardStageWise(0);
+                }
+
+                // Set interval mapping structural loop securely once
+                if(!currentLeaderboardInterval) {
+                    currentLeaderboardInterval = setInterval(async () => {
+                        console.log("3 Hour Cycle Loop: Leaderboard sync triggered automatically.");
+                        await preFetchAllUsersDataForLeaderboardMatrix();
+                    }, 3 * 60 * 60 * 1000); 
+                }
             } catch(e) { console.error(e); }
         }
 
+        // Requirement #4 & #5: Refreshed WhatsApp-style Active Row Render Pipeline
         window.renderLeaderboardStageWise = (stageIndex) => {
             document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
             
@@ -1153,11 +1347,10 @@
 
             const startRangeIdx = stageIndex * 10;
             const endRangeIdx = startRangeIdx + 10;
-            
             const sliceSubList = globalCachedLeaderboardUsersList.slice(startRangeIdx, endRangeIdx);
 
             if(sliceSubList.length === 0) {
-                container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:20px;'>इस स्टेज पर फिलहाल कोई लीडर मौजूद नहीं है।</div>";
+                container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>इस स्टेज पर फिलहाल कोई लीडर मौजूद नहीं है।</div>";
                 return;
             }
 
@@ -1168,13 +1361,24 @@
                 if(rankLoopCounter === 2) medalBadgeSelectorClass = "rank-2";
                 if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
 
+                // Generate First Initial for Avatar Placeholder look layer safely
+                const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
+
                 container.innerHTML += `
-                    <div class="leader-row">
+                    <div class="leader-row ${medalBadgeSelectorClass}">
                         <div class="leader-left">
-                            <div class="rank-number ${medalBadgeSelectorClass}">${rankLoopCounter}</div>
-                            <span style="font-size:13.5px; font-weight:600; color:var(--dark);">${userItem.name}</span>
+                            <div class="leader-avatar-wrapper">
+                                <div class="leader-avatar">${firstInitialCharacter}</div>
+                                <div class="rank-badge-pill">${rankLoopCounter}</div>
+                            </div>
+                            <div class="leader-info">
+                                <h4>${userItem.name}</h4>
+                                <p>Network Tier Member</p>
+                            </div>
                         </div>
-                        <b style="font-size:13.5px; color:var(--primary); font-weight:700;">${formatSmartAmount(userItem.balance)} 🪙</b>
+                        <div class="leader-right-value">
+                            <b>${formatSmartAmount(userItem.balance)} 🪙</b>
+                        </div>
                     </div>
                 `;
                 rankLoopCounter++;
@@ -1229,7 +1433,7 @@
                 await setDoc(doc(db, "users", userSessionMobile, "used_keys", stringSecretKeyId), { amount: targetedAssetVal, claimedAt: new Date().toISOString() });
 
                 document.getElementById('dashSecretKey').value = "";
-                window.showCustomAlert("सफलतापूर्वक क्लेम हुआ! 🎉", `${formatSmartAmount(targetedAssetVal)} टोकन्स आपके वॉलेट में जुड़ गए।`, "success");
+                window.showCustomAlert("सफलतापूर्वक क्लेम हुआ! 🎉", `${formatSmartAmount(targetedAssetVal)} टोकन्स आपके वॉलेट में जुड़ गए।`, "success");
                 await synchronizeUserDashboardStateEngine();
             } catch (error) { window.showCustomAlert("त्रुटि", "वॉलेट बैलेंस अपडेट करने में तकनीकी एरर आया।", "error"); }
         };
@@ -1274,18 +1478,18 @@
                     globalDynamicBoxesArray.push(b);
 
                     const unitType = b.rewardType === "currency" ? "₹ Cash" : "Assets";
-                    const secureText = b.pinRequired ? `🔒 Secure PIN Required` : "🔓 Free Box";
+                    const secureText = b.pinRequired ? `🔒 Secure PIN` : "🔓 Free Box";
 
                     boxContainer.innerHTML += `
-                        <div class="mystery-element-row" onclick="initiateMysteryBoxUnlockProcess(${idx})">
-                            <div class="m-left-box">
-                                <i class="fa-solid fa-box-open"></i>
-                                <div class="m-text-details">
-                                    <h4>${b.boxName || 'Magic Chest'}</h4>
-                                    <p>${secureText} | Tracking Active</p>
+                        <div class="premium-card" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; cursor:pointer; padding:14px;" onclick="initiateMysteryBoxUnlockProcess(${idx})">
+                            <div style="display:flex; align-items:center; gap:12px; text-align:left;">
+                                <i class="fa-solid fa-box-open" style="font-size:26px; color:var(--gold);"></i>
+                                <div>
+                                    <h4 style="font-size:14px; font-weight:600;">${b.boxName || 'Magic Chest'}</h4>
+                                    <p style="font-size:11px; color:var(--text-muted); margin-top:1px;">${secureText}</p>
                                 </div>
                             </div>
-                            <div class="m-right-badge">+${formatSmartAmount(b.rewardValue)} ${unitType}</div>
+                            <div style="font-size:12.5px; font-weight:700; color:var(--accent-purple); background:rgba(108,92,231,0.1); padding:4px 10px; border-radius:8px;">+${formatSmartAmount(b.rewardValue)} ${unitType}</div>
                         </div>
                     `;
                     idx++;
@@ -1337,7 +1541,7 @@
             if(targetBox.pinRequired) {
                 const inputPinVal = document.getElementById('numBoxVerificationPin').value.trim();
                 if(inputPinVal !== String(targetBox.boxPin)) {
-                    return window.showCustomAlert("गलत पिन", "आपके द्वारा डाला गया बॉक्स पिन सर्वर रिकॉर्ड से मेल नहीं खाता।", "error");
+                    return window.showCustomAlert("गलत पिन", "box पिन सर्वर रिकॉर्ड से मेल नहीं खाता।", "error");
                 }
             }
 
@@ -1435,7 +1639,7 @@
                 const consumerSnap = await getDoc(consumerDocRef);
                 const consumerData = consumerSnap.data();
 
-                if (!consumerData.profileCompleted) return window.showCustomAlert("अकाउंट अधूरा", "पेमेंट करने के लिए पहले प्रोफाइल में जाकर अपना 4-अंकों का सुरक्षा पिन बनाएं।", "error");
+                if (!consumerData.profileCompleted) return window.showCustomAlert("अकाउंट अधूरा", "पेमेंट करने के लिए पहले प्रोफाइल में जाकर सुरक्षा पिन बनाएं।", "error");
                 if (transactionalVerificationPin !== consumerData.securityPin) {
                     return window.showCustomAlert("पेमेंट खारिज", "गलत सुरक्षा पिन कोड। लेनदेन रद्द किया गया।", "error");
                 }
@@ -1468,44 +1672,42 @@
             } catch (err) { window.showCustomAlert("त्रुटि", "लेनदेन का रिकॉर्ड दर्ज करने में तकनीकी एरर आया।", "error"); }
         };
 
-        // 🌟 पुश नोटिफिकेशन गेटवे (Brackets और Catch सिंटैक्स पूरी तरह फिक्स)
-async function initializePushNotificationGateway(triggerPromptExplicitly) {
-    if ('serviceWorker' in navigator) {
-        try {
-            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
-            
-            if (triggerPromptExplicitly) {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted' && userSessionMobile) {
-                    const currentFcmToken = await getToken(messaging, { 
-                        serviceWorkerRegistration: registration,
-                        vapidKey: "BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk"
-                    });
-                    if (currentFcmToken) {
-                        await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken, pushEnabled: true }, { merge: true });
-                        window.showCustomAlert("Notifications Enabled", "Smart push communications are active.", "success");
+        async function initializePushNotificationGateway(triggerPromptExplicitly) {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
+                    if (triggerPromptExplicitly) {
+                        const permission = await Notification.requestPermission();
+                        if (permission === 'granted' && userSessionMobile) {
+                            const currentFcmToken = await getToken(messaging, { 
+                                serviceWorkerRegistration: registration,
+                                vapidKey: "BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk"
+                            });
+                            if (currentFcmToken) {
+                                await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken, pushEnabled: true }, { merge: true });
+                                window.showCustomAlert("Notifications Enabled", "Smart push communications are active.", "success");
+                            }
+                        } else if (permission === 'denied') {
+                            if(userSessionMobile) await setDoc(doc(db, "users", userSessionMobile), { pushEnabled: false }, { merge: true });
+                        }
+                    } else {
+                        if (Notification.permission === 'granted' && userSessionMobile) {
+                            const currentFcmToken = await getToken(messaging, { 
+                                serviceWorkerRegistration: registration,
+                                vapidKey: "BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk"
+                            });
+                            if (currentFcmToken) {
+                                await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken, pushEnabled: true }, { merge: true });
+                            }
+                        }
                     }
-                } else if (permission === 'denied') {
-                    if(userSessionMobile) await setDoc(doc(db, "users", userSessionMobile), { pushEnabled: false }, { merge: true });
-                }
-            } else {
-                // साइलेंट चेक: यदि अनुमति पहले से दी गई है, तो टोकन री-सिंक करें
-                if (Notification.permission === 'granted' && userSessionMobile) {
-                    const currentFcmToken = await getToken(messaging, { 
-                        serviceWorkerRegistration: registration,
-                        vapidKey: "BMp3NxQuOe2ir5RqIymFoYyP3Y6c3UUssIVXdYugXsWj1Kg5oOlZJN2MlzaH-vRG1Iz508LOGytTsemzSGNbDFk"
-                    });
-                    if (currentFcmToken) {
-                        await setDoc(doc(db, "users", userSessionMobile), { fcmToken: currentFcmToken, pushEnabled: true }, { merge: true });
-                    }
+                } catch (err) { 
+                    console.log("Push Gateway Standby Mode Engine Status Active."); 
+                    console.error("टोकन जनरेशन एरर: ", err); 
                 }
             }
-        } catch (err) { 
-            console.log("Push Gateway Standby Mode Engine Status Active."); 
-            console.error("टोकन जनरेशन का असली एरर यहाँ है: ", err); 
         }
-    }
-}
+
         window.togglePushNotificationState = async () => {
             window.toggleSidebar(false);
             if (!('Notification' in window)) {
@@ -1639,7 +1841,7 @@ async function initializePushNotificationGateway(triggerPromptExplicitly) {
                 
                 await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 1000 }, { merge: true });
                 await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
-                window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +1000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
+                window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +1000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
                 await synchronizeUserDashboardStateEngine();
             } catch (err) { console.error(err); }
         };
@@ -1647,7 +1849,7 @@ async function initializePushNotificationGateway(triggerPromptExplicitly) {
         window.generateAndShareModernReferralLink = () => {
             const code = "REHLI" + userSessionMobile.substring(6).toUpperCase();
             const link = window.location.origin + window.location.pathname + "?ref=" + code;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +5000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +5000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
         };
 
         window.switchAppTab = (targetTabId) => {
