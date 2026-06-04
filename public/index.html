@@ -925,25 +925,24 @@
             document.getElementById('inviteAssetLbl').innerText = formatSmartAmount(50000) + " Assets";
         });
 
-        // ==========================================================================
-        // 📜 व्हाट्सएप स्टाइल हेडर कोलैप्स (WhatsApp-style Shrink) लॉजिक
+       // ==========================================================================
+        // 📜 व्हाट्सएप स्टाइल हेडर कोलैप्स लॉजिक (नए स्क्रोल स्ट्रक्चर के लिए फिक्स)
         // ==========================================================================
         setTimeout(() => {
-            const appBodyContainer = document.querySelector('.app-body');
+            const phoneWrapper = document.querySelector('.phone-wrapper');
             const appHeaderBlock = document.querySelector('.app-header');
 
-            if (appBodyContainer && appHeaderBlock) {
-                appBodyContainer.addEventListener('scroll', () => {
-                    // यदि यूजर नीचे स्क्रोल करता है (30px से ज़्यादा), तो हेडर छोटा हो जाएगा
-                    if (appBodyContainer.scrollTop > 30) {
+            if (phoneWrapper && appHeaderBlock) {
+                phoneWrapper.addEventListener('scroll', () => {
+                    // अब स्क्रोल मुख्य फोन रैपर पर डिटेक्ट होगा
+                    if (phoneWrapper.scrollTop > 30) {
                         appHeaderBlock.classList.add('collapsed-header');
                     } else {
-                        // वापस सबसे ऊपर आने पर हेडर बड़ा और सामान्य हो जाएगा
                         appHeaderBlock.classList.remove('collapsed-header');
                     }
                 });
             }
-        }, 1000); // 1 सेकंड का डिले ताकि पूरा DOM और फायरबेस डेटा लोड हो जाए
+        }, 1000);
 
         function parseIncomingUrlParametersForAutoReferrals() {
             const urlParams = new URLSearchParams(window.location.search);
