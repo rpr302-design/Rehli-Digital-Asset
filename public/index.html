@@ -9,7 +9,7 @@
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
-    <style>
+   <style>
         /* ==========================================================================
            🎨 1. Premium Dark Fintech Theme & Variables
            ========================================================================== */
@@ -39,48 +39,49 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-      /* ==========================================================================
-   📱 1. BODY - इसे खोजें और बदलें (स्क्रोलिंग को पूरी तरह मैनेज करने के लिए)
-   ========================================================================== */
-body {
-    background-color: var(--bg-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    min-height: -webkit-fill-available; /* iOS Safari के लिए स्पेशल फिक्स */
-    color: var(--light-text);
-    overflow: hidden;
-}
+        /* ==========================================================================
+           📱 1. BODY - स्क्रोलिंग को पूरी तरह ब्लॉक रखने के लिए
+           ========================================================================== */
+        body {
+            background-color: var(--bg-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            color: var(--light-text);
+            overflow: hidden;
+        }
 
         /* ==========================================================================
-   📱 2. PHONE WRAPPER - इसे खोजें और बदलें (ताकि UI स्क्रीन से बाहर न जाए)
-   ========================================================================== */
-.phone-wrapper {
-    width: 100%;
-    max-width: 420px;
-    height: 100vh;
-    height: -webkit-fill-available; /* मोबाइल एड्रेस बार के हिसाब से खुद को एडजस्ट करेगा */
-    background: linear-gradient(180deg, #090a15 0%, #131529 100%);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-}
-@media (min-height: 700px) and (min-width: 450px) {
-    .phone-wrapper {
-        height: 100%;
-        max-height: 850px; /* बूटस्ट्रैप या डेस्कटॉप व्यू के लिए स्थिर */
-        border-radius: 35px;
-        border: 8px solid #1e213a;
-    }
-}
+           📱 2. PHONE WRAPPER - इसे स्थाई रिलेटिव फ्रेम में लॉक किया
+           ========================================================================== */
+        .phone-wrapper {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            height: -webkit-fill-available;
+            background: linear-gradient(180deg, #090a15 0%, #131529 100%);
+            position: relative; /* नेविगेशन बार को नीचे रोकने के लिए जरूरी */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        @media (min-height: 700px) and (min-width: 450px) {
+            .phone-wrapper {
+                height: 100%;
+                max-height: 850px;
+                border-radius: 35px;
+                border: 8px solid #1e213a;
+            }
+        }
 
         .hidden-screen { display: none !important; }
 
         /* ==========================================================================
-           💎 2. Premium Core UI Kit (Glassmorphism & Shadows)
+           💎 3. Premium Core UI Kit (Glassmorphism)
            ========================================================================== */
         .premium-card {
             background: var(--bg-card-glass);
@@ -171,7 +172,7 @@ body {
         }
 
         /* ==========================================================================
-           🔐 3. Authentication Screens Style
+           🔐 4. Authentication & App Header
            ========================================================================== */
         #authContainer {
             width: 100%;
@@ -197,9 +198,6 @@ body {
         .auth-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
         .auth-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 25px; }
 
-        /* ==========================================================================
-           🚀 4. App Shell & Header Redesign
-           ========================================================================== */
         .app-header {
             background: linear-gradient(135deg, #131429 0%, #090a15 100%);
             border-bottom: 1px solid var(--border-glass);
@@ -244,7 +242,7 @@ body {
         .user-intro p { font-size: 11px; color: var(--text-muted); }
 
         /* ==========================================================================
-           📦 5. User Asset Welcome Box Redesign
+           📦 5. Welcome Box & Leaderboard
            ========================================================================== */
         .asset-welcome-box {
             background: linear-gradient(135deg, #1e1b4b 0%, #111224 100%);
@@ -300,89 +298,40 @@ body {
             letter-spacing: 0;
         }
 
-        /* ==========================================================================
-           🏆 6. WhatsApp Chat-style Leaderboard Layer
-           ========================================================================== */
-        .leaderboard-container {
-            background: transparent;
-            padding: 0;
-            border: none;
-            box-shadow: none;
-        }
-
+        .leaderboard-container { background: transparent; padding: 0; border: none; box-shadow: none; }
         .leaderboard-list {
-            display: flex;
-            flex-direction: column;
-            background: rgba(20, 22, 41, 0.6);
-            border-radius: 24px;
-            padding: 8px;
-            border: 1px solid var(--border-glass);
+            display: flex; flex-direction: column; background: rgba(20, 22, 41, 0.6);
+            border-radius: 24px; padding: 8px; border: 1px solid var(--border-glass);
         }
 
         .leader-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 14px;
-            border-radius: 16px;
-            transition: all 0.2s ease;
-            margin-bottom: 2px;
-            background: transparent;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 14px; border-radius: 16px; transition: all 0.2s ease;
+            margin-bottom: 2px; background: transparent;
         }
 
-        .leader-row:hover {
-            background: rgba(255, 255, 255, 0.04);
-            transform: translateX(3px);
-        }
-
-        .leader-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .leader-avatar-wrapper {
-            position: relative;
-            width: 46px;
-            height: 46px;
-        }
+        .leader-row:hover { background: rgba(255, 255, 255, 0.04); transform: translateX(3px); }
+        .leader-left { display: flex; align-items: center; gap: 14px; }
+        .leader-avatar-wrapper { position: relative; width: 46px; height: 46px; }
 
         .leader-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
+            width: 100%; height: 100%; border-radius: 50%;
             background: linear-gradient(135deg, #2c3e50, #3498db);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 18px;
-            color: white;
-            border: 2px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 18px; color: white; border: 2px solid rgba(255,255,255,0.1);
         }
 
         .rank-badge-pill {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #4b6584;
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px;
+            border-radius: 50%; background: #4b6584; color: white; font-size: 10px;
+            font-weight: 700; display: flex; justify-content: center; align-items: center;
             border: 1.5px solid #131529;
         }
 
         .rank-1 .leader-avatar { border-color: var(--gold); background: radial-gradient(#d4af37, #8a6f27); box-shadow: var(--gold-glow); }
         .rank-1 .rank-badge-pill { background: var(--gold); color: black; }
-
         .rank-2 .leader-avatar { border-color: #dcdde1; background: radial-gradient(#b8bfc2, #7f8c8d); }
         .rank-2 .rank-badge-pill { background: #dcdde1; color: black; }
-
         .rank-3 .leader-avatar { border-color: #cd7f32; background: radial-gradient(#a05822, #6e3a13); }
         .rank-3 .rank-badge-pill { background: #cd7f32; color: white; }
 
@@ -409,8 +358,7 @@ body {
             position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%) scale(0.8);
             background: #1e213a; color: var(--text-muted); font-size: 8px; font-weight: 600;
             padding: 1px 5px; border-radius: 4px; white-space: nowrap; opacity: 0;
-            transition: all 0.2s ease;
-            pointer-events: none;
+            transition: all 0.2s ease; pointer-events: none;
         }
 
         .stage-tab.active-stage {
@@ -420,30 +368,20 @@ body {
         .stage-tab.active-stage::after { opacity: 1; transform: translateX(-50%) scale(1); color: white;}
 
         /* ==========================================================================
-           📡 7. Futuristic QR Scanner Screen
+           📡 6. Futuristic QR Scanner Screen
            ========================================================================== */
         .scanner-futuristic-container { text-align: center; padding: 15px 5px; }
 
         #qrReaderBox {
-            width: 100%;
-            max-width: 280px;
-            margin: 20px auto;
-            border-radius: 24px;
-            overflow: hidden;
-            background: #05060c;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            border: 2px solid rgba(108, 92, 231, 0.4);
-            position: relative;
+            width: 100%; max-width: 280px; margin: 20px auto; border-radius: 24px;
+            overflow: hidden; background: #05060c; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            border: 2px solid rgba(108, 92, 231, 0.4); position: relative;
         }
 
         #qrReaderBox::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border: 2px solid var(--accent-purple);
-            animation: radarPulse 2.5s infinite linear;
-            box-sizing: border-box;
-            pointer-events: none;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: 2px solid var(--accent-purple); animation: radarPulse 2.5s infinite linear;
+            box-sizing: border-box; pointer-events: none;
         }
 
         @keyframes radarPulse {
@@ -453,51 +391,78 @@ body {
         }
 
         .scanner-instruction-text {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--light-text);
-            margin-top: 24px;
-            padding: 0 15px;
-            line-height: 1.6;
-            letter-spacing: 0.3px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-size: 14px; font-weight: 500; color: var(--light-text); margin-top: 24px;
+            padding: 0 15px; line-height: 1.6; letter-spacing: 0.3px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
-
         .scanner-instruction-text span {
-            display: block;
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 4px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px;
+            font-weight: 400; text-transform: uppercase; letter-spacing: 1px;
         }
 
-       /* ==========================================================================
-   🧱 3. APP BODY - इसे खोजें और बदलें (कंटेंट और नेविगेशन के बीच टकराव रोकने के लिए)
-   ========================================================================== */
-.app-body { 
-    flex: 1; 
-    overflow-y: auto; 
-    padding: 20px; 
-    padding-bottom: 20px; /* सुरक्षित बॉटम स्पेस */
-    box-sizing: border-box;
-    -webkit-overflow-scrolling: touch; 
-}
+        /* ==========================================================================
+           🧱 7. APP BODY - सुरक्षित स्क्रोलिंग और टकराव से बचाव फिक्स
+           ========================================================================== */
+        .app-body { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+            padding-bottom: 96px; /* स्क्रोल होने वाले कंटेंट को टूलबार से ऊपर रखेगा */
+            box-sizing: border-box;
+            -webkit-overflow-scrolling: touch; 
+        }
 
         .app-tab-content { animation: fadeView 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes fadeView { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* ==========================================================================
+           📢 8. रंगीन डार्क थीम फिक्स: NOTIFICATION BOARD
+           ========================================================================== */
         .notice-board {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            border-radius: 18px; padding: 14px; color: white; margin-bottom: 18px;
-            box-shadow: 0 8px 20px rgba(56, 239, 125, 0.2);
+            background: linear-gradient(135deg, #1a1c38 0%, #111225 100%);
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            border-left: 5px solid var(--success);
+            border-radius: 18px; 
+            padding: 16px; 
+            color: var(--light-text); 
+            margin-bottom: 18px;
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.15);
+        }
+        .notice-board h4 i {
+            color: var(--success);
+            filter: drop-shadow(0 0 8px rgba(0, 184, 148, 0.6));
         }
 
+        /* ==========================================================================
+           📺 9. रंगीन डार्क थीम फिक्स: PROMOTED VIDEO CARD
+           ========================================================================== */
         .video-card {
-            background: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
-            color: white; border-radius: 18px; padding: 16px; margin-bottom: 18px;
+            background: linear-gradient(135deg, #221929 0%, #120d18 100%);
+            border: 1px solid rgba(255, 118, 117, 0.3);
+            border-left: 5px solid #ff5252;
+            color: var(--light-text); 
+            border-radius: 18px; 
+            padding: 16px; 
+            margin-bottom: 18px;
+            box-shadow: 0 8px 25px rgba(255, 82, 82, 0.15);
         }
+        .video-card h4 span {
+            color: var(--danger);
+            font-weight: 700;
+        }
+        .btn-play {
+            display: inline-block;
+            background: var(--primary-gradient);
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 10px;
+            box-shadow: var(--purple-glow);
+            transition: transform 0.2s;
+        }
+        .btn-play:active { transform: scale(0.95); }
 
         .info-row {
             display: flex; justify-content: space-between; align-items: center;
@@ -506,10 +471,13 @@ body {
         .info-row span { color: var(--text-muted); }
         .info-row b { color: white; font-weight: 600; }
 
-        /* FIXED STICKY NAVIGATION DECK ARCHITECTURE */
+        /* ==========================================================================
+           ⚓ 10. FIXED NAVIGATION BAR DECK (पूरी तरह स्थाई और मजबूत लॉक)
+           ========================================================================== */
         .nav-bar {
-            position: shrink;
-            margin-top: auto;
+            position: absolute; /* फ्रेम के अंदर नीचे चिपका रहेगा */
+            bottom: 0;
+            left: 0;
             width: 100%; 
             height: 76px;
             background: #0d0f1d; 
@@ -519,26 +487,60 @@ body {
             align-items: center; 
             z-index: 9000; 
             padding: 0 16px;
-            flex-shrink: 0; /* मोबाईल ब्राउजर में दबने से रोकता है */
+            flex-shrink: 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
         }
 
+        /* रंगीन डार्क सिम्बल्स इंटीग्रेशन */
         .nav-link {
-            display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
-            text-decoration: none; font-size: 10px; font-weight: 500; width: 60px; gap: 4px; transition: all 0.2s;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: var(--text-muted);
+            text-decoration: none; 
+            font-size: 10px; 
+            font-weight: 500; 
+            width: 60px; 
+            gap: 4px; 
+            transition: all 0.2s ease;
         }
-
-        .nav-link i { font-size: 18px; }
-        .nav-link.active { color: var(--accent-purple); text-shadow: var(--purple-glow); }
+        .nav-link i { 
+            font-size: 19px; 
+            transition: transform 0.2s;
+        }
+        
+        /* प्रत्येक सिम्बल के लिए अलग प्रीमियम रंगीन ग्लो */
+        #nav-home.active i { color: #00d2d3; filter: drop-shadow(0 0 8px rgba(0,210,211,0.6)); }
+        #nav-mystery.active i { color: #fbc531; filter: drop-shadow(0 0 8px rgba(251,197,49,0.6)); }
+        #nav-leaderboard.active i { color: #e84393; filter: drop-shadow(0 0 8px rgba(232,67,147,0.6)); }
+        #nav-wallet.active i { color: #2ecc71; filter: drop-shadow(0 0 8px rgba(46,204,113,0.6)); }
+        
+        .nav-link.active span { 
+            color: white; 
+            font-weight: 600; 
+        }
 
         .nav-pay-center {
-            position: relative; top: -16px; width: 60px; height: 60px;
-            background: var(--primary-gradient); border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: var(--purple-glow); cursor: pointer;
+            position: relative; 
+            top: -16px; 
+            width: 60px; 
+            height: 60px;
+            background: var(--primary-gradient); 
+            border-radius: 50%;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-shadow: var(--purple-glow); 
+            cursor: pointer;
             border: 5px solid var(--bg-main);
+            transition: transform 0.2s;
         }
+        .nav-pay-center:active { transform: scale(0.9) translateY(-16px); }
         .nav-pay-center i { color: white; font-size: 20px; }
 
+        /* ==========================================================================
+           🗂️ 11. Infrastructure Elements
+           ========================================================================== */
         .sidebar-menu {
             position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
             background: #0f1124; z-index: 9999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -569,7 +571,7 @@ body {
             background-size: 200% 100%; animation: skeletonMove 1.5s infinite; border-radius: 16px; margin-bottom: 8px;
         }
         @keyframes skeletonMove { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    </style>
+</style>
 </head>
 <body>
 
