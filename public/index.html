@@ -718,7 +718,21 @@
                             <button class="stage-tab" data-amount="₹50k-1L" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
                             <button class="stage-tab" data-amount="₹1L+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
                         </div>
+ <div id="tab-leaderboard" class="app-tab-content hidden-screen">
+    <div class="premium-card leaderboard-container">
+        <!-- ... (बाकी हेडिंग और स्टेज सेलेक्टर वही रहेगा) ... -->
 
+        <!-- ✨ नया: यूजर की अपनी रैंक दिखाने के लिए कार्ड -->
+        <div id="myPersonalRankCard" class="hidden-screen" style="margin-bottom: 15px; border: 1px solid var(--accent-purple); background: rgba(108, 92, 231, 0.15); border-radius: 18px; padding: 12px 14px;">
+            <div style="font-size: 11px; color: var(--accent-purple); font-weight: 600; text-transform: uppercase; margin-bottom: 5px;">आपकी वर्तमान रैंक (My Rank)</div>
+            <div id="myRankRowPlaceholder"></div>
+        </div>
+
+        <div class="leaderboard-list" id="lblBoardItemsContainer">
+            <!-- लिस्ट यहाँ लोड होगी -->
+        </div>
+    </div>
+</div>
                         <div class="leaderboard-list" id="lblBoardItemsContainer">
                             <div class="skeleton-row"></div>
                             <div class="skeleton-row"></div>
@@ -1289,82 +1303,84 @@
         /* ==========================================================================
            🏆 [फिक्स मॉड्यूल]: चुनी गई स्टेज बकेट के टॉप 10 लीडर्स रेंडर करने का सुधरा पाइपलाइन
            ========================================================================== */
-        window.renderLeaderboardStageWise = (stageIndex) => {
-            document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
-            
-            if(window.event && window.event.currentTarget) {
-                window.event.currentTarget.classList.add('active-stage');
-            } else {
-                const tabs = document.querySelectorAll('.stage-tab');
-                if(tabs[stageIndex]) tabs[stageIndex].classList.add('active-stage');
-            }
+        /* ==========================================================================
+   🏆 [अपडेटेड]: यूजर रैंक ट्रैकिंग के साथ लीडरबोर्ड रेंडर पाइपलाइन
+   ========================================================================== */
+window.renderLeaderboardStageWise = (stageIndex) => {
+    document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
+    
+    if(window.event && window.event.currentTarget) {
+        window.event.currentTarget.classList.add('active-stage');
+    } else {
+        const tabs = document.querySelectorAll('.stage-tab');
+        if(tabs[stageIndex]) tabs[stageIndex].classList.add('active-stage');
+    }
 
-            const container = document.getElementById('lblBoardItemsContainer');
-            container.innerHTML = "";
+    const container = document.getElementById('lblBoardItemsContainer');
+    const myRankCard = document.getElementById('myPersonalRankCard');
+    const myRankPlaceholder = document.getElementById('myRankRowPlaceholder');
+    
+    container.innerHTML = "";
+    myRankCard.classList.add('hidden-screen'); // डिफ़ॉल्ट रूप से छुपाएं
 
-            // 🛠️ फिक्स: इंडेक्स स्लाइस करने के बजाय सीधे उस स्टेज बकेट का फ़िल्टर्ड एरे उठाएं
-            const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
+    // 1. उस स्टेज बकेट का डेटा निकालें
+    const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
 
-            if(sliceSubList.length === 0) {
-                container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>इस स्टेज की कंडीशन में फिलहाल कोई योद्धा मौजूद नहीं है।</div>";
-                return;
-            }
+    if(sliceSubList.length === 0) {
+        container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>इस स्टेज पर फिलहाल कोई योद्धा मौजूद नहीं है।</div>";
+        return;
+    }
 
-            let rankLoopCounter = 1; // हर स्टेज बकेट के लिए रैंक काउंटर 1 से शुरू होगा
-            sliceSubList.forEach(userItem => {
-                let medalBadgeSelectorClass = "";
-                if(rankLoopCounter === 1) medalBadgeSelectorClass = "rank-1";
-                if(rankLoopCounter === 2) medalBadgeSelectorClass = "rank-2";
-                if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
+    // 2. वर्तमान लॉगिन यूजर का नाम (session से)
+    const currentUserName = document.getElementById('sideMenuUser').innerText;
 
-                const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
+    let rankLoopCounter = 1;
+    let userFoundInThisStage = false;
 
-                container.innerHTML += `
-                    <div class="leader-row ${medalBadgeSelectorClass}">
-                        <div class="leader-left">
-                            <div class="leader-avatar-wrapper">
-                                <div class="leader-avatar">${firstInitialCharacter}</div>
-                                <div class="rank-badge-pill">${rankLoopCounter}</div>
-                            </div>
-                            <div class="leader-info">
-                                <h4>${userItem.name}</h4>
-                                <p>Network Tier Member</p>
-                            </div>
-                        </div>
-                        <div class="leader-right-value">
-                            <b>${formatSmartAmount(userItem.balance)} 🪙</b>
-                        </div>
+    sliceSubList.forEach(userItem => {
+        let medalBadgeSelectorClass = "";
+        if(rankLoopCounter === 1) medalBadgeSelectorClass = "rank-1";
+        if(rankLoopCounter === 2) medalBadgeSelectorClass = "rank-2";
+        if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
+
+        const firstInitial = userItem.name.charAt(0).toUpperCase() || "W";
+        
+        // चेक करें कि क्या यह वर्तमान यूजर है
+        const isMe = (userItem.name === currentUserName);
+        const myHighlightStyle = isMe ? "border: 1px solid var(--accent-purple); background: rgba(108, 92, 231, 0.1);" : "";
+
+        const rowHtml = `
+            <div class="leader-row ${medalBadgeSelectorClass}" style="${myHighlightStyle}">
+                <div class="leader-left">
+                    <div class="leader-avatar-wrapper">
+                        <div class="leader-avatar">${firstInitial}</div>
+                        <div class="rank-badge-pill">${rankLoopCounter}</div>
                     </div>
-                `;
-                rankLoopCounter++;
-            });
-        };
+                    <div class="leader-info">
+                        <h4>${userItem.name} ${isMe ? '<span style="color:var(--accent-purple); font-size:10px;">(YOU)</span>' : ''}</h4>
+                        <p>Network Tier Member</p>
+                    </div>
+                </div>
+                <div class="leader-right-value">
+                    <b>${formatSmartAmount(userItem.balance)} 🪙</b>
+                </div>
+            </div>
+        `;
 
-        async function renderDynamicUnusedPromoVideoWidget(activeUserMobile) {
-            try {
-                const assetsCollectionSnap = await getDocs(query(collection(db, "assets"), where("status", "==", "active")));
-                const usedKeysSnap = await getDocs(collection(db, "users", activeUserMobile, "used_keys"));
-                
-                const usedKeysList = [];
-                usedKeysSnap.forEach(dk => usedKeysList.push(dk.id));
-
-                let discoveredValidPromoDoc = null;
-                assetsCollectionSnap.forEach(assetDoc => {
-                    if (!usedKeysList.includes(String(assetDoc.id)) && !discoveredValidPromoDoc) {
-                        discoveredValidPromoDoc = assetDoc.data();
-                    }
-                });
-
-                const widgetElementBlock = document.getElementById('promoVideoSection');
-                if (discoveredValidPromoDoc) {
-                    document.getElementById('lblPromoTitle').innerText = discoveredValidPromoDoc.title || "Premium Stream";
-                    document.getElementById('btnPromoLink').setAttribute('href', discoveredValidPromoDoc.link || "https://youtube.com");
-                    widgetElementBlock.classList.remove('hidden-screen');
-                } else {
-                    widgetElementBlock.classList.add('hidden-screen');
-                }
-            } catch (err) { console.error(err); }
+        // अगर यूजर मिल गया, तो उसे "My Status" कार्ड में भी दिखाएं
+        if(isMe) {
+            myRankPlaceholder.innerHTML = rowHtml;
+            myRankCard.classList.remove('hidden-screen');
+            userFoundInThisStage = true;
         }
+
+        container.innerHTML += rowHtml;
+        rankLoopCounter++;
+    });
+
+    // अगर यूजर इस टॉप 10 में नहीं है, लेकिन इस स्टेज का हिस्सा है (लॉजिक के लिए)
+    // तो आप यहाँ एक मैसेज दिखा सकते हैं "You are out of top 10"
+};
 
         window.processDashboardKeyClaim = async () => {
             const enteredSecretCode = document.getElementById('dashSecretKey').value.trim();
