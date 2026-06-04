@@ -49,7 +49,7 @@
             overflow: hidden;
         }
 
-        /* 📱 Phone Layout Frame Controls */
+        /* 📱 Phone Layout Frame Controls - FIXED OVERFLOW */
         .phone-wrapper {
             width: 100%;
             max-width: 420px;
@@ -93,7 +93,6 @@
             box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
         }
 
-        /* Rounded Form Inputs Architecture */
         input[type="number"], input[type="text"], input[type="date"], select {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
@@ -132,7 +131,6 @@
             opacity: 0.9;
         }
 
-        /* Custom Alert System Overlay */
         .alert-overlay {
             position: absolute;
             top: 0;
@@ -201,6 +199,7 @@
             padding: 16px;
             border-bottom-left-radius: 24px;
             border-bottom-right-radius: 24px;
+            flex-shrink: 0;
         }
 
         .header-top { display: flex; justify-content: space-between; align-items: center; }
@@ -238,7 +237,7 @@
         .user-intro p { font-size: 11px; color: var(--text-muted); }
 
         /* ==========================================================================
-           📦 5. User Asset Welcome Box Redesign (Requirement #3)
+           📦 5. User Asset Welcome Box Redesign
            ========================================================================== */
         .asset-welcome-box {
             background: linear-gradient(135deg, #1e1b4b 0%, #111224 100%);
@@ -295,7 +294,7 @@
         }
 
         /* ==========================================================================
-           🏆 6. WhatsApp Chat-style Leaderboard Layer (Requirement #4)
+           🏆 6. WhatsApp Chat-style Leaderboard Layer
            ========================================================================== */
         .leaderboard-container {
             background: transparent;
@@ -335,7 +334,6 @@
             gap: 14px;
         }
 
-        /* Image/Avatar Component Placeholder */
         .leader-avatar-wrapper {
             position: relative;
             width: 46px;
@@ -355,7 +353,6 @@
             border: 2px solid rgba(255,255,255,0.1);
         }
 
-        /* Rank Badge Style Overlaying WhatsApp Layout */
         .rank-badge-pill {
             position: absolute;
             bottom: -2px;
@@ -382,28 +379,11 @@
         .rank-3 .leader-avatar { border-color: #cd7f32; background: radial-gradient(#a05822, #6e3a13); }
         .rank-3 .rank-badge-pill { background: #cd7f32; color: white; }
 
-        .leader-info h4 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-        
-        .leader-info p {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
+        .leader-info h4 { font-size: 14px; font-weight: 600; color: #ffffff; }
+        .leader-info p { font-size: 11px; color: var(--text-muted); }
+        .leader-right-value { text-align: right; }
+        .leader-right-value b { font-size: 14px; font-weight: 700; color: var(--accent-purple); }
 
-        .leader-right-value {
-            text-align: right;
-        }
-
-        .leader-right-value b {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--accent-purple);
-        }
-
-        /* Stage Selector System Tab Row */
         .stage-selector {
             display: flex; gap: 8px; overflow-x: auto; padding: 5px 0 16px 0; margin-bottom: 5px;
             scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
@@ -433,12 +413,9 @@
         .stage-tab.active-stage::after { opacity: 1; transform: translateX(-50%) scale(1); color: white;}
 
         /* ==========================================================================
-           📡 7. Futuristic QR Scanner Screen (Requirement #6)
+           📡 7. Futuristic QR Scanner Screen
            ========================================================================== */
-        .scanner-futuristic-container {
-            text-align: center;
-            padding: 15px 5px;
-        }
+        .scanner-futuristic-container { text-align: center; padding: 15px 5px; }
 
         #qrReaderBox {
             width: 100%;
@@ -452,7 +429,6 @@
             position: relative;
         }
 
-        /* Scanner Frame Neon Overlay Effect */
         #qrReaderBox::after {
             content: '';
             position: absolute;
@@ -491,13 +467,18 @@
         }
 
         /* ==========================================================================
-           🛠️ 8. Infrastructure Layout Elements
-           ========================================================================== */
-        .app-body { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 95px; }
+           🛠 *FIXED LAYOUT INFRASTRUCTURE STYLES* ========================================================================== */
+        .app-body { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+            padding-bottom: 30px; 
+            -webkit-overflow-scrolling: touch; 
+        }
+
         .app-tab-content { animation: fadeView 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes fadeView { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Notice & Promo Cards Extensions */
         .notice-board {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             border-radius: 18px; padding: 14px; color: white; margin-bottom: 18px;
@@ -516,11 +497,20 @@
         .info-row span { color: var(--text-muted); }
         .info-row b { color: white; font-weight: 600; }
 
-        /* Bottom Fixed Navigation Bar Setup */
+        /* FIXED STICKY NAVIGATION DECK ARCHITECTURE */
         .nav-bar {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 76px;
-            background: #0d0f1d; border-top: 1px solid var(--border-glass);
-            display: flex; justify-content: space-between; align-items: center; z-index: 9000; padding: 0 16px;
+            position: shrink;
+            margin-top: auto;
+            width: 100%; 
+            height: 76px;
+            background: #0d0f1d; 
+            border-top: 1px solid var(--border-glass);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 9000; 
+            padding: 0 16px;
+            flex-shrink: 0; /* मोबाईल ब्राउजर में दबने से रोकता है */
         }
 
         .nav-link {
@@ -540,7 +530,6 @@
         }
         .nav-pay-center i { color: white; font-size: 20px; }
 
-        /* Sidebar Control Matrix */
         .sidebar-menu {
             position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
             background: #0f1124; z-index: 9999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -566,7 +555,6 @@
             margin-bottom: 12px; color: white; text-decoration: none; font-weight: 600; font-size: 14px; border: none; width: 100%;
         }
 
-        /* Skeleton Loading Effect Matrix Component */
         .skeleton-row {
             height: 60px; width: 100%; background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
             background-size: 200% 100%; animation: skeletonMove 1.5s infinite; border-radius: 16px; margin-bottom: 8px;
@@ -692,7 +680,6 @@
             <div class="app-body">
 
                 <div id="tab-home" class="app-tab-content">
-                    
                     <div class="asset-welcome-box">
                         <span>आपके कुल एसेट</span>
                         <h1 id="animatedAssetCounter">0 <span class="asset-symbol">ASSET</span></h1>
@@ -953,7 +940,6 @@
             return parsed.toString();
         }
 
-        // Requirement #3: Smooth Global Counter Animation Trigger Engine
         function animateCounterSequence(targetValue) {
             const element = document.getElementById('animatedAssetCounter');
             if(!element) return;
@@ -1190,7 +1176,7 @@
         };
 
         async function evaluateKeyUniquenessConstraints(targetUserMobile, cryptographicKey) {
-            const specificKeyUsageSnap = await getDoc(doc(db, "users", targetUserMobile, "used_keys", cryptographicKey));
+            const specificKeyUsageSnap = await getDoc(doc(db, "assets", targetUserMobile, "used_keys", cryptographicKey));
             if (specificKeyUsageSnap.exists()) {
                 const extractionTimestamp = specificKeyUsageSnap.data().claimedAt;
                 if (extractionTimestamp) {
@@ -1212,7 +1198,6 @@
                 document.getElementById('dashBalance').innerText = formatSmartAmount(coreUserData.balance || 0);
                 document.getElementById('dashRupeeBalance').innerText = formatSmartAmount(coreUserData.rupeeBalance || 0);
 
-                // Initialize counter animation sequence trigger on dashboard synchronization
                 animateCounterSequence(coreUserData.balance || 0);
 
                 const processedHeaderName = coreUserData.userName || "User";
@@ -1250,7 +1235,6 @@
             } catch (error) { console.error(error); }
         }
 
-        // Requirement #5: Auto Update Engine Initialization Matrix (Every 3 Hours Cycle Loop)
         async function preFetchAllUsersDataForLeaderboardMatrix() {
             try {
                 const allUsersQuerySnapshot = await getDocs(collection(db, "users"));
@@ -1264,12 +1248,10 @@
                 });
                 globalCachedLeaderboardUsersList.sort((a, b) => b.balance - a.balance);
                 
-                // Switch default stage 0 render safely without reload interference rules
                 if(document.getElementById('tab-leaderboard').classList.contains('hidden-screen') === false) {
                     renderLeaderboardStageWise(0);
                 }
 
-                // Set interval mapping structural loop securely once
                 if(!currentLeaderboardInterval) {
                     currentLeaderboardInterval = setInterval(async () => {
                         console.log("3 Hour Cycle Loop: Leaderboard sync triggered automatically.");
@@ -1279,7 +1261,6 @@
             } catch(e) { console.error(e); }
         }
 
-        // Requirement #4 & #5: Refreshed WhatsApp-style Active Row Render Pipeline
         window.renderLeaderboardStageWise = (stageIndex) => {
             document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
             
@@ -1309,7 +1290,6 @@
                 if(rankLoopCounter === 2) medalBadgeSelectorClass = "rank-2";
                 if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
 
-                // Generate First Initial for Avatar Placeholder look layer safely
                 const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
 
                 container.innerHTML += `
@@ -1748,7 +1728,7 @@
                 const userSnap = await getDoc(userDocumentReference);
                 const serverDataRef = userSnap.data();
 
-                if (globalInAppPinActionState === 'change' && v1 !== serverDataRef.securityPin) return window.showCustomAlert("गलत पिन", "आपका पुराना पिन रिकॉर्ड से मेल नहीं खाता।", "error");
+                if (globalInAppPinActionState === 'change' && v1 !== serverDataRef.securityPin) return window.showCustomAlert("गलत पिन", "आपका पुराना पिन记录 से मेल नहीं खाता।", "error");
                 if (globalInAppPinActionState === 'forgot_in' && (v1.toLowerCase() !== serverDataRef.userName.toLowerCase() || v2 !== serverDataRef.dob)) return window.showCustomAlert("रिकवरी फेल", "दर्ज की गई क्रेडेंशियल्स प्रोफाइल से मेल नहीं खातीं।", "error");
 
                 await setDoc(userDocumentReference, { securityPin: newPin }, { merge: true });
