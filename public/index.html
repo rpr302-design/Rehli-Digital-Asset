@@ -940,17 +940,24 @@
             requestAnimationFrame(updateCounter);
         }
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            parseIncomingUrlParametersForAutoReferrals();
-            if (userSessionMobile) {
-                renderApplicationShellInterface(true);
-                await synchronizeUserDashboardStateEngine();
-                await initializePushNotificationGateway(false); 
-            } else {
-                renderApplicationShellInterface(false);
-            }
-            document.getElementById('inviteAssetLbl').innerText = formatSmartAmount(50000) + " Assets";
-        });
+     window.addEventListener('DOMContentLoaded', async () => {
+    parseIncomingUrlParametersForAutoReferrals();
+    if (userSessionMobile) {
+        renderApplicationShellInterface(true);
+        await synchronizeUserDashboardStateEngine();
+        
+        // ✨ सुधार: पेज लोड होते ही सीधे गेटवे चालू करने के बजाय, पहले चेक करें कि क्या परमिशन पहले से 'granted' है
+        if (Notification.permission === 'granted') {
+            // अगर यूजर पहले ही 'Allow' कर चुका है, तभी बैकग्राउंड में टोकन अपडेट करें
+            await initializePushNotificationGateway(false); 
+        }
+        // अगर परमिशन 'default' या 'denied' है, तो यहाँ कुछ मत करें। 
+        // यूजर जब खुद साइडबार/सेटिंग्स में जाकर बटन दबाएगा, तभी पॉपअप मांगेंगे।
+
+    } else {
+        renderApplicationShellInterface(false);
+    }
+});
 
         setTimeout(() => {
             const phoneWrapper = document.querySelector('.phone-wrapper');
