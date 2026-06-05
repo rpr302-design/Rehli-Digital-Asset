@@ -1685,28 +1685,37 @@
             }
         }
 
-        window.togglePushNotificationState = async () => {
-            window.toggleSidebar(false);
-            if (!('Notification' in window)) {
-                return window.showCustomAlert("असमर्थ", "यह डिवाइस नोटिफिकेशन सिस्टम को सपोर्ट नहीं करता।", "error");
+    window.togglePushNotificationState = async () => {
+    window.toggleSidebar(false);
+    if (!('Notification' in window)) {
+        return window.showCustomAlert("असमर्थ", "यह डिवाइस नोटिफिकेशन सिस्टम को सपोर्ट नहीं करता।", "error");
+    }
+    
+    if (Notification.permission === 'default' || Notification.permission === 'denied') {
+        
+        // ब्राउज़र के डिफ़ॉल्ट कन्फर्म का उपयोग करना सबसे सुरक्षित है ताकि यूज़र इंटरैक्शन न टूटे
+        const userConfirmed = confirm("नये अपडेट्स और अलर्ट्स पाने के लिए अगले पॉप-अप बॉक्स में 'Allow' बटन पर क्लिक करके परमिशन दें।");
+        
+        if (userConfirmed) {
+            // अब ब्राउज़र को पता है कि यूज़र ने खुद 'OK' दबाया है, इसलिए वह ब्लॉक नहीं करेगा
+            await initializePushNotificationGateway(true);
+        } else {
+            window.showCustomAlert("रद्द किया", "आपने नोटिफिकेशन अनुमति प्रक्रिया को रद्द कर दिया।", "error");
+        }
+
+    } else {
+        try {
+            const userRef = doc(db, "users", userSessionMobile);
+            const snap = await getDoc(userRef);
+            if (snap.exists()) {
+                const currentStatus = snap.data().pushEnabled || false;
+                await setDoc(userRef, { pushEnabled: !currentStatus }, { merge: true });
+                const statusMessage = !currentStatus ? "पुश नोटिफिकेशन सफलतापूर्वक चालू किए गए!" : "पुश नोटिफिकेशन सफलतापूर्वक बंद किए गए!";
+                window.showCustomAlert("अपडेट हुआ", statusMessage, "success");
             }
-            
-            if (Notification.permission === 'default' || Notification.permission === 'denied') {
-                window.showCustomAlert("अनुमति दें", "अगले पॉप-अप बॉक्स में 'Allow' बटन पर क्लिक करके परमिशन दें।", "success");
-                await initializePushNotificationGateway(true);
-            } else {
-                try {
-                    const userRef = doc(db, "users", userSessionMobile);
-                    const snap = await getDoc(userRef);
-                    if (snap.exists()) {
-                        const currentStatus = snap.data().pushEnabled || false;
-                        await setDoc(userRef, { pushEnabled: !currentStatus }, { merge: true });
-                        const statusMessage = !currentStatus ? "पुश नोटिफिकेशन सफलतापूर्वक चालू किए गए!" : "पुश नोटिफिकेशन सफलतापूर्वक बंद किए गए!";
-                        window.showCustomAlert("अपडेट हुआ", statusMessage, "success");
-                    }
-                } catch (err) { console.error(err); }
-            }
-        };
+        } catch (err) { console.error(err); }
+    }
+};
 
         async function loadProfileScreen() {
             try {
