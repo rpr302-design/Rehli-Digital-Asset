@@ -38,7 +38,6 @@
         -webkit-tap-highlight-color: transparent;
     }
 
-    /* ब्राउज़र की डिफ़ॉल्ट एक्स्ट्रा पैडिंग और मार्जिन को खत्म करने के लिए फिक्स */
     html, body {
         width: 100%;
         height: 100%;
@@ -57,15 +56,15 @@
     }
 
     /* ==========================================================================
-       📱 2. PHONE WRAPPER - ऊपर और नीचे से परफेक्ट फिटिंग के लिए अपडेटेड
+       📱 2. PHONE WRAPPER
        ========================================================================== */
     .phone-wrapper {
         width: 100%;
         max-width: 420px;
         height: 100%;
-        height: 100dvh; /* क्रोम एड्रेस बार के अनुसार परफेक्ट हाइट */
+        height: 100dvh;
         background: linear-gradient(180deg, #090a15 0%, #131529 100%);
-        position: absolute; /* मोबाइल पर क्रोम के ऊपरी हिस्से से चिपकाने के लिए */
+        position: absolute;
         top: 0;
         left: 50%;
         transform: translateX(-50%);
@@ -75,7 +74,6 @@
         box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
     }
 
-    /* बड़ी स्क्रीन (डेस्कटॉप/टैबलेट) पर यह खूबसूरत फ्रेम के रूप में दिखेगा */
     @media (min-height: 700px) and (min-width: 450px) {
         .phone-wrapper {
             position: relative;
@@ -91,7 +89,7 @@
     .hidden-screen { display: none !important; }
 
     /* ==========================================================================
-       💎 3. Premium Core UI Kit (Glassmorphism & Shadows)
+       💎 3. Premium Core UI Kit
        ========================================================================== */
     .premium-card {
         background: var(--bg-card-glass);
@@ -179,7 +177,7 @@
     }
 
     /* ==========================================================================
-       🚀 5. APP HEADER - स्थिर और सुव्यवस्थित
+       🚀 5. APP HEADER
        ========================================================================== */
     .app-header {
         background: linear-gradient(135deg, #131429 0%, #090a15 100%);
@@ -368,7 +366,6 @@
     .leader-info p { font-size: 11px; color: var(--text-muted); }
     .leader-right-value b { font-size: 13.5px; font-weight: 700; color: var(--accent-purple); }
 
-    /* 🏆 STAGE SELECTOR FIX - PHONEPE STYLE COMPACT GRID SHEEPS */
     .stage-selector {
         display: flex; gap: 6px; overflow-x: auto; padding: 5px 2px 22px 2px; margin-bottom: 5px;
         scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
@@ -426,13 +423,12 @@
     .scanner-instruction-text span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
 
     /* ==========================================================================
-       🧱 9. APP BODY - केवल यही हिस्सा स्वतंत्र रूप से स्क्रोल होगा
+       🧱 9. APP BODY
        ========================================================================== */
     .app-body { 
         flex: 1; 
         overflow-y: auto; 
         padding: 20px; 
-        /* नीचे थोड़ा एक्स्ट्रा स्पेस ताकि आखरी कार्ड नेवबार के पीछे न दबे */
         padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); 
         -webkit-overflow-scrolling: touch;
     }
@@ -455,14 +451,13 @@
     .info-row b { color: white; font-weight: 600; }
 
     /* ==========================================================================
-       ⚓ 10. NAV BAR - मोबाइल जेस्चर और एड्रेस बार से सुरक्षित
+       ⚓ 10. NAV BAR
        ========================================================================== */
     .nav-bar {
-        position: absolute; /* इसे पूरे मोबाइल स्क्रीन फ्रेम के सबसे निचले हिस्से पर लॉक किया */
+        position: absolute;
         bottom: 0;
         left: 0;
         width: 100%; 
-        /* बॉटम पैडिंग सेफ एरिया के बराबर दी ताकि बटन ऊपर रहें और मोबाइल नेविगेशन बार से न टकराएं */
         height: calc(76px + env(safe-area-inset-bottom, 0px));
         background: #0d0f1d; 
         border-top: 1px solid var(--border-glass);
@@ -484,7 +479,6 @@
     .nav-link i { font-size: 18px; }
     .nav-link.active { color: var(--accent-purple); text-shadow: var(--purple-glow); }
 
-    /* बीच वाले पे (Pay) बटन को भी सेफ एरिया के अनुसार ऊपर शिफ्ट किया */
     .nav-pay-center {
         position: relative; 
         top: calc(-16px - env(safe-area-inset-bottom, 0px) / 2); 
@@ -684,7 +678,7 @@
                     <div class="premium-card" style="text-align: center;">
                         <h3 style="justify-content: center; display:flex; align-items:center; gap:8px; font-size:16px; color: var(--accent-purple);"><i class="fa-solid fa-box-open"></i> Magic Mystery Box</h3>
                         <p style="font-size: 12px; color: var(--text-muted); margin: 8px 0 15px 0; line-height:1.5;">
-                            रोजाना अधिकतम **5 मौके** मिलेंगे। हर बार बॉक्स खोलने के बाद **1 घंटे का इंतजार** करना होगा (कोई फीस नहीं)।
+                             रोजाना अधिकतम **5 मौके** मिलेंगे। हर बार बॉक्स खोलने के बाद **1 घंटे का इंतजार** करना होगा (कोई फीस नहीं)।
                         </p>
                         
                         <div style="background: rgba(255,255,255,0.03); border:1px solid var(--border-glass); padding:12px; border-radius:14px; margin-bottom:18px; font-size:13px;">
@@ -718,15 +712,12 @@
                             <button class="stage-tab" data-amount="₹50k-1L" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
                             <button class="stage-tab" data-amount="₹1L+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
                         </div>
-<!-- ✨ यूजर की अपनी रैंक दिखाने के लिए नया स्टिकी कार्ड -->
-<div id="myPersonalRankCard" class="hidden-screen" style="margin-bottom: 12px; border: 1.5px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12); border-radius: 18px; padding: 12px;">
-    <div style="font-size: 10px; color: var(--accent-purple); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px;">आपकी वर्तमान स्थिति (My Rank)</div>
-    <div id="myRankRowPlaceholder"></div>
-</div>
 
-<div class="leaderboard-list" id="lblBoardItemsContainer">
-    <!-- टॉप 10 लिस्ट यहाँ आएगी -->
-</div>
+                        <div id="myPersonalRankCard" class="hidden-screen" style="margin-bottom: 12px; border: 1.5px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12); border-radius: 18px; padding: 12px;">
+                            <div style="font-size: 10px; color: var(--accent-purple); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px;">आपकी वर्तमान स्थिति (My Rank)</div>
+                            <div id="myRankRowPlaceholder"></div>
+                        </div>
+
                         <div class="leaderboard-list" id="lblBoardItemsContainer">
                             <div class="skeleton-row"></div>
                             <div class="skeleton-row"></div>
@@ -807,7 +798,7 @@
                         <button class="social-btn" style="background:#ff0000;" onclick="handleSocialTaskExecution('youtube')"><span><i class="fa-brands fa-youtube"></i> YouTube Channel</span><small id="lbl-social-youtube">+1k Assets</small></button>
                         <button class="social-btn" style="background:#1877f2;" onclick="handleSocialTaskExecution('facebook')"><span><i class="fa-brands fa-facebook"></i> Facebook Page</span><small id="lbl-social-facebook">+1k Assets</small></button>
                         <button class="social-btn" style="background:#e4405f;" onclick="handleSocialTaskExecution('instagram')"><span><i class="fa-brands fa-instagram"></i> Instagram Hub</span><small id="lbl-social-instagram">+1k Assets</small></button>
-                        <button class="social-btn" style="background:#0088cc;" onclick="handleSocialTaskExecution('telegram')"><span><i class="fa-brands fa-telegram"></i> Telegram Network</span><small id="lbl-social-telegram">+1k Assets</small></button>
+                        <button class="social-btn" style="background:#0088cc;" onclick="handleSocialTaskExecution('telegram')"><span><i class="fa-brands fa-telegram"></i> Telegram Network</small></button>
                         <button class="social-btn" style="background:#25d366;" onclick="handleSocialTaskExecution('whatsapp')"><span><i class="fa-brands fa-whatsapp"></i> WhatsApp Channel</span><small id="lbl-social-whatsapp">+1k Assets</small></button>
                     </div>
                 </div>
@@ -874,7 +865,7 @@
             </div>
 
             <nav class="nav-bar">
-                <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></a>
+                <a href="#" class="nav-bar nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></a>
                 <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>Mystery</span></a>
                 
                 <div class="nav-pay-center" onclick="switchAppTab('pay')"><div><i class="fa-solid fa-qrcode"></i></div></div>
@@ -886,7 +877,7 @@
         </div>
     </div>
 
-   <script type="module">
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, limit, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
@@ -911,7 +902,7 @@
         let globalDynamicBoxesArray = [];
         let selectedTargetBoxIndexToUnlock = null;
         
-        // 🛠️ फिक्स: सातों स्टेज का अलग-अलग कंप्रेस्ड बकेट डेटा होल्ड करने के लिए मैट्रिक्स एरे
+        // 🛠️ फिक्स: सातों स्टेज का एसेट बकेट डेटा स्टोर करने के लिए ग्लोबल एरे मैट्रिक्स
         let globalCachedLeaderboardMatrix = [[], [], [], [], [], [], []];
         let currentLeaderboardInterval = null;
 
@@ -1235,7 +1226,7 @@
             } catch (error) { console.error(error); }
         }
 
-       /* ==========================================================================
+        /* ==========================================================================
            🥇 [सुधरा हुआ मॉड्यूल]: 1-Read मोड और 3-घंटे ऑटो-रिफ्रेश सिंक्रोनाइजेशन इंजन
            ========================================================================== */
         async function preFetchAllUsersDataForLeaderboardMatrix() {
@@ -1287,7 +1278,7 @@
                     renderLeaderboardStageWise(currentStageIndex >= 0 ? currentStageIndex : 0);
                 }
 
-                // 🔄 फिक्स: बिना पेज रीलोड किए प्रत्येक 3 घंटे में बैकएंड बफर को स्वतः अपडेट करना
+                // 🔄 बिना पेज रीलोड किए प्रत्येक 3 घंटे में बैकएंड बफर को स्वतः अपडेट करना
                 if(!currentLeaderboardInterval) {
                     currentLeaderboardInterval = setInterval(async () => {
                         console.log("3-Hour Refresh Triggered: डेटाबेस रीड्स को सुरक्षित रखते हुए ऑटो-सिंक एक्टिव।");
@@ -1298,7 +1289,7 @@
         }
 
         /* ==========================================================================
-           🏆 [सुधरा हुआ मॉड्यूल]: यूजर हाईलाइटिंग और टॉप/बॉटम स्टिकी रैंक डिस्प्ले पाइपलाइन
+           🏆 [सुधरा हुआ मॉड्यूल]: यूजर हाईलाइटिंग और टॉप स्टिकी रैंक डिस्प्ले पाइपलाइन
            ========================================================================== */
         window.renderLeaderboardStageWise = (stageIndex) => {
             document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
@@ -1316,7 +1307,7 @@
             
             container.innerHTML = "";
             
-            // डिफ़ॉल्ट रूप से यूजर रैंक कार्ड को छिपाकर रखें (यदि यूजर उस स्टेज में नहीं है तो नहीं दिखेगा)
+            // डिफ़ॉल्ट रूप से यूजर रैंक कार्ड को छिपाकर रखें
             if(myRankCard) myRankCard.classList.add('hidden-screen'); 
 
             const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
@@ -1337,7 +1328,7 @@
 
                 const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
                 
-                // 🛠️ फिक्स: चेक करें कि क्या यह लूप वाला ऑब्जेक्ट वर्तमान लॉगिन यूजर का ही है
+                // चेक करें कि क्या यह लूप वाला ऑब्जेक्ट वर्तमान लॉगिन यूजर का ही है
                 const isMe = (userItem.name.trim() === currentUserName);
                 const myHighlightStyle = isMe ? "border: 1px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12);" : "";
 
@@ -1359,7 +1350,7 @@
                     </div>
                 `;
 
-                // 🛠️ फिक्स: अगर यूजर टॉप 10 लिस्ट के अंदर मिल जाता है, तो उसे सबसे ऊपर स्टिकी कार्ड में भी लाइव दिखाएं
+                // अगर यूजर टॉप 10 लिस्ट के अंदर मिल जाता है, तो उसे सबसे ऊपर स्टिकी कार्ड में भी लाइव दिखाएं
                 if(isMe && myRankCard && myRankPlaceholder) {
                     myRankPlaceholder.innerHTML = rowHtml;
                     myRankCard.classList.remove('hidden-screen');
@@ -1818,7 +1809,7 @@
             try {
                 const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
                 const taskSnap = await getDoc(taskRef);
-                if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल मीडिया बोनस आपके द्वारा पहले ही क्लेम किया जा चुका है।", "error");
+                if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल मीडिया बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
 
                 window.open("https://youtube.com/@RehliTechnical", '_blank');
                 const uRef = doc(db, "users", userSessionMobile);
@@ -1880,6 +1871,7 @@
 
         window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
         window.processLogoutRoute = () => { localStorage.clear(); sessionStorage.clear(); location.reload(); };
+        
         function setAppHeight() {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
