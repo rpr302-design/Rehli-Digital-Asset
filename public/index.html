@@ -1032,7 +1032,7 @@
                 document.getElementById('rewardSection').classList.remove('hidden-screen');
                 document.getElementById('userReferralInput').style.display = "block";
                 document.getElementById('loginPinArea').classList.add('hidden-screen');
-                document.getElementById('authTitle').innerText = "रजिस्ट्रेशन पाइपलाइन";
+                document.getElementById('authTitle').innerText = "Verification ";
                 document.getElementById('authSubtitle').innerText = "कोड वेरिफाइड! नीचे अपना मोबाइल नंबर दर्ज करें।";
             } catch (error) {
                 window.showCustomAlert("सर्वर त्रुटि / Server Error", "नेटवर्क में समस्या है। कृपया फिर कोशिश करें।", "error");
@@ -1048,7 +1048,7 @@
                 document.getElementById('userReferralInput').style.display = "none";
                 document.getElementById('loginPinArea').classList.remove('hidden-screen');
                 document.getElementById('forgotPinArea').classList.add('hidden-screen');
-                document.getElementById('authTitle').innerText = "लॉगिन गेटवे / Login Gateway";
+                document.getElementById('authTitle').innerText = "Login Gateway";
                 document.getElementById('authSubtitle').innerText = "आगे बढ़ने के लिए अपना रजिस्टर्ड नंबर and पिन दर्ज करें।";
             }
         };
@@ -1083,7 +1083,7 @@
                 const userData = userSnap.data();
                 if (userData.userName.toLowerCase() === inputName.toLowerCase() && userData.dob === inputDOB) {
                     await setDoc(userDocRef, { securityPin: inputNewPin }, { merge: true });
-                    window.showCustomAlert("पिन बदल गया! 🎉", "आपका पिन कोड सफलतापूर्वक बदल गया है। अब लॉगिन करें।", "success");
+                    window.showCustomAlert("पिन बदल गया! 🎉", "आपका पिन कोड सफलतापूर्वक बदल गया है। अब लॉगिन करें।", "Success");
                     document.getElementById('forgotPinArea').classList.add('hidden-screen');
                     document.getElementById('loginSecurityPin').value = inputNewPin;
                 } else {
