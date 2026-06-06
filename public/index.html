@@ -1190,6 +1190,9 @@
             return true;
         }
 
+/* ==========================================================================
+           📊 [सुधरा हुआ मॉड्यूल]: डायनेमिक नाम-आधारित रेफरल कोड रेंडरिंग इंजन
+           ========================================================================== */
         async function synchronizeUserDashboardStateEngine() {
             if (!userSessionMobile) return;
             try {
@@ -1208,7 +1211,29 @@
                 document.getElementById('dashUserPhone').innerText = "+91 " + userSessionMobile;
                 document.getElementById('sideMenuUser').innerText = coreUserData.userName || "Smart User";
                 document.getElementById('sideMenuPhone').innerText = "+91 " + userSessionMobile;
-                document.getElementById('lblReferralCodeDisplay').innerText = "REHLI" + userSessionMobile.substring(6).toUpperCase();
+
+                // 🛠️ [क्रिटिकल सुधार]: नाम/उपनाम से डायनेमिक 4-अक्षर का प्रीफ़िक्स जनरेट करके कोड दिखाना
+                let uName = (coreUserData.userName || "SMART").trim();
+                let prefix = "";
+
+                // नाम से स्पेस हटाएं और अक्षरों को साफ़ करें
+                let cleanName = uName.replace(/\s+/g, '');
+                
+                if (cleanName.length >= 4) {
+                    // यदि नाम 4 या अधिक अक्षरों का है
+                    prefix = cleanName.substring(0, 4);
+                } else {
+                    // यदि नाम छोटा है, तो बाकी के स्थान को रैंडम अक्षरों से भरें
+                    prefix = cleanName;
+                    while (prefix.length < 4) {
+                        let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                        prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+                    }
+                }
+                
+                // फाइनल 4-अक्षर प्रीफ़िक्स + मोबाइल के अंतिम 4 अंक
+                let finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
+                document.getElementById('lblReferralCodeDisplay').innerText = finalDynamicCode;
 
                 const noticeSnap = await getDoc(doc(db, "announcements", "live_notice"));
                 if (noticeSnap.exists()) {
