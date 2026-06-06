@@ -125,7 +125,7 @@
                 <a class="nav-link" onclick="showTab('announcement')"><i class="fas fa-bullhorn"></i> घोषणा बोर्ड और मिस्ट्री बॉक्स</a>
                 <a class="nav-link" onclick="showTab('users')"><i class="fas fa-users"></i> यूज़र एसेट रिपोर्ट शीट</a>
                 <a class="nav-link" onclick="showTab('merchants')"><i class="fas fa-store"></i> पंजीकृत दुकानदार लिस्ट</a>
-                <a class="nav-link" onclick="showTab('tracking')"><i class="fas fa-search-location"></i> उपभोक्ता अर्निंग ट्रैकर</a>
+                <a class="nav-link" onclick="showTab('tracking')"><i class="fas fa-search-location"></i> उपभोक्ता अर्निंग派 ट्रैकर</a>
                 <a class="nav-link" onclick="showTab('history')"><i class="fas fa-history"></i> चाबी रिलीज इतिहास</a>
                 <a class="nav-link" style="margin-top: auto; border-top: 1px solid var(--border-color); color:var(--danger);" onclick="logout()"><i class="fas fa-power-off"></i> लॉगआउट पैनल</a>
             </div>
@@ -264,7 +264,7 @@
                             <label>सुरक्षा लॉक व्यवस्था</label>
                             <select id="selMBoxPinRequired" onchange="togglePinConfigFields(this.value)">
                                 <option value="false">🔓 डायरेक्ट खोलें (फ्री / नो पिन)</option>
-                                <option value="true">🔒 पिन कोड लॉक अनिवार्य करें</option>
+                                <option value="true">🔒 पिन कोड锁 लॉक अनिवार्य करें</option>
                             </select>
                             <div id="mboxPinConfigArea" class="hidden" style="margin-top:10px; background:rgba(0,0,0,0.12); padding:12px; border-radius:10px;">
                                 <label>पिन कोड अंक आकार</label>
@@ -422,7 +422,7 @@
         });
 
         function renderEmptyLeaderboardInputs() {
-            // Default structural reset triggers if required on component lifecycle unmount
+            // Default structural reset triggers
         }
 
         window.showTab = (tab) => {
@@ -566,14 +566,12 @@
 
                 rawUsersArray.forEach(user => {
                     let assignedStageIndex = -1;
-                    
                     for (let i = 6; i >= 0; i--) {
                         if (user.balance >= limits[i]) {
                             assignedStageIndex = i;
                             break;
                         }
                     }
-
                     if (assignedStageIndex !== -1 && compressedStagesArray[assignedStageIndex].length < 10) {
                         compressedStagesArray[assignedStageIndex].push(user);
                     }
@@ -719,26 +717,22 @@
             const savedKey = localStorage.getItem('pendingAdminKey');
             if (savedKey) {
                 genKey = String(savedKey); document.getElementById('keyDisplay').innerText = genKey; document.getElementById('keyArea').classList.remove('hidden');
-                document.getElementById('genKeyBtn').disabled = true; document.getElementById('genKeyBtn').innerText = "पुरानी चाबी लॉक है";
+                document.getElementById('genKeyBtn').disabled = true; document.getElementById('genKeyBtn').innerText = "यूनिक रैंडम चाबी लॉक है";
             }
         }
 
         /* ==========================================================================
-           🥇 [सुधरा हुआ मॉड्यूल]: डायनेमिक कस्टम डिफ़ॉल्ट चाबी मैपिंग इंजन
+           🥇 [सुधरा हुआ मॉड्यूल]: अनलिमिटेड चाबी बदलाव (बफर हटा दिया गया)
            ========================================================================== */
         window.generateUniqueKey = async (type) => {
-            if (localStorage.getItem('pendingAdminKey')) return alert("पहले पेंडिंग चाबी सबमिट करें!");
-            
             if (type === 'default') {
-                // इनपुट बॉक्स से एडमिन द्वारा टाइप की गई चाबी को लाइव पिक करें
                 const customKeyInput = document.getElementById('txtCustomDefaultKey').value.trim();
-                
                 if (!customKeyInput || customKeyInput.length !== 5) {
                     return alert("त्रुटि: कृपया पहले 'मैन्युअल डिफ़ॉल्ट चाबी' बॉक्स में ५-अंकों का कोई भी कोड टाइप करें!");
                 }
-                
                 genKey = String(customKeyInput);
             } else {
+                if (localStorage.getItem('pendingAdminKey')) return alert("पहले पेंडिंग रैंडम चाबी को सबमिट करें!");
                 const btn = document.getElementById('genKeyBtn'); btn.disabled = true;
                 let isUnique = false, testKey = "";
                 while (!isUnique) {
@@ -747,18 +741,17 @@
                     if (!snap.exists()) isUnique = true;
                 }
                 genKey = String(testKey);
+                localStorage.setItem('pendingAdminKey', genKey);
+                document.getElementById('genKeyBtn').innerText = "यूनिक रैंडम चाबी लॉक है";
             }
 
-            // चाबी को बफर स्टेट में लॉक करें
-            await setDoc(doc(db, "assets", genKey), { key: genKey, status: "pending_fields", timestamp: new Date().toISOString() });
-            localStorage.setItem('pendingAdminKey', genKey);
             document.getElementById('keyDisplay').innerText = genKey; 
             document.getElementById('keyArea').classList.remove('hidden');
-            
-            document.getElementById('genKeyBtn').disabled = true;
-            document.getElementById('genKeyBtn').innerText = "चाबी बफर में लॉक हुई";
         };
 
+        /* ==========================================================================
+           🥇 [सुधरा हुआ मॉड्यूल]: ओवरराइट प्रोटेक्शन (पहले से सेव चाबी की जांच)
+           ========================================================================== */
         window.submitData = async () => {
             const title = document.getElementById('videoTitle').value.trim(); 
             const url = document.getElementById('videoLink').value.trim(); 
@@ -767,23 +760,44 @@
             if (!title || !url || !val) return alert("सभी फील्ड भरना अनिवार्य है!");
             const finalStringKey = String(genKey);
             
-            await setDoc(doc(db, "assets", finalStringKey), {
-                key: finalStringKey, title: title, link: url, value: Number(val), platform: document.getElementById('platform').value, status: "active", timestamp: new Date().toISOString()
-            }, { merge: true });
-            
-            alert("एसेट क्लाउड पर लाइव सक्रिय कर दिया गया है!"); 
-            localStorage.removeItem('pendingAdminKey');
-            
-            document.getElementById('videoTitle').value = ""; 
-            document.getElementById('videoLink').value = ""; 
-            document.getElementById('assetValue').value = "";
-            document.getElementById('txtCustomDefaultKey').value = "";
-            document.getElementById('keyArea').classList.add('hidden');
-            
-            const btn = document.getElementById('genKeyBtn'); 
-            btn.disabled = false; 
-            btn.innerText = "यूनिक रैंडम चाबी बनाएँ";
-            window.showTab('dashboard');
+            try {
+                // 🔍 क्रिटिकल चेक: क्या यह चाबी डेटाबेस में पहले से मौजूद है?
+                const existingKeySnap = await getDoc(doc(db, "assets", finalStringKey));
+                
+                if (existingKeySnap.exists()) {
+                    const confirmOverwrite = confirm(`🚨 सुरक्षा अलर्ट: चाबी '${finalStringKey}' डेटाबेस में पहले से सेव है! क्या आप पुराने डेटा को मिटाकर इसी चाबी के अंदर नया वीडियो टाइटल, लिंक और वैल्यू अपडेट करना चाहते हैं?`);
+                    if (!confirmOverwrite) return; // अगर एडमिन मना कर दे, तो प्रोसेस रोकें
+                }
+
+                // डॉक्यूमेंट मौजूद हो या न हो, 'setDoc' विथ 'merge: true' उसी सेम चाबी के अंदर सारा डेटा सेव कर देगा
+                await setDoc(doc(db, "assets", finalStringKey), {
+                    key: finalStringKey, 
+                    title: title, 
+                    link: url, 
+                    value: Number(val), 
+                    platform: document.getElementById('platform').value, 
+                    status: "active", 
+                    timestamp: new Date().toISOString()
+                }, { merge: true });
+                
+                alert("एसेट क्लाउड पर सफलतापूर्वक लाइव सक्रिय/अपडेट कर दिया गया है!"); 
+                localStorage.removeItem('pendingAdminKey');
+                
+                // फॉर्म रीसेट प्रक्रिया
+                document.getElementById('videoTitle').value = ""; 
+                document.getElementById('videoLink').value = ""; 
+                document.getElementById('assetValue').value = "";
+                document.getElementById('txtCustomDefaultKey').value = "";
+                document.getElementById('keyArea').classList.add('hidden');
+                
+                const btn = document.getElementById('genKeyBtn'); 
+                btn.disabled = false; 
+                btn.innerText = "यूनिक रैंडम चाबी बनाएँ";
+                window.showTab('dashboard');
+
+            } catch (err) {
+                alert("डेटाबेस में चाबी सुरक्षित सेव करने में एरर आया: " + err.message);
+            }
         };
 
         window.executeDeleteMysteryBoxTransaction = executeDeleteMysteryBoxTransaction;
