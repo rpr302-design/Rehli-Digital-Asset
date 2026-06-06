@@ -105,7 +105,7 @@
 
     input[type="number"], input[type="text"], input[type="date"], select {
         width: 100%;
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(0, 0, 0, 0.25);
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 14px 16px;
         border-radius: 14px;
@@ -326,7 +326,7 @@
     }
 
     /* ==========================================================================
-       🏆 7. WhatsApp Chat-style Leaderboard Layer
+       🏆 7. Leaderboard Layer
        ========================================================================== */
     .leaderboard-container { background: transparent; padding: 0; border: none; box-shadow: none; }
     .leaderboard-list {
@@ -577,7 +577,7 @@
                     <h3 id="authTitle" style="font-size:20px; margin-bottom:6px;">Verification</h3>
                     <p id="authSubtitle" style="margin-bottom:20px;">अकाउंट सुरक्षित करने के लिए अपना नंबर जोड़ें।</p>
                     
-                    <input type="text" id="userReferralInput" placeholder="👥 No referral code attached" readonly style="background:rgba(255,255,255,0.05); color:white; display:none; text-align:center;">
+                    <input type="text" id="userReferralInput" placeholder="👥 No referral code attached" readonly style="background:rgba(255, 255, 255, 0.05); color:white; display:none; text-align:center;">
                     <input type="number" id="userMobile" placeholder="10-अंकों का मोबाइल नंबर (Mobile)" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
                     
                     <div id="loginPinArea" class="hidden-screen" style="margin-top:4px;">
@@ -591,7 +591,7 @@
                         <h5 style="color:var(--gold); margin-bottom:10px; font-size:13px;"><i class="fa-solid fa-key"></i> पिन रीसेट करें (Reset PIN):</h5>
                         <input type="text" id="forgotName" placeholder="प्रोफाइल में लिखा पूरा नाम" style="padding:10px; margin-bottom:8px; font-size:12px;">
                         <input type="date" id="forgotDOB" style="padding:10px; margin-bottom:10px; font-size:12px;">
-                        <input type="number" id="forgotNewPin" placeholder="नया 4-अंकों का PIN बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="padding:10px; margin-bottom:10px; font-size:12px;">
+                        <input type="number" id="forgotNewPin" placeholder="नяा 4-अंकों का PIN बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="padding:10px; margin-bottom:10px; font-size:12px;">
                         <button class="btn-action" onclick="processForgotPinRecovery()" style="padding:10px; font-size:12px; background:var(--success-gradient);">पिन बदलें / Reset PIN</button>
                     </div>
 
@@ -733,16 +733,27 @@
                         <div class="info-row"><span>Verified Rupee Account (₹):</span><b id="wTotalLiquidRupees" style="color:var(--rupee-color);">₹ 0</b></div>
                         
                         <div class="info-row" style="padding-left:4px;">
-                            <span>👥 Total Invite Bonus:</span><b id="wReferEarned" style="color:#d35400;">0 Assets</b>
+                            <span>👥 Total Friends Invited:</span><b id="wReferCount" style="color:var(--warning);">0 Users</b>
+                        </div>
+                        <div class="info-row" style="padding-left:4px;">
+                            <span>🎁 Total Invite Bonus Earned:</span><b id="wReferEarned" style="color:#d35400;">0 Assets</b>
                         </div>
                         
                         <div class="info-row"><span>Spent Assets History:</span><b id="wTotalSpent">0 Assets</b></div>
                         
-                        <div style="margin-top:22px; padding:20px; background:rgba(46, 204, 113, 0.06); border-radius:18px; text-align:center; border:1px solid rgba(46, 204, 113, 0.15);">
+                        <div style="margin-top:18px; padding:15px; background:rgba(46, 204, 113, 0.06); border-radius:18px; text-align:center; border:1px solid rgba(46, 204, 113, 0.15);">
                             <span style="font-size:12px; color:var(--rupee-color); font-weight:500;">टोटल रिडीम की गई राशि (Redeemed)</span>
-                            <h2 id="wSpentValue" style="color:white; margin:6px 0; font-size:28px; font-weight:700;">₹ 0.00</h2>
-                            <small style="font-size:11px; color:var(--text-muted);">(हिसाब का नियम: 100 Assets = ₹1 Rupee)</small>
+                            <h2 id="wSpentValue" style="color:white; margin:4px 0; font-size:26px; font-weight:700;">₹ 0.00</h2>
+                            <small style="font-size:10.5px; color:var(--text-muted);">(हिसाब का नियम: 100 Assets = ₹1 Rupee)</small>
                         </div>
+                    </div>
+
+                    <div class="premium-card" style="border: 1px solid rgba(46, 204, 113, 0.25); background: linear-gradient(135deg, rgba(9,10,21,0.8) 0%, rgba(20,30,25,0.6) 100%);">
+                        <h3 style="color:#2ecc71; font-size:14px; margin-bottom:8px;"><i class="fa-solid fa-money-bill-transfer"></i> इंस्टेंट एसेट कनवर्टर (Convert Rupee to Asset)</h3>
+                        <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:12px;">अपने कैश बैलेंस को एसेट टोकन में बदलें (नियम: ₹1 = 100 एसेट्स)</p>
+                        
+                        <input type="number" id="numConvertRupeeAmount" placeholder="जितने रुपये ट्रांसफर करने हैं लिखें (₹)" style="margin-bottom:12px; border-color:rgba(46, 204, 113, 0.2);">
+                        <button class="btn-action" style="background:var(--success-gradient); box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3); padding:12px;" onclick="executeInAppRupeeToAssetConversion()">सिक्के में बदलें / Convert Now</button>
                     </div>
                 </div>
 
@@ -798,7 +809,7 @@
                         <button class="social-btn" style="background:#ff0000;" onclick="handleSocialTaskExecution('youtube')"><span><i class="fa-brands fa-youtube"></i> YouTube Channel</span><small id="lbl-social-youtube">+1k Assets</small></button>
                         <button class="social-btn" style="background:#1877f2;" onclick="handleSocialTaskExecution('facebook')"><span><i class="fa-brands fa-facebook"></i> Facebook Page</span><small id="lbl-social-facebook">+1k Assets</small></button>
                         <button class="social-btn" style="background:#e4405f;" onclick="handleSocialTaskExecution('instagram')"><span><i class="fa-brands fa-instagram"></i> Instagram Hub</span><small id="lbl-social-instagram">+1k Assets</small></button>
-                        <button class="social-btn" style="background:#0088cc;" onclick="handleSocialTaskExecution('telegram')"><span><i class="fa-brands fa-telegram"></i> Telegram Network</small></button>
+                        <button class="social-btn" style="background:#0088cc;" onclick="handleSocialTaskExecution('telegram')"><span><i class="fa-brands fa-telegram"></i> Telegram Network</span></button>
                         <button class="social-btn" style="background:#25d366;" onclick="handleSocialTaskExecution('whatsapp')"><span><i class="fa-brands fa-whatsapp"></i> WhatsApp Channel</span><small id="lbl-social-whatsapp">+1k Assets</small></button>
                     </div>
                 </div>
@@ -829,7 +840,7 @@
                 <div id="tab-pay" class="app-tab-content hidden-screen">
                     <div class="premium-card scanner-futuristic-container">
                         <h3 style="font-size:15px; display:flex; align-items:center; gap:8px; justify-content:center;"><i class="fa-solid fa-qrcode" style="color:var(--accent-purple);"></i> QR पेमेंट गेटवे</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">दुकानदार का QR कोड स्कैन करें या उसका रजिस्टर्ड मोबाइल नंबर डालें</p>
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">दुकानदार का QR कोड स्कैन करें या उसका रजिस्टर्ड mobile नंबर डालें</p>
                         
                         <div id="qrReaderBox" class="hidden-screen">
                             <div id="qrReader" style="width:100%;"></div>
@@ -864,16 +875,13 @@
 
             </div>
 
-          <!-- ✨ बिल्कुल सही और सुधरा हुआ कोड -->
 <nav class="nav-bar">
     <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></a>
-    
     <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>Mystery</span></a>
     
     <div class="nav-pay-center" onclick="switchAppTab('pay')"><div><i class="fa-solid fa-qrcode"></i></div></div>
     
     <a href="#" class="nav-link" id="nav-leaderboard" onclick="switchAppTab('leaderboard')"><i class="fa-solid fa-trophy"></i><span>Rank</span></a>
-    
     <a href="#" class="nav-link" id="nav-wallet" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </nav>
 
@@ -905,7 +913,6 @@
         let globalDynamicBoxesArray = [];
         let selectedTargetBoxIndexToUnlock = null;
         
-        // 🛠️ फिक्स: सातों स्टेज का एसेट बकेट डेटा स्टोर करने के लिए ग्लोबल एरे मैट्रिक्स
         let globalCachedLeaderboardMatrix = [[], [], [], [], [], [], []];
         let currentLeaderboardInterval = null;
 
@@ -942,24 +949,19 @@
             requestAnimationFrame(updateCounter);
         }
 
-     window.addEventListener('DOMContentLoaded', async () => {
-    parseIncomingUrlParametersForAutoReferrals();
-    if (userSessionMobile) {
-        renderApplicationShellInterface(true);
-        await synchronizeUserDashboardStateEngine();
-        
-        // ✨ सुधार: पेज लोड होते ही सीधे गेटवे चालू करने के बजाय, पहले चेक करें कि क्या परमिशन पहले से 'granted' है
-        if (Notification.permission === 'granted') {
-            // अगर यूजर पहले ही 'Allow' कर चुका है, तभी बैकग्राउंड में टोकन अपडेट करें
-            await initializePushNotificationGateway(false); 
-        }
-        // अगर परमिशन 'default' या 'denied' है, तो यहाँ कुछ मत करें। 
-        // यूजर जब खुद साइडबार/सेटिंग्स में जाकर बटन दबाएगा, तभी पॉपअप मांगेंगे।
-
-    } else {
-        renderApplicationShellInterface(false);
-    }
-});
+        window.addEventListener('DOMContentLoaded', async () => {
+            parseIncomingUrlParametersForAutoReferrals();
+            if (userSessionMobile) {
+                renderApplicationShellInterface(true);
+                await synchronizeUserDashboardStateEngine();
+                
+                if (Notification.permission === 'granted') {
+                    await initializePushNotificationGateway(false); 
+                }
+            } else {
+                renderApplicationShellInterface(false);
+            }
+        });
 
         setTimeout(() => {
             const phoneWrapper = document.querySelector('.phone-wrapper');
@@ -1236,19 +1238,14 @@
             } catch (error) { console.error(error); }
         }
 
-        /* ==========================================================================
-           🥇 [सुधरा हुआ मॉड्यूल]: 1-Read मोड और 3-घंटे ऑटो-रिफ्रेश सिंक्रोनाइजेशन इंजन
-           ========================================================================== */
         async function preFetchAllUsersDataForLeaderboardMatrix() {
             try {
-                // 1. क्लाउड से एडमीन द्वारा पहले से कंप्रेस किया हुआ बंडल डेटा लोड करें (सिर्फ 1 Read काउंट होगा)
                 const liveNoticeBundleSnap = await getDoc(doc(db, "announcements", "live_notice"));
                 
                 if (liveNoticeBundleSnap.exists() && liveNoticeBundleSnap.data().leaderboard_matrix) {
                     globalCachedLeaderboardMatrix = JSON.parse(liveNoticeBundleSnap.data().leaderboard_matrix);
                     console.log("लीडरबोर्ड डेटा सुरक्षित रूप से 1-Read मोड पर सिंक हो गया है।");
                 } else {
-                    // फॉलबैक व्यवस्था: अगर एडमिन डॉक्युमेंट खाली है तो ही डेटाबेस से लाइव बकेटिंग करें
                     const allUsersQuerySnapshot = await getDocs(collection(db, "users"));
                     let rawSortedUsers = [];
                     allUsersQuerySnapshot.forEach(uDoc => {
@@ -1277,7 +1274,6 @@
                     });
                 }
 
-                // लीडरबोर्ड टैब स्क्रीन पर एक्टिव होने पर करंट सिलेक्टेड स्टेज को तुरंत रिफ्रेश करें
                 if(document.getElementById('tab-leaderboard').classList.contains('hidden-screen') === false) {
                     const activeTab = document.querySelector('.stage-tab.active-stage');
                     let currentStageIndex = 0;
@@ -1288,7 +1284,6 @@
                     renderLeaderboardStageWise(currentStageIndex >= 0 ? currentStageIndex : 0);
                 }
 
-                // 🔄 बिना पेज रीलोड किए प्रत्येक 3 घंटे में बैकएंड बफर को स्वतः अपडेट करना
                 if(!currentLeaderboardInterval) {
                     currentLeaderboardInterval = setInterval(async () => {
                         console.log("3-Hour Refresh Triggered: डेटाबेस रीड्स को सुरक्षित रखते हुए ऑटो-सिंक एक्टिव।");
@@ -1298,9 +1293,6 @@
             } catch(e) { console.error("लीडरबोर्ड सिंक्रोनाइजेशन एरर: ", e); }
         }
 
-        /* ==========================================================================
-           🏆 [सुधरा हुआ मॉड्यूल]: यूजर हाईलाइटिंग और टॉप स्टिकी रैंक डिस्प्ले पाइपलाइन
-           ========================================================================== */
         window.renderLeaderboardStageWise = (stageIndex) => {
             document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
             
@@ -1316,12 +1308,9 @@
             const myRankPlaceholder = document.getElementById('myRankRowPlaceholder');
             
             container.innerHTML = "";
-            
-            // डिफ़ॉल्ट रूप से यूजर रैंक कार्ड को छिपाकर रखें
             if(myRankCard) myRankCard.classList.add('hidden-screen'); 
 
             const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
-            // साइड मेनू से वर्तमान लॉगिन यूजर का नाम प्राप्त करें
             const currentUserName = document.getElementById('sideMenuUser').innerText.trim();
 
             if(sliceSubList.length === 0) {
@@ -1337,8 +1326,6 @@
                 if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
 
                 const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
-                
-                // चेक करें कि क्या यह लूप वाला ऑब्जेक्ट वर्तमान लॉगिन यूजर का ही है
                 const isMe = (userItem.name.trim() === currentUserName);
                 const myHighlightStyle = isMe ? "border: 1px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12);" : "";
 
@@ -1360,7 +1347,6 @@
                     </div>
                 `;
 
-                // अगर यूजर टॉप 10 लिस्ट के अंदर मिल जाता है, तो उसे सबसे ऊपर स्टिकी कार्ड में भी लाइव दिखाएं
                 if(isMe && myRankCard && myRankPlaceholder) {
                     myRankPlaceholder.innerHTML = rowHtml;
                     myRankCard.classList.remove('hidden-screen');
@@ -1694,65 +1680,41 @@
             }
         }
 
-    window.togglePushNotificationState = async () => {
-    window.toggleSidebar(false);
-    
-    if (!('Notification' in window)) {
-        return window.showCustomAlert("असमर्थ", "यह डिवाइस नोटिफिकेशन सिस्टम को सपोर्ट नहीं करता।", "error");
-    }
-    
-    // स्थिति 1: अगर नोटिफिकेशन पहले से ही 'Block' (Denied) है
-    if (Notification.permission === 'denied') {
-        return window.showCustomAlert(
-            "नोटिफिकेशन ब्लॉक है", 
-            "आपने पहले नोटिफिकेशन को ब्लॉक कर दिया था। कृपया ब्राउज़र के एड्रेस बार में ताले (Lock) के आइकॉन पर क्लिक करके इसे 'Allow' करें।", 
-            "error"
-        );
-    }
-    
-    // स्थिति 2: अगर नोटिफिकेशन की स्थिति 'Default' (अभी तक पूछा नहीं गया) है
-    if (Notification.permission === 'default') {
-        const userConfirmed = confirm("नये अपडेट्स और अलर्ट्स पाने के लिए अगले पॉप-अप बॉक्स में 'Allow' बटन पर क्लिक करके परमिशन दें।");
-        
-        if (userConfirmed) {
-            try {
-                // क्रिटिकल सुधार: ब्राउज़र का असली पॉपअप यहीं, इसी यूज़र इंटरैक्शन के अंदर ही ट्रिगर होना चाहिए
-                const permission = await Notification.requestPermission();
-                
-                if (permission === 'granted') {
-                    // परमिशन मिलने के बाद ही गेटवे को लोड करें और टोकन सेव करें
-                    await initializePushNotificationGateway(true); 
-                } else if (permission === 'denied') {
-                    window.showCustomAlert("ब्लॉक किया", "आपने नोटिफिकेशन अनुमति को ब्लॉक कर दिया है। इसे चालू करने के लिए साइट सेटिंग बदलें।", "error");
-                } else {
-                    window.showCustomAlert("रद्द किया", "अनुमति प्रक्रिया पूरी नहीं हुई।", "error");
+        window.togglePushNotificationState = async () => {
+            window.toggleSidebar(false);
+            if (!('Notification' in window)) {
+                return window.showCustomAlert("असमर्थ", "यह डिवाइस नोटिफिकेशन सिस्टम को सपोर्ट नहीं करता।", "error");
+            }
+            
+            if (Notification.permission === 'denied') {
+                return window.showCustomAlert("नोटिफिकेशन ब्लॉक है", "कृपया ब्राउज़र के एड्रेस बार में ताले (Lock) के आइकॉन पर क्लिक करके इसे 'Allow' करें।", "error");
+            }
+            
+            if (Notification.permission === 'default') {
+                const userConfirmed = confirm("नये अपडेट्स और अलर्ट्स पाने के लिए अगले पॉप-अप बॉक्स में 'Allow' बटन पर क्लिक करके परमिशन दें।");
+                if (userConfirmed) {
+                    try {
+                        const permission = await Notification.requestPermission();
+                        if (permission === 'granted') {
+                            await initializePushNotificationGateway(true); 
+                        } else if (permission === 'denied') {
+                            window.showCustomAlert("ब्लॉक किया", "साइट सेटिंग से परमिशन बदलें।", "error");
+                        }
+                    } catch (err) { console.error(err); }
                 }
-            } catch (err) {
-                console.error("Permission Request Error:", err);
-                window.showCustomAlert("त्रुटि", "नोटिफिकेशन चालू करने में कोई समस्या आई।", "error");
+            } else {
+                try {
+                    const userRef = doc(db, "users", userSessionMobile);
+                    const snap = await getDoc(userRef);
+                    if (snap.exists()) {
+                        const currentStatus = snap.data().pushEnabled || false;
+                        await setDoc(userRef, { pushEnabled: !currentStatus }, { merge: true });
+                        const statusMessage = !currentStatus ? "पुश नोटिफिकेशन सफलतापूर्वक चालू किए गए!" : "पुश नोटिफिकेशन सफलतापूर्वक बंद किए गए!";
+                        window.showCustomAlert("अपडेट हुआ", statusMessage, "success");
+                    }
+                } catch (err) { console.error(err); }
             }
-        } else {
-            window.showCustomAlert("रद्द किया", "आपने नोटिफिकेशन अनुमति प्रक्रिया को रद्द कर दिया।", "error");
-        }
-
-    } else {
-        // स्थिति 3: अगर पहले से ही 'Granted' (चालू) है, तो डेटाबेस में ऑन/ऑफ टॉगल करें
-        try {
-            const userRef = doc(db, "users", userSessionMobile);
-            const snap = await getDoc(userRef);
-            if (snap.exists()) {
-                const currentStatus = snap.data().pushEnabled || false;
-                await setDoc(userRef, { pushEnabled: !currentStatus }, { merge: true });
-                const statusMessage = !currentStatus ? "पुश नोटिफिकेशन सफलतापूर्वक चालू किए गए!" : "पुश नोटिफिकेशन सफलतापूर्वक बंद किए गए!";
-                window.showCustomAlert("अपडेट हुआ", statusMessage, "success");
-            }
-        } catch (err) { 
-            console.error(err); 
-            window.showCustomAlert("त्रुटि", "डेटाबेस अपडेट करने में समस्या आई।", "error");
-        }
-    }
-};
-
+        };
 
         async function loadProfileScreen() {
             try {
@@ -1832,25 +1794,98 @@
             } catch (err) { window.showCustomAlert("नेटवर्क एरर", "डेटाबेस में बदलाव सेव करने में समस्या आई।", "error"); }
         };
 
+        /* ==========================================================================
+           🥇 [सुधरा हुआ मॉड्यूल]: रियल-टाइम रेफरल काउंटर और अर्निंग बहीखाता इंजन
+           ========================================================================== */
         async function updateWalletSheet() {
             try {
                 const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
+                const coreUserData = userSnapshot.data();
+
+                // १. मर्चेंट ट्रांजैक्शंस से कुल खर्च (Spent Assets) कैलकुलेट करें
                 const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", userSessionMobile)));
-                let spent = 0; txSnap.forEach(t => spent += Number(t.data().amount || 0));
+                let spent = 0; 
+                txSnap.forEach(t => spent += Number(t.data().amount || 0));
                 
-                const bal = userSnapshot.data().balance || 0;
-                const rupeeBal = userSnapshot.data().rupeeBalance || 0;
+                const bal = coreUserData.balance || 0;
+                const rupeeBal = coreUserData.rupeeBalance || 0;
 
                 document.getElementById('wTotalLiquidCoins').innerText = formatSmartAmount(bal) + " Assets";
                 document.getElementById('wTotalLiquidRupees').innerText = "₹ " + formatSmartAmount(rupeeBal);
                 document.getElementById('wTotalSpent').innerText = formatSmartAmount(spent) + " Assets";
-                
-                const hasReferredBonus = userSnapshot.data().referredBy !== "Direct" ? 5000 : 0;
-                document.getElementById('wReferEarned').innerText = formatSmartAmount(hasReferredBonus) + " Assets";
-                
                 document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
-            } catch (err) { console.error(err); }
+
+                // २. 👥 [लाइव रेफरल काउंटर]: यूजर का यूनीक इनवाइट कोड जेनेरेट करें
+                const myUniqueReferralCode = "REHLI" + userSessionMobile.substring(6).toUpperCase();
+                
+                // पूरे 'users' कलेक्शन में सर्च करें कि कितने लोगों का 'referredBy' इस कोड से मैच करता है
+                const queryAllUsersSnapshot = await getDocs(collection(db, "users"));
+                let totalInvitedFriendsCount = 0;
+
+                queryAllUsersSnapshot.forEach((uDoc) => {
+                    const refereeData = uDoc.data();
+                    if (refereeData.referredBy === myUniqueReferralCode) {
+                        totalInvitedFriendsCount++;
+                    }
+                });
+
+                // ३. रेफरल के गणितीय नियम (१ दोस्त = ५००० Assets) के अनुसार लाइव डेटा रेंडर करें
+                const netCalculatedReferralBonus = totalInvitedFriendsCount * 5000;
+                
+                document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
+                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
+
+            } catch (err) { 
+                console.error("Wallet Sheet Optimization Error:", err); 
+            }
         }
+
+        /* ==========================================================================
+           💱 [नया मॉड्यूल]: इन-ऐप इंस्टेंट रुपया-टू-एसेट एक्सचेंज इंजन (₹1 = 100 एसेट्स)
+           ========================================================================== */
+        window.executeInAppRupeeToAssetConversion = async () => {
+            const rupeeInputAmount = Number(document.getElementById('numConvertRupeeAmount').value);
+            
+            if (isNaN(rupeeInputAmount) || rupeeInputAmount <= 0) {
+                return window.showCustomAlert("अमान्य राशि", "कृपया कनवर्ट करने के लिए सही रुपया राशि दर्ज करें।", "error");
+            }
+
+            try {
+                const userDocRef = doc(db, "users", userSessionMobile);
+                const currentFreshUserSnap = await getDoc(userDocRef);
+                const currentFreshUserData = currentFreshUserSnap.data();
+
+                const currentAvailableRupees = Number(currentFreshUserData.rupeeBalance || 0);
+                const currentAvailableAssets = Number(currentFreshUserData.balance || 0);
+
+                // १. वित्तीय सुरक्षा जांच: क्या यूजर के पास पर्याप्त कैश बैलेंस है?
+                if (currentAvailableRupees < rupeeInputAmount) {
+                    return window.showCustomAlert("अपर्याप्त बैलेंस", "कन्वर्शन के लिए आपके रुपया खाते में पर्याप्त बैलेंस नहीं है।", "error");
+                }
+
+                // २. वित्तीय अनुपात गणना (₹1 = 100 Assets)
+                const computedAssetsToCredit = rupeeInputAmount * 100;
+                const finalUpdatedRupeeBalance = currentAvailableRupees - rupeeInputAmount;
+                const finalUpdatedAssetBalance = currentAvailableAssets + computedAssetsToCredit;
+
+                // ३. फायरबेस एटॉमिक क्लाउड बहीखाता अपडेट करें
+                await setDoc(userDocRef, {
+                    rupeeBalance: finalUpdatedRupeeBalance,
+                    balance: finalUpdatedAssetBalance
+                }, { merge: true });
+
+                // ४. इंटरफेस क्लीनअप और लाइव सिंकिंग
+                document.getElementById('numConvertRupeeAmount').value = "";
+                window.showCustomAlert("कन्वर्शन सफल! 🎉", `आपके ₹${rupeeInputAmount} रुपये सफलतापूर्वक +${computedAssetsToCredit.toLocaleString()} Assets में बदल दिए गए हैं!`, "success");
+                
+                await synchronizeUserDashboardStateEngine();
+                await updateWalletSheet();
+
+            } catch (convErr) {
+                console.error("Currency Exchange Transaction Error:", convErr);
+                window.showCustomAlert("ट्रांजैक्शन फेल", "वित्तीय लेजर सिंक करने में सर्वर एरर आया।", "error");
+            }
+        };
 
         window.handleSocialTaskExecution = async (pKey) => {
             try {
