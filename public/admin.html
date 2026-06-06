@@ -22,6 +22,7 @@
             --danger: #d63031;
             --warning: #fbc531;
             --border-color: rgba(255, 255, 255, 0.08);
+            --gold: #fbc531;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
@@ -89,7 +90,7 @@
             width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color);
             border-radius: 12px; color: white; font-size: 13.5px; outline: none; transition: 0.2s;
         }
-        input:focus, select:focus, textarea:focus { border-color: var(--secondary); }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); }
 
         .btn {
             border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer;
@@ -132,7 +133,7 @@
 
         <div class="content-wrapper">
             <div class="top-navbar">
-                <h2 id="pageTitle">मुख्य डैशबोर्ड</h2>
+                <nav><h2 id="pageTitle">मुख्य डैशबोर्ड</h2></nav>
                 <div style="font-weight:600; font-size:13px; color:var(--text-muted);"><i class="fas fa-user-shield"></i> रोशन प्रजापति (मास्टर एडमिन)</div>
             </div>
 
@@ -172,13 +173,16 @@
                         
                         <label>कॉइन एसेट वैल्यू (Value Price)</label>
                         <input type="number" id="assetValue" placeholder="500">
+
+                        <label>मैन्युअल डिफ़ॉल्ट चाबी (5-अंकीय कोड दर्ज करें)</label>
+                        <input type="number" id="txtCustomDefaultKey" placeholder="उदाहरण के लिए: 94416" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
                         
                         <div style="display: flex; gap: 10px; margin-top: 25px;">
-                            <button class="btn btn-primary" id="genKeyBtn" onclick="generateUniqueKey('random')">यूनिक रैंडम चाबी बनाएँ</button>
-                            <button class="btn" style="background: linear-gradient(135deg, #fbc531, #f5cd79); color:#000; font-weight:700; flex:1;" id="genDefaultKeyBtn" onclick="generateUniqueKey('default')">🔑 डिफ़ॉल्ट चाबी लॉक करें (94416)</button>
+                            <button class="btn btn-primary" id="genKeyBtn" style="flex:1;" onclick="generateUniqueKey('random')">यूनिक रैंडम चाबी बनाएँ</button>
+                            <button class="btn" style="background: linear-gradient(135deg, #fbc531, #f5cd79); color:#000; font-weight:700; flex:1;" id="genDefaultKeyBtn" onclick="generateUniqueKey('default')">🔑 कस्टम डिफ़ॉल्ट चाबी लॉक करें</button>
                         </div>
                         
-                        <div id="keyArea" class="hidden" style="margin-top: 25px; padding: 20px; border: 2px dashed var(--secondary); text-align: center; border-radius: 16px; background:rgba(0,0,0,0.15);">
+                        <div id="keyArea" class="hidden" style="margin-top: 25px; padding: 20px; border: 2px dashed var(--accent); text-align: center; border-radius: 16px; background:rgba(0,0,0,0.15);">
                             <div id="keyDisplay" style="font-size: 36px; font-weight: 800; letter-spacing: 6px; margin: 10px 0; color:var(--gold);">00000</div>
                             <button id="saveBtn" class="btn btn-primary" style="background: var(--success); width:auto; padding:12px 30px;" onclick="submitData()">फायरबेस क्लाउड में लाइव सेव करें</button>
                         </div>
@@ -248,7 +252,7 @@
                         <div class="card" style="grid-column: span 1;">
                             <h3><i class="fa-solid fa-box-open" style="color:var(--warning)"></i> जादुई मिस्ट्री बॉक्स कॉन्फ़िगरेशन</h3>
                             <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">उपभोक्ता ऐप हेतु पिन लॉक्ड या फ्री और रुपया/एसेट आधारित मिस्ट्री बॉक्स लाइव जेनरेट करें.</p>
-                            <label>मिस्ट्री बॉक्स का नाम</label>
+                            <label>मार्क मिस्ट्री बॉक्स का नाम</label>
                             <input type="text" id="txtMBoxName" placeholder="उदाहरण: Silver Box">
                             <label>रिवॉर्ड का प्रकार</label>
                             <select id="selMBoxRewardType">
@@ -482,7 +486,7 @@
                         <td>${u.regDate ? u.regDate.substring(0,10) : '-'}</td>
                     </tr>`;
                 });
-                document.getElementById('gtUsersBalance').innerText = netNetworkAssetBalance + " एसेॉट्स";
+                document.getElementById('gtUsersBalance').innerText = netNetworkAssetBalance + " एसेट्स";
                 document.getElementById('gtUsersRupeeBalance').innerText = "₹ " + netNetworkRupeeBalance;
                 document.getElementById('gtUsersSpent').innerText = netNetworkSpentExpenses + " खर्च व्यय";
             } catch (err) { body.innerHTML = "<tr><td colspan='7' style='color:red;'>डेटा लोड विफलता!</td></tr>"; }
@@ -531,25 +535,20 @@
             } catch (e) { alert("डिलीट विफलता!"); }
         };
 
-        /* ==========================================================================
-           🥇 [फिक्स मॉड्यूल]: 7-स्टेज लीडरबोर्ड एग्रीगेटर पाइपलाइन सुधार इंजन
-           ========================================================================== */
         window.executeCloudLeaderboardAggregationPipeline = async () => {
-            if(!confirm("क्या आप पूरे नेटवर्क का लीडरबोर्ड डेटा संपीड़ित करके 1-रीड मोड पर रिफ्रेश करना चाहते हैं?")) return;
+            if(!confirm("क्या आप पूरे network का लीडरबोर्ड डेटा संपीड़ित करके 1-रीड मोड पर रिफ्रेश करना चाहते हैं?")) return;
             
             try {
-                // उपभोक्ता ऐप के 7 बकेट डिस्ट्रीब्यूशन स्लैब पढ़ें
                 const limits = [
-                    Number(document.getElementById('numStage1').value), // Stage 1 min (0)
-                    Number(document.getElementById('numStage2').value), // Stage 2 min (1000)
-                    Number(document.getElementById('numStage3').value), // Stage 3 min (5000)
-                    Number(document.getElementById('numStage4').value), // Stage 4 min (10000)
-                    Number(document.getElementById('numStage5').value), // Stage 5 min (25000)
-                    Number(document.getElementById('numStage6').value), // Stage 6 min (50000)
-                    Number(document.getElementById('numStage7').value)  // Stage 7 min (100000)
+                    Number(document.getElementById('numStage1').value),
+                    Number(document.getElementById('numStage2').value),
+                    Number(document.getElementById('numStage3').value),
+                    Number(document.getElementById('numStage4').value),
+                    Number(document.getElementById('numStage5').value),
+                    Number(document.getElementById('numStage6').value),
+                    Number(document.getElementById('numStage7').value)
                 ];
 
-                // पूर यूज़र्स फेच करें
                 const usersCollectionSnapshot = await getDocs(collection(db, "users"));
                 let rawUsersArray = [];
                 
@@ -561,31 +560,25 @@
                     });
                 });
 
-                // सिक्कों के घटते क्रम में सॉर्ट करें (ताकि हाईएस्ट स्कोरर हमेशा टॉप रैकर्स में पहले दिखें)
                 rawUsersArray.sort((a, b) => b.balance - a.balance);
 
-                // सातों चरणों का बकेट एरे बनाएं
                 let compressedStagesArray = [[], [], [], [], [], [], []];
 
-                // ✨ [सुधरा हुआ लॉजिक]: यूज़र्स को उनकी बैलेंस लिमिट रेंज के अनुसार सटीक बकेट्स में असाइन करना
                 rawUsersArray.forEach(user => {
                     let assignedStageIndex = -1;
                     
-                    // यूज़र के बैलेंस की जांच क्रमिक रूप से ऊपर से नीचे की तरफ (Descending check) करें
                     for (let i = 6; i >= 0; i--) {
                         if (user.balance >= limits[i]) {
                             assignedStageIndex = i;
-                            break; // सबसे बड़ी मैचिंग लिमिट मिलते ही लूप रोकें
+                            break;
                         }
                     }
 
-                    // यदि यूज़र को सही बकेट मिल गया है और उस बकेट में अभी तक टॉप 10 योद्धा पूरे नहीं हुए हैं, तो पुश करें
                     if (assignedStageIndex !== -1 && compressedStagesArray[assignedStageIndex].length < 10) {
                         compressedStagesArray[assignedStageIndex].push(user);
                     }
                 });
 
-                // बंडल डेटा को JSON स्ट्रिंग बनाकर 'live_notice' डॉक्यूमेंट के अंदर पब्लिश करें
                 await setDoc(doc(db, "announcements", "live_notice"), {
                     leaderboard_matrix: JSON.stringify(compressedStagesArray),
                     leaderboard_last_sync: new Date().toISOString()
@@ -730,13 +723,23 @@
             }
         }
 
+        /* ==========================================================================
+           🥇 [सुधरा हुआ मॉड्यूल]: डायनेमिक कस्टम डिफ़ॉल्ट चाबी मैपिंग इंजन
+           ========================================================================== */
         window.generateUniqueKey = async (type) => {
             if (localStorage.getItem('pendingAdminKey')) return alert("पहले पेंडिंग चाबी सबमिट करें!");
-            const btn = document.getElementById('genKeyBtn'); btn.disabled = true;
             
             if (type === 'default') {
-                genKey = "94416";
+                // इनपुट बॉक्स से एडमिन द्वारा टाइप की गई चाबी को लाइव पिक करें
+                const customKeyInput = document.getElementById('txtCustomDefaultKey').value.trim();
+                
+                if (!customKeyInput || customKeyInput.length !== 5) {
+                    return alert("त्रुटि: कृपया पहले 'मैन्युअल डिफ़ॉल्ट चाबी' बॉक्स में ५-अंकों का कोई भी कोड टाइप करें!");
+                }
+                
+                genKey = String(customKeyInput);
             } else {
+                const btn = document.getElementById('genKeyBtn'); btn.disabled = true;
                 let isUnique = false, testKey = "";
                 while (!isUnique) {
                     testKey = Math.floor(10000 + Math.random() * 90000).toString();
@@ -746,23 +749,40 @@
                 genKey = String(testKey);
             }
 
+            // चाबी को बफर स्टेट में लॉक करें
             await setDoc(doc(db, "assets", genKey), { key: genKey, status: "pending_fields", timestamp: new Date().toISOString() });
             localStorage.setItem('pendingAdminKey', genKey);
-            document.getElementById('keyDisplay').innerText = genKey; document.getElementById('keyArea').classList.remove('hidden');
-            btn.innerText = "चाबी बफर में लॉक हुई";
+            document.getElementById('keyDisplay').innerText = genKey; 
+            document.getElementById('keyArea').classList.remove('hidden');
+            
+            document.getElementById('genKeyBtn').disabled = true;
+            document.getElementById('genKeyBtn').innerText = "चाबी बफर में लॉक हुई";
         };
 
         window.submitData = async () => {
-            const title = document.getElementById('videoTitle').value.trim(); const url = document.getElementById('videoLink').value.trim(); const val = document.getElementById('assetValue').value;
+            const title = document.getElementById('videoTitle').value.trim(); 
+            const url = document.getElementById('videoLink').value.trim(); 
+            const val = document.getElementById('assetValue').value;
+            
             if (!title || !url || !val) return alert("सभी फील्ड भरना अनिवार्य है!");
             const finalStringKey = String(genKey);
+            
             await setDoc(doc(db, "assets", finalStringKey), {
                 key: finalStringKey, title: title, link: url, value: Number(val), platform: document.getElementById('platform').value, status: "active", timestamp: new Date().toISOString()
             }, { merge: true });
-            alert("एसेट क्लाउड पर लाइव सक्रिय कर दिया गया है!"); localStorage.removeItem('pendingAdminKey');
-            document.getElementById('videoTitle').value = ""; document.getElementById('videoLink').value = ""; document.getElementById('assetValue').value = "";
+            
+            alert("एसेट क्लाउड पर लाइव सक्रिय कर दिया गया है!"); 
+            localStorage.removeItem('pendingAdminKey');
+            
+            document.getElementById('videoTitle').value = ""; 
+            document.getElementById('videoLink').value = ""; 
+            document.getElementById('assetValue').value = "";
+            document.getElementById('txtCustomDefaultKey').value = "";
             document.getElementById('keyArea').classList.add('hidden');
-            const btn = document.getElementById('genKeyBtn'); btn.disabled = false; btn.innerText = "क्रिप्टोग्राफिक चाबी जनरेट करें";
+            
+            const btn = document.getElementById('genKeyBtn'); 
+            btn.disabled = false; 
+            btn.innerText = "यूनिक रैंडम चाबी बनाएँ";
             window.showTab('dashboard');
         };
 
