@@ -704,13 +704,13 @@
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">7 स्टेज बांटे गए हैं। हर स्टेज के टॉप 10 लीडर्स देखें (3 घंटे में स्वतः अपडेट):</p>
                         
                         <div class="stage-selector">
-                            <button class="stage-tab active-stage" data-amount="₹0-1k" onclick="renderLeaderboardStageWise(0)"><i class="fa-solid fa-shield"></i></button>
-                            <button class="stage-tab" data-amount="₹1k-5k" onclick="renderLeaderboardStageWise(1)"><i class="fa-solid fa-coins"></i></button>
-                            <button class="stage-tab" data-amount="₹5k-10k" onclick="renderLeaderboardStageWise(2)"><i class="fa-solid fa-bolt"></i></button>
-                            <button class="stage-tab" data-amount="₹10k-25k" onclick="renderLeaderboardStageWise(3)"><i class="fa-solid fa-gem"></i></button>
-                            <button class="stage-tab" data-amount="₹25k-50k" onclick="renderLeaderboardStageWise(4)"><i class="fa-solid fa-compass"></i></button>
-                            <button class="stage-tab" data-amount="₹50k-1L" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
-                            <button class="stage-tab" data-amount="₹1L+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
+                            <button class="stage-tab active-stage" data-amount="₹0-1L" onclick="renderLeaderboardStageWise(0)"><i class="fa-solid fa-shield"></i></button>
+                            <button class="stage-tab" data-amount="₹1L-10L" onclick="renderLeaderboardStageWise(1)"><i class="fa-solid fa-coins"></i></button>
+                            <button class="stage-tab" data-amount="₹10L-5M" onclick="renderLeaderboardStageWise(2)"><i class="fa-solid fa-bolt"></i></button>
+                            <button class="stage-tab" data-amount="₹5M-50M" onclick="renderLeaderboardStageWise(3)"><i class="fa-solid fa-gem"></i></button>
+                            <button class="stage-tab" data-amount="₹50M-1Cr" onclick="renderLeaderboardStageWise(4)"><i class="fa-solid fa-compass"></i></button>
+                            <button class="stage-tab" data-amount="₹1Cr-10Cr" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
+                            <button class="stage-tab" data-amount="₹10Cr+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
                         </div>
 
                         <div id="myPersonalRankCard" class="hidden-screen" style="margin-bottom: 12px; border: 1.5px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12); border-radius: 18px; padding: 12px;">
@@ -819,7 +819,7 @@
                         <div style="font-size:48px; color:var(--gold); margin-bottom:10px; filter:drop-shadow(var(--gold-glow));"><i class="fa-solid fa-gift"></i></div>
                         <h3>Invite Friends & Earn</h3>
                         <p style="font-size:12.5px; color:var(--text-muted); padding:5px 10px 0 10px; margin-bottom:18px; line-height:1.5;">
-                            जब कोई आपकी इनवाइट लिंक से पहली बार रजिस्टर करेगा, तो आप दोनों को सीधे **5,000 Assets** का फ्री बोनस तुरंत मिलेगा।
+                            जब कोई आपकी इनवाइट लिंक से पहली बार रजिस्टर करेगा, तो आप दोनों को सीधे **10,000 Assets** का फ्री बोनस तुरंत मिलेगा।
                         </p>
                         <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:14px; font-weight:700; color:var(--accent-purple); font-size:16px; border:1px dashed rgba(108,92,231,0.4); margin-bottom:20px;" id="lblReferralCodeDisplay">REHLI------</div>
                         <button class="btn-action" style="background:linear-gradient(135deg, #25d366 0%, #075e54 100%); gap:8px; display:flex; justify-content:center; align-items:center;" onclick="generateAndShareModernReferralLink()"><i class="fa-brands fa-whatsapp" style="font-size:18px;"></i> व्हाट्सएप पर लिंक शेयर करें</button>
@@ -1143,7 +1143,7 @@
                                 const checkRefCode = "REHLI" + uDoc.id.substring(6).toUpperCase();
                                 if (checkRefCode === parsedReferralInput) {
                                     const oldRefBal = uDoc.data().balance || 0;
-                                    await setDoc(doc(db, "users", uDoc.id), { balance: oldRefBal + 5000 }, { merge: true });
+                                    await setDoc(doc(db, "users", uDoc.id), { balance: oldRefBal + 10000 }, { merge: true });
                                 }
                             });
                         } catch (refErr) { console.error(refErr); }
@@ -1155,7 +1155,7 @@
                     });
 
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
-                    window.showCustomAlert("रजिस्ट्रेशन सफल! 🎉", "स्वागत बोनस 50k टोकन और ₹500 कैश आपके वॉलेट में जोड़ दिए गए हैं!", "success");
+                    window.showCustomAlert("रजिस्ट्रेशन सफल! 🎉", "50k Assets और ₹500 कैश आपके वॉलेट में जोड़ दिए गए हैं!", "success");
                 } else { 
                     const keyIsFreshAndValid = await evaluateKeyUniquenessConstraints(targetMobile, cachedKey);
                     if (!keyIsFreshAndValid) {
@@ -1257,7 +1257,7 @@
                     });
                     rawSortedUsers.sort((a, b) => b.balance - a.balance);
 
-                    const limits = [0, 1000, 5000, 10000, 25000, 50000, 100000];
+                    const limits = [0, 100000, 1000000, 5000000, 10000000, 100000000, 100000001];
                     globalCachedLeaderboardMatrix = [[], [], [], [], [], [], []];
 
                     rawSortedUsers.forEach(user => {
@@ -1830,7 +1830,7 @@
                 });
 
                 // ३. रेफरल के गणितीय नियम (१ दोस्त = ५००० Assets) के अनुसार लाइव डेटा रेंडर करें
-                const netCalculatedReferralBonus = totalInvitedFriendsCount * 5000;
+                const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
                 
                 document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
                 document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
@@ -1907,7 +1907,7 @@
         window.generateAndShareModernReferralLink = () => {
             const code = "REHLI" + userSessionMobile.substring(6).toUpperCase();
             const link = window.location.origin + window.location.pathname + "?ref=" + code;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +5000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
         };
 
         window.switchAppTab = (targetTabId) => {
