@@ -805,12 +805,12 @@
                 <div id="tab-social" class="app-tab-content hidden-screen">
                     <div class="premium-card">
                         <h3 style="font-size:15px; margin-bottom:4px;"><i class="fa-solid fa-hashtag" style="color:#e4405f;"></i> Social Tasks</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">हमारे ऑफिशियल हैंडल्स को फॉलो करें। तुरंत +1000 Assets मिलेंगे:</p>
-                        <button class="social-btn" style="background:#ff0000;" onclick="handleSocialTaskExecution('youtube')"><span><i class="fa-brands fa-youtube"></i> YouTube Channel</span><small id="lbl-social-youtube">+1k Assets</small></button>
-                        <button class="social-btn" style="background:#1877f2;" onclick="handleSocialTaskExecution('facebook')"><span><i class="fa-brands fa-facebook"></i> Facebook Page</span><small id="lbl-social-facebook">+1k Assets</small></button>
-                        <button class="social-btn" style="background:#e4405f;" onclick="handleSocialTaskExecution('instagram')"><span><i class="fa-brands fa-instagram"></i> Instagram Hub</span><small id="lbl-social-instagram">+1k Assets</small></button>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">हमारे ऑफिशियल हैंडल्स को फॉलो करें। तुरंत +10000 Assets मिलेंगे:</p>
+                        <button class="social-btn" style="background:#ff0000;" onclick="handleSocialTaskExecution('youtube')"><span><i class="fa-brands fa-youtube"></i> YouTube Channel</span><small id="lbl-social-youtube">+10k Assets</small></button>
+                        <button class="social-btn" style="background:#1877f2;" onclick="handleSocialTaskExecution('facebook')"><span><i class="fa-brands fa-facebook"></i> Facebook Page</span><small id="lbl-social-facebook">+10k Assets</small></button>
+                        <button class="social-btn" style="background:#e4405f;" onclick="handleSocialTaskExecution('instagram')"><span><i class="fa-brands fa-instagram"></i> Instagram Hub</span><small id="lbl-social-instagram">+10k Assets</small></button>
                         <button class="social-btn" style="background:#0088cc;" onclick="handleSocialTaskExecution('telegram')"><span><i class="fa-brands fa-telegram"></i> Telegram Network</span></button>
-                        <button class="social-btn" style="background:#25d366;" onclick="handleSocialTaskExecution('whatsapp')"><span><i class="fa-brands fa-whatsapp"></i> WhatsApp Channel</span><small id="lbl-social-whatsapp">+1k Assets</small></button>
+                        <button class="social-btn" style="background:#25d366;" onclick="handleSocialTaskExecution('whatsapp')"><span><i class="fa-brands fa-whatsapp"></i> WhatsApp Channel</span><small id="lbl-social-whatsapp">+10k Assets</small></button>
                     </div>
                 </div>
 
@@ -1912,22 +1912,41 @@
             }
         };
 
-        window.handleSocialTaskExecution = async (pKey) => {
-            try {
-                const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
-                const taskSnap = await getDoc(taskRef);
-                if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल मीडिया बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
+       window.handleSocialTaskExecution = async (pKey) => {
+    try {
+        const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
+        const taskSnap = await getDoc(taskRef);
+        if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल मीडिया बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
 
-                window.open("https://youtube.com/@RehliTechnical", '_blank');
-                const uRef = doc(db, "users", userSessionMobile);
-                const uSnap = await getDoc(uRef);
-                
-                await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 1000 }, { merge: true });
-                await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
-                window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +1000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
-                await synchronizeUserDashboardStateEngine();
-            } catch (err) { console.error(err); }
+        // 1. सभी सोशल मीडिया प्लेटफॉर्म्स के सही लिंक्स यहाँ सेट करें
+        const socialLinks = {
+            'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
+            'facebook': 'https://www.facebook.com/share/18iFthER4W/', // अपना फेसबुक लिंक डालें
+            'instagram': 'https://www.facebook.com/share/18iFthER4W/',   // अपना इंस्टाग्राम लिंक डालें
+            'telegram': 'https://t.me/RehliDigitalAsset',                 // अपना टेलीग्राम लिंक डालें
+            'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  // अपना व्हाट्सएप लिंक डालें
         };
+
+        // 2. चेक करें कि जो pKey आई है उसका लिंक हमारे पास है या नहीं
+        if (socialLinks[pKey]) {
+            // डायनेमिक लिंक ओपन होगा (जिस बटन पर क्लिक हुआ है सिर्फ वही खुलेगा)
+            window.open(socialLinks[pKey], '_blank');
+        } else {
+            // अगर कोई लिंक न मिले तो बाय-डिफ़ॉल्ट यूट्यूब खोल देगा या एरर दिखा सकते हैं
+            window.open("https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg", '_blank');
+        }
+
+        const uRef = doc(db, "users", userSessionMobile);
+        const uSnap = await getDoc(uRef);
+        
+        await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 10000 }, { merge: true });
+        await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
+        window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
+        await synchronizeUserDashboardStateEngine();
+    } catch (err) { 
+        console.error(err); 
+    }
+};
 
         window.generateAndShareModernReferralLink = () => {
             const code = "REHLI" + userSessionMobile.substring(6).toUpperCase();
