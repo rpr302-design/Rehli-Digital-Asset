@@ -1992,50 +1992,23 @@
 
 window.generateAndShareModernReferralLink = () => {
 
-    let uName = (coreUserData.userName || "SMART").trim();
-    let prefix = "";
+    const name = (coreUserData.userName || "SMART")
+        .replace(/\s+/g, "")
+        .toUpperCase();
 
-    let cleanName = uName.replace(/\s+/g, '');
+    const code = (name + "XXXX").substring(0, 4) + userSessionMobile.slice(-4);
 
-    if (cleanName.length >= 4) {
-        prefix = cleanName.substring(0, 4);
-    } else {
-        prefix = cleanName;
-        while (prefix.length < 4) {
-            let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            prefix += randomChars.charAt(
-                Math.floor(Math.random() * randomChars.length)
-            );
-        }
-    }
-
-    // Referral Code
-    let finalDynamicCode =
-        prefix.toUpperCase() + userSessionMobile.slice(-4);
-
-    // Referral Link
-    let link =
-        window.location.origin +
-        window.location.pathname +
-        "?ref=" +
-        finalDynamicCode;
-
-    // WhatsApp Message
-    let message = `*Rehli Digital Asset* 💎
-
-🎉 बधाई हो!
-
-मैंने अपना अकाउंट एक्टिवेट कर लिया है।
-आप भी नीचे दिए गए लिंक से जुड़ें और प्रोफाइल एक्टिवेट करके
-*FREE +10,000 Assets* का Welcome Reward पाएं।
-
-🔗 ${link}
-
-🎁 मेरा Referral Code:
-${finalDynamicCode}`;
+    const link = window.location.origin +
+                 window.location.pathname +
+                 "?ref=" + code;
 
     window.open(
-        `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`,
+        `https://api.whatsapp.com/send?text=${encodeURIComponent(
+            "*Rehli Digital Network* 💎\n\n" +
+            "मेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें:\n\n" +
+            link +
+            "\n\n🎁 Referral Code: " + code
+        )}`,
         "_blank"
     );
 };
