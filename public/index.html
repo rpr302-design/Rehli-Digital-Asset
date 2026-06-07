@@ -564,7 +564,7 @@
                     <h2>Rehli Digital Asset</h2>
                     <p style="margin-bottom: 20px;">वीडियो में मिला 5-अंकों का गुप्त कोड (Key) यहाँ डालें:</p>
                     <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);" style="text-align: center; font-size: 20px; letter-spacing: 6px; font-weight:700;">
-                    <button class="btn-action" onclick="verifyKey()">कोड चेक करें / Verify Key</button>
+                    <button class="btn-action" onclick="verifyKey()">Key चेक करें / Verify Key</button>
                     
                     <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;">
                         <button onclick="toggleAuthRoute('login')" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:white; padding:12px 20px; border-radius:14px; font-size:12.5px; cursor:pointer; width:100%;">
@@ -662,7 +662,7 @@
 
                     <div class="video-card hidden-screen" id="promoVideoSection">
                         <h4 style="font-size:14px; font-weight:600;">📺 Promoted Video: <span id="lblPromoTitle">Loading...</span></h4>
-                        <p style="font-size:12px; opacity:0.9; margin:4px 0 12px 0;">वीडियो को पूरा ध्यान से देखें और 5-अंकों का गुप्त कोड पता करें!</p>
+                        <p style="font-size:12px; opacity:0.9; margin:4px 0 12px 0;">वीडियो को पूरा ध्यान से देखें और 5-अंकों का गुप्त (Key) पता करें!</p>
                         <a id="btnPromoLink" href="#" target="_blank" style="display:inline-block; background:white; color:#ff5252; padding:8px 16px; border-radius:10px; font-size:12px; font-weight:700; text-decoration:none;"><i class="fa-solid fa-circle-play"></i> Watch & Earn</a>
                     </div>
 
@@ -744,7 +744,7 @@
                         <div style="margin-top:18px; padding:15px; background:rgba(46, 204, 113, 0.06); border-radius:18px; text-align:center; border:1px solid rgba(46, 204, 113, 0.15);">
                             <span style="font-size:12px; color:var(--rupee-color); font-weight:500;">टोटल रिडीम की गई राशि (Redeemed)</span>
                             <h2 id="wSpentValue" style="color:white; margin:4px 0; font-size:26px; font-weight:700;">₹ 0.00</h2>
-                            <small style="font-size:10.5px; color:var(--text-muted);">(हिसाब का नियम: 100 Assets = ₹1 Rupee)</small>
+                            <small style="font-size:10.5px; color:var(--text-muted);">(नियम: 100 Assets = ₹1 Rupee)</small>
                         </div>
                     </div>
 
@@ -771,7 +771,7 @@
                             </select>
                             <input type="number" id="pPin" placeholder="नया 4-Digit सुरक्षा PIN बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
                             <input type="number" id="pPinConfirm" placeholder="PIN दोबारा डालकर कन्फर्म करें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
-                            <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल लॉक करें और बोनस लें</button>
+                            <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल लॉक करें और बोनस पाएं।/button>
                         </div>
 
                         <div id="profileStatusArea" class="premium-card hidden-screen">
@@ -1053,7 +1053,7 @@
         window.verifyKey = async () => {
             const keyInput = document.getElementById('userKey').value.trim();
             if (keyInput.length !== 5) {
-                return window.showCustomAlert("त्रुटि / Error", "कृपया सही 5-अंकों का की कोड दर्ज करें।", "error");
+                return window.showCustomAlert("त्रुटि / Error", "कृपया सही 5-अंकों की चाबी (Key) दर्ज करें।", "error");
             }
 
             try {
@@ -1066,7 +1066,7 @@
 
                 const keyData = keyDocumentSnap.data();
                 if (keyData.status !== "active") {
-                    return window.showCustomAlert("कोड बंद है / Expired", "यह कोड उपयोग हो चुका है या बंद कर दिया गया है।", "error");
+                    return window.showCustomAlert("कोड बंद है / Expired", "यह Key उपयोग हो चुका है या बंद कर दिया गया है।", "error");
                 }
 
                 sessionStorage.setItem('verified_activation_key', targetStringKeyId);
@@ -1077,7 +1077,7 @@
                 document.getElementById('userReferralInput').style.display = "block";
                 document.getElementById('loginPinArea').classList.add('hidden-screen');
                 document.getElementById('authTitle').innerText = "Verification ";
-                document.getElementById('authSubtitle').innerText = "कोड वेरिफाइड! नीचे अपना मोबाइल नंबर दर्ज करें।";
+                document.getElementById('authSubtitle').innerText = "Key वेरिफाइड! नीचे अपना मोबाइल नंबर दर्ज करें।";
             } catch (error) {
                 window.showCustomAlert("सर्वर त्रुटि / Server Error", "नेटवर्क में समस्या है। कृपया फिर कोशिश करें।", "error");
             }
@@ -1201,14 +1201,14 @@
                 } else { 
                     const keyIsFreshAndValid = await evaluateKeyUniquenessConstraints(targetMobile, cachedKey);
                     if (!keyIsFreshAndValid) {
-                        return window.showCustomAlert("कोड लॉकआउट", "यह कोड आपके डिवाइस पर पहले ही उपयोग किया जा चुका है।", "error");
+                        return window.showCustomAlert("कोड लॉकआउट", "यह कोड आपके अकाउंट पर पहले ही उपयोग किया जा चुका है।", "error");
                     }
 
                     const currentBalance = userSnap.data().balance || 0;
                     await setDoc(userDocRef, { balance: currentBalance + cachedValue }, { merge: true });
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
 
-                    window.showCustomAlert("सफल / Processed", "टोकन्स आपके ऐतिहासिक लेजर में सुरक्षित जोड़ दिए गए हैं।", "success");
+                    window.showCustomAlert("सफल / Processed", "Asset आपके ऐतिहासिक लेजर में सुरक्षित जोड़ दिए गए हैं।", "success");
                 }
 
                 localStorage.setItem('userMobile', targetMobile);
