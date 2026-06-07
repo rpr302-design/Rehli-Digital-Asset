@@ -1992,22 +1992,23 @@
 
 window.generateAndShareModernReferralLink = () => {
 
-    const name = (coreUserData.userName || "SMART")
-        .replace(/\s+/g, "")
-        .toUpperCase();
+    if (!coreUserData || !userSessionMobile) {
+        alert("User data is loading, please try again.");
+        return;
+    }
 
-    const code = (name + "XXXX").substring(0, 4) + userSessionMobile.slice(-4);
+    const code =
+        (coreUserData.userName.replace(/\s+/g, "").toUpperCase() + "XXXX")
+        .substring(0, 4) +
+        userSessionMobile.slice(-4);
 
-    const link = window.location.origin +
-                 window.location.pathname +
-                 "?ref=" + code;
+    const link = location.origin + location.pathname + "?ref=" + code;
 
     window.open(
         `https://api.whatsapp.com/send?text=${encodeURIComponent(
             "*Rehli Digital Network* 💎\n\n" +
-            "मेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें:\n\n" +
-            link +
-            "\n\n🎁 Referral Code: " + code
+            "🎁 Referral Code: " + code +
+            "\n\n🔗 " + link
         )}`,
         "_blank"
     );
