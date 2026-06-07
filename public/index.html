@@ -562,7 +562,7 @@
 
                 <div id="keySection">
                     <h2>Rehli Digital Asset</h2>
-                    <p style="margin-bottom: 20px;">वीडियो में मिला 5-अंकों का गुप्त कोड (Key) यहाँ डालें:</p>
+                    <p style="margin-bottom: 20px;">वीडियो में मिला 5-अंकों का गुप्त कोड (Key) यहाँ डालें या (12345):</p>
                     <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);" style="text-align: center; font-size: 20px; letter-spacing: 6px; font-weight:700;">
                     <button class="btn-action" onclick="verifyKey()">Key चेक करें / Verify Key</button>
                     
@@ -1993,7 +1993,7 @@
         window.generateAndShareModernReferralLink = () => {
             const code = "REHLI" + userSessionMobile.substring(6).toUpperCase();
             const link = window.location.origin + window.location.pathname + "?ref=" + code;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Asset* 💎\n\nबधाई हो! आपको मेरी तरफ से एक स्पेशल इनविटेशन मिला है। नीचे दिए गए लिंक से जुड़ें, अपना प्रोफाइल एक्टिवेट करें और तुरंत *FREE* में *+10,000 Assets* का वेलकम रिवॉर्ड अपने अकाउंट में पाएं: " + link
         };
 
         window.switchAppTab = (targetTabId) => {
