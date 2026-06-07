@@ -1990,22 +1990,20 @@
     }
 };
 
-       window.generateAndShareModernReferralLink = () => {
-    const code = "REHLI" + userSessionMobile.substring(6).toUpperCase();
-    const link = window.location.origin + window.location.pathname + "?ref=" + code;
+       window.generateAndShareModernReferralLink=()=>{
 
-    const message =
-        "*Rehli Digital Asset* 💎\n\n" +
-        "🎉 बधाई हो! आपको मेरी तरफ से एक स्पेशल इनविटेशन मिला है।\n\n" +
-        "✅ नीचे दिए गए लिंक से जुड़ें\n" +
-        "✅ अपना प्रोफाइल एक्टिवेट करें\n" +
-        "🎁 और तुरंत *FREE +10,000 Assets* का वेलकम रिवॉर्ड पाएं।\n\n" +
-        "🔗 " + link;
+let n=(coreUserData.userName||"SMART").replace(/\s+/g,"").toUpperCase(),
+c=(n.substring(0,4)+"XXXX").substring(0,4)+userSessionMobile.slice(-4),
+l=window.location.origin+window.location.pathname+"?ref="+c;
 
-    window.open(
-        "https://api.whatsapp.com/send?text=" + encodeURIComponent(message),
-        "_blank"
-    );
+window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`*Rehli Digital Asset* 💎
+
+🎉 FREE +10,000 Assets पाने के लिए अभी जुड़ें।
+
+🎁 Referral Code: ${c}
+
+🔗 ${l}`)}`,"_blank");
+
 };
 
         window.switchAppTab = (targetTabId) => {
