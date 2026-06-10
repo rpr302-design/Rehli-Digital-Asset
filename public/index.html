@@ -1990,29 +1990,28 @@
     }
 };
 
-window.generateAndShareModernReferralLink = () => {
+function generateReferralPrefix(firstName, lastName) {
+    let prefix = "";
 
-    if (!coreUserData || !userSessionMobile) {
-        alert("User data is loading, please try again.");
-        return;
+    // 1. अगर फर्स्ट नेम है, तो उसके पहले 4 अक्षर लें (बिना स्पेस के)
+    if (firstName && firstName.trim().length > 0) {
+        prefix = firstName.replace(/\s+/g, '').substring(0, 4);
+    } 
+    // 2. अगर फर्स्ट नेम नहीं है या छोटा है, तो लास्ट नेम (उपनाम) के अक्षर लें
+    if (prefix.length < 4 && lastName && lastName.trim().length > 0) {
+        let cleanLastName = lastName.replace(/\s+/g, '');
+        prefix += cleanLastName.substring(0, 4 - prefix.length);
     }
 
-    const code =
-        (coreUserData.userName.replace(/\s+/g, "").toUpperCase() + "XXXX")
-        .substring(0, 4) +
-        userSessionMobile.slice(-4);
+    // 3. अगर फिर भी 4 अक्षर पूरे नहीं हुए (या नाम ही नहीं है), तो रैंडम अक्षर जोड़ें
+    while (prefix.length < 4) {
+        let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
 
-    const link = location.origin + location.pathname + "?ref=" + code;
-
-    window.open(
-        `https://api.whatsapp.com/send?text=${encodeURIComponent(
-            "*Rehli Digital Network* 💎\n\n" +
-            "🎁 Referral Code: " + code +
-            "\n\n🔗 " + link
-        )}`,
-        "_blank"
-    );
-};
+    // कोड हमेशा UPPERCASE (बड़े अक्षरों) में रहे इसके लिए
+    return prefix.toUpperCase();
+}
 
         window.switchAppTab = (targetTabId) => {
             window.toggleSidebar(false);
