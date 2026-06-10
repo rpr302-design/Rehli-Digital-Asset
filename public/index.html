@@ -1990,28 +1990,37 @@
     }
 };
 
-function generateReferralPrefix(firstName, lastName) {
-    let prefix = "";
+/* ==========================================================================
+           💎 [सुधरा हुआ मॉड्यूल]: नाम-आधारित डायनेमिक व्हाट्सएप शेयर इंजन
+           ========================================================================== */
+        window.generateAndShareModernReferralLink = () => {
+            // १. साइड मेनू से यूजर का पूरा नाम लाइव उठाएं
+            const fullUserName = document.getElementById('sideMenuUser').innerText.trim();
+            
+            let prefix = "";
+            // २. नाम से सभी स्पेस (खाली जगह) हटाएं
+            let cleanName = fullUserName.replace(/\s+/g, '');
 
-    // 1. अगर फर्स्ट नेम है, तो उसके पहले 4 अक्षर लें (बिना स्पेस के)
-    if (firstName && firstName.trim().length > 0) {
-        prefix = firstName.replace(/\s+/g, '').substring(0, 4);
-    } 
-    // 2. अगर फर्स्ट नेम नहीं है या छोटा है, तो लास्ट नेम (उपनाम) के अक्षर लें
-    if (prefix.length < 4 && lastName && lastName.trim().length > 0) {
-        let cleanLastName = lastName.replace(/\s+/g, '');
-        prefix += cleanLastName.substring(0, 4 - prefix.length);
-    }
+            // ३. नाम/उपनाम से ४ अक्षरों का यूनीक प्रीफ़िक्स जनरेट करने का लॉजिक
+            if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
+                prefix = cleanName.substring(0, 4);
+            }
 
-    // 3. अगर फिर भी 4 अक्षर पूरे नहीं हुए (या नाम ही नहीं है), तो रैंडम अक्षर जोड़ें
-    while (prefix.length < 4) {
-        let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-    }
+            // ४. अगर नाम बहुत छोटा है या लोड नहीं हुआ, तो सुरक्षा के लिए ४ अक्षर पूरे करें
+            while (prefix.length < 4) {
+                let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+            }
 
-    // कोड हमेशा UPPERCASE (बड़े अक्षरों) में रहे इसके लिए
-    return prefix.toUpperCase();
-}
+            // ५. फाइनल ४ अक्षर का नाम कोड + मोबाइल नंबर के आखिरी ४ अंक
+            const finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
+            
+            // ६. डायनेमिक यूआरएल लिंक जनरेशन
+            const link = window.location.origin + window.location.pathname + "?ref=" + finalDynamicCode;
+            
+            // ७. व्हाट्सएप पर सीधे शेयर ट्रिगर
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +5000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
+        };
 
         window.switchAppTab = (targetTabId) => {
             window.toggleSidebar(false);
