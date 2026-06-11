@@ -604,11 +604,16 @@
         <div id="dashboardContainer" class="hidden-screen" style="width:100%; height:100%; display:flex; flex-direction:column; position:relative;">
             
             <div id="appSidebar" class="sidebar-menu">
-                <div class="sidebar-header">
-                    <div class="avatar"><i class="fa-solid fa-user-gear"></i></div>
-                    <h3 id="sideMenuUser" style="font-size:15px; font-weight:600;">Loading User...</h3>
-                    <span id="sideMenuPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
-                </div>
+              <div class="sidebar-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 10px;">
+    
+    <div class="avatar" style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent-purple); background: #fff; margin-bottom: 10px;">
+        <img src="https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    
+    <h3 id="sideMenuUser" style="font-size:15px; font-weight:600; margin: 5px 0 2px 0;">Loading User...</h3>
+    <span id="sideMenuPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
+    
+</div>
                 <div class="sidebar-links">
                     <a href="#" id="side-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i> Home Screen</a>
                     <a href="#" id="side-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i> Magic Mystery Box</a>
