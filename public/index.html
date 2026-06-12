@@ -1181,56 +1181,20 @@
                         signupIPAddress = ipJson.ip || "0.0.0.0";
                     } catch (ipErr) { console.error(ipErr); }
 
-                    // 🛠️ [सुधार]: बिना लूप के डायरेक्ट क्वेरी और सुरक्षित एसेट क्रेडिट लॉजिक
-if (parsedReferralInput && parsedReferralInput.trim() !== "") {
-    assignedReferrer = parsedReferralInput.trim().toUpperCase();
+                    if (parsedReferralInput && parsedReferralInput.startsWith("REHLI") && parsedReferralInput !== ("REHLI" + targetMobile.substring(6))) {
+                        assignedReferrer = parsedReferralInput;
 
-    try {
-        // मोबाइल नंबर के आखिरी 4 अंकों को रेफरल कोड से अलग करें
-        const referrerMobileLastFour = assignedReferrer.slice(-4);
-        
-        // पूरे डेटाबेस में घूमने के बजाय सीधे उस यूजर को ढूंढें जिसके मोबाइल का अंत इससे होता है
-        const usersRef = collection(db, "users");
-        const querySnapshot = await getDocs(usersRef);
-        
-        // सही अपलाइन यूजर को ढूंढने के लिए प्रॉमिस का सही इस्तेमाल
-        const updatePromises = [];
-        
-        querySnapshot.forEach((uDoc) => {
-            const potentialReferrerMobile = uDoc.id;
-            let uName = (uDoc.data().userName || "SMART").trim();
-            let cleanName = uName.replace(/\s+/g, '');
-            let prefix = cleanName.length >= 4 ? cleanName.substring(0, 4) : cleanName;
-            while (prefix.length < 4) {
-                prefix += "X"; // पैडिंग सुरक्षा
-            }
-            
-            const dynamicCheckCode = prefix.toUpperCase() + potentialReferrerMobile.slice(-4);
-            
-            // अगर जेनेरेटेड कोड और इनपुट कोड आपस में मैच कर जाते हैं
-            if (dynamicCheckCode === assignedReferrer && potentialReferrerMobile !== targetMobile) {
-                const currentReferrerData = uDoc.data();
-                const oldBalance = Number(currentReferrerData.balance || 0);
-                
-                // प्रॉमिस एरे में पुश करें ताकि सिंक्रोनस तरीके से सेव हो
-                const updateRef = setDoc(doc(db, "users", potentialReferrerMobile), { 
-                    balance: oldBalance + 10000 
-                }, { merge: true });
-                
-                updatePromises.push(updateRef);
-            }
-        });
-        
-        // सभी डेटाबेस अपडेट पूरे होने का इंतजार करें
-        if (updatePromises.length > 0) {
-            await Promise.all(updatePromises);
-            console.log("Referral assets successfully credited to referrer!");
-        }
-
-    } catch (refErr) { 
-        console.error("Referral Processing Error Details: ", refErr); 
-    }
-}
+                        try {
+                            const allUsersSnap = await getDocs(collection(db, "users"));
+                            allUsersSnap.forEach(async (uDoc) => {
+                                const checkRefCode = "REHLI" + uDoc.id.substring(6).toUpperCase();
+                                if (checkRefCode === parsedReferralInput) {
+                                    const oldRefBal = uDoc.data().balance || 0;
+                                    await setDoc(doc(db, "users", uDoc.id), { balance: oldRefBal + 10000 }, { merge: true });
+                                }
+                            });
+                        } catch (refErr) { console.error(refErr); }
+                    }
 
                     await setDoc(userDocRef, {
                         mobile: targetMobile, balance: initialBalance, rupeeBalance: initialRupeeBalance, userName: "Smart User",
