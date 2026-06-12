@@ -1141,9 +1141,6 @@
             } catch (err) { window.showCustomAlert("Error", "डेटाबेस अपडेट करने में समस्या आई।", "error"); }
         };
 
-        /* ==========================================================================
-           🥇 [सुधरा हुआ मॉड्यूल]: डायनेमिक नाम-आधारित रेफरल ट्रैकिंग एवं ऑथेंटिकेशन इंजन
-           ========================================================================== */
         window.handleFinalAuthRoute = async () => {
             const targetMobile = document.getElementById('userMobile').value.trim();
             const enteredPin = document.getElementById('loginSecurityPin').value.trim();
@@ -1184,48 +1181,21 @@
                         signupIPAddress = ipJson.ip || "0.0.0.0";
                     } catch (ipErr) { console.error(ipErr); }
 
-                    // 🛠️ [क्रिटिकल सुधार]: ८-अक्षर के नए नाम आधारित रेफरल कोड की लाइव मैचिंग
-                    if (parsedReferralInput && parsedReferralInput.length === 8 && parsedReferralInput !== ("REHLI" + targetMobile.substring(6))) {
+                    if (parsedReferralInput && parsedReferralInput.startsWith("REHLI") && parsedReferralInput !== ("REHLI" + targetMobile.substring(6))) {
                         assignedReferrer = parsedReferralInput;
 
                         try {
-                            // पूरे यूज़र्स की लिस्ट फेच करें ताकि उनके डायनेमिक कोड की जांच हो सके
                             const allUsersSnap = await getDocs(collection(db, "users"));
-                            
                             allUsersSnap.forEach(async (uDoc) => {
-                                const refereeData = uDoc.data();
-                                const refereeMobile = uDoc.id;
-                                
-                                // उस पुराने यूजर के नाम से वापस वही 4-अक्षर का प्रीफ़िक्स जनरेट करें
-                                let uName = (refereeData.userName || "SMART").trim();
-                                let cleanName = uName.replace(/\s+/g, '');
-                                let currentPrefix = "";
-
-                                if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
-                                    currentPrefix = cleanName.substring(0, 4);
-                                }
-                                while (currentPrefix.length < 4) {
-                                    let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                                    currentPrefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-                                }
-
-                                // पुराने यूजर का डायनेमिक कोड रिकंस्ट्रक्ट करें (PREFIX + LAST 4 DIGITS)
-                                const calculatedCheckCode = currentPrefix.toUpperCase() + refereeMobile.slice(-4);
-
-                                // अगर नए यूजर का लाया कोड इस पुराने यूजर के कोड से मैच हो जाता है
-                                if (calculatedCheckCode === parsedReferralInput) {
-                                    const oldRefBal = refereeData.balance || 0;
-                                    // इनवाइट करने वाले पुराने यूजर के खाते में सीधे +10,000 एसेट्स जमा करें
-                                    await setDoc(doc(db, "users", refereeMobile), { 
-                                        balance: oldRefBal + 10000 
-                                    }, { merge: true });
-                                    console.log(`🎁 Success: +10000 Assets credited to inviter (+91 ${refereeMobile})`);
+                                const checkRefCode = "REHLI" + uDoc.id.substring(6).toUpperCase();
+                                if (checkRefCode === parsedReferralInput) {
+                                    const oldRefBal = uDoc.data().balance || 0;
+                                    await setDoc(doc(db, "users", uDoc.id), { balance: oldRefBal + 10000 }, { merge: true });
                                 }
                             });
-                        } catch (refErr) { console.error("Referral Sync Error: ", refErr); }
+                        } catch (refErr) { console.error(refErr); }
                     }
 
-                    // नया अकाउंट डेटाबेस में राइट करें
                     await setDoc(userDocRef, {
                         mobile: targetMobile, balance: initialBalance, rupeeBalance: initialRupeeBalance, userName: "Smart User",
                         regDate: localCurrentDateISO, profileCompleted: false, referredBy: assignedReferrer, signupIP: signupIPAddress
@@ -1917,45 +1887,31 @@
                 document.getElementById('wTotalSpent').innerText = formatSmartAmount(spent) + " Assets";
                 document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
 
-// 👥 यूजर का वही डायनेमिक रेफरल कोड बनाएं जो शेयर लिंक में बनता है
+                // २. 👥 [लाइव रेफरल काउंटर]: यूजर का यूनीक इनवाइट कोड जेनेरेट करें
+                const myUniqueReferralCode = "REHLI" + userSessionMobile.substring(6).toUpperCase();
+                
+                // पूरे 'users' कलेक्शन में सर्च करें कि कितने लोगों का 'referredBy' इस कोड से मैच करता है
+                const queryAllUsersSnapshot = await getDocs(collection(db, "users"));
+                let totalInvitedFriendsCount = 0;
 
-let uName = (coreUserData.userName || "SMART").trim();
-let cleanName = uName.replace(/\s+/g, '');
-let prefix = "";
+                queryAllUsersSnapshot.forEach((uDoc) => {
+                    const refereeData = uDoc.data();
+                    if (refereeData.referredBy === myUniqueReferralCode) {
+                        totalInvitedFriendsCount++;
+                    }
+                });
 
-if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
-    prefix = cleanName.substring(0, 4);
-}
+                // ३. रेफरल के गणितीय नियम (१ दोस्त = ५००० Assets) के अनुसार लाइव डेटा रेंडर करें
+                const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
+                
+                document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
+                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
 
-// यदि नाम 4 अक्षरों से छोटा है
-while (prefix.length < 4) {
-    let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-}
+            } catch (err) { 
+                console.error("Wallet Sheet Optimization Error:", err); 
+            }
+        }
 
-// वही कोड जो WhatsApp Share में बनता है
-const myUniqueReferralCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
-
-// पूरे users collection में खोजें
-const queryAllUsersSnapshot = await getDocs(collection(db, "users"));
-let totalInvitedFriendsCount = 0;
-
-queryAllUsersSnapshot.forEach((uDoc) => {
-    const refereeData = uDoc.data();
-
-    if (refereeData.referredBy === myUniqueReferralCode) {
-        totalInvitedFriendsCount++;
-    }
-});
-
-// बोनस कैलकुलेशन
-const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
-
-document.getElementById('wReferCount').innerText =
-    totalInvitedFriendsCount + " Users";
-
-document.getElementById('wReferEarned').innerText =
-    formatSmartAmount(netCalculatedReferralBonus) + " Assets";
         /* ==========================================================================
            💱 [नया मॉड्यूल]: इन-ऐप इंस्टेंट रुपया-टू-एसेट एक्सचेंज इंजन (₹1 = 100 एसेट्स)
            ========================================================================== */
