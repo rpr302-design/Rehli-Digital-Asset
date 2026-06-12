@@ -1917,31 +1917,45 @@
                 document.getElementById('wTotalSpent').innerText = formatSmartAmount(spent) + " Assets";
                 document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
 
-                // २. 👥 [लाइव रेफरल काउंटर]: यूजर का यूनीक इनवाइट कोड जेनेरेट करें
-                const myUniqueReferralCode = "REHLI" + userSessionMobile.substring(6).toUpperCase();
-                
-                // पूरे 'users' कलेक्शन में सर्च करें कि कितने लोगों का 'referredBy' इस कोड से मैच करता है
-                const queryAllUsersSnapshot = await getDocs(collection(db, "users"));
-                let totalInvitedFriendsCount = 0;
+// 👥 यूजर का वही डायनेमिक रेफरल कोड बनाएं जो शेयर लिंक में बनता है
 
-                queryAllUsersSnapshot.forEach((uDoc) => {
-                    const refereeData = uDoc.data();
-                    if (refereeData.referredBy === myUniqueReferralCode) {
-                        totalInvitedFriendsCount++;
-                    }
-                });
+let uName = (coreUserData.userName || "SMART").trim();
+let cleanName = uName.replace(/\s+/g, '');
+let prefix = "";
 
-                // ३. रेफरल के गणितीय नियम (१ दोस्त = ५००० Assets) के अनुसार लाइव डेटा रेंडर करें
-                const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
-                
-                document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
-                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
+if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
+    prefix = cleanName.substring(0, 4);
+}
 
-            } catch (err) { 
-                console.error("Wallet Sheet Optimization Error:", err); 
-            }
-        }
+// यदि नाम 4 अक्षरों से छोटा है
+while (prefix.length < 4) {
+    let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+}
 
+// वही कोड जो WhatsApp Share में बनता है
+const myUniqueReferralCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
+
+// पूरे users collection में खोजें
+const queryAllUsersSnapshot = await getDocs(collection(db, "users"));
+let totalInvitedFriendsCount = 0;
+
+queryAllUsersSnapshot.forEach((uDoc) => {
+    const refereeData = uDoc.data();
+
+    if (refereeData.referredBy === myUniqueReferralCode) {
+        totalInvitedFriendsCount++;
+    }
+});
+
+// बोनस कैलकुलेशन
+const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
+
+document.getElementById('wReferCount').innerText =
+    totalInvitedFriendsCount + " Users";
+
+document.getElementById('wReferEarned').innerText =
+    formatSmartAmount(netCalculatedReferralBonus) + " Assets";
         /* ==========================================================================
            💱 [नया मॉड्यूल]: इन-ऐप इंस्टेंट रुपया-टू-एसेट एक्सचेंज इंजन (₹1 = 100 एसेट्स)
            ========================================================================== */
