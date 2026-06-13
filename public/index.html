@@ -28,6 +28,15 @@
         --gold-glow: 0 0 15px rgba(251, 197, 49, 0.4);
         --purple-glow: 0 0 20px rgba(108, 92, 231, 0.3);
         --rupee-color: #2ecc71;
+
+        /* Unique Stage Color Variables */
+        --stage-0: linear-gradient(135deg, #718093, #2f3640);
+        --stage-1: linear-gradient(135deg, #00a8ff, #0097e6);
+        --stage-2: linear-gradient(135deg, #9c88ff, #8c7ae6);
+        --stage-3: linear-gradient(135deg, #e1b12c, #fbc531);
+        --stage-4: linear-gradient(135deg, #44bd32, #4cd137);
+        --stage-5: linear-gradient(135deg, #e84118, #c23616);
+        --stage-6: linear-gradient(135deg, #ff007f, #ff00ff);
     }
 
     * {
@@ -91,81 +100,6 @@
     /* ==========================================================================
        💎 3. Premium Core UI Kit
        ========================================================================== */
-    .premium-card {
-        background: var(--bg-card-glass);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--border-glass);
-        border-radius: 20px;
-        padding: 18px;
-        margin-bottom: 18px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    input[type="number"], input[type="text"], input[type="date"], select {
-        width: 100%;
-        background: rgba(0, 0, 0, 0.25);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 14px 16px;
-        border-radius: 14px;
-        font-size: 14px;
-        color: white;
-        margin-bottom: 16px;
-        outline: none;
-    }
-
-    .btn-action {
-        width: 100%;
-        background: var(--primary-gradient);
-        color: white;
-        border: none;
-        padding: 15px;
-        border-radius: 14px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
-    }
-
-    .alert-overlay {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(5, 6, 12, 0.85);
-        backdrop-filter: blur(8px);
-        z-index: 10000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
-
-    .alert-card {
-        background: #131529;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        width: 100%;
-        max-width: 320px;
-        border-radius: 24px;
-        padding: 25px;
-        text-align: center;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @media (min-height: 700px) and (min-width: 450px) {
-        .phone-wrapper {
-            position: relative;
-            height: 850px;
-            top: auto;
-            left: auto;
-            transform: none;
-            border-radius: 35px;
-            border: 8px solid #1e213a;
-        }
-    }
-    
-    .hidden-screen { display: none !important; }
-
     .premium-card {
         background: var(--bg-card-glass);
         backdrop-filter: blur(12px);
@@ -429,33 +363,57 @@
     .leader-info p { font-size: 11px; color: var(--text-muted); }
     .leader-right-value b { font-size: 13.5px; font-weight: 700; color: var(--accent-purple); }
 
+    /* ==========================================================================
+       🌈 4. Unique Colored & Styled Stage Selector
+       ========================================================================== */
     .stage-selector {
-        display: flex; gap: 6px; overflow-x: auto; padding: 5px 2px 22px 2px; margin-bottom: 5px;
+        display: flex; gap: 10px; overflow-x: auto; padding: 10px 5px 25px 5px; margin-bottom: 5px;
         scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
     }
     .stage-selector::-webkit-scrollbar { display: none; }
 
     .stage-tab {
-        position: relative; width: 38px; height: 38px; min-width: 38px; border-radius: 11px;
-        background: rgba(255,255,255,0.04); color: var(--text-muted); display: flex; justify-content: center;
-        align-items: center; font-size: 13px; cursor: pointer; border: 1px solid var(--border-glass);
-        transition: all 0.25s ease;
+        position: relative; width: 44px; height: 44px; min-width: 44px; border-radius: 14px;
+        color: #ffffff; display: flex; justify-content: center;
+        align-items: center; font-size: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
     }
+
+    /* Assigning Distinct Beautiful Gradients to Each Stage Tab */
+    .stage-tab[data-stage="0"] { background: var(--stage-0); }
+    .stage-tab[data-stage="1"] { background: var(--stage-1); }
+    .stage-tab[data-stage="2"] { background: var(--stage-2); }
+    .stage-tab[data-stage="3"] { background: var(--stage-3); }
+    .stage-tab[data-stage="4"] { background: var(--stage-4); }
+    .stage-tab[data-stage="5"] { background: var(--stage-5); }
+    .stage-tab[data-stage="6"] { background: var(--stage-6); }
 
     .stage-tab::after {
         content: attr(data-amount);
-        position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%) scale(0.9);
-        background: #131529; color: var(--text-muted); font-size: 9.5px; font-weight: 600;
-        padding: 2px 5px; border-radius: 5px; white-space: nowrap; opacity: 0.6;
-        border: 1px solid rgba(255, 255, 255, 0.05); pointer-events: none;
+        position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%) scale(0.85);
+        background: #131529; color: var(--text-muted); font-size: 9px; font-weight: 600;
+        padding: 2px 6px; border-radius: 6px; white-space: nowrap; opacity: 0.7;
+        border: 1px solid rgba(255, 255, 255, 0.08); pointer-events: none;
+        transition: all 0.2s ease;
     }
 
+    /* Beautiful Unique Active States with Highlighting Glow Effects */
     .stage-tab.active-stage {
-        background: var(--primary-gradient); color: white; border-color: var(--accent-purple);
-        box-shadow: var(--purple-glow); transform: translateY(-1px);
+        transform: translateY(-4px) scale(1.1);
+        border-color: #ffffff;
     }
+    .stage-tab.active-stage[data-stage="0"] { box-shadow: 0 5px 15px rgba(113, 128, 147, 0.5); }
+    .stage-tab.active-stage[data-stage="1"] { box-shadow: 0 5px 15px rgba(0, 168, 255, 0.6); }
+    .stage-tab.active-stage[data-stage="2"] { box-shadow: 0 5px 15px rgba(156, 136, 255, 0.6); }
+    .stage-tab.active-stage[data-stage="3"] { box-shadow: 0 5px 15px rgba(225, 177, 44, 0.6); }
+    .stage-tab.active-stage[data-stage="4"] { box-shadow: 0 5px 15px rgba(68, 189, 50, 0.6); }
+    .stage-tab.active-stage[data-stage="5"] { box-shadow: 0 5px 15px rgba(232, 65, 24, 0.6); }
+    .stage-tab.active-stage[data-stage="6"] { box-shadow: 0 5px 20px rgba(255, 0, 127, 0.8); }
+
     .stage-tab.active-stage::after { 
-        opacity: 1; transform: translateX(-50%) scale(1); color: #ffffff; background: var(--primary); border-color: var(--accent-purple);
+        opacity: 1; transform: translateX(-50%) scale(1); color: #ffffff; background: #090a15; border-color: rgba(255,255,255,0.3);
     }
 
     .scanner-futuristic-container { text-align: center; padding: 15px 5px; }
@@ -760,13 +718,13 @@
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">टॉप 10 लीडर्स देखें:</p>
                         
                         <div class="stage-selector">
-                            <button class="stage-tab active-stage" data-amount="₹0-1L" onclick="renderLeaderboardStageWise(0)"><i class="fa-solid fa-shield"></i></button>
-                            <button class="stage-tab" data-amount="₹1L-10L" onclick="renderLeaderboardStageWise(1)"><i class="fa-solid fa-coins"></i></button>
-                            <button class="stage-tab" data-amount="₹10L-5M" onclick="renderLeaderboardStageWise(2)"><i class="fa-solid fa-bolt"></i></button>
-                            <button class="stage-tab" data-amount="₹5M-50M" onclick="renderLeaderboardStageWise(3)"><i class="fa-solid fa-gem"></i></button>
-                            <button class="stage-tab" data-amount="₹50M-1Cr" onclick="renderLeaderboardStageWise(4)"><i class="fa-solid fa-compass"></i></button>
-                            <button class="stage-tab" data-amount="₹1Cr-10Cr" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
-                            <button class="stage-tab" data-amount="₹10Cr+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
+                            <button class="stage-tab active-stage" data-stage="0" data-amount="₹0-1L" onclick="renderLeaderboardStageWise(0)"><i class="fa-solid fa-shield"></i></button>
+                            <button class="stage-tab" data-stage="1" data-amount="₹1L-10L" onclick="renderLeaderboardStageWise(1)"><i class="fa-solid fa-coins"></i></button>
+                            <button class="stage-tab" data-stage="2" data-amount="₹10L-5M" onclick="renderLeaderboardStageWise(2)"><i class="fa-solid fa-bolt"></i></button>
+                            <button class="stage-tab" data-stage="3" data-amount="₹5M-50M" onclick="renderLeaderboardStageWise(3)"><i class="fa-solid fa-gem"></i></button>
+                            <button class="stage-tab" data-stage="4" data-amount="₹50M-1Cr" onclick="renderLeaderboardStageWise(4)"><i class="fa-solid fa-compass"></i></button>
+                            <button class="stage-tab" data-stage="5" data-amount="₹1Cr-10Cr" onclick="renderLeaderboardStageWise(5)"><i class="fa-solid fa-vault"></i></button>
+                            <button class="stage-tab" data-stage="6" data-amount="₹10Cr+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
                         </div>
 
                         <div id="myPersonalRankCard" class="hidden-screen" style="margin-bottom: 12px; border: 1.5px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12); border-radius: 18px; padding: 12px;">
@@ -816,7 +774,7 @@
                 <div id="tab-profile" class="app-tab-content hidden-screen">
                     <div class="section">
                         <div id="profileFormArea" class="premium-card hidden-screen">
-                            <h3><i class="fa-solid fa-user-plus" style="color:var(--accent-purple);"></i> Complete Profile (+2k Bonus)</h3>
+                            <h3><i class="fa-solid fa-user-plus" style="color:var(--accent-purple);"></i> Complete Profile (+10k Bonus)</h3>
                             <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">अपनी प्रोफाइल पूरी लॉक करें और तुरंत 10000 कॉइन्स का बोनस पाएं।</p>
                             <input type="text" id="pName" placeholder="अपना पूरा नाम दर्ज करें">
                             <input type="date" id="pDOB">
@@ -836,7 +794,7 @@
                                 <span style="font-size:12px; color:var(--success); font-weight:600;">वेरिफाइड अकाउंट ✅</span>
                             </div>
                             <div class="info-row"><span>नाम / Legal Name:</span><b id="stName">-</b></div>
-                            <div class="info-row"><span>व्हाट्सएप नंबर / WhatsApp:</span><b id="stWhatsapp">-</b></div>
+                            <div class="info-row"><span>व्हाट्सएप नंबर / WhatsApp:</span><b id="stWorkspace">-</b></b></div>
                             <div class="info-row"><span>जन्मतिथि / DOB:</span><b id="stDOB">-</b></div>
                             <div class="info-row"><span>लिंग / Gender:</span><b id="stGender">-</b></div>
                             <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
@@ -1253,6 +1211,7 @@
                                     const currentReferrerData = uDoc.data();
                                     const oldBalance = Number(currentReferrerData.balance || 0);
                                     
+                                    // अपलाइन म्यूटेशन प्रॉमिस ऐरे
                                     const updateRef = setDoc(doc(db, "users", potentialReferrerMobile), { 
                                         balance: oldBalance + 10000 
                                     }, { merge: true });
@@ -1271,7 +1230,7 @@
                         }
                     }
 
-                    // एटॉमिकिटी सुनिश्चित करने के लिए अपलाइन क्रेडिट के बाद ही नया नोड जनरेट होगा
+                    // न्यू यूजर नोड इंसर्शन लेजर
                     await setDoc(userDocRef, {
                         mobile: targetMobile, balance: initialBalance, rupeeBalance: initialRupeeBalance, userName: "Smart User",
                         regDate: localCurrentDateISO, profileCompleted: false, referredBy: assignedReferrer, signupIP: signupIPAddress
@@ -1535,7 +1494,7 @@
                 const targetedAssetVal = Number(keyDocSnap.data().value || 500);
                 const checkFreshnessConstraint = await evaluateKeyUniquenessConstraints(userSessionMobile, stringSecretKeyId);
                 if (!checkFreshnessConstraint) {
-                    return window.showCustomAlert("दावा खारिज", "यह कोड आपके अकाउंट पर पहले ही क्लेम हो चुका है।", "error");
+                    return window.showCustomAlert("दावा खारिज", "यह कोड आपके ACCOUNT पर पहले ही क्लेम हो चुका है।", "error");
                 }
 
                 const liveUserSnap = await getDoc(doc(db, "users", userSessionMobile));
@@ -1867,7 +1826,7 @@
                     document.getElementById('profileFormArea').classList.add('hidden-screen');
                     document.getElementById('profileStatusArea').classList.remove('hidden-screen');
                     document.getElementById('stName').innerText = profilePayload.userName || "-";
-                    document.getElementById('stWhatsapp').innerText = "+91 " + userSessionMobile;
+                    document.getElementById('stWorkspace').innerText = "+91 " + userSessionMobile;
                     document.getElementById('stDOB').innerText = profilePayload.dob || "Not Set";
                     document.getElementById('stGender').innerText = profilePayload.gender || "Male";
                 }
@@ -1903,7 +1862,7 @@
             globalInAppPinActionState = taskType;
             document.getElementById('inAppPinPanelArea').classList.remove('hidden-screen');
             if (taskType === 'change') {
-                document.getElementById('lblPinPanelTitle').innerText = "🔒 PIN मॉडिफिकेशन पैनल";
+                document.getElementById('lblPinPanelTitle').innerText = "🔒 PIN मॉडिफिकेशन停留पैनल";
                 document.getElementById('inAppVerifyInput1').setAttribute('placeholder', "अपना पुराना चालू सुरक्षा PIN दर्ज करें");
                 document.getElementById('inAppVerifyInput2').classList.add('hidden-screen');
             } else {
@@ -2045,26 +2004,45 @@
     }
 };
 
-        window.generateAndShareModernReferralLink = () => {
-            const fullUserName = document.getElementById('sideMenuUser').innerText.trim();
-            
-            let prefix = "";
-            let cleanName = fullUserName.replace(/\s+/g, '');
+        // ====== [🛠️ सुधारा गया प्रोफाइल वैलिडेशन और रेफरल फ्लो] ======
+        window.generateAndShareModernReferralLink = async () => {
+            try {
+                // सर्वर से यूजर का सबसे ताज़ा प्रोफाइल स्टेटस देखें
+                const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
+                if (userSnapshot.exists()) {
+                    const userData = userSnapshot.data();
+                    
+                    // अगर प्रोफाइल लॉक (Complete) नहीं है, तो आगे नहीं जाने दें
+                    if (!userData.profileCompleted) {
+                        window.showCustomAlert("प्रोफाइल अधूरी है! ⚠️", "रेफरल लिंक शेयर करने से पहले कृपया अपनी प्रोफाइल पूरी करें और सुरक्षा पिन बनाएं।", "error");
+                        // सीधे प्रोफाइल वाले टैब पर भेजें
+                        setTimeout(() => {
+                            switchAppTab('profile');
+                        }, 1500);
+                        return;
+                    }
+                }
 
-            if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
-                prefix = cleanName.substring(0, 4);
+                const fullUserName = document.getElementById('sideMenuUser').innerText.trim();
+                let prefix = "";
+                let cleanName = fullUserName.replace(/\s+/g, '');
+
+                if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
+                    prefix = cleanName.substring(0, 4);
+                }
+
+                while (prefix.length < 4) {
+                    let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+                }
+
+                const finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
+                const link = window.location.origin + window.location.pathname + "?ref=" + finalDynamicCode;
+                
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
+            } catch (err) {
+                console.error("Referral link checking error: ", err);
             }
-
-            while (prefix.length < 4) {
-                let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-            }
-
-            const finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
-            
-            const link = window.location.origin + window.location.pathname + "?ref=" + finalDynamicCode;
-            
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
         };
 
         window.switchAppTab = (targetTabId) => {
