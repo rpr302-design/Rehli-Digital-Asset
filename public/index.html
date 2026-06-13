@@ -1893,44 +1893,60 @@
             } catch (err) { window.showCustomAlert("नेटवर्क एरर", "डेटाबेस में बदलाव सेव करने में समस्या आई।", "error"); }
         };
 
-        async function updateWalletSheet() {
-            try {
-                const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
-                const coreUserData = userSnapshot.data();
+       async function updateWalletSheet() {
+    try {
+        const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
+        const coreUserData = userSnapshot.data();
 
-                const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", userSessionMobile)));
-                let spent = 0; 
-                txSnap.forEach(t => spent += Number(t.data().amount || 0));
-                
-                const bal = coreUserData.balance || 0;
-                const rupeeBal = coreUserData.rupeeBalance || 0;
+        const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", userSessionMobile)));
+        let spent = 0; 
+        txSnap.forEach(t => spent += Number(t.data().amount || 0));
+        
+        const bal = coreUserData.balance || 0;
+        const rupeeBal = coreUserData.rupeeBalance || 0;
 
-                document.getElementById('wTotalLiquidCoins').innerText = formatSmartAmount(bal) + " Assets";
-                document.getElementById('wTotalLiquidRupees').innerText = "₹ " + formatSmartAmount(rupeeBal);
-                document.getElementById('wTotalSpent').innerText = formatSmartAmount(spent) + " Assets";
-                document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
+        document.getElementById('wTotalLiquidCoins').innerText = formatSmartAmount(bal) + " Assets";
+        document.getElementById('wTotalLiquidRupees').innerText = "₹ " + formatSmartAmount(rupeeBal);
+        document.getElementById('wTotalSpent').innerText = formatSmartAmount(spent) + " Assets";
+        document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
 
-                const myUniqueReferralCode = "REHLI" + userSessionMobile.substring(6).toUpperCase();
-                
-                const queryAllUsersSnapshot = await getDocs(collection(db, "users"));
-                let totalInvitedFriendsCount = 0;
+        // ==========================================================================
+        // 🛠️ सुधरा हुआ डायनामिक कोड लॉजिक (जो शेयर लिंक से हूबहू मैच करेगा)
+        // ==========================================================================
+        let fullUserName = (coreUserData.userName || "SMART").trim();
+        let prefix = "";
+        let cleanName = fullUserName.replace(/\s+/g, '');
 
-                queryAllUsersSnapshot.forEach((uDoc) => {
-                    const refereeData = uDoc.data();
-                    if (refereeData.referredBy === myUniqueReferralCode) {
-                        totalInvitedFriendsCount++;
-                    }
-                });
-
-                const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
-                
-                document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
-                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
-
-            } catch (err) { 
-                console.error("Wallet Sheet Optimization Error:", err); 
-            }
+        if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser" && cleanName !== "Smart User") {
+            prefix = cleanName.substring(0, 4);
         }
+
+        while (prefix.length < 4) {
+            let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
+
+        // अब यह वही कोड बनाएगा जो आपने व्हाट्सएप पर शेयर किया था (जैसे: ROSH210)
+        const myUniqueReferralCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
+        
+        // ==========================================================================
+        // 🚀 सर्वर लोड और बिल बचाने के लिए ऑप्टिमाइज्ड क्वेरी (केवल मैचिंग कोड वाले यूजर्स लाएगा)
+        // ==========================================================================
+        const q = query(collection(db, "users"), where("referredBy", "==", myUniqueReferralCode));
+        const querySnapshot = await getDocs(q);
+        
+        // सीधे फिल्टर की गई लिस्ट की साइज गिनें
+        let totalInvitedFriendsCount = querySnapshot.size;
+
+        const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
+        
+        document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
+        document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
+
+    } catch (err) { 
+        console.error("Wallet Sheet Optimization Error:", err); 
+    }
+}
 
         window.executeInAppRupeeToAssetConversion = async () => {
             const rupeeInputAmount = Number(document.getElementById('numConvertRupeeAmount').value);
