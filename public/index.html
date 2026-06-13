@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
- <style>
+<style>
     /* ==========================================================================
        🎨 1. Premium Dark Fintech Theme & Variables
        ========================================================================== */
     :root {
-        --bg-main: #090a15;f
+        --bg-main: #090a15;
         --bg-card-glass: rgba(30, 39, 46, 0.45);
         --border-glass: rgba(255, 255, 255, 0.08);
         --primary: #6c5ce7;
@@ -591,7 +591,7 @@
                         <h5 style="color:var(--gold); margin-bottom:10px; font-size:13px;"><i class="fa-solid fa-key"></i> पिन रीसेट करें (Reset PIN):</h5>
                         <input type="text" id="forgotName" placeholder="प्रोफाइल में लिखा पूरा नाम" style="padding:10px; margin-bottom:8px; font-size:12px;">
                         <input type="date" id="forgotDOB" style="padding:10px; margin-bottom:10px; font-size:12px;">
-                        <input type="number" id="forgotNewPin" placeholder="नяा 4-अंकों का PIN बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="padding:10px; margin-bottom:10px; font-size:12px;">
+                        <input type="number" id="forgotNewPin" placeholder="नया 4-अंकों का PIN बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" style="padding:10px; margin-bottom:10px; font-size:12px;">
                         <button class="btn-action" onclick="processForgotPinRecovery()" style="padding:10px; font-size:12px; background:var(--success-gradient);">पिन बदलें / Reset PIN</button>
                     </div>
 
@@ -776,7 +776,7 @@
                             </select>
                             <input type="number" id="pPin" placeholder="नया 4-Digit सुरक्षा PIN बनाएं" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
                             <input type="number" id="pPinConfirm" placeholder="PIN दोबारा डालकर कन्फर्म करें" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
-                            <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल लॉक करें और बोनस पाएं।/button>
+                            <button class="btn-action" onclick="saveDigitalUserProfileData()">प्रोफाइल लॉक करें और बोनस पाएं।</button>
                         </div>
 
                         <div id="profileStatusArea" class="premium-card hidden-screen">
@@ -831,58 +831,55 @@
                     </div>
                 </div>
 
-              <!-- ==========================================================================
-     🛡️ [LEGAL & ADMINISTRATIVE COMPLIANCE UPDATE]: 20+ TERMS, CONDITIONS & DISCLAIMERS
-     ========================================================================== -->
-<div id="tab-terms" class="app-tab-content hidden-screen">
-    <div class="premium-card">
-        <h3><i class="fa-solid fa-file-shield" style="color:var(--accent-purple);"></i> Terms, Conditions & Detailed Guidelines</h3>
-        <hr style="opacity:0.05; margin:12px 0;">
-        <div style="font-size:12px; line-height:1.7; color:var(--text-muted); display:flex; flex-direction:column; gap:14px; text-align:justify;">
-            
-            <p>1. <b>Conversion Ratio Matrix:</b> Under the current system, the internal calculation of 100 Assets is benchmarked equivalent to ₹1 Indian Rupee (INR). This ratio is strictly for the platform's internal valuation and rewards program.</p>
-            
-            <p>2. <b>Asset Value Volatility:</b> The net value, purchasing power, or valuation of the digital assets (Coins/Assets) collected by the user <b>can be modified, reduced, or updated at any time</b> based on server maintenance costs, administrative policies, or technical transitions.</p>
-            
-            <p>3. <b>No Cash Guarantee:</b> This platform does not provide any legal guarantee, binding promise, or absolute claim to any user that the assets accumulated within the app will be mandatorily disbursed in the form of hard cash in the future.</p>
-            
-            <p>4. <b>Non-Earning Program:</b> This app or website does not compel, induce, or invite any individual to earn guaranteed income or profit through any form of investment. This is purely a digital utility reward program.</p>
-            
-            <p>5. <b>PIN Privacy & Cyber Security:</b> In accordance with the guidelines issued by the Cyber Crime Cell and law enforcement agencies, never share your 4-digit Security PIN with any third party, friends, or unknown callers. The user shall be solely responsible for any unauthorized transactions resulting from a compromised PIN.</p>
-            
-            <p>6. <b>Anti-Fraud & Referral Policy:</b> If a user is found utilizing unethical methods, clone apps, automated scripts, emulators, or fake numbers to inject fraudulent referrals into the system, their account will be terminated immediately without any prior notice.</p>
-            
-            <p>7. <b>One Device, One Account Rule:</b> To maintain system integrity, only one account is permitted to operate per mobile device. All accounts attempting fraud by frequently switching multiple numbers on a single device will be permanently banned.</p>
-            
-            <p>8. <b>Merchant Transaction Boundaries:</b> All asset transfers executed with registered store owners (Merchants) are strictly voluntary. The app administration shall not be held liable for assets transferred due to technical errors or incorrect mobile numbers.</p>
-            
-            <p>9. <b>Mystery Box Cooldown Uncertainty:</b> Rewards generated from the Magic Mystery Box are managed by random selection algorithms. There is no claim or guarantee of receiving a fixed or identical reward amount for any user.</p>
-            
-            <p>10. <b>Data Accuracy & Profile Lock:</b> Users must provide their authentic legal name, date of birth, and credentials in the profile section. In compliance with regulatory standards, rewards may be withheld if misleading information is detected.</p>
-            
-            <p>11. <b>Strict Prohibition of Gambling/Betting:</b> This platform does not support or promote gambling, betting, gaming scams, or lottery models. The assets provided here are purely promotional rewards for watching videos and inviting genuine users.</p>
-            
-            <p>12. <b>Technical Faults & Server Downtime:</b> In the event of data discrepancy caused by Firebase Cloud failures, internet connectivity issues, database loss, or server downtime, the administration reserves the absolute right to restore or reset the asset balance ledger.</p>
-            
-            <p>13. <b>IP Address Logging:</b> For cyber security enforcement and administrative transparency, the user's public IP address is securely logged during registration and login to deter fraudulent, illegal, or malicious network activities.</p>
-            
-            <p>14. <b>Authenticity of Promoted Streams:</b> All content displayed within promoted videos or advertisements belongs to third-party creators. Users must view them at their own discretion; the platform management holds no accountability for third-party claims.</p>
-            
-            <p>15. <b>Account Inactivity Clause:</b> If a user fails to log into the application for 90 consecutive days, the account may be deemed inactive for security reasons, and the accumulated asset balance may be subject to reset.</p>
-            
-            <p>16. <b>Compliance with Judicial Guidelines:</b> This application strictly adheres to the regulations of local administrative governance, police directives, and the Information Technology Act (IT Act, 2000). Any suspicious activity will be reported directly to law enforcement agencies.</p>
-            
-            <p>17. <b>Right to Modify or Terminate Services:</b> The platform administration reserves the absolute right to modify, suspend, or permanently terminate this promotional reward structure at any given time without any legal liabilities.</p>
-            
-            <p>18. <b>User Code of Conduct:</b> Using abusive language, spreading misleading rumors, or threatening the administration inside the app, via support systems, or on public social media handles will result in the immediate revocation of the user's license.</p>
-            
-            <p>19. <b>Validity of Promotional Bonuses:</b> Welcome bonuses (50k Assets + ₹500 Cash) and Profile Completion rewards are limited-time incentives valid only for authentic unique profiles. The administrator reserves the right to alter these offers at will.</p>
-            
-            <p>20. <b>Legal Jurisdiction:</b> Any dispute, interpretation, or legal proceedings arising out of the terms, conditions, or use of this application shall be subject exclusively to the jurisdiction of the local courts and the local Cyber Cell framework.</p>
-            
-        </div>
-    </div>
-</div>
+                <div id="tab-terms" class="app-tab-content hidden-screen">
+                    <div class="premium-card">
+                        <h3><i class="fa-solid fa-file-shield" style="color:var(--accent-purple);"></i> Terms, Conditions & Detailed Guidelines</h3>
+                        <hr style="opacity:0.05; margin:12px 0;">
+                        <div style="font-size:12px; line-height:1.7; color:var(--text-muted); display:flex; flex-direction:column; gap:14px; text-align:justify;">
+                            
+                            <p>1. <b>Conversion Ratio Matrix:</b> Under the current system, the internal calculation of 100 Assets is benchmarked equivalent to ₹1 Indian Rupee (INR). This ratio is strictly for the platform's internal valuation and rewards program.</p>
+                            
+                            <p>2. <b>Asset Value Volatility:</b> The net value, purchasing power, or valuation of the digital assets (Coins/Assets) collected by the user <b>can be modified, reduced, or updated at any time</b> based on server maintenance costs, administrative policies, or technical transitions.</p>
+                            
+                            <p>3. <b>No Cash Guarantee:</b> This platform does not provide any legal guarantee, binding promise, or absolute claim to any user that the assets accumulated within the app will be mandatorily disbursed in the form of hard cash in the future.</p>
+                            
+                            <p>4. <b>Non-Earning Program:</b> This app or website does not compel, induce, or invite any individual to earn guaranteed income or profit through any form of investment. This is purely a digital utility reward program.</p>
+                            
+                            <p>5. <b>PIN Privacy & Cyber Security:</b> In accordance with the guidelines issued by the Cyber Crime Cell and law enforcement agencies, never share your 4-digit Security PIN with any third party, friends, or unknown callers. The user shall be solely responsible for any unauthorized transactions resulting from a compromised PIN.</p>
+                            
+                            <p>6. <b>Anti-Fraud & Referral Policy:</b> If a user is found utilizing unethical methods, clone apps, automated scripts, emulators, or fake numbers to inject fraudulent referrals into the system, their account will be terminated immediately without any prior notice.</p>
+                            
+                            <p>7. <b>One Device, One Account Rule:</b> To maintain system integrity, only one account is permitted to operate per mobile device. All accounts attempting fraud by frequently switching multiple numbers on a single device will be permanently banned.</p>
+                            
+                            <p>8. <b>Merchant Transaction Boundaries:</b> All asset transfers executed with registered store owners (Merchants) are strictly voluntary. The app administration shall not be held liable for assets transferred due to technical errors or incorrect mobile numbers.</p>
+                            
+                            <p>9. <b>Mystery Box Cooldown Uncertainty:</b> Rewards generated from the Magic Mystery Box are managed by random selection algorithms. There is no claim or guarantee of receiving a fixed or identical reward amount for any user.</p>
+                            
+                            <p>10. <b>Data Accuracy & Profile Lock:</b> Users must provide their authentic legal name, date of birth, and credentials in the profile section. In compliance with regulatory standards, rewards may be withheld if misleading information is detected.</p>
+                            
+                            <p>11. <b>Strict Prohibition of Gambling/Betting:</b> This platform does not support or promote gambling, betting, gaming scams, or lottery models. The assets provided here are purely promotional rewards for watching videos and inviting genuine users.</p>
+                            
+                            <p>12. <b>Technical Faults & Server Downtime:</b> In the event of data discrepancy caused by Firebase Cloud failures, internet connectivity issues, database loss, or server downtime, the administration reserves the absolute right to restore or reset the asset balance ledger.</p>
+                            
+                            <p>13. <b>IP Address Logging:</b> For cyber security enforcement and administrative transparency, the user's public IP address is securely logged during registration and login to deter fraudulent, illegal, or malicious network activities.</p>
+                            
+                            <p>14. <b>Authenticity of Promoted Streams:</b> All content displayed within promoted videos or advertisements belongs to third-party creators. Users must view them at their own discretion; the platform management holds no accountability for third-party claims.</p>
+                            
+                            <p>15. <b>Account Inactivity Clause:</b> If a user fails to log into the application for 90 consecutive days, the account may be deemed inactive for security reasons, and the accumulated asset balance may be subject to reset.</p>
+                            
+                            <p>16. <b>Compliance with Judicial Guidelines:</b> This application strictly adheres to the regulations of local administrative governance, police directives, and the Information Technology Act (IT Act, 2000). Any suspicious activity will be reported directly to law enforcement agencies.</p>
+                            
+                            <p>17. <b>Right to Modify or Terminate Services:</b> The platform administration reserves the absolute right to modify, suspend, or permanently terminate this promotional reward structure at any given time without any legal liabilities.</p>
+                            
+                            <p>18. <b>User Code of Conduct:</b> Using abusive language, spreading misleading rumors, or threatening the administration inside the app, via support systems, or on public social media handles will result in the immediate revocation of the user's license.</p>
+                            
+                            <p>19. <b>Validity of Promotional Bonuses:</b> Welcome bonuses (50k Assets + ₹500 Cash) and Profile Completion rewards are limited-time incentives valid only for authentic unique profiles. The administrator reserves the right to alter these offers at will.</p>
+                            
+                            <p>20. <b>Legal Jurisdiction:</b> Any dispute, interpretation, or legal proceedings arising out of the terms, conditions, or use of this application shall be subject exclusively to the jurisdiction of the local courts and the local Cyber Cell framework.</p>
+                            
+                        </div>
+                    </div>
+                </div>
 
                 <div id="tab-pay" class="app-tab-content hidden-screen">
                     <div class="premium-card scanner-futuristic-container">
@@ -1181,57 +1178,49 @@
                         signupIPAddress = ipJson.ip || "0.0.0.0";
                     } catch (ipErr) { console.error(ipErr); }
 
-                    // 🛠️ [सुधार]: बिना लूप के डायरेक्ट क्वेरी और सुरक्षित एसेट क्रेडिट लॉजिक
-if (parsedReferralInput && parsedReferralInput.trim() !== "") {
-    assignedReferrer = parsedReferralInput.trim().toUpperCase();
+                    // 🛠️ [क्रिटिकल फिक्स]: यहाँ प्रॉमिस चैनिंग को पूरी तरह ब्लॉक किया गया है ताकि एसेट कनवर्टर क्रैश न हो
+                    if (parsedReferralInput && parsedReferralInput.trim() !== "") {
+                        assignedReferrer = parsedReferralInput.trim().toUpperCase();
 
-    try {
-        // मोबाइल नंबर के आखिरी 4 अंकों को रेफरल कोड से अलग करें
-        const referrerMobileLastFour = assignedReferrer.slice(-4);
-        
-        // पूरे डेटाबेस में घूमने के बजाय सीधे उस यूजर को ढूंढें जिसके मोबाइल का अंत इससे होता है
-        const usersRef = collection(db, "users");
-        const querySnapshot = await getDocs(usersRef);
-        
-        // सही अपलाइन यूजर को ढूंढने के लिए प्रॉमिस का सही इस्तेमाल
-        const updatePromises = [];
-        
-        querySnapshot.forEach((uDoc) => {
-            const potentialReferrerMobile = uDoc.id;
-            let uName = (uDoc.data().userName || "SMART").trim();
-            let cleanName = uName.replace(/\s+/g, '');
-            let prefix = cleanName.length >= 4 ? cleanName.substring(0, 4) : cleanName;
-            while (prefix.length < 4) {
-                prefix += "X"; // पैडिंग सुरक्षा
-            }
-            
-            const dynamicCheckCode = prefix.toUpperCase() + potentialReferrerMobile.slice(-4);
-            
-            // अगर जेनेरेटेड कोड और इनपुट कोड आपस में मैच कर जाते हैं
-            if (dynamicCheckCode === assignedReferrer && potentialReferrerMobile !== targetMobile) {
-                const currentReferrerData = uDoc.data();
-                const oldBalance = Number(currentReferrerData.balance || 0);
-                
-                // प्रॉमिस एरे में पुश करें ताकि सिंक्रोनस तरीके से सेव हो
-                const updateRef = setDoc(doc(db, "users", potentialReferrerMobile), { 
-                    balance: oldBalance + 10000 
-                }, { merge: true });
-                
-                updatePromises.push(updateRef);
-            }
-        });
-        
-        // सभी डेटाबेस अपडेट पूरे होने का इंतजार करें
-        if (updatePromises.length > 0) {
-            await Promise.all(updatePromises);
-            console.log("Referral assets successfully credited to referrer!");
-        }
+                        try {
+                            const usersRef = collection(db, "users");
+                            const querySnapshot = await getDocs(usersRef);
+                            const updatePromises = [];
+                            
+                            querySnapshot.forEach((uDoc) => {
+                                const potentialReferrerMobile = uDoc.id;
+                                let uName = (uDoc.data().userName || "SMART").trim();
+                                let cleanName = uName.replace(/\s+/g, '');
+                                let prefix = cleanName.length >= 4 ? cleanName.substring(0, 4) : cleanName;
+                                while (prefix.length < 4) {
+                                    prefix += "A"; 
+                                }
+                                
+                                const dynamicCheckCode = prefix.toUpperCase() + potentialReferrerMobile.slice(-4);
+                                
+                                if (dynamicCheckCode === assignedReferrer && potentialReferrerMobile !== targetMobile) {
+                                    const currentReferrerData = uDoc.data();
+                                    const oldBalance = Number(currentReferrerData.balance || 0);
+                                    
+                                    const updateRef = setDoc(doc(db, "users", potentialReferrerMobile), { 
+                                        balance: oldBalance + 10000 
+                                    }, { merge: true });
+                                    
+                                    updatePromises.push(updateRef);
+                                }
+                            });
+                            
+                            if (updatePromises.length > 0) {
+                                await Promise.all(updatePromises);
+                                console.log("Referrer balance updated successfully before writing new user node.");
+                            }
 
-    } catch (refErr) { 
-        console.error("Referral Processing Error Details: ", refErr); 
-    }
-}
+                        } catch (refErr) { 
+                            console.error("Referral Processing Error: ", refErr); 
+                        }
+                    }
 
+                    // 🛠️ [स्ट्रिक्ट फ्लो फिक्स]: अपलाइन को क्रेडिट करने के ठीक बाद नया डॉक बनेगा ताकि एटॉमिकिटी बनी रहे
                     await setDoc(userDocRef, {
                         mobile: targetMobile, balance: initialBalance, rupeeBalance: initialRupeeBalance, userName: "Smart User",
                         regDate: localCurrentDateISO, profileCompleted: false, referredBy: assignedReferrer, signupIP: signupIPAddress
@@ -1273,9 +1262,6 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
             return true;
         }
 
-/* ==========================================================================
-           📊 [सुधरा हुआ मॉड्यूल]: डायनेमिक नाम-आधारित रेफरल कोड रेंडरिंग इंजन
-           ========================================================================== */
         async function synchronizeUserDashboardStateEngine() {
             if (!userSessionMobile) return;
             try {
@@ -1295,18 +1281,14 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
                 document.getElementById('sideMenuUser').innerText = coreUserData.userName || "Smart User";
                 document.getElementById('sideMenuPhone').innerText = "+91 " + userSessionMobile;
 
-                // 🛠️ [क्रिटिकल सुधार]: नाम/उपनाम से डायनेमिक 4-अक्षर का प्रीफ़िक्स जनरेट करके कोड दिखाना
                 let uName = (coreUserData.userName || "SMART").trim();
                 let prefix = "";
 
-                // नाम से स्पेस हटाएं और अक्षरों को साफ़ करें
                 let cleanName = uName.replace(/\s+/g, '');
                 
                 if (cleanName.length >= 4) {
-                    // यदि नाम 4 या अधिक अक्षरों का है
                     prefix = cleanName.substring(0, 4);
                 } else {
-                    // यदि नाम छोटा है, तो बाकी के स्थान को रैंडम अक्षरों से भरें
                     prefix = cleanName;
                     while (prefix.length < 4) {
                         let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -1314,7 +1296,6 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
                     }
                 }
                 
-                // फाइनल 4-अक्षर प्रीफ़िक्स + मोबाइल के अंतिम 4 अंक
                 let finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
                 document.getElementById('lblReferralCodeDisplay').innerText = finalDynamicCode;
 
@@ -1897,20 +1878,16 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
                 if (globalInAppPinActionState === 'forgot_in' && (v1.toLowerCase() !== serverDataRef.userName.toLowerCase() || v2 !== serverDataRef.dob)) return window.showCustomAlert("रिकवरी फेल", "दर्ज की गई क्रेडेंशियल्स प्रोफाइल से मेल नहीं खातीं।", "error");
 
                 await setDoc(userDocumentReference, { securityPin: newPin }, { merge: true });
-                window.showCustomAlert("सुरक्षा पिन अपडेट हुआ", "आपका नया ट्रांजैक्शन पिन सिस्टम लेजर में लॉक कर दिया गया है।", "success");
+                window.showCustomAlert("सुरक्षा पिन अपडेट हुआ", "आपका नया ट्रांजैक्शन पिन系统 लेजर में लॉक कर दिया गया है।", "success");
                 document.getElementById('inAppPinPanelArea').classList.add('hidden-screen');
             } catch (err) { window.showCustomAlert("नेटवर्क एरर", "डेटाबेस में बदलाव सेव करने में समस्या आई।", "error"); }
         };
 
-        /* ==========================================================================
-           🥇 [सुधरा हुआ मॉड्यूल]: रियल-टाइम रेफरल काउंटर और अर्निंग बहीखाता इंजन
-           ========================================================================== */
         async function updateWalletSheet() {
             try {
                 const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
                 const coreUserData = userSnapshot.data();
 
-                // १. मर्चेंट ट्रांजैक्शंस से कुल खर्च (Spent Assets) कैलकुलेट करें
                 const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", userSessionMobile)));
                 let spent = 0; 
                 txSnap.forEach(t => spent += Number(t.data().amount || 0));
@@ -1923,10 +1900,8 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
                 document.getElementById('wTotalSpent').innerText = formatSmartAmount(spent) + " Assets";
                 document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
 
-                // २. 👥 [लाइव रेफरल काउंटर]: यूजर का यूनीक इनवाइट कोड जेनेरेट करें
                 const myUniqueReferralCode = "REHLI" + userSessionMobile.substring(6).toUpperCase();
                 
-                // पूरे 'users' कलेक्शन में सर्च करें कि कितने लोगों का 'referredBy' इस कोड से मैच करता है
                 const queryAllUsersSnapshot = await getDocs(collection(db, "users"));
                 let totalInvitedFriendsCount = 0;
 
@@ -1937,7 +1912,6 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
                     }
                 });
 
-                // ३. रेफरल के गणितीय नियम (१ दोस्त = ५००० Assets) के अनुसार लाइव डेटा रेंडर करें
                 const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
                 
                 document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
@@ -1948,9 +1922,6 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
             }
         }
 
-        /* ==========================================================================
-           💱 [नया मॉड्यूल]: इन-ऐप इंस्टेंट रुपया-टू-एसेट एक्सचेंज इंजन (₹1 = 100 एसेट्स)
-           ========================================================================== */
         window.executeInAppRupeeToAssetConversion = async () => {
             const rupeeInputAmount = Number(document.getElementById('numConvertRupeeAmount').value);
             
@@ -1966,23 +1937,19 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
                 const currentAvailableRupees = Number(currentFreshUserData.rupeeBalance || 0);
                 const currentAvailableAssets = Number(currentFreshUserData.balance || 0);
 
-                // १. वित्तीय सुरक्षा जांच: क्या यूजर के पास पर्याप्त कैश बैलेंस है?
                 if (currentAvailableRupees < rupeeInputAmount) {
                     return window.showCustomAlert("अपर्याप्त बैलेंस", "कन्वर्शन के लिए आपके रुपया खाते में पर्याप्त बैलेंस नहीं है।", "error");
                 }
 
-                // २. वित्तीय अनुपात गणना (₹1 = 100 Assets)
                 const computedAssetsToCredit = rupeeInputAmount * 100;
                 const finalUpdatedRupeeBalance = currentAvailableRupees - rupeeInputAmount;
                 const finalUpdatedAssetBalance = currentAvailableAssets + computedAssetsToCredit;
 
-                // ३. फायरबेस एटॉमिक क्लाउड बहीखाता अपडेट करें
                 await setDoc(userDocRef, {
                     rupeeBalance: finalUpdatedRupeeBalance,
                     balance: finalUpdatedAssetBalance
                 }, { merge: true });
 
-                // ४. इंटरफेस क्लीनअप और लाइव सिंकिंग
                 document.getElementById('numConvertRupeeAmount').value = "";
                 window.showCustomAlert("कन्वर्शन सफल! 🎉", `आपके ₹${rupeeInputAmount} रुपये सफलतापूर्वक +${computedAssetsToCredit.toLocaleString()} Assets में बदल दिए गए हैं!`, "success");
                 
@@ -2001,21 +1968,17 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
         const taskSnap = await getDoc(taskRef);
         if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल मीडिया बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
 
-        // 1. सभी सोशल मीडिया प्लेटफॉर्म्स के सही लिंक्स यहाँ सेट करें
         const socialLinks = {
             'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
-            'facebook': 'https://www.facebook.com/share/18iFthER4W/', // अपना फेसबुक लिंक डालें
-            'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   // अपना इंस्टाग्राम लिंक डालें
-            'telegram': 'https://t.me/RehliDigitalAsset',                 // अपना टेलीग्राम लिंक डालें
-            'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  // अपना व्हाट्सएप लिंक डालें
+            'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
+            'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
+            'telegram': 'https://t.me/RehliDigitalAsset',                 
+            'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
         };
 
-        // 2. चेक करें कि जो pKey आई है उसका लिंक हमारे पास है या नहीं
         if (socialLinks[pKey]) {
-            // डायनेमिक लिंक ओपन होगा (जिस बटन पर क्लिक हुआ है सिर्फ वही खुलेगा)
             window.open(socialLinks[pKey], '_blank');
         } else {
-            // अगर कोई लिंक न मिले तो बाय-डिफ़ॉल्ट यूट्यूब खोल देगा या एरर दिखा सकते हैं
             window.open("https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg", '_blank');
         }
 
@@ -2031,35 +1994,25 @@ if (parsedReferralInput && parsedReferralInput.trim() !== "") {
     }
 };
 
-/* ==========================================================================
-           💎 [सुधरा हुआ मॉड्यूल]: नाम-आधारित डायनेमिक व्हाट्सएप शेयर इंजन
-           ========================================================================== */
         window.generateAndShareModernReferralLink = () => {
-            // १. साइड मेनू से यूजर का पूरा नाम लाइव उठाएं
             const fullUserName = document.getElementById('sideMenuUser').innerText.trim();
             
             let prefix = "";
-            // २. नाम से सभी स्पेस (खाली जगह) हटाएं
             let cleanName = fullUserName.replace(/\s+/g, '');
 
-            // ३. नाम/उपनाम से ४ अक्षरों का यूनीक प्रीफ़िक्स जनरेट करने का लॉजिक
             if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
                 prefix = cleanName.substring(0, 4);
             }
 
-            // ४. अगर नाम बहुत छोटा है या लोड नहीं हुआ, तो सुरक्षा के लिए ४ अक्षर पूरे करें
             while (prefix.length < 4) {
                 let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
             }
 
-            // ५. फाइनल ४ अक्षर का नाम कोड + मोबाइल नंबर के आखिरी ४ अंक
             const finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
             
-            // ६. डायनेमिक यूआरएल लिंक जनरेशन
             const link = window.location.origin + window.location.pathname + "?ref=" + finalDynamicCode;
             
-            // ७. व्हाट्सएप पर सीधे शेयर ट्रिगर
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
         };
 
