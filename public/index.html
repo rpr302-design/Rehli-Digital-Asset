@@ -152,14 +152,86 @@
         animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
+    @media (min-height: 700px) and (min-width: 450px) {
+        .phone-wrapper {
+            position: relative;
+            height: 850px;
+            top: auto;
+            left: auto;
+            transform: none;
+            border-radius: 35px;
+            border: 8px solid #1e213a;
+        }
+    }
+    
+    .hidden-screen { display: none !important; }
+
+    .premium-card {
+        background: var(--bg-card-glass);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-glass);
+        border-radius: 20px;
+        padding: 18px;
+        margin-bottom: 18px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    input[type="number"], input[type="text"], input[type="date"], select {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 14px 16px;
+        border-radius: 14px;
+        font-size: 14px;
+        color: white;
+        margin-bottom: 16px;
+        outline: none;
+    }
+
+    .btn-action {
+        width: 100%;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
+    }
+
+    .alert-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(5, 6, 12, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .alert-card {
+        background: #131529;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        max-width: 320px;
+        border-radius: 24px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
     @keyframes popIn {
         from { transform: scale(0.8); opacity: 0; }
         to { transform: scale(1); opacity: 1; }
     }
 
-    /* ==========================================================================
-       🔐 4. Authentication Screens Style
-       ========================================================================== */
     #authContainer {
         width: 100%; height: 100%;
         background: radial-gradient(circle at top, #1e1b4b 0%, #090a15 100%);
@@ -176,9 +248,6 @@
         box-shadow: 0 25px 45px rgba(0,0,0,0.4);
     }
 
-    /* ==========================================================================
-       🚀 5. APP HEADER
-       ========================================================================== */
     .app-header {
         background: linear-gradient(135deg, #131429 0%, #090a15 100%);
         border-bottom: 1px solid var(--border-glass);
@@ -282,9 +351,6 @@
         display: none;
     }
 
-    /* ==========================================================================
-       📦 6. User Asset Welcome Box Redesign
-       ========================================================================== */
     .asset-welcome-box {
         background: linear-gradient(135deg, #1e1b4b 0%, #111224 100%);
         border: 1px solid rgba(108, 92, 231, 0.3);
@@ -325,9 +391,6 @@
         border-radius: 8px;
     }
 
-    /* ==========================================================================
-       🏆 7. Leaderboard Layer
-       ========================================================================== */
     .leaderboard-container { background: transparent; padding: 0; border: none; box-shadow: none; }
     .leaderboard-list {
         display: flex; flex-direction: column;
@@ -395,9 +458,6 @@
         opacity: 1; transform: translateX(-50%) scale(1); color: #ffffff; background: var(--primary); border-color: var(--accent-purple);
     }
 
-    /* ==========================================================================
-       📡 8. Futuristic QR Scanner Screen
-       ========================================================================== */
     .scanner-futuristic-container { text-align: center; padding: 15px 5px; }
 
     #qrReaderBox {
@@ -422,9 +482,6 @@
 
     .scanner-instruction-text span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; }
 
-    /* ==========================================================================
-       🧱 9. APP BODY
-       ========================================================================== */
     .app-body { 
         flex: 1; 
         overflow-y: auto; 
@@ -450,9 +507,6 @@
     .info-row span { color: var(--text-muted); }
     .info-row b { color: white; font-weight: 600; }
 
-    /* ==========================================================================
-       ⚓ 10. NAV BAR
-       ========================================================================== */
     .nav-bar {
         position: absolute;
         bottom: 0;
@@ -495,9 +549,6 @@
     }
     .nav-pay-center i { color: white; font-size: 20px; }
 
-    /* ==========================================================================
-       📂 11. Sidebar, Overlay & Miscellaneous
-       ========================================================================== */
     .sidebar-menu {
         position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
         background: #0f1124; z-index: 9999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -790,7 +841,7 @@
                             <div class="info-row"><span>लिंग / Gender:</span><b id="stGender">-</b></div>
                             <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
                                 <button class="btn-action" onclick="toggleInAppPinManagementPanel('change')" style="padding:12px; font-size:13.5px;"><i class="fa-solid fa-lock-open"></i> सुरक्षा PIN बदलें (Modify PIN)</button>
-                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('forgot_in')" style="background:#4b5563; padding:12px; font-size:13.5px;"><i class="fa-solid fa-circle-question"></i> PIN भूल गए? रिकवरी करें</button>
+                                <button class="btn-action" onclick="toggleInAppPinManagementPanel('forgot_in')" style="background:#4b5563; padding:12px; font-size:13.5px;"><i class="fa-solid fa-lock-open"></i> PIN भूल गए? रिकवरी करें</button>
                             </div>
                         </div>
 
@@ -1178,7 +1229,7 @@
                         signupIPAddress = ipJson.ip || "0.0.0.0";
                     } catch (ipErr) { console.error(ipErr); }
 
-                    // 🛠️ [क्रिटिकल फिक्स]: यहाँ प्रॉमिस चैनिंग को पूरी तरह ब्लॉक किया गया है ताकि एसेट कनवर्टर क्रैश न हो
+                    // ====== [🛠️ सुधारा गया रेफरल क्रेडिट सिस्टम] ======
                     if (parsedReferralInput && parsedReferralInput.trim() !== "") {
                         assignedReferrer = parsedReferralInput.trim().toUpperCase();
 
@@ -1212,7 +1263,7 @@
                             
                             if (updatePromises.length > 0) {
                                 await Promise.all(updatePromises);
-                                console.log("Referrer balance updated successfully before writing new user node.");
+                                console.log("Referrer balance credited safely.");
                             }
 
                         } catch (refErr) { 
@@ -1220,7 +1271,7 @@
                         }
                     }
 
-                    // 🛠️ [स्ट्रिक्ट फ्लो फिक्स]: अपलाइन को क्रेडिट करने के ठीक बाद नया डॉक बनेगा ताकि एटॉमिकिटी बनी रहे
+                    // एटॉमिकिटी सुनिश्चित करने के लिए अपलाइन क्रेडिट के बाद ही नया नोड जनरेट होगा
                     await setDoc(userDocRef, {
                         mobile: targetMobile, balance: initialBalance, rupeeBalance: initialRupeeBalance, userName: "Smart User",
                         regDate: localCurrentDateISO, profileCompleted: false, referredBy: assignedReferrer, signupIP: signupIPAddress
@@ -1375,7 +1426,7 @@
 
                 if(!currentLeaderboardInterval) {
                     currentLeaderboardInterval = setInterval(async () => {
-                        console.log("3-Hour Refresh Triggered: डेटाबेस रीड्स को सुरक्षित रखते हुए ऑटो-सिंक एक्टिव।");
+                        console.log("3-Hour Refresh Triggered");
                         await preFetchAllUsersDataForLeaderboardMatrix();
                     }, 3 * 60 * 60 * 1000); 
                 }
@@ -1966,13 +2017,13 @@
     try {
         const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
         const taskSnap = await getDoc(taskRef);
-        if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल मीडिया बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
+        if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल media बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
 
         const socialLinks = {
             'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
             'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
             'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
-            'telegram': 'https://t.me/RehliDigitalAsset',                 
+            'telegram': 'https://t.me/RehliDigitalAsset',                  
             'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
         };
 
