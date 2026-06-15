@@ -97,9 +97,34 @@
     
     .hidden-screen { display: none !important; }
 
-    /* ==========================================================================
-       💎 3. Premium Core UI Kit
-       ========================================================================== */
+    /* Animation Canvas Configuration */
+    #celebrationCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 99999;
+    }
+
+    /* Premium Logo Style */
+    .app-brand-logo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+    .app-main-logo-img {
+        width: 85px;
+        height: 85px;
+        border-radius: 22px;
+        object-fit: cover;
+        box-shadow: var(--purple-glow);
+        border: 2px solid rgba(108, 92, 231, 0.4);
+        margin-bottom: 12px;
+    }
+
     .premium-card {
         background: var(--bg-card-glass);
         backdrop-filter: blur(12px);
@@ -542,6 +567,7 @@
 <body>
 
     <div class="phone-wrapper">
+        <canvas id="celebrationCanvas"></canvas>
 
         <div id="customAlert" class="alert-overlay hidden-screen">
             <div class="alert-card">
@@ -554,8 +580,9 @@
 
         <div id="authContainer">
             <div class="auth-card">
-                <div id="authBrand" style="margin-bottom:20px;">
-                    <i class="fa-solid fa-shield-halved" style="font-size:48px; color:var(--accent-purple); filter: drop-shadow(var(--purple-glow));"></i>
+                <div class="app-brand-logo-container">
+                    <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=200&auto=format&fit=crop" alt="App Logo" class="app-main-logo-img">
+                    <h2 style="font-size: 21px; font-weight:700; background: linear-gradient(to right, #fff, var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Rehli Digital Asset</h2>
                 </div>
                 
                 <div id="autoReferralGiftSection" class="hidden-screen">
@@ -570,8 +597,7 @@
                 </div>
 
                 <div id="keySection">
-                    <h2>Rehli Digital Asset</h2>
-                    <p style="margin-bottom: 20px;">वीडियो में मिला 5-अंकों का गुप्त कोड (Key) यहाँ डालें या (12345):</p>
+                    <p style="margin-bottom: 20px; font-size: 13px; color: var(--text-muted);">वीडियो में मिला 5-अंकों का गुप्त कोड (Key) यहाँ डालें या (12345):</p>
                     <input type="number" id="userKey" placeholder="0 0 0 0 0" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);" style="text-align: center; font-size: 20px; letter-spacing: 6px; font-weight:700;">
                     <button class="btn-action" onclick="verifyKey()">Key चेक करें / Verify Key</button>
                     
@@ -616,14 +642,14 @@
               <div class="sidebar-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 10px;">
     
     <div class="avatar" style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent-purple); background: #fff; margin-bottom: 10px;">
-        <img src="https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=200&auto=format&fit=crop" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
     </div>
     
     <h3 id="sideMenuUser" style="font-size:15px; font-weight:600; margin: 5px 0 2px 0;">Loading User...</h3>
     <span id="sideMenuPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
     
 </div>
-                <div class="sidebar-links">
+                <div class="sidebar-links" id="appSidebarLinksContainer">
                     <a href="#" id="side-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i> Home Screen</a>
                     <a href="#" id="side-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i> Magic Mystery Box</a>
                     <a href="#" id="side-leaderboard" onclick="switchAppTab('leaderboard')"><i class="fa-solid fa-trophy"></i> Leaderboard (रैंक)</a>
@@ -667,6 +693,8 @@
                         <span>आपके कुल एसेट</span>
                         <h1 id="animatedAssetCounter">0 <span class="asset-symbol">ASSET</span></h1>
                     </div>
+
+                    <div id="adminDynamicDashboardCardsArea"></div>
 
                     <div id="announcementBoard" class="notice-board hidden-screen">
                         <h4 style="font-size:14px; font-weight:700;" id="lblNoticeTitle"><i class="fa-solid fa-bullhorn"></i> Notice Update!</h4>
@@ -763,10 +791,10 @@
                     </div>
 
                     <div class="premium-card" style="border: 1px solid rgba(46, 204, 113, 0.25); background: linear-gradient(135deg, rgba(9,10,21,0.8) 0%, rgba(20,30,25,0.6) 100%);">
-                        <h3 style="color:#2ecc71; font-size:14px; margin-bottom:8px;"><i class="fa-solid fa-money-bill-transfer"></i> इंस्टेंट एसेट कनवर्टर (Convert Rupee to Asset)</h3>
+                        <h3 style="color:#2ecc71; font-size:14px; margin-bottom:8px;"><i class="fa-solid fa-money-bill-transfer"></i> Instantly Convert Cash to Asset</h3>
                         <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:12px;">अपने कैश बैलेंस को एसेट टोकन में बदलें (नियम: ₹1 = 100 एसेट्स)</p>
                         
-                        <input type="number" id="numConvertRupeeAmount" placeholder="जितने रुपये ट्रांसफर करने हैं लिखें (₹)" style="margin-bottom:12px; border-color:rgba(46, 204, 113, 0.2);">
+                        <input type="number" id="numConvertRupeeAmount" placeholder="जितने रुपये कनवर्ट करने हैं लिखें (₹)" style="margin-bottom:12px; border-color:rgba(46, 204, 113, 0.2);">
                         <button class="btn-action" style="background:var(--success-gradient); box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3); padding:12px;" onclick="executeInAppRupeeToAssetConversion()">सिक्के में बदलें / Convert Now</button>
                     </div>
                 </div>
@@ -845,47 +873,12 @@
                         <h3><i class="fa-solid fa-file-shield" style="color:var(--accent-purple);"></i> Terms, Conditions & Detailed Guidelines</h3>
                         <hr style="opacity:0.05; margin:12px 0;">
                         <div style="font-size:12px; line-height:1.7; color:var(--text-muted); display:flex; flex-direction:column; gap:14px; text-align:justify;">
-                            
                             <p>1. <b>Conversion Ratio Matrix:</b> Under the current system, the internal calculation of 100 Assets is benchmarked equivalent to ₹1 Indian Rupee (INR). This ratio is strictly for the platform's internal valuation and rewards program.</p>
-                            
                             <p>2. <b>Asset Value Volatility:</b> The net value, purchasing power, or valuation of the digital assets (Coins/Assets) collected by the user <b>can be modified, reduced, or updated at any time</b> based on server maintenance costs, administrative policies, or technical transitions.</p>
-                            
                             <p>3. <b>No Cash Guarantee:</b> This platform does not provide any legal guarantee, binding promise, or absolute claim to any user that the assets accumulated within the app will be mandatorily disbursed in the form of hard cash in the future.</p>
-                            
-                            <p>4. <b>Non-Earning Program:</b> This app or website does not compel, induce, or invite any individual to earn guaranteed income or profit through any form of investment. This is purely a digital utility reward program.</p>
-                            
-                            <p>5. <b>PIN Privacy & Cyber Security:</b> In accordance with the guidelines issued by the Cyber Crime Cell and law enforcement agencies, never share your 4-digit Security PIN with any third party, friends, or unknown callers. The user shall be solely responsible for any unauthorized transactions resulting from a compromised PIN.</p>
-                            
-                            <p>6. <b>Anti-Fraud & Referral Policy:</b> If a user is found utilizing unethical methods, clone apps, automated scripts, emulators, or fake numbers to inject fraudulent referrals into the system, their account will be terminated immediately without any prior notice.</p>
-                            
-                            <p>7. <b>One Device, One Account Rule:</b> To maintain system integrity, only one account is permitted to operate per mobile device. All accounts attempting fraud by frequently switching multiple numbers on a single device will be permanently banned.</p>
-                            
-                            <p>8. <b>Merchant Transaction Boundaries:</b> All asset transfers executed with registered store owners (Merchants) are strictly voluntary. The app administration shall not be held liable for assets transferred due to technical errors or incorrect mobile numbers.</p>
-                            
-                            <p>9. <b>Mystery Box Cooldown Uncertainty:</b> Rewards generated from the Magic Mystery Box are managed by random selection algorithms. There is no claim or guarantee of receiving a fixed or identical reward amount for any user.</p>
-                            
-                            <p>10. <b>Data Accuracy & Profile Lock:</b> Users must provide their authentic legal name, date of birth, and credentials in the profile section. In compliance with regulatory standards, rewards may be withheld if misleading information is detected.</p>
-                            
-                            <p>11. <b>Strict Prohibition of Gambling/Betting:</b> This platform does not support or promote gambling, betting, gaming scams, or lottery models. The assets provided here are purely promotional rewards for watching videos and inviting genuine users.</p>
-                            
-                            <p>12. <b>Technical Faults & Server Downtime:</b> In the event of data discrepancy caused by Firebase Cloud failures, internet connectivity issues, database loss, or server downtime, the administration reserves the absolute right to restore or reset the asset balance ledger.</p>
-                            
-                            <p>13. <b>IP Address Logging:</b> For cyber security enforcement and administrative transparency, the user's public IP address is securely logged during registration and login to deter fraudulent, illegal, or malicious network activities.</p>
-                            
-                            <p>14. <b>Authenticity of Promoted Streams:</b> All content displayed within promoted videos or advertisements belongs to third-party creators. Users must view them at their own discretion; the platform management holds no accountability for third-party claims.</p>
-                            
-                            <p>15. <b>Account Inactivity Clause:</b> If a user fails to log into the application for 90 consecutive days, the account may be deemed inactive for security reasons, and the accumulated asset balance may be subject to reset.</p>
-                            
-                            <p>16. <b>Compliance with Judicial Guidelines:</b> This application strictly adheres to the regulations of local administrative governance, police directives, and the Information Technology Act (IT Act, 2000). Any suspicious activity will be reported directly to law enforcement agencies.</p>
-                            
-                            <p>17. <b>Right to Modify or Terminate Services:</b> The platform administration reserves the absolute right to modify, suspend, or permanently terminate this promotional reward structure at any given time without any legal liabilities.</p>
-                            
-                            <p>18. <b>User Code of Conduct:</b> Using abusive language, spreading misleading rumors, or threatening the administration inside the app, via support systems, or on public social media handles will result in the immediate revocation of the user's license.</p>
-                            
-                            <p>19. <b>Validity of Promotional Bonuses:</b> Welcome bonuses (50k Assets + ₹500 Cash) and Profile Completion rewards are limited-time incentives valid only for authentic unique profiles. The administrator reserves the right to alter these offers at will.</p>
-                            
-                            <p>20. <b>Legal Jurisdiction:</b> Any dispute, interpretation, or legal proceedings arising out of the terms, conditions, or use of this application shall be subject exclusively to the jurisdiction of the local courts and the local Cyber Cell framework.</p>
-                            
+                            <p>4. <b>PIN Privacy & Cyber Security:</b> In accordance with the guidelines issued by the Cyber Crime Cell and law enforcement agencies, never share your 4-digit Security PIN with any third party. The user shall be solely responsible for any unauthorized transactions resulting from a compromised PIN.</p>
+                            <p>5. <b>Anti-Fraud & Referral Policy:</b> If a user is found utilizing unethical methods, clone apps, automated scripts, emulators, or fake numbers to inject fraudulent referrals into the system, their account will be terminated immediately without any prior notice.</p>
+                            <p>6. <b>IP Address Logging:</b> For cyber security enforcement and administrative transparency, the user's public IP address is securely logged during registration and login to deter fraudulent, illegal, or malicious network activities.</p>
                         </div>
                     </div>
                 </div>
@@ -905,7 +898,7 @@
 
                         <div id="payManualInputArea" style="margin-top:15px;">
                             <div style="font-size:11px; color:var(--text-muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">अथवा नंबर से ढूँढें</div>
-                            <input type="number" id="payMerchantMobile" placeholder="दुकानदार का मोबाइल नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                            <input type="number" id="payMerchantMobile" placeholder="दुकानदार का mobile नंबर" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
                             <button class="btn-action" onclick="searchAndVerifyMerchantDatabase()">सर्च करें / Find Merchant</button>
                         </div>
                         
@@ -971,6 +964,92 @@
 
         const localCurrentDateISO = new Date().toISOString().substring(0, 10);
 
+        // ==========================================================================
+        // 🌸 Core Falling Leaves / Flowers Celebration Animation Framework Engine
+        // ==========================================================================
+        const canvas = document.getElementById("celebrationCanvas");
+        const ctx = canvas.getContext("2d");
+        let animationParticlesArray = [];
+        let runningAnimationId = null;
+
+        function resizeCelebrationCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        class FallingParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height - 20;
+                this.size = Math.random() * 10 + 6;
+                this.speedY = Math.random() * 2 + 1.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 2 - 1;
+                // Type Definitions: 0 = Pink Petal Flower, 1 = Golden Asset Leaf
+                this.type = Math.floor(Math.random() * 2); 
+                this.color = this.type === 0 ? `hsl(${Math.random() * 20 + 340}, 100%, 75%)` : `hsl(${Math.random() * 10 + 45}, 100%, 60%)`;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                
+                if (this.type === 0) {
+                    // Draw Organic App Petal Shape Design
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, 2 * Math.PI);
+                    ctx.fill();
+                } else {
+                    // Draw Elegant Curved Leaf Asset Style
+                    ctx.beginPath();
+                    ctx.moveTo(0, -this.size);
+                    ctx.quadraticCurveTo(this.size, -this.size / 2, 0, this.size);
+                    ctx.quadraticCurveTo(-this.size, -this.size / 2, 0, -this.size);
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+
+        window.triggerCelebrationFallingAnimation = () => {
+            resizeCelebrationCanvas();
+            animationParticlesArray = [];
+            for (let i = 0; i < 75; i++) {
+                animationParticlesArray.push(new FallingParticle());
+            }
+            
+            if (runningAnimationId) cancelAnimationFrame(runningAnimationId);
+            animateParticlesLoop();
+            
+            // Auto Cool-down Duration Stop Rule
+            setTimeout(() => {
+                cancelAnimationFrame(runningAnimationId);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }, 6000);
+        };
+
+        function animateParticlesLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let completeInBoundsActiveFlag = false;
+            
+            animationParticlesArray.forEach((particle) => {
+                particle.update();
+                particle.draw();
+                if (particle.y < canvas.height) completeInBoundsActiveFlag = true;
+            });
+
+            if (completeInBoundsActiveFlag) {
+                runningAnimationId = requestAnimationFrame(animateParticlesLoop);
+            }
+        }
+
         function formatSmartAmount(num) {
             const parsed = parseFloat(num);
             if (isNaN(parsed)) return "0";
@@ -1015,21 +1094,6 @@
                 renderApplicationShellInterface(false);
             }
         });
-
-        setTimeout(() => {
-            const phoneWrapper = document.querySelector('.phone-wrapper');
-            const appHeaderBlock = document.querySelector('.app-header');
-
-            if (phoneWrapper && appHeaderBlock) {
-                phoneWrapper.addEventListener('scroll', () => {
-                    if (phoneWrapper.scrollTop > 30) {
-                        appHeaderBlock.classList.add('collapsed-header');
-                    } else {
-                        appHeaderBlock.classList.remove('collapsed-header');
-                    }
-                });
-            }
-        }, 1000);
 
         function parseIncomingUrlParametersForAutoReferrals() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1086,14 +1150,18 @@
                 document.getElementById('keySection').classList.add('hidden-screen');
                 document.getElementById('rewardSection').classList.remove('hidden-screen');
                 document.getElementById('userReferralInput').style.display = "block";
+                
+                // Hide PIN field dynamically initially until user inputs their existing phone record
                 document.getElementById('loginPinArea').classList.add('hidden-screen');
-                document.getElementById('authTitle').innerText = "Verification ";
+                
+                document.getElementById('authTitle').innerText = "Verification";
                 document.getElementById('authSubtitle').innerText = "Key वेरिफाइड! नीचे अपना मोबाइल नंबर दर्ज करें।";
             } catch (error) {
                 window.showCustomAlert("सर्वर त्रुटि / Server Error", "नेटवर्क में समस्या है। कृपया फिर कोशिश करें।", "error");
             }
         };
 
+        // UI View Route Management Engine Hook Logic
         window.toggleAuthRoute = (mode) => {
             if (mode === 'login') {
                 sessionStorage.clear();
@@ -1107,6 +1175,27 @@
                 document.getElementById('authSubtitle').innerText = "आगे बढ़ने के लिए अपना रजिस्टर्ड नंबर and पिन दर्ज करें।";
             }
         };
+
+        // Input Monitor Hook to Check Existing Profile Completion Database Status
+        document.getElementById('userMobile').addEventListener('input', async (e) => {
+            const currentVal = e.target.value.trim();
+            if(currentVal.length === 10) {
+                try {
+                    const checkSnap = await getDoc(doc(db, "users", currentVal));
+                    if(checkSnap.exists()) {
+                        const data = checkSnap.data();
+                        // If User Has Updated Profile -> Enforce Strict Secured PIN Verification Framework Model
+                        if(data.profileCompleted === true) {
+                            document.getElementById('loginPinArea').classList.remove('hidden-screen');
+                            document.getElementById('authTitle').innerText = "Security Authorization";
+                            document.getElementById('authSubtitle').innerText = "सुरक्षित खाता मिला! कृपया अपना 4-अंकों का लॉगिन पिन दर्ज करें।";
+                        } else {
+                            document.getElementById('loginPinArea').classList.add('hidden-screen');
+                        }
+                    }
+                } catch (err) { console.error("Realtime Security Checker Interrupted: ", err); }
+            }
+        });
 
         window.resetAuthStateToKey = () => {
             sessionStorage.clear();
@@ -1159,6 +1248,16 @@
                 const userDocRef = doc(db, "users", targetMobile);
                 const userSnap = await getDoc(userDocRef);
 
+                // Strict Check Validation Layer Integration to Prevent Key-bypass Direct Entry
+                if (userSnap.exists()) {
+                    const existingUserData = userSnap.data();
+                    if (existingUserData.profileCompleted === true) {
+                        if (!enteredPin || enteredPin !== existingUserData.securityPin) {
+                            return window.showCustomAlert("सुरक्षा ब्लॉक / Access Denied", "इस सुरक्षित खाते में प्रवेश के लिए सही PIN डालना अनिवार्य है।", "error");
+                        }
+                    }
+                }
+
                 if (!cachedKey) {
                     if (!userSnap.exists()) return window.showCustomAlert("अकाउंट नहीं मिला", "नया अकाउंट बनाने के लिए पहले वीडियो की (Code) वेरीफाई करें।", "error");
                     const userData = userSnap.data();
@@ -1187,7 +1286,6 @@
                         signupIPAddress = ipJson.ip || "0.0.0.0";
                     } catch (ipErr) { console.error(ipErr); }
 
-                    // ====== [🛠️ सुधारा गया रेफरल क्रेडिट सिस्टम] ======
                     if (parsedReferralInput && parsedReferralInput.trim() !== "") {
                         assignedReferrer = parsedReferralInput.trim().toUpperCase();
 
@@ -1201,9 +1299,7 @@
                                 let uName = (uDoc.data().userName || "SMART").trim();
                                 let cleanName = uName.replace(/\s+/g, '');
                                 let prefix = cleanName.length >= 4 ? cleanName.substring(0, 4) : cleanName;
-                                while (prefix.length < 4) {
-                                    prefix += "A"; 
-                                }
+                                while (prefix.length < 4) { prefix += "A"; }
                                 
                                 const dynamicCheckCode = prefix.toUpperCase() + potentialReferrerMobile.slice(-4);
                                 
@@ -1211,7 +1307,6 @@
                                     const currentReferrerData = uDoc.data();
                                     const oldBalance = Number(currentReferrerData.balance || 0);
                                     
-                                    // अपलाइन म्यूटेशन प्रॉमिस ऐरे
                                     const updateRef = setDoc(doc(db, "users", potentialReferrerMobile), { 
                                         balance: oldBalance + 10000 
                                     }, { merge: true });
@@ -1224,13 +1319,9 @@
                                 await Promise.all(updatePromises);
                                 console.log("Referrer balance credited safely.");
                             }
-
-                        } catch (refErr) { 
-                            console.error("Referral Processing Error: ", refErr); 
-                        }
+                        } catch (refErr) { console.error("Referral Processing Error: ", refErr); }
                     }
 
-                    // न्यू यूजर नोड इंसर्शन लेजर
                     await setDoc(userDocRef, {
                         mobile: targetMobile, balance: initialBalance, rupeeBalance: initialRupeeBalance, userName: "Smart User",
                         regDate: localCurrentDateISO, profileCompleted: false, referredBy: assignedReferrer, signupIP: signupIPAddress
@@ -1238,10 +1329,11 @@
 
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
                     window.showCustomAlert("रजिस्ट्रेशन सफल! 🎉", "50k Assets और ₹500 कैश आपके वॉलेट में जोड़ दिए गए हैं!", "success");
+                    window.triggerCelebrationFallingAnimation();
                 } else { 
                     const keyIsFreshAndValid = await evaluateKeyUniquenessConstraints(targetMobile, cachedKey);
                     if (!keyIsFreshAndValid) {
-                        return window.showCustomAlert("कोड लॉकआउट", "यह कोड आपके अकाउंट पर पहले ही उपयोग किया जा चुका है।", "error");
+                        return window.showCustomAlert("코드 / Used Key", "यह कोड आपके अकाउंट पर पहले ही उपयोग किया जा चुका है।", "error");
                     }
 
                     const currentBalance = userSnap.data().balance || 0;
@@ -1249,6 +1341,7 @@
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
 
                     window.showCustomAlert("सफल / Processed", "Asset आपके ऐतिहासिक लेजर में सुरक्षित जोड़ दिए गए हैं।", "success");
+                    window.triggerCelebrationFallingAnimation();
                 }
 
                 localStorage.setItem('userMobile', targetMobile);
@@ -1293,7 +1386,6 @@
 
                 let uName = (coreUserData.userName || "SMART").trim();
                 let prefix = "";
-
                 let cleanName = uName.replace(/\s+/g, '');
                 
                 if (cleanName.length >= 4) {
@@ -1327,6 +1419,52 @@
                     } else {
                         document.getElementById('announcementBoard').classList.add('hidden-screen');
                     }
+
+                    // ==========================================================================
+                    // 🚀 1-Read Optimized Dynamic Admin Controls Shell Link Render Engine
+                    // ==========================================================================
+                    // A. Admin Dynamically Render Custom Sidebar Option Links Matrix
+                    if (nData.admin_sidebar_links && Array.isArray(nData.admin_sidebar_links)) {
+                        const baseSidebarContainer = document.getElementById('appSidebarLinksContainer');
+                        // Clear previous dynamically loaded custom links to avoid duplicates
+                        document.querySelectorAll('.dynamic-admin-side-item').forEach(el => el.remove());
+                        
+                        nData.admin_sidebar_links.forEach((linkObj) => {
+                            const anchorNode = document.createElement('a');
+                            anchorNode.className = "dynamic-admin-side-item";
+                            anchorNode.href = linkObj.action_url || "#";
+                            anchorNode.target = "_blank";
+                            anchorNode.innerHTML = `<i class="${linkObj.icon_class || 'fa-solid fa-link'}" style="color:var(--accent-purple)"></i> ${linkObj.title || 'Custom Option'}`;
+                            // Insert before the logout separator boundary
+                            baseSidebarContainer.insertBefore(anchorNode, baseSidebarContainer.lastElementChild.previousElementSibling);
+                        });
+                    }
+
+                    // B. Admin Dynamically Render Custom Dashboard Widgets Matrix
+                    if (nData.admin_dashboard_cards && Array.isArray(nData.admin_dashboard_cards)) {
+                        const dashCardsTargetBox = document.getElementById('adminDynamicDashboardCardsArea');
+                        dashCardsTargetBox.innerHTML = ""; // Reset box buffer pool
+                        
+                        nData.admin_dashboard_cards.forEach((cardObj) => {
+                            const cardWrapper = document.createElement('div');
+                            cardWrapper.className = "premium-card";
+                            cardWrapper.style.borderLeft = "4px solid var(--primary)";
+                            cardWrapper.style.cursor = "pointer";
+                            cardWrapper.onclick = () => { if (cardObj.target_url) window.open(cardObj.target_url, '_blank'); };
+                            
+                            cardWrapper.innerHTML = `
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <i class="${cardObj.icon_class || 'fa-solid fa-circle-nodes'}" style="font-size:20px; color:var(--gold);"></i>
+                                    <div>
+                                        <h4 style="font-size:13.5px; font-weight:600; color:#fff;">${cardObj.header_title || 'Admin Utility'}</h4>
+                                        <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">${cardObj.subtitle_text || 'Click to explore dashboard feature'}</p>
+                                    </div>
+                                </div>
+                            `;
+                            dashCardsTargetBox.appendChild(cardWrapper);
+                        });
+                    }
+
                 } else {
                     document.getElementById('announcementBoard').classList.add('hidden-screen');
                 }
@@ -1505,6 +1643,7 @@
 
                 document.getElementById('dashSecretKey').value = "";
                 window.showCustomAlert("सफलतापूर्वक क्लेम हुआ! 🎉", `${formatSmartAmount(targetedAssetVal)} टोकन्स आपके वॉलेट में जुड़ गए।`, "success");
+                window.triggerCelebrationFallingAnimation(); // Trigger Falling Animation on Code Claim Success
                 await synchronizeUserDashboardStateEngine();
             } catch (error) { window.showCustomAlert("त्रुटि", "वॉलेट बैलेंस अपडेट करने में तकनीकी एरर आया।", "error"); }
         };
@@ -1643,6 +1782,7 @@
 
                 const unitLabel = targetBox.rewardType === "currency" ? "₹ Cash" : "Assets";
                 window.showCustomAlert("बॉक्स खुल गया! 🎉", `सफलतापूर्वक प्राप्त हुए +${formatSmartAmount(rVal)} ${unitLabel}.`, "success");
+                window.triggerCelebrationFallingAnimation(); // Trigger Falling Animation on Mystery Box Unlock Success
                 selectedTargetBoxIndexToUnlock = null;
                 await synchronizeUserDashboardStateEngine();
 
@@ -1797,7 +1937,7 @@
                         if (permission === 'granted') {
                             await initializePushNotificationGateway(true); 
                         } else if (permission === 'denied') {
-                            window.showCustomAlert("ब्लॉक किया", "साइट सेटिंग से परमिशन बदलें।", "error");
+                            window.showCustomAlert("ब्लॉक किया", "SITE सेटिंग से परमिशन बदलें।", "error");
                         }
                     } catch (err) { console.error(err); }
                 }
@@ -1852,6 +1992,7 @@
 
                 await setDoc(userRef, { userName: inputName, dob: inputDOB, gender: inputGender, securityPin: inputPin, profileCompleted: true, balance: operatingBalance }, { merge: true });
                 window.showCustomAlert("प्रोफाइल सुरक्षित लॉक हुई! 🎉", "अकाउंट वेरिफाइड हो गया है और +10k कॉइन्स का बोनस क्रेडिट कर दिया गया है।", "success");
+                window.triggerCelebrationFallingAnimation();
                 await synchronizeUserDashboardStateEngine();
                 await loadProfileScreen();
             } catch (error) { window.showCustomAlert("त्रुटि", "प्रोफाइल सेव करने में तकनीकी सर्वर दिक्कत आई।", "error"); }
@@ -1894,59 +2035,47 @@
         };
 
        async function updateWalletSheet() {
-    try {
-        const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
-        const coreUserData = userSnapshot.data();
+            try {
+                const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
+                const coreUserData = userSnapshot.data();
 
-        const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", userSessionMobile)));
-        let spent = 0; 
-        txSnap.forEach(t => spent += Number(t.data().amount || 0));
-        
-        const bal = coreUserData.balance || 0;
-        const rupeeBal = coreUserData.rupeeBalance || 0;
+                const txSnap = await getDocs(query(collection(db, "merchant_transactions"), where("userMobile", "==", userSessionMobile)));
+                let spent = 0; 
+                txSnap.forEach(t => spent += Number(t.data().amount || 0));
+                
+                const bal = coreUserData.balance || 0;
+                const rupeeBal = coreUserData.rupeeBalance || 0;
 
-        document.getElementById('wTotalLiquidCoins').innerText = formatSmartAmount(bal) + " Assets";
-        document.getElementById('wTotalLiquidRupees').innerText = "₹ " + formatSmartAmount(rupeeBal);
-        document.getElementById('wTotalSpent').innerText = formatSmartAmount(spent) + " Assets";
-        document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
+                document.getElementById('wTotalLiquidCoins').innerText = formatSmartAmount(bal) + " Assets";
+                document.getElementById('wTotalLiquidRupees').innerText = "₹ " + formatSmartAmount(rupeeBal);
+                document.getElementById('wTotalSpent').innerText = formatSmartAmount(spent) + " Assets";
+                document.getElementById('wSpentValue').innerText = "₹ " + (spent / 100).toFixed(2);
 
-        // ==========================================================================
-        // 🛠️ सुधरा हुआ डायनामिक कोड लॉजिक (जो शेयर लिंक से हूबहू मैच करेगा)
-        // ==========================================================================
-        let fullUserName = (coreUserData.userName || "SMART").trim();
-        let prefix = "";
-        let cleanName = fullUserName.replace(/\s+/g, '');
+                let fullUserName = (coreUserData.userName || "SMART").trim();
+                let prefix = "";
+                let cleanName = fullUserName.replace(/\s+/g, '');
 
-        if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser" && cleanName !== "Smart User") {
-            prefix = cleanName.substring(0, 4);
+                if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser" && cleanName !== "Smart User") {
+                    prefix = cleanName.substring(0, 4);
+                }
+                while (prefix.length < 4) {
+                    let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+                }
+
+                const myUniqueReferralCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
+                
+                const q = query(collection(db, "users"), where("referredBy", "==", myUniqueReferralCode));
+                const querySnapshot = await getDocs(q);
+                let totalInvitedFriendsCount = querySnapshot.size;
+
+                const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
+                
+                document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
+                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
+
+            } catch (err) { console.error("Wallet Sheet Optimization Error:", err); }
         }
-
-        while (prefix.length < 4) {
-            let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-        }
-
-        // अब यह वही कोड बनाएगा जो आपने व्हाट्सएप पर शेयर किया था (जैसे: ROSH210)
-        const myUniqueReferralCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
-        
-        // ==========================================================================
-        // 🚀 सर्वर लोड और बिल बचाने के लिए ऑप्टिमाइज्ड क्वेरी (केवल मैचिंग कोड वाले यूजर्स लाएगा)
-        // ==========================================================================
-        const q = query(collection(db, "users"), where("referredBy", "==", myUniqueReferralCode));
-        const querySnapshot = await getDocs(q);
-        
-        // सीधे फिल्टर की गई लिस्ट की साइज गिनें
-        let totalInvitedFriendsCount = querySnapshot.size;
-
-        const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
-        
-        document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
-        document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
-
-    } catch (err) { 
-        console.error("Wallet Sheet Optimization Error:", err); 
-    }
-}
 
         window.executeInAppRupeeToAssetConversion = async () => {
             const rupeeInputAmount = Number(document.getElementById('numConvertRupeeAmount').value);
@@ -1978,6 +2107,7 @@
 
                 document.getElementById('numConvertRupeeAmount').value = "";
                 window.showCustomAlert("कन्वर्शन सफल! 🎉", `आपके ₹${rupeeInputAmount} रुपये सफलतापूर्वक +${computedAssetsToCredit.toLocaleString()} Assets में बदल दिए गए हैं!`, "success");
+                window.triggerCelebrationFallingAnimation();
                 
                 await synchronizeUserDashboardStateEngine();
                 await updateWalletSheet();
@@ -1989,52 +2119,41 @@
         };
 
        window.handleSocialTaskExecution = async (pKey) => {
-    try {
-        const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
-        const taskSnap = await getDoc(taskRef);
-        if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल media बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
+            try {
+                const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
+                const taskSnap = await getDoc(taskRef);
+                if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल media बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
 
-        const socialLinks = {
-            'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
-            'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
-            'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
-            'telegram': 'https://t.me/RehliDigitalAsset',                  
-            'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
+                const socialLinks = {
+                    'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
+                    'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
+                    'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
+                    'telegram': 'https://t.me/RehliDigitalAsset',                  
+                    'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
+                };
+
+                if (socialLinks[pKey]) { window.open(socialLinks[pKey], '_blank'); } 
+                else { window.open("https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg", '_blank'); }
+
+                const uRef = doc(db, "users", userSessionMobile);
+                const uSnap = await getDoc(uRef);
+                
+                await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 10000 }, { merge: true });
+                await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
+                window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
+                window.triggerCelebrationFallingAnimation();
+                await synchronizeUserDashboardStateEngine();
+            } catch (err) { console.error(err); }
         };
 
-        if (socialLinks[pKey]) {
-            window.open(socialLinks[pKey], '_blank');
-        } else {
-            window.open("https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg", '_blank');
-        }
-
-        const uRef = doc(db, "users", userSessionMobile);
-        const uSnap = await getDoc(uRef);
-        
-        await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 10000 }, { merge: true });
-        await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
-        window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
-        await synchronizeUserDashboardStateEngine();
-    } catch (err) { 
-        console.error(err); 
-    }
-};
-
-        // ====== [🛠️ सुधारा गया प्रोफाइल वैलिडेशन और रेफरल फ्लो] ======
         window.generateAndShareModernReferralLink = async () => {
             try {
-                // सर्वर से यूजर का सबसे ताज़ा प्रोफाइल स्टेटस देखें
                 const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
                 if (userSnapshot.exists()) {
                     const userData = userSnapshot.data();
-                    
-                    // अगर प्रोफाइल लॉक (Complete) नहीं है, तो आगे नहीं जाने दें
                     if (!userData.profileCompleted) {
                         window.showCustomAlert("प्रोफाइल अधूरी है! ⚠️", "रेफरल लिंक शेयर करने से पहले कृपया अपनी प्रोफाइल पूरी करें और सुरक्षा पिन बनाएं।", "error");
-                        // सीधे प्रोफाइल वाले टैब पर भेजें
-                        setTimeout(() => {
-                            switchAppTab('profile');
-                        }, 1500);
+                        setTimeout(() => { switchAppTab('profile'); }, 1500);
                         return;
                     }
                 }
@@ -2046,7 +2165,6 @@
                 if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
                     prefix = cleanName.substring(0, 4);
                 }
-
                 while (prefix.length < 4) {
                     let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                     prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
@@ -2056,9 +2174,7 @@
                 const link = window.location.origin + window.location.pathname + "?ref=" + finalDynamicCode;
                 
                 window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
-            } catch (err) {
-                console.error("Referral link checking error: ", err);
-            }
+            } catch (err) { console.error("Referral link checking error: ", err); }
         };
 
         window.switchAppTab = (targetTabId) => {
@@ -2104,14 +2220,6 @@
 
         window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
         window.processLogoutRoute = () => { localStorage.clear(); sessionStorage.clear(); location.reload(); };
-        
-        function setAppHeight() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-
-        window.addEventListener('resize', setAppHeight);
-        window.addEventListener('DOMContentLoaded', setAppHeight);
     </script>
 </body>
 </html>
