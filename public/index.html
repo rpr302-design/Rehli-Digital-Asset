@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rehli Digital Asset - Premium Super App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2=family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -29,7 +29,6 @@
         --purple-glow: 0 0 20px rgba(108, 92, 231, 0.3);
         --rupee-color: #2ecc71;
 
-        /* Unique Stage Color Variables */
         --stage-0: linear-gradient(135deg, #718093, #2f3640);
         --stage-1: linear-gradient(135deg, #00a8ff, #0097e6);
         --stage-2: linear-gradient(135deg, #9c88ff, #8c7ae6);
@@ -64,9 +63,6 @@
         color: var(--light-text);
     }
 
-    /* ==========================================================================
-       📱 2. PHONE WRAPPER
-       ========================================================================== */
     .phone-wrapper {
         width: 100%;
         max-width: 420px;
@@ -97,7 +93,6 @@
     
     .hidden-screen { display: none !important; }
 
-    /* Animation Canvas Configuration */
     #celebrationCanvas {
         position: absolute;
         top: 0;
@@ -108,7 +103,6 @@
         z-index: 99999;
     }
 
-    /* Premium Logo Style */
     .app-brand-logo-container {
         display: flex;
         flex-direction: column;
@@ -210,104 +204,66 @@
     .app-header {
         background: linear-gradient(135deg, #131429 0%, #090a15 100%);
         border-bottom: 1px solid var(--border-glass);
-        padding: 14px 16px;
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
+        padding: 8px 14px;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
         position: relative;
         top: 0;
         z-index: 999; 
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow: hidden;
-        max-height: 120px;
+        max-height: 52px;
         flex-shrink: 0;
-    }
-
-    .app-header.collapsed-header {
-        padding: 8px 16px;
-        max-height: 60px;
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
 
     .header-top { 
         display: flex; 
         justify-content: space-between; 
         align-items: center;
-        transition: all 0.3s ease;
+        width: 100%;
     }
 
     .menu-trigger-btn {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 10px;
+        border-radius: 8px;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 14px;
+        font-size: 13px;
         cursor: pointer;
         color: white;
-        transition: all 0.3s ease;
     }
 
-    .collapsed-header .menu-trigger-btn {
-        width: 32px; height: 32px; font-size: 12px;
-    }
-
-    .wallets-display-pill { display: flex; gap: 6px; align-items: center; }
+    .wallets-display-pill { display: flex; gap: 6px; align-items: center; cursor: pointer; }
 
     .balance-pill {
         background: rgba(255, 255, 255, 0.05);
-        padding: 5px 10px;
-        border-radius: 12px;
+        padding: 4px 8px;
+        border-radius: 10px;
         font-weight: 700;
         font-size: 11px;
         display: flex;
         align-items: center;
         gap: 4px;
         border: 1px solid rgba(255,255,255,0.05);
-        transition: all 0.3s ease;
-    }
-    .collapsed-header .balance-pill {
-        padding: 4px 8px; font-size: 10.5px;
     }
 
-    .user-intro { 
-        margin-top: 12px; 
-        display: flex; 
-        align-items: center; 
-        justify-content: space-between;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .collapsed-header .user-intro {
-        margin-top: 0;
+    .user-intro-center {
         position: absolute;
-        left: 60px;
-        top: 13px;
-        width: calc(100% - 200px);
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        pointer-events: none;
     }
     
-    .user-intro h2 { 
-        font-size: 14px; 
+    .user-intro-center h2 { 
+        font-size: 13.5px; 
         font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    .collapsed-header .user-intro h2 {
-        font-size: 12px;
-    }
-
-    .user-intro p { 
-        font-size: 10.5px; 
-        color: var(--text-muted);
-        transition: all 0.3s ease;
-    }
-    .collapsed-header .user-intro p {
-        display: none;
+        color: #ffffff;
+        white-space: nowrap;
     }
 
     .asset-welcome-box {
@@ -388,9 +344,6 @@
     .leader-info p { font-size: 11px; color: var(--text-muted); }
     .leader-right-value b { font-size: 13.5px; font-weight: 700; color: var(--accent-purple); }
 
-    /* ==========================================================================
-       🌈 4. Unique Colored & Styled Stage Selector
-       ========================================================================== */
     .stage-selector {
         display: flex; gap: 10px; overflow-x: auto; padding: 10px 5px 25px 5px; margin-bottom: 5px;
         scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
@@ -406,7 +359,6 @@
         box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
     }
 
-    /* Assigning Distinct Beautiful Gradients to Each Stage Tab */
     .stage-tab[data-stage="0"] { background: var(--stage-0); }
     .stage-tab[data-stage="1"] { background: var(--stage-1); }
     .stage-tab[data-stage="2"] { background: var(--stage-2); }
@@ -424,7 +376,6 @@
         transition: all 0.2s ease;
     }
 
-    /* Beautiful Unique Active States with Highlighting Glow Effects */
     .stage-tab.active-stage {
         transform: translateY(-4px) scale(1.1);
         border-color: #ffffff;
@@ -450,7 +401,7 @@
 
     #qrReaderBox::after {
         content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        border: 2px solid var(--accent-purple); animation: radarPulse 2.5s infinite linear; box-sizing: border-box; pointer-events: none;
+        border: 2px solid var(--accent-purple); animation: radarPulse 2.5s infinite linear; box-shadow: border-box; pointer-events: none;
     }
 
     @keyframes radarPulse {
@@ -468,8 +419,8 @@
     .app-body { 
         flex: 1; 
         overflow-y: auto; 
-        padding: 20px; 
-        padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); 
+        padding: 15px; 
+        padding-bottom: 20px;
         -webkit-overflow-scrolling: touch;
     }
     
@@ -491,11 +442,8 @@
     .info-row b { color: white; font-weight: 600; }
 
     .nav-bar {
-        position: absolute;
-        bottom: 0;
-        left: 0;
         width: 100%; 
-        height: calc(76px + env(safe-area-inset-bottom, 0px));
+        height: calc(68px + env(safe-area-inset-bottom, 0px));
         background: #0d0f1d; 
         border-top: 1px solid var(--border-glass);
         display: flex; 
@@ -506,6 +454,7 @@
         box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.7);
         flex-shrink: 0;
         box-sizing: border-box;
+        position: relative;
     }
 
     .nav-link {
@@ -518,9 +467,9 @@
 
     .nav-pay-center {
         position: relative; 
-        top: calc(-16px - env(safe-area-inset-bottom, 0px) / 2); 
-        width: 60px; 
-        height: 60px;
+        top: -12px; 
+        width: 56px; 
+        height: 56px;
         background: var(--primary-gradient); 
         border-radius: 50%;
         display: flex; 
@@ -528,9 +477,9 @@
         align-items: center;
         box-shadow: var(--purple-glow); 
         cursor: pointer;
-        border: 5px solid #090a15;
+        border: 4px solid #090a15;
     }
-    .nav-pay-center i { color: white; font-size: 20px; }
+    .nav-pay-center i { color: white; font-size: 18px; }
 
     .sidebar-menu {
         position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
@@ -563,9 +512,6 @@
     }
     @keyframes skeletonMove { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-    /* ==========================================================================
-       🔄 5. MODERN DUAL SWIPE DASHBOARD SYSTEM
-       ========================================================================== */
     .dashboard-swipe-container {
         display: flex;
         width: 200%;
@@ -576,7 +522,7 @@
         width: 50%;
         height: 100%;
         overflow-y: auto;
-        padding-bottom: 80px;
+        padding-bottom: 20px;
     }
     .swipe-navigation-pills {
         display: flex;
@@ -601,9 +547,6 @@
         box-shadow: var(--purple-glow);
     }
 
-    /* ==========================================================================
-       🔘 6. TAB TO EARN FUTURISTIC BUTTON INTERFACE
-       ========================================================================== */
     .tap-to-earn-wrapper {
         display: flex;
         flex-direction: column;
@@ -743,16 +686,13 @@
         <div id="dashboardContainer" class="hidden-screen" style="width:100%; height:100%; display:flex; flex-direction:column; position:relative;">
             
             <div id="appSidebar" class="sidebar-menu">
-              <div class="sidebar-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 10px;">
-    
-    <div class="avatar" style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent-purple); background: #fff; margin-bottom: 10px;">
-        <img src="https://lh3.googleusercontent.com/d/1_x3d8V88af999ed7ac8be_rehli_logo" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9'">
-    </div>
-    
-    <h3 id="sideMenuUser" style="font-size:15px; font-weight:600; margin: 5px 0 2px 0;">Loading User...</h3>
-    <span id="sideMenuPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
-    
-</div>
+                <div class="sidebar-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 10px;">
+                    <div class="avatar" style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent-purple); background: #fff; margin-bottom: 10px;">
+                        <img src="https://lh3.googleusercontent.com/d/1_x3d8V88af999ed7ac8be_rehli_logo" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9'">
+                    </div>
+                    <h3 id="sideMenuUser" style="font-size:15px; font-weight:600; margin: 5px 0 2px 0;">Loading User...</h3>
+                    <span id="sideMenuPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
+                </div>
                 <div class="sidebar-links" id="appSidebarLinksContainer">
                     <a href="#" id="side-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i> Home Screen</a>
                     <a href="#" id="side-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i> Magic Mystery Box</a>
@@ -772,7 +712,10 @@
             <div class="app-header">
                 <div class="header-top">
                     <div class="menu-trigger-btn" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars"></i></div>
-                    <div class="wallets-display-pill">
+                    <div class="user-intro-center">
+                        <h2 id="dashUserName">Welcome!</h2>
+                    </div>
+                    <div class="wallets-display-pill" onclick="triggerTopHeaderWalletInfoPopup()">
                         <div class="balance-pill">
                             <i class="fa-solid fa-coins" style="color:var(--gold)"></i> 
                             <span id="dashBalance">0</span>
@@ -783,13 +726,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="user-intro">
-                    <h2 id="dashUserName">Welcome!</h2>
-                    <p id="dashUserPhone">+91 ----------</p>
-                </div>
             </div>
 
-            <div class="app-body" style="padding: 10px 0 20px 0;">
+            <div class="app-body">
 
                 <div id="tab-home" class="app-tab-content" style="height: 100%;">
                     
@@ -800,7 +739,7 @@
 
                     <div class="dashboard-swipe-container" id="mainHomeSwipeViewport">
                         
-                        <div class="swipe-page" style="padding: 0 20px;">
+                        <div class="swipe-page">
                             <div class="asset-welcome-box">
                                 <span>आपके कुल एसेट</span>
                                 <h1 id="animatedAssetCounter">0 <span class="asset-symbol">ASSET</span></h1>
@@ -828,8 +767,8 @@
                             </div>
                         </div>
 
-                        <div class="swipe-page" style="padding: 0 20px;">
-                            <div class="premium-card tap-to-earn-wrapper" style="text-align: center; background: rgba(15, 17, 36, 0.7); min-height: 380px;">
+                        <div class="swipe-page">
+                            <div class="premium-card tap-to-earn-wrapper" style="text-align: center; background: rgba(15, 17, 36, 0.7); min-height: 340px;">
                                 <h3 style="font-size:16px; font-weight:700; margin-bottom:5px; color: var(--gold);"><i class="fa-solid fa-bolt"></i> TAP TO EARN HUB</h3>
                                 <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:20px;">स्क्रीन पर बने गोल चक्र पर टैप करें और असीमित एसेट्स माइन करें।</p>
                                 
@@ -838,9 +777,7 @@
                                 </div>
 
                                 <div class="tap-counter-hud">
-                                    <span style="font-size:11px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; display:block; margin-top:15px;">लोकल स्टोरेज अनसिंक्ड माइनिंग</span>
                                     <h2 style="font-size:24px; font-weight:800; color:#fff;" id="lblLocalUnsyncedTapTokens">0 <small style="font-size:12px; color:var(--accent-purple);">ASSETS</small></h2>
-                                    <p style="font-size:10.5px; color:var(--success); margin-top:4px;" id="lblSyncStateCountdownTimer">🔄 डेटा सुरक्षित लोकल है। हर 6 घंटे में सर्वर ऑटो-सिंक।</p>
                                 </div>
                             </div>
                         </div>
@@ -848,7 +785,7 @@
                     </div>
                 </div>
 
-                <div id="tab-mystery" class="app-tab-content hidden-screen" style="padding: 0 20px;">
+                <div id="tab-mystery" class="app-tab-content hidden-screen">
                     <div class="premium-card" style="text-align: center;">
                         <h3 style="justify-content: center; display:flex; align-items:center; gap:8px; font-size:16px; color: var(--accent-purple);"><i class="fa-solid fa-box-open"></i> Magic Mystery Box</h3>
                         <p style="font-size: 12px; color: var(--text-muted); margin: 8px 0 15px 0; line-height:1.5;">
@@ -872,7 +809,7 @@
                     </div>
                 </div>
 
-                <div id="tab-leaderboard" class="app-tab-content hidden-screen" style="padding: 0 20px;">
+                <div id="tab-leaderboard" class="app-tab-content hidden-screen">
                     <div class="premium-card leaderboard-container">
                         <h3 style="font-size:16px; margin-bottom:4px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> Elite Leaderboard</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">टॉप 10 लीडर्स देखें:</p>
@@ -887,8 +824,8 @@
                             <button class="stage-tab" data-stage="6" data-amount="₹10Cr+" onclick="renderLeaderboardStageWise(6)"><i class="fa-solid fa-crown"></i></button>
                         </div>
 
-                        <div id="myPersonalRankCard" class="hidden-screen" style="margin-bottom: 12px; border: 1.5px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12); border-radius: 18px; padding: 12px;">
-                            <div style="font-size: 10px; color: var(--accent-purple); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px;">आपकी वर्तमान स्थिति (My Rank)</div>
+                        <div id="myPersonalRankCard" class="hidden-screen" style="margin-bottom: 15px; border: 2px solid #6c5ce7; background: linear-gradient(135deg, rgba(108, 92, 231, 0.25) 0%, rgba(9, 10, 21, 0.8) 100%); border-radius: 20px; padding: 14px; box-shadow: var(--purple-glow);">
+                            <div style="font-size: 11px; color: var(--accent-purple); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;"><i class="fa-solid fa-user-check"></i> आपकी वर्तमान स्थिति / My Personal Rank</div>
                             <div id="myRankRowPlaceholder"></div>
                         </div>
 
@@ -900,7 +837,7 @@
                     </div>
                 </div>
 
-                <div id="tab-wallet" class="app-tab-content hidden-screen" style="padding: 0 20px;">
+                <div id="tab-wallet" class="app-tab-content hidden-screen">
                     <div class="premium-card">
                         <h3 style="color:var(--success); font-size:15px; margin-bottom:10px;"><i class="fa-solid fa-chart-line"></i> Asset Balance Sheet</h3>
                         <div class="info-row"><span>Current Coin Assets:</span><b id="wTotalLiquidCoins" style="color:var(--primary);">0 Assets</b></div>
@@ -931,7 +868,7 @@
                     </div>
                 </div>
 
-                <div id="tab-profile" class="app-tab-content hidden-screen" style="padding: 0 20px;">
+                <div id="tab-profile" class="app-tab-content hidden-screen">
                     <div class="section">
                         <div id="profileFormArea" class="premium-card hidden-screen">
                             <h3><i class="fa-solid fa-user-plus" style="color:var(--accent-purple);"></i> Complete Profile (+10k Bonus)</h3>
@@ -955,7 +892,7 @@
                             </div>
                             <div class="info-row"><span>नाम / Legal Name:</span><b id="stName">-</b></div>
                             <div class="info-row"><span>व्हाट्सएप नंबर / WhatsApp:</span><b id="stWorkspace">-</b></b></div>
-                            <div class="info-row"><span>जन्मतिथि / DOB:</span><b id="stDOB">-</b></div>
+                            <div class="info-row"><span>जन्मताथि / DOB:</span><b id="stDOB">-</b></div>
                             <div class="info-row"><span>लिंग / Gender:</span><b id="stGender">-</b></div>
                             <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
                                 <button class="btn-action" onclick="toggleInAppPinManagementPanel('change')" style="padding:12px; font-size:13.5px;"><i class="fa-solid fa-lock-open"></i> सुरक्षा PIN बदलें (Modify PIN)</button>
@@ -976,7 +913,7 @@
                     </div>
                 </div>
 
-                <div id="tab-social" class="app-tab-content hidden-screen" style="padding: 0 20px;">
+                <div id="tab-social" class="app-tab-content hidden-screen">
                     <div class="premium-card">
                         <h3 style="font-size:15px; margin-bottom:4px;"><i class="fa-solid fa-hashtag" style="color:#e4405f;"></i> Social Tasks</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">हमारे ऑफिशियल हैंडल्स को फॉलो करें। तुरंत +10000 Assets मिलेंगे:</p>
@@ -988,7 +925,7 @@
                     </div>
                 </div>
 
-                <div id="tab-refer" class="app-tab-content hidden-screen" style="padding: 0 20px;">
+                <div id="tab-refer" class="app-tab-content hidden-screen">
                     <div class="premium-card" style="text-align:center; padding:25px 15px;">
                         <div style="font-size:48px; color:var(--gold); margin-bottom:10px; filter:drop-shadow(var(--gold-glow));"><i class="fa-solid fa-gift"></i></div>
                         <h3>Invite Friends & Earn</h3>
@@ -1000,7 +937,7 @@
                     </div>
                 </div>
 
-                <div id="tab-terms" class="app-tab-content hidden-screen" style="padding: 0 20px;">
+                <div id="tab-terms" class="app-tab-content hidden-screen">
                     <div class="premium-card">
                         <h3><i class="fa-solid fa-file-shield" style="color:var(--accent-purple);"></i> Terms, Conditions & Detailed Guidelines</h3>
                         <hr style="opacity:0.05; margin:12px 0;">
@@ -1015,7 +952,7 @@
                     </div>
                 </div>
 
-                <div id="tab-pay" class="app-tab-content hidden-screen" style="padding: 0 20px;">
+                <div id="tab-pay" class="app-tab-content hidden-screen">
                     <div class="premium-card scanner-futuristic-container">
                         <h3 style="font-size:15px; display:flex; align-items:center; gap:8px; justify-content:center;"><i class="fa-solid fa-qrcode" style="color:var(--accent-purple);"></i> QR पेमेंट गेटवे</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">दुकानदार का QR कोड स्कैन करें या उसका रजिस्टर्ड mobile नंबर डालें</p>
@@ -1053,15 +990,15 @@
 
             </div>
 
-<nav class="nav-bar">
-    <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></a>
-    <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>Mystery</span></a>
-    
-    <div class="nav-pay-center" onclick="switchAppTab('pay')"><div><i class="fa-solid fa-qrcode"></i></div></div>
-    
-    <a href="#" class="nav-link" id="nav-leaderboard" onclick="switchAppTab('leaderboard')"><i class="fa-solid fa-trophy"></i><span>Rank</span></a>
-    <a href="#" class="nav-link" id="nav-wallet" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
-</nav>
+            <nav class="nav-bar">
+                <a href="#" class="nav-link active" id="nav-home" onclick="switchAppTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></a>
+                <a href="#" class="nav-link" id="nav-mystery" onclick="switchAppTab('mystery')"><i class="fa-solid fa-box-open"></i><span>Mystery</span></a>
+                
+                <div class="nav-pay-center" onclick="switchAppTab('pay')"><div><i class="fa-solid fa-qrcode"></i></div></div>
+                
+                <a href="#" class="nav-link" id="nav-leaderboard" onclick="switchAppTab('leaderboard')"><i class="fa-solid fa-trophy"></i><span>Rank</span></a>
+                <a href="#" class="nav-link" id="nav-wallet" onclick="switchAppTab('wallet')"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
+            </nav>
 
         </div>
     </div>
@@ -1097,7 +1034,7 @@
         const localCurrentDateISO = new Date().toISOString().substring(0, 10);
 
         // ==========================================================================
-        // 🌸 Core Falling Leaves / Flowers Celebration Animation Framework Engine
+        // 🌸 Core Falling Leaves Engine
         // ==========================================================================
         const canvas = document.getElementById("celebrationCanvas");
         const ctx = canvas.getContext("2d");
@@ -1118,7 +1055,6 @@
                 this.speedX = Math.random() * 1 - 0.5;
                 this.rotation = Math.random() * 360;
                 this.rotationSpeed = Math.random() * 2 - 1;
-                // Type Definitions: 0 = Pink Petal Flower, 1 = Golden Asset Leaf
                 this.type = Math.floor(Math.random() * 2); 
                 this.color = this.type === 0 ? `hsl(${Math.random() * 20 + 340}, 100%, 75%)` : `hsl(${Math.random() * 10 + 45}, 100%, 60%)`;
             }
@@ -1134,12 +1070,10 @@
                 ctx.fillStyle = this.color;
                 
                 if (this.type === 0) {
-                    // Draw Organic App Petal Shape Design
                     ctx.beginPath();
                     ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, 2 * Math.PI);
                     ctx.fill();
                 } else {
-                    // Draw Elegant Curved Leaf Asset Style
                     ctx.beginPath();
                     ctx.moveTo(0, -this.size);
                     ctx.quadraticCurveTo(this.size, -this.size / 2, 0, this.size);
@@ -1160,7 +1094,6 @@
             if (runningAnimationId) cancelAnimationFrame(runningAnimationId);
             animateParticlesLoop();
             
-            // Auto Cool-down Duration Stop Rule
             setTimeout(() => {
                 cancelAnimationFrame(runningAnimationId);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1213,6 +1146,25 @@
             requestAnimationFrame(updateCounter);
         }
 
+        window.triggerTopHeaderWalletInfoPopup = async () => {
+            if(!userSessionMobile) return;
+            try {
+                const snapshot = await getDoc(doc(db, "users", userSessionMobile));
+                if(snapshot.exists()) {
+                    const data = snapshot.data();
+                    const cloudBal = Number(data.balance || 0);
+                    const rupeeBal = Number(data.rupeeBalance || 0);
+                    const localUnsynced = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
+                    const totalLiveAssets = cloudBal + localUnsynced;
+
+                    const infoText = `एसेट विवरण:\n• सर्वर वॉलेट बैलेंस: ${cloudBal.toLocaleString()} ASSETS\n• लोकल टैप अर्निंग बैलेंस: ${localUnsynced.toLocaleString()} ASSETS\n• वर्तमान कुल लाइव एसेट्स: ${totalLiveAssets.toLocaleString()} ASSETS\n\nनकद विवरण:\n• वेरिफाइड रुपया खाता बैलेंस: ₹ ${rupeeBal.toLocaleString()}`;
+                    window.showCustomAlert("वॉलेट अकाउंट ब्रेकअप 💳", infoText, "success");
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
         window.addEventListener('DOMContentLoaded', async () => {
             parseIncomingUrlParametersForAutoReferrals();
             setupTapToEarnHardwareController();
@@ -1247,7 +1199,6 @@
             }
         };
 
-        // Touch Interaction Engine Setup for Lateral Horizontal Swiping
         let touchStartHorizX = 0;
         let touchEndHorizX = 0;
         const mainSwipeContainer = document.getElementById('tab-home');
@@ -1264,38 +1215,33 @@
         function handleSwipeGestureDetectionLogic() {
             const threshold = 60;
             if (touchStartHorizX - touchEndHorizX > threshold) {
-                navigateToSwipePage(1); // Swipe Left -> Go to Tap Page
+                navigateToSwipePage(1); 
             }
             if (touchEndHorizX - touchStartHorizX > threshold) {
-                navigateToSwipePage(0); // Swipe Right -> Go to Dashboard
+                navigateToSwipePage(0); 
             }
         }
 
         // ==========================================================================
-        // 🔘 8. LOCAL STORAGE BASED TAP TO EARN MINING ENGINE
+        // 🔘 8. LOCAL STORAGE BASED TAP TO EARN MINING ENGINE (FIXED DATA LOSS)
         // ==========================================================================
         function setupTapToEarnHardwareController() {
             const clickTargetZone = document.getElementById('actionTapClickZone');
             
-            // Sync current UI stats from Local Storage on initial load
             const unSyncedLocalCoins = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
             document.getElementById('lblLocalUnsyncedTapTokens').innerText = unSyncedLocalCoins.toLocaleString();
 
             clickTargetZone.addEventListener('click', (event) => {
-                // Increment values in Local Storage
                 let activeUnsyncedCoins = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
-                activeUnsyncedCoins += 10; // Per Click Coins Value
+                activeUnsyncedCoins += 10; 
                 localStorage.setItem('tap_local_unbound_coins', activeUnsyncedCoins);
 
-                // Instantly sync visual HUD element layer
                 document.getElementById('lblLocalUnsyncedTapTokens').innerText = activeUnsyncedCoins.toLocaleString();
 
-                // Dynamic CSS Particle Floating Animation Core
                 const floatingTextNode = document.createElement('div');
                 floatingTextNode.className = 'tap-floating-text';
                 floatingTextNode.innerText = '+10';
                 
-                // Position absolute assignment matching click coordinate offset mapping
                 const targetRectBounding = clickTargetZone.getBoundingClientRect();
                 const elementX = event.clientX - targetRectBounding.left - 15;
                 const elementY = event.clientY - targetRectBounding.top - 20;
@@ -1306,28 +1252,38 @@
                 clickTargetZone.appendChild(floatingTextNode);
                 setTimeout(() => { floatingTextNode.remove(); }, 6000);
 
-                // Evaluate if 6 Hours Cooldown window elapsed to commit structural bulk sync
-                evaluateSixHourIntervalServerSyncPipeline();
+                updateRealtimeVisualHUDCalculatedBalance();
+                evaluateFourHourIntervalServerSyncPipeline();
             });
         }
 
-        async function evaluateSixHourIntervalServerSyncPipeline() {
+        function updateRealtimeVisualHUDCalculatedBalance() {
+            const cloudDatabaseBalance = Number(sessionStorage.getItem('cloud_server_balance_cached') || 0);
+            const pendingUnsyncedCoins = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
+            const netCombinedBalance = cloudDatabaseBalance + pendingUnsyncedCoins;
+
+            document.getElementById('dashBalance').innerText = formatSmartAmount(netCombinedBalance);
+            const counterElement = document.getElementById('animatedAssetCounter');
+            if(counterElement) {
+                counterElement.innerHTML = `${netCombinedBalance.toLocaleString()} <span class="asset-symbol">ASSET</span>`;
+            }
+        }
+
+        async function evaluateFourHourIntervalServerSyncPipeline() {
             if(!userSessionMobile) return;
             
             const currentEpochMs = Date.now();
             const lastSyncedEpochMs = Number(localStorage.getItem('tap_last_server_sync_time') || 0);
-            const sixHoursIntervalWindowMs = 6 * 60 * 60 * 1000; // 6 Hours Formula Matrix
+            const fourHoursIntervalWindowMs = 4 * 60 * 60 * 1000; 
 
             if (lastSyncedEpochMs === 0) {
                 localStorage.setItem('tap_last_server_sync_time', currentEpochMs);
                 return;
             }
 
-            if (currentEpochMs - lastSyncedEpochMs >= sixHoursIntervalWindowMs) {
+            if (currentEpochMs - lastSyncedEpochMs >= fourHoursIntervalWindowMs) {
                 const pendingUnsyncedCoins = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
                 if(pendingUnsyncedCoins <= 0) return;
-
-                document.getElementById('lblSyncStateCountdownTimer').innerText = "⚡ सर्वर से कनेक्ट हो रहा है...";
 
                 try {
                     const userDocRef = doc(db, "users", userSessionMobile);
@@ -1337,25 +1293,17 @@
                         const cloudDatabaseBalance = Number(freshUserSnap.data().balance || 0);
                         const integratedNetTotalBalance = cloudDatabaseBalance + pendingUnsyncedCoins;
 
-                        // Unified 1-Write execution loop optimization model
                         await setDoc(userDocRef, { balance: integratedNetTotalBalance }, { merge: true });
                         
-                        // Wipe Local ledger buffer pool on transactional completion success
                         localStorage.setItem('tap_local_unbound_coins', 0);
                         localStorage.setItem('tap_last_server_sync_time', currentEpochMs);
 
                         document.getElementById('lblLocalUnsyncedTapTokens').innerText = "0";
-                        document.getElementById('lblSyncStateCountdownTimer').innerText = "✅ 6-घंटे का डेटा सर्वर पर सफलतापूर्वक सिंक हो गया!";
                         
                         await synchronizeUserDashboardStateEngine();
-                        
-                        setTimeout(() => {
-                            document.getElementById('lblSyncStateCountdownTimer').innerText = "🔄 डेटा सुरक्षित लोकल है। हर 6 घंटे में सर्वर ऑटो-सिंक।";
-                        }, 5000);
                     }
                 } catch(err) {
-                    console.error("6-Hour Auto Sync Transactional Interruption: ", err);
-                    document.getElementById('lblSyncStateCountdownTimer').innerText = "⚠️ सिंक फेल! अगले प्रयास तक डेटा लोकल स्टोरेज में सुरक्षित है।";
+                    console.error("4-Hour Auto Sync Transactional Interruption: ", err);
                 }
             }
         }
@@ -1415,8 +1363,6 @@
                 document.getElementById('keySection').classList.add('hidden-screen');
                 document.getElementById('rewardSection').classList.remove('hidden-screen');
                 document.getElementById('userReferralInput').style.display = "block";
-                
-                // Hide PIN field dynamically initially until user inputs their existing phone record
                 document.getElementById('loginPinArea').classList.add('hidden-screen');
                 
                 document.getElementById('authTitle').innerText = "Verification";
@@ -1426,7 +1372,6 @@
             }
         };
 
-        // UI View Route Management Engine Hook Logic
         window.toggleAuthRoute = (mode) => {
             if (mode === 'login') {
                 sessionStorage.clear();
@@ -1441,7 +1386,6 @@
             }
         };
 
-        // Input Monitor Hook to Check Existing Profile Completion Database Status
         document.getElementById('userMobile').addEventListener('input', async (e) => {
             const currentVal = e.target.value.trim();
             if(currentVal.length === 10) {
@@ -1449,7 +1393,6 @@
                     const checkSnap = await getDoc(doc(db, "users", currentVal));
                     if(checkSnap.exists()) {
                         const data = checkSnap.data();
-                        // If User Has Updated Profile -> Enforce Strict Secured PIN Verification Framework Model
                         if(data.profileCompleted === true) {
                             document.getElementById('loginPinArea').classList.remove('hidden-screen');
                             document.getElementById('authTitle').innerText = "Security Authorization";
@@ -1513,7 +1456,6 @@
                 const userDocRef = doc(db, "users", targetMobile);
                 const userSnap = await getDoc(userDocRef);
 
-                // Strict Check Validation Layer Integration to Prevent Key-bypass Direct Entry
                 if (userSnap.exists()) {
                     const existingUserData = userSnap.data();
                     if (existingUserData.profileCompleted === true) {
@@ -1638,14 +1580,14 @@
 
                 const coreUserData = userSnapshot.data();
                 
-                document.getElementById('dashBalance').innerText = formatSmartAmount(coreUserData.balance || 0);
+                const cloudDatabaseBalance = Number(coreUserData.balance || 0);
+                sessionStorage.setItem('cloud_server_balance_cached', cloudDatabaseBalance);
+
+                updateRealtimeVisualHUDCalculatedBalance();
                 document.getElementById('dashRupeeBalance').innerText = formatSmartAmount(coreUserData.rupeeBalance || 0);
 
-                animateCounterSequence(coreUserData.balance || 0);
-
                 const processedHeaderName = coreUserData.userName || "User";
-                document.getElementById('dashUserName').innerText = "Hi, " + (processedHeaderName.length > 12 ? processedHeaderName.substring(0, 10) + ".." : processedHeaderName);
-                document.getElementById('dashUserPhone').innerText = "+91 " + userSessionMobile;
+                document.getElementById('dashUserName').innerText = (processedHeaderName.length > 12 ? processedHeaderName.substring(0, 10) + ".." : processedHeaderName);
                 document.getElementById('sideMenuUser').innerText = coreUserData.userName || "Smart User";
                 document.getElementById('sideMenuPhone').innerText = "+91 " + userSessionMobile;
 
@@ -1685,13 +1627,8 @@
                         document.getElementById('announcementBoard').classList.add('hidden-screen');
                     }
 
-                    // ==========================================================================
-                    // 🚀 1-Read Optimized Dynamic Admin Controls Shell Link Render Engine
-                    // ==========================================================================
-                    // A. Admin Dynamically Render Custom Sidebar Option Links Matrix
                     if (nData.admin_sidebar_links && Array.isArray(nData.admin_sidebar_links)) {
                         const baseSidebarContainer = document.getElementById('appSidebarLinksContainer');
-                        // Clear previous dynamically loaded custom links to avoid duplicates
                         document.querySelectorAll('.dynamic-admin-side-item').forEach(el => el.remove());
                         
                         nData.admin_sidebar_links.forEach((linkObj) => {
@@ -1700,15 +1637,13 @@
                             anchorNode.href = linkObj.action_url || "#";
                             anchorNode.target = "_blank";
                             anchorNode.innerHTML = `<i class="${linkObj.icon_class || 'fa-solid fa-link'}" style="color:var(--accent-purple)"></i> ${linkObj.title || 'Custom Option'}`;
-                            // Insert before the logout separator boundary
                             baseSidebarContainer.insertBefore(anchorNode, baseSidebarContainer.lastElementChild.previousElementSibling);
                         });
                     }
 
-                    // B. Admin Dynamically Render Custom Dashboard Widgets Matrix
                     if (nData.admin_dashboard_cards && Array.isArray(nData.admin_dashboard_cards)) {
                         const dashCardsTargetBox = document.getElementById('adminDynamicDashboardCardsArea');
-                        dashCardsTargetBox.innerHTML = ""; // Reset box buffer pool
+                        dashCardsTargetBox.innerHTML = ""; 
                         
                         nData.admin_dashboard_cards.forEach((cardObj) => {
                             const cardWrapper = document.createElement('div');
@@ -1753,7 +1688,7 @@
                     allUsersQuerySnapshot.forEach(uDoc => {
                         const data = uDoc.data();
                         rawSortedUsers.push({
-                            mobile: uDoc.id, // Enforce strict unique phone logging boundary
+                            mobile: uDoc.id, 
                             name: data.userName || "Warrior",
                             balance: Number(data.balance || 0)
                         });
@@ -1796,7 +1731,7 @@
             } catch(e) { console.error("लीडरबोर्ड सिंक्रोनाइजेशन एरर: ", e); }
         }
 
-        window.renderLeaderboardStageWise = (stageIndex) => {
+        window.renderLeaderboardStageWise = async (stageIndex) => {
             document.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active-stage'));
             
             if(window.event && window.event.currentTarget) {
@@ -1813,6 +1748,20 @@
             container.innerHTML = "";
             if(myRankCard) myRankCard.classList.add('hidden-screen'); 
 
+            let personalRankFound = false;
+            let finalUserRankIndex = -1;
+
+            try {
+                const allUsersQuerySnapshot = await getDocs(collection(db, "users"));
+                let totalRankList = [];
+                allUsersQuerySnapshot.forEach(uDoc => {
+                    totalRankList.push({ mobile: uDoc.id, name: uDoc.data().userName || "Smart Warrior", balance: Number(uDoc.data().balance || 0) });
+                });
+                totalRankList.sort((a, b) => b.balance - a.balance);
+                
+                finalUserRankIndex = totalRankList.findIndex(u => u.mobile === userSessionMobile) + 1;
+            } catch (err) { console.error("पर्सनल रैंक जनरेशन एरर: ", err); }
+
             const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
 
             if(sliceSubList.length === 0) {
@@ -1828,8 +1777,6 @@
                 if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
 
                 const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
-                
-                // CRITICAL BUG FIX BOUNDARY: Match user based on UNIQUE MOBILE NUMBER instead of non-unique string names
                 const isMe = (userItem.mobile === userSessionMobile);
                 const myHighlightStyle = isMe ? "border: 1px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12);" : "";
 
@@ -1854,11 +1801,36 @@
                 if(isMe && myRankCard && myRankPlaceholder) {
                     myRankPlaceholder.innerHTML = rowHtml;
                     myRankCard.classList.remove('hidden-screen');
+                    personalRankFound = true;
                 }
 
                 container.innerHTML += rowHtml;
                 rankLoopCounter++;
             });
+
+            if(!personalRankFound && finalUserRankIndex > 0 && myRankCard && myRankPlaceholder) {
+                const curUserInitial = (document.getElementById('sideMenuUser').innerText || "U").charAt(0).toUpperCase();
+                const currentCloudCachedBal = Number(sessionStorage.getItem('cloud_server_balance_cached') || 0);
+                
+                myRankPlaceholder.innerHTML = `
+                    <div class="leader-row" style="border: 1px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12);">
+                        <div class="leader-left">
+                            <div class="leader-avatar-wrapper">
+                                <div class="leader-avatar">${curUserInitial}</div>
+                                <div class="rank-badge-pill" style="background:var(--primary);">${finalUserRankIndex}</div>
+                            </div>
+                            <div class="leader-info">
+                                <h4>${document.getElementById('sideMenuUser').innerText} <span style="color:var(--accent-purple); font-size:10px; font-weight:700;">(YOU)</span></h4>
+                                <p>ग्लोबल रैंक स्थिति</p>
+                            </div>
+                        </div>
+                        <div class="leader-right-value">
+                            <b>${formatSmartAmount(currentCloudCachedBal)} 🪙</b>
+                        </div>
+                    </div>
+                `;
+                myRankCard.classList.remove('hidden-screen');
+            }
         };
 
         async function renderDynamicUnusedPromoVideoWidget(activeUserMobile) {
@@ -2110,7 +2082,7 @@
             const transferTokenQuantity = Number(document.getElementById('payAmount').value);
             const transactionalVerificationPin = document.getElementById('paySecurityPin').value.trim();
 
-            if (transferTokenQuantity <= 0 || !activeMerchantDocPayload) return window.showCustomAlert("त्रुटि", "कृपया भेजने के लिए सही टोकन अमाउंट दर्ज करें।", "error");
+            if (transferTokenQuantity <= 0 || !activeMerchantDocPayload) return window.showCustomAlert("त्रुटि", "कृपया भेजने के लिए सही टोकन एमाउंट दर्ज करें।", "error");
 
             try {
                 const consumerDocRef = doc(db, "users", userSessionMobile);
@@ -2339,7 +2311,7 @@
                 const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
                 
                 document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
-                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculralBonus) + " Assets";
+                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
 
             } catch (err) { console.error("Wallet Sheet Optimization Error:", err); }
         }
@@ -2465,7 +2437,6 @@
             
             document.getElementById('tab-' + targetTabId).classList.remove('hidden-screen');
 
-            // Reset home to first view on tab switch
             if (targetTabId === 'home') navigateToSwipePage(0);
             if (targetTabId === 'leaderboard') window.renderLeaderboardStageWise(0);
             if (targetTabId === 'wallet') updateWalletSheet();
