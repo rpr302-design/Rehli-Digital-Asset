@@ -562,6 +562,110 @@
         background-size: 200% 100%; animation: skeletonMove 1.5s infinite; border-radius: 16px; margin-bottom: 8px;
     }
     @keyframes skeletonMove { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* ==========================================================================
+       🔄 5. MODERN DUAL SWIPE DASHBOARD SYSTEM
+       ========================================================================== */
+    .dashboard-swipe-container {
+        display: flex;
+        width: 200%;
+        height: 100%;
+        transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .swipe-page {
+        width: 50%;
+        height: 100%;
+        overflow-y: auto;
+        padding-bottom: 80px;
+    }
+    .swipe-navigation-pills {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    .swipe-pill {
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.03);
+    }
+    .swipe-pill.active {
+        background: var(--primary-gradient);
+        color: white;
+        box-shadow: var(--purple-glow);
+    }
+
+    /* ==========================================================================
+       🔘 6. TAB TO EARN FUTURISTIC BUTTON INTERFACE
+       ========================================================================== */
+    .tap-to-earn-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+    }
+    .tap-circle-outer {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #1e1b4b 0%, #090a15 100%);
+        border: 4px solid rgba(108, 92, 231, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        box-shadow: var(--purple-glow), inset 0 0 20px rgba(108, 92, 231, 0.2);
+        transition: transform 0.1s ease;
+    }
+    .tap-circle-outer:active {
+        transform: scale(0.96);
+    }
+    .tap-circle-outer::before {
+        content: '';
+        position: absolute;
+        width: 104%;
+        height: 104%;
+        border-radius: 50%;
+        border: 2px dashed rgba(251, 197, 49, 0.4);
+        animation: rotateDashed 15s linear infinite;
+    }
+    @keyframes rotateDashed {
+        100% { transform: rotate(360deg); }
+    }
+    .tap-inner-logo {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--accent-purple);
+        box-shadow: 0 0 15px rgba(108, 92, 231, 0.5);
+    }
+    .tap-counter-hud {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .tap-floating-text {
+        position: absolute;
+        color: var(--gold);
+        font-weight: 800;
+        font-size: 22px;
+        pointer-events: none;
+        animation: floatUp 0.6s ease-out forwards;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        z-index: 9999;
+    }
+    @keyframes floatUp {
+        0% { opacity: 1; transform: translateY(0) scale(1); }
+        100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+    }
 </style>
 </head>
 <body>
@@ -581,7 +685,7 @@
         <div id="authContainer">
             <div class="auth-card">
                 <div class="app-brand-logo-container">
-                    <img src="https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9" alt="App Logo" class="app-main-logo-img">
+                    <img src="https://lh3.googleusercontent.com/d/1_x3d8V88af999ed7ac8be_rehli_logo" alt="App Logo" class="app-main-logo-img" onerror="this.src='https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9'">
                     <h2 style="font-size: 21px; font-weight:700; background: linear-gradient(to right, #fff, var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Rehli Digital Asset</h2>
                 </div>
                 
@@ -603,7 +707,7 @@
                     
                     <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;">
                         <button onclick="toggleAuthRoute('login')" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:white; padding:12px 20px; border-radius:14px; font-size:12.5px; cursor:pointer; width:100%;">
-                            पुराना अकाउंट है? यहाँ से लॉगिन करें (Login)
+                             पुराना अकाउंट है? यहाँ से लॉगिन करें (Login)
                         </button>
                     </div>
                 </div>
@@ -642,7 +746,7 @@
               <div class="sidebar-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 10px;">
     
     <div class="avatar" style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent-purple); background: #fff; margin-bottom: 10px;">
-        <img src="https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="https://lh3.googleusercontent.com/d/1_x3d8V88af999ed7ac8be_rehli_logo" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9'">
     </div>
     
     <h3 id="sideMenuUser" style="font-size:15px; font-weight:600; margin: 5px 0 2px 0;">Loading User...</h3>
@@ -685,38 +789,66 @@
                 </div>
             </div>
 
-            <div class="app-body">
+            <div class="app-body" style="padding: 10px 0 20px 0;">
 
-                <div id="tab-home" class="app-tab-content">
+                <div id="tab-home" class="app-tab-content" style="height: 100%;">
                     
-                    <div class="asset-welcome-box">
-                        <span>आपके कुल एसेट</span>
-                        <h1 id="animatedAssetCounter">0 <span class="asset-symbol">ASSET</span></h1>
+                    <div class="swipe-navigation-pills">
+                        <div class="swipe-pill active" id="pill-pg1" onclick="navigateToSwipePage(0)">📊 Dashboard</div>
+                        <div class="swipe-pill" id="pill-pg2" onclick="navigateToSwipePage(1)">⚡ Tap to Earn</div>
                     </div>
 
-                    <div id="adminDynamicDashboardCardsArea"></div>
+                    <div class="dashboard-swipe-container" id="mainHomeSwipeViewport">
+                        
+                        <div class="swipe-page" style="padding: 0 20px;">
+                            <div class="asset-welcome-box">
+                                <span>आपके कुल एसेट</span>
+                                <h1 id="animatedAssetCounter">0 <span class="asset-symbol">ASSET</span></h1>
+                            </div>
 
-                    <div id="announcementBoard" class="notice-board hidden-screen">
-                        <h4 style="font-size:14px; font-weight:700;" id="lblNoticeTitle"><i class="fa-solid fa-bullhorn"></i> Notice Update!</h4>
-                        <p id="lblAnnouncementText" style="font-size:12px; margin-top:5px; font-weight:500; opacity:0.95;">Offer Details...</p>
-                        <a id="lnkNoticeAnchor" href="#" target="_blank" style="display:inline-block; margin-top:10px; background:#fff; color:#11998e; padding:6px 14px; font-size:11px; border-radius:8px; font-weight:700; text-decoration:none;" class="hidden-screen">Open Link </a>
-                    </div>
+                            <div id="adminDynamicDashboardCardsArea"></div>
 
-                    <div class="video-card hidden-screen" id="promoVideoSection">
-                        <h4 style="font-size:14px; font-weight:600;">📺 New Video: <span id="lblPromoTitle">Loading...</span></h4>
-                        <p style="font-size:12px; opacity:0.9; margin:4px 0 12px 0;">वीडियो को पूरा ध्यान से देखें और 5-अंकों का गुप्त (Key) पता करें!</p>
-                        <a id="btnPromoLink" href="#" target="_blank" style="display:inline-block; background:white; color:#ff5252; padding:8px 16px; border-radius:10px; font-size:12px; font-weight:700; text-decoration:none;"><i class="fa-solid fa-circle-play"></i> Watch & Earn</a>
-                    </div>
+                            <div id="announcementBoard" class="notice-board hidden-screen">
+                                <h4 style="font-size:14px; font-weight:700;" id="lblNoticeTitle"><i class="fa-solid fa-bullhorn"></i> Notice Update!</h4>
+                                <p id="lblAnnouncementText" style="font-size:12px; margin-top:5px; font-weight:500; opacity:0.95;">Offer Details...</p>
+                                <a id="lnkNoticeAnchor" href="#" target="_blank" style="display:inline-block; margin-top:10px; background:#fff; color:#11998e; padding:6px 14px; font-size:11px; border-radius:8px; font-weight:700; text-decoration:none;" class="hidden-screen">Open Link </a>
+                            </div>
 
-                    <div class="premium-card">
-                        <h3 style="font-size:15px; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-key" style="color:var(--accent-purple);"></i> कोड डालकर Assets कमाएं</h3>
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">अगर आपको नया वीडियो कोड मिला है, तो यहाँ नीचे दर्ज करें:</p>
-                        <input type="number" id="dashSecretKey" placeholder="00000" style="text-align:center; font-size:18px; font-weight:600; letter-spacing:5px;">
-                        <button class="btn-action" onclick="processDashboardKeyClaim()">वॉलेट में कॉइन्स जोड़ें / Add Coins</button>
+                            <div class="video-card hidden-screen" id="promoVideoSection">
+                                <h4 style="font-size:14px; font-weight:600;">📺 New Video: <span id="lblPromoTitle">Loading...</span></h4>
+                                <p style="font-size:12px; opacity:0.9; margin:4px 0 12px 0;">वीडियो को पूरा ध्यान से देखें और 5-अंकों का गुप्त (Key) पता करें!</p>
+                                <a id="btnPromoLink" href="#" target="_blank" style="display:inline-block; background:white; color:#ff5252; padding:8px 16px; border-radius:10px; font-size:12px; font-weight:700; text-decoration:none;"><i class="fa-solid fa-circle-play"></i> Watch & Earn</a>
+                            </div>
+
+                            <div class="premium-card">
+                                <h3 style="font-size:15px; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-key" style="color:var(--accent-purple);"></i> कोड डालकर Assets कमाएं</h3>
+                                <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">अगर आपको नया वीडियो कोड मिला है, तो यहाँ नीचे दर्ज करें:</p>
+                                <input type="number" id="dashSecretKey" placeholder="00000" style="text-align:center; font-size:18px; font-weight:600; letter-spacing:5px;">
+                                <button class="btn-action" onclick="processDashboardKeyClaim()">वॉलेट में कॉइन्स जोड़ें / Add Coins</button>
+                            </div>
+                        </div>
+
+                        <div class="swipe-page" style="padding: 0 20px;">
+                            <div class="premium-card tap-to-earn-wrapper" style="text-align: center; background: rgba(15, 17, 36, 0.7); min-height: 380px;">
+                                <h3 style="font-size:16px; font-weight:700; margin-bottom:5px; color: var(--gold);"><i class="fa-solid fa-bolt"></i> TAP TO EARN HUB</h3>
+                                <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:20px;">स्क्रीन पर बने गोल चक्र पर टैप करें और असीमित एसेट्स माइन करें।</p>
+                                
+                                <div class="tap-circle-outer" id="actionTapClickZone">
+                                    <img src="https://lh3.googleusercontent.com/d/1_x3d8V88af999ed7ac8be_rehli_logo" alt="Rehli Logo" class="tap-inner-logo" id="hudCenterTapImage" onerror="this.src='https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9'">
+                                </div>
+
+                                <div class="tap-counter-hud">
+                                    <span style="font-size:11px; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; display:block; margin-top:15px;">लोकल स्टोरेज अनसिंक्ड माइनिंग</span>
+                                    <h2 style="font-size:24px; font-weight:800; color:#fff;" id="lblLocalUnsyncedTapTokens">0 <small style="font-size:12px; color:var(--accent-purple);">ASSETS</small></h2>
+                                    <p style="font-size:10.5px; color:var(--success); margin-top:4px;" id="lblSyncStateCountdownTimer">🔄 डेटा सुरक्षित लोकल है। हर 6 घंटे में सर्वर ऑटो-सिंक।</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
-                <div id="tab-mystery" class="app-tab-content hidden-screen">
+                <div id="tab-mystery" class="app-tab-content hidden-screen" style="padding: 0 20px;">
                     <div class="premium-card" style="text-align: center;">
                         <h3 style="justify-content: center; display:flex; align-items:center; gap:8px; font-size:16px; color: var(--accent-purple);"><i class="fa-solid fa-box-open"></i> Magic Mystery Box</h3>
                         <p style="font-size: 12px; color: var(--text-muted); margin: 8px 0 15px 0; line-height:1.5;">
@@ -740,7 +872,7 @@
                     </div>
                 </div>
 
-                <div id="tab-leaderboard" class="app-tab-content hidden-screen">
+                <div id="tab-leaderboard" class="app-tab-content hidden-screen" style="padding: 0 20px;">
                     <div class="premium-card leaderboard-container">
                         <h3 style="font-size:16px; margin-bottom:4px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-trophy" style="color:var(--gold)"></i> Elite Leaderboard</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">टॉप 10 लीडर्स देखें:</p>
@@ -768,7 +900,7 @@
                     </div>
                 </div>
 
-                <div id="tab-wallet" class="app-tab-content hidden-screen">
+                <div id="tab-wallet" class="app-tab-content hidden-screen" style="padding: 0 20px;">
                     <div class="premium-card">
                         <h3 style="color:var(--success); font-size:15px; margin-bottom:10px;"><i class="fa-solid fa-chart-line"></i> Asset Balance Sheet</h3>
                         <div class="info-row"><span>Current Coin Assets:</span><b id="wTotalLiquidCoins" style="color:var(--primary);">0 Assets</b></div>
@@ -799,7 +931,7 @@
                     </div>
                 </div>
 
-                <div id="tab-profile" class="app-tab-content hidden-screen">
+                <div id="tab-profile" class="app-tab-content hidden-screen" style="padding: 0 20px;">
                     <div class="section">
                         <div id="profileFormArea" class="premium-card hidden-screen">
                             <h3><i class="fa-solid fa-user-plus" style="color:var(--accent-purple);"></i> Complete Profile (+10k Bonus)</h3>
@@ -844,7 +976,7 @@
                     </div>
                 </div>
 
-                <div id="tab-social" class="app-tab-content hidden-screen">
+                <div id="tab-social" class="app-tab-content hidden-screen" style="padding: 0 20px;">
                     <div class="premium-card">
                         <h3 style="font-size:15px; margin-bottom:4px;"><i class="fa-solid fa-hashtag" style="color:#e4405f;"></i> Social Tasks</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">हमारे ऑफिशियल हैंडल्स को फॉलो करें। तुरंत +10000 Assets मिलेंगे:</p>
@@ -856,7 +988,7 @@
                     </div>
                 </div>
 
-                <div id="tab-refer" class="app-tab-content hidden-screen">
+                <div id="tab-refer" class="app-tab-content hidden-screen" style="padding: 0 20px;">
                     <div class="premium-card" style="text-align:center; padding:25px 15px;">
                         <div style="font-size:48px; color:var(--gold); margin-bottom:10px; filter:drop-shadow(var(--gold-glow));"><i class="fa-solid fa-gift"></i></div>
                         <h3>Invite Friends & Earn</h3>
@@ -868,7 +1000,7 @@
                     </div>
                 </div>
 
-                <div id="tab-terms" class="app-tab-content hidden-screen">
+                <div id="tab-terms" class="app-tab-content hidden-screen" style="padding: 0 20px;">
                     <div class="premium-card">
                         <h3><i class="fa-solid fa-file-shield" style="color:var(--accent-purple);"></i> Terms, Conditions & Detailed Guidelines</h3>
                         <hr style="opacity:0.05; margin:12px 0;">
@@ -883,7 +1015,7 @@
                     </div>
                 </div>
 
-                <div id="tab-pay" class="app-tab-content hidden-screen">
+                <div id="tab-pay" class="app-tab-content hidden-screen" style="padding: 0 20px;">
                     <div class="premium-card scanner-futuristic-container">
                         <h3 style="font-size:15px; display:flex; align-items:center; gap:8px; justify-content:center;"><i class="fa-solid fa-qrcode" style="color:var(--accent-purple);"></i> QR पेमेंट गेटवे</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">दुकानदार का QR कोड स्कैन करें या उसका रजिस्टर्ड mobile नंबर डालें</p>
@@ -1083,6 +1215,7 @@
 
         window.addEventListener('DOMContentLoaded', async () => {
             parseIncomingUrlParametersForAutoReferrals();
+            setupTapToEarnHardwareController();
             if (userSessionMobile) {
                 renderApplicationShellInterface(true);
                 await synchronizeUserDashboardStateEngine();
@@ -1094,6 +1227,138 @@
                 renderApplicationShellInterface(false);
             }
         });
+
+        // ==========================================================================
+        // 🔄 7. SWIPE NAVIGATION CONTEXT DISPATCHER
+        // ==========================================================================
+        window.navigateToSwipePage = (pageIndex) => {
+            const viewport = document.getElementById('mainHomeSwipeViewport');
+            const pill1 = document.getElementById('pill-pg1');
+            const pill2 = document.getElementById('pill-pg2');
+            
+            if(pageIndex === 0) {
+                viewport.style.transform = "translateX(0%)";
+                pill1.classList.add('active');
+                pill2.classList.remove('active');
+            } else {
+                viewport.style.transform = "translateX(-50%)";
+                pill1.classList.remove('active');
+                pill2.classList.add('active');
+            }
+        };
+
+        // Touch Interaction Engine Setup for Lateral Horizontal Swiping
+        let touchStartHorizX = 0;
+        let touchEndHorizX = 0;
+        const mainSwipeContainer = document.getElementById('tab-home');
+        
+        mainSwipeContainer.addEventListener('touchstart', e => {
+            touchStartHorizX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        mainSwipeContainer.addEventListener('touchend', e => {
+            touchEndHorizX = e.changedTouches[0].screenX;
+            handleSwipeGestureDetectionLogic();
+        }, {passive: true});
+
+        function handleSwipeGestureDetectionLogic() {
+            const threshold = 60;
+            if (touchStartHorizX - touchEndHorizX > threshold) {
+                navigateToSwipePage(1); // Swipe Left -> Go to Tap Page
+            }
+            if (touchEndHorizX - touchStartHorizX > threshold) {
+                navigateToSwipePage(0); // Swipe Right -> Go to Dashboard
+            }
+        }
+
+        // ==========================================================================
+        // 🔘 8. LOCAL STORAGE BASED TAP TO EARN MINING ENGINE
+        // ==========================================================================
+        function setupTapToEarnHardwareController() {
+            const clickTargetZone = document.getElementById('actionTapClickZone');
+            
+            // Sync current UI stats from Local Storage on initial load
+            const unSyncedLocalCoins = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
+            document.getElementById('lblLocalUnsyncedTapTokens').innerText = unSyncedLocalCoins.toLocaleString();
+
+            clickTargetZone.addEventListener('click', (event) => {
+                // Increment values in Local Storage
+                let activeUnsyncedCoins = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
+                activeUnsyncedCoins += 10; // Per Click Coins Value
+                localStorage.setItem('tap_local_unbound_coins', activeUnsyncedCoins);
+
+                // Instantly sync visual HUD element layer
+                document.getElementById('lblLocalUnsyncedTapTokens').innerText = activeUnsyncedCoins.toLocaleString();
+
+                // Dynamic CSS Particle Floating Animation Core
+                const floatingTextNode = document.createElement('div');
+                floatingTextNode.className = 'tap-floating-text';
+                floatingTextNode.innerText = '+10';
+                
+                // Position absolute assignment matching click coordinate offset mapping
+                const targetRectBounding = clickTargetZone.getBoundingClientRect();
+                const elementX = event.clientX - targetRectBounding.left - 15;
+                const elementY = event.clientY - targetRectBounding.top - 20;
+                
+                floatingTextNode.style.left = `${elementX}px`;
+                floatingTextNode.style.top = `${elementY}px`;
+                
+                clickTargetZone.appendChild(floatingTextNode);
+                setTimeout(() => { floatingTextNode.remove(); }, 6000);
+
+                // Evaluate if 6 Hours Cooldown window elapsed to commit structural bulk sync
+                evaluateSixHourIntervalServerSyncPipeline();
+            });
+        }
+
+        async function evaluateSixHourIntervalServerSyncPipeline() {
+            if(!userSessionMobile) return;
+            
+            const currentEpochMs = Date.now();
+            const lastSyncedEpochMs = Number(localStorage.getItem('tap_last_server_sync_time') || 0);
+            const sixHoursIntervalWindowMs = 6 * 60 * 60 * 1000; // 6 Hours Formula Matrix
+
+            if (lastSyncedEpochMs === 0) {
+                localStorage.setItem('tap_last_server_sync_time', currentEpochMs);
+                return;
+            }
+
+            if (currentEpochMs - lastSyncedEpochMs >= sixHoursIntervalWindowMs) {
+                const pendingUnsyncedCoins = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
+                if(pendingUnsyncedCoins <= 0) return;
+
+                document.getElementById('lblSyncStateCountdownTimer').innerText = "⚡ सर्वर से कनेक्ट हो रहा है...";
+
+                try {
+                    const userDocRef = doc(db, "users", userSessionMobile);
+                    const freshUserSnap = await getDoc(userDocRef);
+                    
+                    if(freshUserSnap.exists()) {
+                        const cloudDatabaseBalance = Number(freshUserSnap.data().balance || 0);
+                        const integratedNetTotalBalance = cloudDatabaseBalance + pendingUnsyncedCoins;
+
+                        // Unified 1-Write execution loop optimization model
+                        await setDoc(userDocRef, { balance: integratedNetTotalBalance }, { merge: true });
+                        
+                        // Wipe Local ledger buffer pool on transactional completion success
+                        localStorage.setItem('tap_local_unbound_coins', 0);
+                        localStorage.setItem('tap_last_server_sync_time', currentEpochMs);
+
+                        document.getElementById('lblLocalUnsyncedTapTokens').innerText = "0";
+                        document.getElementById('lblSyncStateCountdownTimer').innerText = "✅ 6-घंटे का डेटा सर्वर पर सफलतापूर्वक सिंक हो गया!";
+                        
+                        await synchronizeUserDashboardStateEngine();
+                        
+                        setTimeout(() => {
+                            document.getElementById('lblSyncStateCountdownTimer').innerText = "🔄 डेटा सुरक्षित लोकल है। हर 6 घंटे में सर्वर ऑटो-सिंक।";
+                        }, 5000);
+                    }
+                } catch(err) {
+                    console.error("6-Hour Auto Sync Transactional Interruption: ", err);
+                    document.getElementById('lblSyncStateCountdownTimer').innerText = "⚠️ सिंक फेल! अगले प्रयास तक डेटा लोकल स्टोरेज में सुरक्षित है।";
+                }
+            }
+        }
 
         function parseIncomingUrlParametersForAutoReferrals() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1488,6 +1753,7 @@
                     allUsersQuerySnapshot.forEach(uDoc => {
                         const data = uDoc.data();
                         rawSortedUsers.push({
+                            mobile: uDoc.id, // Enforce strict unique phone logging boundary
                             name: data.userName || "Warrior",
                             balance: Number(data.balance || 0)
                         });
@@ -1548,7 +1814,6 @@
             if(myRankCard) myRankCard.classList.add('hidden-screen'); 
 
             const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
-            const currentUserName = document.getElementById('sideMenuUser').innerText.trim();
 
             if(sliceSubList.length === 0) {
                 container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>इस स्टेज की कंडीशन में फिलहाल कोई योद्धा मौजूद नहीं है।</div>";
@@ -1563,7 +1828,9 @@
                 if(rankLoopCounter === 3) medalBadgeSelectorClass = "rank-3";
 
                 const firstInitialCharacter = userItem.name.charAt(0).toUpperCase() || "W";
-                const isMe = (userItem.name.trim() === currentUserName);
+                
+                // CRITICAL BUG FIX BOUNDARY: Match user based on UNIQUE MOBILE NUMBER instead of non-unique string names
+                const isMe = (userItem.mobile === userSessionMobile);
                 const myHighlightStyle = isMe ? "border: 1px solid var(--accent-purple); background: rgba(108, 92, 231, 0.12);" : "";
 
                 const rowHtml = `
@@ -1643,7 +1910,7 @@
 
                 document.getElementById('dashSecretKey').value = "";
                 window.showCustomAlert("सफलतापूर्वक क्लेम हुआ! 🎉", `${formatSmartAmount(targetedAssetVal)} टोकन्स आपके वॉलेट में जुड़ गए।`, "success");
-                window.triggerCelebrationFallingAnimation(); // Trigger Falling Animation on Code Claim Success
+                window.triggerCelebrationFallingAnimation(); 
                 await synchronizeUserDashboardStateEngine();
             } catch (error) { window.showCustomAlert("त्रुटि", "वॉलेट बैलेंस अपडेट करने में तकनीकी एरर आया।", "error"); }
         };
@@ -1782,7 +2049,7 @@
 
                 const unitLabel = targetBox.rewardType === "currency" ? "₹ Cash" : "Assets";
                 window.showCustomAlert("बॉक्स खुल गया! 🎉", `सफलतापूर्वक प्राप्त हुए +${formatSmartAmount(rVal)} ${unitLabel}.`, "success");
-                window.triggerCelebrationFallingAnimation(); // Trigger Falling Animation on Mystery Box Unlock Success
+                window.triggerCelebrationFallingAnimation(); 
                 selectedTargetBoxIndexToUnlock = null;
                 await synchronizeUserDashboardStateEngine();
 
@@ -2072,7 +2339,7 @@
                 const netCalculatedReferralBonus = totalInvitedFriendsCount * 10000;
                 
                 document.getElementById('wReferCount').innerText = totalInvitedFriendsCount + " Users";
-                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculatedReferralBonus) + " Assets";
+                document.getElementById('wReferEarned').innerText = formatSmartAmount(netCalculralBonus) + " Assets";
 
             } catch (err) { console.error("Wallet Sheet Optimization Error:", err); }
         }
@@ -2118,7 +2385,7 @@
             }
         };
 
-       window.handleSocialTaskExecution = async (pKey) => {
+        window.handleSocialTaskExecution = async (pKey) => {
             try {
                 const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
                 const taskSnap = await getDoc(taskRef);
@@ -2152,7 +2419,7 @@
                 if (userSnapshot.exists()) {
                     const userData = userSnapshot.data();
                     if (!userData.profileCompleted) {
-                        window.showCustomAlert("प्रोफाइल अधूरी है! ⚠️", "रेफरल लिंक शेयर करने से पहले कृपया अपनी प्रोफाइल पूरी करें और सुरक्षा पिन बनाएं।", "error");
+                        window.showCustomAlert("प्रोफाइल अधूरी है! ⚠️", "रेफरल LINK शेयर करने से पहले कृपया अपनी प्रोफाइल पूरी करें और सुरक्षा पिन बनाएं।", "error");
                         setTimeout(() => { switchAppTab('profile'); }, 1500);
                         return;
                     }
@@ -2198,6 +2465,8 @@
             
             document.getElementById('tab-' + targetTabId).classList.remove('hidden-screen');
 
+            // Reset home to first view on tab switch
+            if (targetTabId === 'home') navigateToSwipePage(0);
             if (targetTabId === 'leaderboard') window.renderLeaderboardStageWise(0);
             if (targetTabId === 'wallet') updateWalletSheet();
             if (targetTabId === 'profile') loadProfileScreen();
