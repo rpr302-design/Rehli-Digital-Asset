@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रहली डिजिटल एसेट - प्रो एडमिन v6.0 Master Console</title>
+    <title>रहली डिजिटल एसेट - प्रो एडमिन v6.5 Master Console</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -43,7 +43,7 @@
         }
         .login-box h3 { font-size: 22px; margin: 15px 0; font-weight: 600; letter-spacing: -0.5px; }
 
-        /* 🍔 Professional Workspace Navigation Layout */
+        /* 🚪 Professional Workspace Navigation Layout */
         .sidebar {
             width: 270px; background: var(--sidebar-bg); border-right: 1px solid var(--border-color);
             display: flex; flex-direction: column; z-index: 100; transition: 0.3s;
@@ -52,6 +52,7 @@
             padding: 25px; text-align: center; font-weight: 700; font-size: 18px;
             background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--border-color); color: var(--text-main);
         }
+        .sidebar-links { display: flex; flex-direction: column; flex: 1; overflow-y: auto; }
         .nav-link {
             padding: 14px 22px; color: #b2bec3; text-decoration: none;
             display: flex; align-items: center; cursor: pointer; transition: 0.2s; border-left: 4px solid transparent;
@@ -101,6 +102,10 @@
         .btn-action-sm { background: linear-gradient(45deg, #11998e, #38ef7d); color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; border: none; cursor: pointer; }
         .btn-delete-sm { background: linear-gradient(45deg, #ff4757, #ff6b81); color: white; padding: 6px 12px; border-radius: 8px; font-size: 11px; border: none; cursor: pointer; }
         .stage-grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+        /* Dynamic Custom Control Badge Elements Styles */
+        .color-row-input { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.15); padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .color-row-input input[type="color"] { width: 50px; height: 38px; padding: 0; background: transparent; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -108,7 +113,7 @@
     <div id="loginWrapper">
         <div class="login-box">
             <img src="https://cdn-icons-png.flaticon.com/512/6024/6024190.png" width="75" alt="Admin Dashboard">
-            <h3>रहली डिजिटल कोर कंसोल v6.0</h3>
+            <h3>रहली डिजिटल कोर कंसोल v6.5</h3>
             <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px;">Master Control Operations</p>
             <input type="email" id="adminEmail" value="rpr302@gmail.com">
             <input type="password" id="adminPass" value="Sammo*1234" style="margin-top:10px;">
@@ -118,11 +123,12 @@
 
     <div id="adminPanel" style="display: none; width: 100%;">
         <div class="sidebar">
-            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM v6.0</div>
+            <div class="sidebar-header"><i class="fa-solid fa-server"></i> REHLI SYSTEM v6.5</div>
             <div class="sidebar-links">
                 <a class="nav-link active" onclick="showTab('dashboard')"><i class="fas fa-chart-line"></i> मुख्य डैशबोर्ड</a>
                 <a class="nav-link" onclick="showTab('entry')"><i class="fas fa-plus-circle"></i> नया वीडियो एसेट बनाएं</a>
                 <a class="nav-link" onclick="showTab('announcement')"><i class="fas fa-bullhorn"></i> घोषणा बोर्ड और मिस्ट्री बॉक्स</a>
+                <a class="nav-link" onclick="showTab('remotectrl')"><i class="fa-solid fa-sliders"></i> रिमोट ऐप कस्टमाइज़र</a>
                 <a class="nav-link" onclick="showTab('users')"><i class="fas fa-users"></i> यूज़र एसेट रिपोर्ट शीट</a>
                 <a class="nav-link" onclick="showTab('merchants')"><i class="fas fa-store"></i> पंजीकृत दुकानदार लिस्ट</a>
                 <a class="nav-link" onclick="showTab('tracking')"><i class="fas fa-search-location"></i> उपभोक्ता अर्निंग派 ट्रैकर</a>
@@ -174,8 +180,8 @@
                         <label>कॉइन एसेट वैल्यू (Value Price)</label>
                         <input type="number" id="assetValue" placeholder="500">
 
-                        <label>मैन्युअल डिफ़ॉल्ट चाबी (5-अंकीय कोड दर्ज करें)</label>
-                        <input type="number" id="txtCustomDefaultKey" placeholder="उदाहरण के लिए: 94416" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
+                        <label>मैन्युअल डिफ़ॉल्ट चाबी (5-अंकीय घोषित कोड दर्ज करें)</label>
+                        <input type="number" id="txtCustomDefaultKey" placeholder="उदाहरण के लिए: 12345" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
                         
                         <div style="display: flex; gap: 10px; margin-top: 25px;">
                             <button class="btn btn-primary" id="genKeyBtn" style="flex:1;" onclick="generateUniqueKey('random')">यूनिक रैंडम चाबी बनाएँ</button>
@@ -261,10 +267,10 @@
                             </select>
                             <label>पुरस्कार राशि मूल्य</label>
                             <input type="number" id="numMBoxRewardValue" placeholder="पुरस्कार मात्रा दर्ज करें">
-                            <label>सुरक्षा लॉक व्यवस्था</label>
+                            <label>सुरक्षा锁 लॉक व्यवस्था</label>
                             <select id="selMBoxPinRequired" onchange="togglePinConfigFields(this.value)">
                                 <option value="false">🔓 डायरेक्ट खोलें (फ्री / नो पिन)</option>
-                                <option value="true">🔒 पिन कोड锁 लॉक अनिवार्य करें</option>
+                                <option value="true">🔒 पिन कोड लॉक अनिवार्य करें</option>
                             </select>
                             <div id="mboxPinConfigArea" class="hidden" style="margin-top:10px; background:rgba(0,0,0,0.12); padding:12px; border-radius:10px;">
                                 <label>पिन कोड अंक आकार</label>
@@ -281,6 +287,76 @@
                             <div id="liveActiveMysteryBoxesListArea" style="max-height:150px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
                                 <div style="font-size:12px; color:var(--text-muted);">कोई बॉक्स वर्तमान में उपलब्ध नहीं है।</div>
                             </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="tab-remotectrl" class="hidden">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:25px;">
+                        
+                        <div class="card">
+                            <h3><i class="fa-solid fa-bars-progress" style="color:var(--accent-purple)"></i> सुपर ऐप साइडबार ऑप्शन कंट्रोलर</h3>
+                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">बिना कोडिंग बदले यूजर के ऐप साइडबार मेनू में कस्टम यूटिलिटी विकल्प जोड़ें।</p>
+                            
+                            <label>ऑप्शन का शीर्षक (Menu Title Name)</label>
+                            <input type="text" id="ctrlSideTitle" placeholder="उदाहरण: सरकारी स्कूल पोर्टल">
+                            
+                            <label>फाँट-ऑसम आइकॉन क्लास (FontAwesome Icon Class)</label>
+                            <input type="text" id="ctrlSideIcon" value="fa-solid fa-graduation-cap" placeholder="fa-solid fa-link">
+                            
+                            <label>टारगेट रीडायरेक्ट यूआरएल लिंक (Action URL)</label>
+                            <input type="url" id="ctrlSideUrl" placeholder="https://educationportal.mp.gov.in">
+                            
+                            <button class="btn btn-primary" style="margin-top:15px;" onclick="pushAdvancedAppSidebarLinkMetadata()">साइडबार में नया ऑप्शन जोड़ें</button>
+                            
+                            <hr style="opacity:0.08; margin:15px 0;">
+                            <h4 style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">वर्तमान लाइव कस्टम लिंक्स:</h4>
+                            <div id="sidebarLiveItemsList" style="display:flex; flex-direction:column; gap:8px; max-height:150px; overflow-y:auto;"></div>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fa-solid fa-table-cells-large" style="color:var(--gold)"></i> होम स्क्रीन डैशबोर्ड कार्ड बिल्डर</h3>
+                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">उपभोक्ता ऐप के मुख्य होम-डैशबोर्ड पर किसी भी योजना या सर्विस का कस्टम एक्टिव कार्ड जोड़ें।</p>
+                            
+                            <label>कार्ड मुख्य हेडिंग (Header Title)</label>
+                            <input type="text" id="ctrlDashHeader" placeholder="उदाहरण: लाड़ली बहना योजना स्टेटस देखें">
+                            
+                            <label>कार्ड छोटा विवरण (Sub-text Desc)</label>
+                            <input type="text" id="ctrlDashSub" placeholder="यहाँ क्लिक करके सीधे अपना खाता बैलेंस शीट चेक करें">
+                            
+                            <label>कार्ड फाँट आइकॉन (Icon Class)</label>
+                            <input type="text" id="ctrlDashIcon" value="fa-solid fa-heart-pulse" placeholder="fa-solid fa-fire">
+                            
+                            <label>टारगेट यूआरएल लिंक (Web Target Redirect URL)</label>
+                            <input type="url" id="ctrlDashUrl" placeholder="https://example.com/portal">
+                            
+                            <button class="btn" style="margin-top:15px; background:linear-gradient(135deg, #00b894, #00cec9); color:white; width:100%;" onclick="pushAdvancedAppDashboardCardMetadata()">डैशबोर्ड पर लाइव कार्ड जोड़ें</button>
+                            
+                            <hr style="opacity:0.08; margin:15px 0;">
+                            <h4 style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">डैशबोर्ड पर सक्रिय कस्टम कार्ड्स:</h4>
+                            <div id="dashboardLiveCardsList" style="display:flex; flex-direction:column; gap:8px; max-height:150px; overflow-y:auto;"></div>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fa-solid fa-palette" style="color:var(--success)"></i> इन-ऐप ब्रांड कलर पैलेट एवं बटन रिमोट</h3>
+                            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">यूजर ऐप का मुख्य बैकग्राउंड, बटन थीम और लेआउट कलर यहाँ से सिंक्रोनाइज़ करें।</p>
+                            
+                            <div style="display:flex; flex-direction:column; gap:12px;">
+                                <div class="color-row-input">
+                                    <input type="color" id="clrPickMainBg" value="#090a15">
+                                    <div><label style="margin:0;">ऐप मेन बैकग्राउंड</label></div>
+                                </div>
+                                <div class="color-row-input">
+                                    <input type="color" id="clrPickPrimary" value="#6c5ce7">
+                                    <div><label style="margin:0;">बटन प्राइमरी कलर</label></div>
+                                </div>
+                                <div class="color-row-input">
+                                    <input type="color" id="clrPickAccent" value="#a29bfe">
+                                    <div><label style="margin:0;">एक्सेन्ट नियॉन ग्लो</label></div>
+                                </div>
+                            </div>
+                            <button class="btn" style="margin-top:20px; background:var(--accent-gradient); color:white; width:100%;" onclick="submitGlobalAppThemeCustomizationColors()">कलर पैलेट रिमोट सिंक करें</button>
                         </div>
 
                     </div>
@@ -307,7 +383,7 @@
                                     <tr>
                                         <th>नाम</th>
                                         <th>मोबाइल नंबर</th>
-                                        <th>इनवाइट बोनस एसेट</th>
+                                        <th>इनवाइट बोनस</th>
                                         <th>नकद रुपया खाता (₹)</th>
                                         <th>कुल खर्च एसेट्स</th>
                                         <th>वर्तमान शेष बैलेंस</th>
@@ -417,16 +493,11 @@
             } else {
                 document.getElementById('loginWrapper').classList.remove('hidden');
                 document.getElementById('adminPanel').style.display = 'none';
-                renderEmptyLeaderboardInputs();
             }
         });
 
-        function renderEmptyLeaderboardInputs() {
-            // Default structural reset triggers
-        }
-
         window.showTab = (tab) => {
-            ['dashboard', 'entry', 'announcement', 'users', 'merchants', 'tracking', 'history'].forEach(t => document.getElementById('tab-'+t).classList.add('hidden'));
+            ['dashboard', 'entry', 'announcement', 'remotectrl', 'users', 'merchants', 'tracking', 'history'].forEach(t => document.getElementById('tab-'+t).classList.add('hidden'));
             document.getElementById('tab-'+tab).classList.remove('hidden');
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             if(window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
@@ -434,6 +505,7 @@
             if(tab === 'users') loadUsersAndCalculateReportSheet();
             if(tab === 'merchants') loadMerchantsDataEngine();
             if(tab === 'announcement') loadActiveMysteryBoxesInAdminDashboardList();
+            if(tab === 'remotectrl') syncLiveRemoteControllerUIMatrices();
             if(tab === 'history') {
                 loadHistory();
                 document.getElementById('keyStatsSection').classList.add('hidden');
@@ -561,7 +633,6 @@
                 });
 
                 rawUsersArray.sort((a, b) => b.balance - a.balance);
-
                 let compressedStagesArray = [[], [], [], [], [], [], []];
 
                 rawUsersArray.forEach(user => {
@@ -582,14 +653,147 @@
                     leaderboard_last_sync: new Date().toISOString()
                 }, { merge: true });
 
-                alert("सफलतापूर्वक पूर्ण! लीडरबोर्ड 7-स्टेज फ़ॉर्मेट में अपग्रेड होकर 1-रीड मोड पर सुरक्षित रूप से अपडेट हो गया है।");
+                alert("सफलतापूर्वक पूर्ण! लीडरबोर्ड 1-रीड मोड पर सुरक्षित रूप से अपडेट हो गया है।");
                 window.showTab('dashboard');
-
-            } catch (err) {
-                alert("लीडरबोर्ड पाइपलाइन प्रोसेसिंग एरर: " + err.message);
-            }
+            } catch (err) { alert("लीडरबोर्ड पाइपलाइन प्रोसेसिंग एरर: " + err.message); }
         };
 
+        // ==========================================================================
+        // 🚀 NEW MODULES: ADVANCED APP REMOTE CONTROLLER SYNC ENGINE
+        // ==========================================================================
+        async function syncLiveRemoteControllerUIMatrices() {
+            const sideList = document.getElementById('sidebarLiveItemsList');
+            const dashList = document.getElementById('dashboardLiveCardsList');
+            sideList.innerHTML = "<div>लोडिंग लिंक्स...</div>";
+            dashList.innerHTML = "<div>लोडिंग कार्ड्स...</div>";
+            
+            try {
+                const globalSnap = await getDoc(doc(db, "announcements", "live_notice"));
+                if (globalSnap.exists()) {
+                    const data = globalSnap.data();
+                    
+                    // Render Active Custom Sidebar Elements List UI
+                    sideList.innerHTML = "";
+                    if (data.admin_sidebar_links && Array.isArray(data.admin_sidebar_links)) {
+                        data.admin_sidebar_links.forEach((item, index) => {
+                            sideList.innerHTML += `
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; font-size:12px; border:1px solid var(--border-color);">
+                                    <div><i class="${item.icon_class}"></i> <b>${item.title}</b></div>
+                                    <button class="btn-delete-sm" onclick="removeDynamicAppRemoteItem('sidebar', ${index})" style="padding:4px 8px; font-size:10px;">हटाएं</button>
+                                </div>`;
+                        });
+                    } else { sideList.innerHTML = "<div style='font-size:11px; color:var(--text-muted)'>कोई साइडबार ऑप्शन नहीं है।</div>"; }
+
+                    // Render Active Custom Dashboard Cards Elements List UI
+                    dashList.innerHTML = "";
+                    if (data.admin_dashboard_cards && Array.isArray(data.admin_dashboard_cards)) {
+                        data.admin_dashboard_cards.forEach((card, index) => {
+                            dashList.innerHTML += `
+                                <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; font-size:12px; border:1px solid var(--border-color);">
+                                    <div><i class="${card.icon_class}"></i> <b>${card.header_title}</b></div>
+                                    <button class="btn-delete-sm" onclick="removeDynamicAppRemoteItem('dashboard', ${index})" style="padding:4px 8px; font-size:10px;">हटाएं</button>
+                                </div>`;
+                        });
+                    } else { dashList.innerHTML = "<div style='font-size:11px; color:var(--text-muted)'>कोई कस्टम कार्ड एक्टिव नहीं है।</div>"; }
+                    
+                    // Sync Configuration Colors Palette State From Firestore
+                    if(data.theme_colors) {
+                        document.getElementById('clrPickMainBg').value = data.theme_colors.main_bg || "#090a15";
+                        document.getElementById('clrPickPrimary').value = data.theme_colors.primary_color || "#6c5ce7";
+                        document.getElementById('clrPickAccent').value = data.theme_colors.accent_glow || "#a29bfe";
+                    }
+                }
+            } catch (err) { console.error("सिंकिंग विफलता: ", err); }
+        }
+
+        window.pushAdvancedAppSidebarLinkMetadata = async () => {
+            const title = document.getElementById('ctrlSideTitle').value.trim();
+            const icon = document.getElementById('ctrlSideIcon').value.trim();
+            const url = document.getElementById('ctrlSideUrl').value.trim();
+
+            if (!title || !url) return alert("शीर्षक और यूआरएल आवश्यक है!");
+
+            try {
+                const liveNoticeDocRef = doc(db, "announcements", "live_notice");
+                const currentSnap = await getDoc(liveNoticeDocRef);
+                let sidebarLinksArray = [];
+
+                if (currentSnap.exists() && currentSnap.data().admin_sidebar_links) {
+                    sidebarLinksArray = currentSnap.data().admin_sidebar_links;
+                }
+
+                sidebarLinksArray.push({ title: title, icon_class: iconClassValidator(icon), action_url: url });
+                await setDoc(liveNoticeDocRef, { admin_sidebar_links: sidebarLinksArray }, { merge: true });
+                
+                alert("साइडबार लिंक सफलतापूर्वक लाइव जोड़ दिया गया है!");
+                document.getElementById('ctrlSideTitle').value = "";
+                await syncLiveRemoteControllerUIMatrices();
+            } catch (e) { alert("फायरबेस राइट फेलियर!"); }
+        };
+
+        window.pushAdvancedAppDashboardCardMetadata = async () => {
+            const hTitle = document.getElementById('ctrlDashHeader').value.trim();
+            const sTitle = document.getElementById('ctrlDashSub').value.trim();
+            const icon = document.getElementById('ctrlDashIcon').value.trim();
+            const url = document.getElementById('ctrlDashUrl').value.trim();
+
+            if (!hTitle || !url) return alert("कार्ड हेडिंग और टारगेट लिंक अनिवार्य है!");
+
+            try {
+                const liveNoticeDocRef = doc(db, "announcements", "live_notice");
+                const currentSnap = await getDoc(liveNoticeDocRef);
+                let dashboardCardsArray = [];
+
+                if (currentSnap.exists() && currentSnap.data().admin_dashboard_cards) {
+                    dashboardCardsArray = currentSnap.data().admin_dashboard_cards;
+                }
+
+                dashboardCardsArray.push({ header_title: hTitle, subtitle_text: sTitle, icon_class: iconClassValidator(icon), target_url: url });
+                await setDoc(liveNoticeDocRef, { admin_dashboard_cards: dashboardCardsArray }, { merge: true });
+                
+                alert("होम स्क्रीन डैशबोर्ड पर नया कार्ड सफलतापूर्वक लाइव कर दिया गया है!");
+                document.getElementById('ctrlDashHeader').value = ""; document.getElementById('ctrlDashSub').value = "";
+                await syncLiveRemoteControllerUIMatrices();
+            } catch (e) { alert("क्लाउड सर्वर एरर!"); }
+        };
+
+        window.removeDynamicAppRemoteItem = async (type, index) => {
+            if(!confirm("क्या आप इस आइटम को डिलीट करके यूजर स्क्रीन से हटाना चाहते हैं?")) return;
+            try {
+                const ref = doc(db, "announcements", "live_notice");
+                const snap = await getDoc(ref);
+                if(snap.exists()) {
+                    const data = snap.data();
+                    if(type === 'sidebar') {
+                        let arr = data.admin_sidebar_links; arr.splice(index, 1);
+                        await setDoc(ref, { admin_sidebar_links: arr }, { merge: true });
+                    } else {
+                        let arr = data.admin_dashboard_cards; arr.splice(index, 1);
+                        await setDoc(ref, { admin_dashboard_cards: arr }, { merge: true });
+                    }
+                    alert("सफलतापूर्वक हटाया गया!"); await syncLiveRemoteControllerUIMatrices();
+                }
+            } catch (err) { alert("आइटम रिमूव एरर!"); }
+        };
+
+        window.submitGlobalAppThemeCustomizationColors = async () => {
+            try {
+                await setDoc(doc(db, "announcements", "live_notice"), {
+                    theme_colors: {
+                        main_bg: document.getElementById('clrPickMainBg').value,
+                        primary_color: document.getElementById('clrPickPrimary').value,
+                        accent_glow: document.getElementById('clrPickAccent').value
+                    }
+                }, { merge: true });
+                alert("ग्लोबल कलर थीम रिमोट सिस्टम सफलतापूर्वक सिंक हो गया!");
+            } catch (err) { alert("थीम सिंकिंग एरर!"); }
+        };
+
+        function iconClassValidator(val) { return val.includes('fa-') ? val : "fa-solid fa-circle-notch"; }
+
+        // ==========================================================================
+        // 🚪 PRE-EXISTING FUNCTIONALITIES ENGINE MATRIX 
+        // ==========================================================================
         window.togglePinConfigFields = (isRequired) => {
             document.getElementById('mboxPinConfigArea').classList.toggle('hidden', isRequired !== "true");
         };
@@ -721,14 +925,11 @@
             }
         }
 
-        /* ==========================================================================
-           🥇 [सुधरा हुआ मॉड्यूल]: अनलिमिटेड चाबी बदलाव (बफर हटा दिया गया)
-           ========================================================================== */
         window.generateUniqueKey = async (type) => {
             if (type === 'default') {
                 const customKeyInput = document.getElementById('txtCustomDefaultKey').value.trim();
                 if (!customKeyInput || customKeyInput.length !== 5) {
-                    return alert("त्रुटि: कृपया पहले 'मैन्युअल डिफ़ॉल्ट चाबी' बॉक्स में ५-अंकों का कोई भी कोड टाइप करें!");
+                    return alert("त्रुटि: कृपया पहले ५-अंकों का कोई भी घोषित कोड टाइप करें!");
                 }
                 genKey = String(customKeyInput);
             } else {
@@ -744,62 +945,39 @@
                 localStorage.setItem('pendingAdminKey', genKey);
                 document.getElementById('genKeyBtn').innerText = "यूनिक रैंडम चाबी लॉक है";
             }
-
             document.getElementById('keyDisplay').innerText = genKey; 
             document.getElementById('keyArea').classList.remove('hidden');
         };
 
-        /* ==========================================================================
-           🥇 [सुधरा हुआ मॉड्यूल]: ओवरराइट प्रोटेक्शन (पहले से सेव चाबी की जांच)
-           ========================================================================== */
         window.submitData = async () => {
             const title = document.getElementById('videoTitle').value.trim(); 
             const url = document.getElementById('videoLink').value.trim(); 
             const val = document.getElementById('assetValue').value;
-            
             if (!title || !url || !val) return alert("सभी फील्ड भरना अनिवार्य है!");
             const finalStringKey = String(genKey);
             
             try {
-                // 🔍 क्रिटिकल चेक: क्या यह चाबी डेटाबेस में पहले से मौजूद है?
                 const existingKeySnap = await getDoc(doc(db, "assets", finalStringKey));
-                
                 if (existingKeySnap.exists()) {
-                    const confirmOverwrite = confirm(`🚨 सुरक्षा अलर्ट: चाबी '${finalStringKey}' डेटाबेस में पहले से सेव है! क्या आप पुराने डेटा को मिटाकर इसी चाबी के अंदर नया वीडियो टाइटल, लिंक और वैल्यू अपडेट करना चाहते हैं?`);
-                    if (!confirmOverwrite) return; // अगर एडमिन मना कर दे, तो प्रोसेस रोकें
+                    const confirmOverwrite = confirm(`🚨 सुरक्षा अलर्ट: चाबी '${finalStringKey}' पहले से सेव है! क्या आप इसे ओवरराइट करना चाहते हैं?`);
+                    if (!confirmOverwrite) return;
                 }
 
-                // डॉक्यूमेंट मौजूद हो या न हो, 'setDoc' विथ 'merge: true' उसी सेम चाबी के अंदर सारा डेटा सेव कर देगा
                 await setDoc(doc(db, "assets", finalStringKey), {
-                    key: finalStringKey, 
-                    title: title, 
-                    link: url, 
-                    value: Number(val), 
-                    platform: document.getElementById('platform').value, 
-                    status: "active", 
-                    timestamp: new Date().toISOString()
+                    key: finalStringKey, title: title, link: url, value: Number(val), 
+                    platform: document.getElementById('platform').value, status: "active", timestamp: new Date().toISOString()
                 }, { merge: true });
                 
-                alert("एसेट क्लाउड पर सफलतापूर्वक लाइव सक्रिय/अपडेट कर दिया गया है!"); 
+                alert("एसेट क्लाउड पर सफलतापूर्वक लाइव सक्रिय कर दिया गया है!"); 
                 localStorage.removeItem('pendingAdminKey');
-                
-                // फॉर्म रीसेट प्रक्रिया
-                document.getElementById('videoTitle').value = ""; 
-                document.getElementById('videoLink').value = ""; 
-                document.getElementById('assetValue').value = "";
-                document.getElementById('txtCustomDefaultKey').value = "";
+                document.getElementById('videoTitle').value = ""; document.getElementById('videoLink').value = ""; document.getElementById('assetValue').value = ""; document.getElementById('txtCustomDefaultKey').value = "";
                 document.getElementById('keyArea').classList.add('hidden');
-                
-                const btn = document.getElementById('genKeyBtn'); 
-                btn.disabled = false; 
-                btn.innerText = "यूनिक रैंडम चाबी बनाएँ";
+                const btn = document.getElementById('genKeyBtn'); btn.disabled = false; btn.innerText = "यूनिक रैंडम चाबी बनाएँ";
                 window.showTab('dashboard');
-
-            } catch (err) {
-                alert("डेटाबेस में चाबी सुरक्षित सेव करने में एरर आया: " + err.message);
-            }
+            } catch (err) { alert("बचाव विफलता: " + err.message); }
         };
 
+        window.removeDynamicAppRemoteItem = removeDynamicAppRemoteItem;
         window.executeDeleteMysteryBoxTransaction = executeDeleteMysteryBoxTransaction;
         window.togglePinConfigFields = togglePinConfigFields;
         window.logout = () => signOut(auth);
