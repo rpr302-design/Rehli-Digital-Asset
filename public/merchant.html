@@ -4,107 +4,529 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>दुकानदार पोर्टल - रहली डिजिटल एसेट</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="merchant.css">
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+    /* ==========================================================================
+       🎨 1. Premium Dark Fintech Merchant Theme & Variables
+       ========================================================================== */
+    :root {
+        --bg-main: #090a15;
+        --bg-card-glass: rgba(30, 39, 46, 0.45);
+        --border-glass: rgba(255, 255, 255, 0.08);
+        --primary: #6c5ce7;
+        --primary-gradient: linear-gradient(135deg, #4e54c8 0%, #a29bfe 100%);
+        --accent-purple: #a29bfe;
+        --success: #00b894;
+        --success-gradient: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        --danger: #ff7675;
+        --light-text: #f5f6fa;
+        --text-muted: #a4b0be;
+        --gold: #fbc531;
+        --gold-glow: 0 0 15px rgba(251, 197, 49, 0.4);
+        --purple-glow: 0 0 20px rgba(108, 92, 231, 0.3);
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: var(--bg-main);
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--light-text);
+    }
+
+    .phone-wrapper {
+        width: 100%;
+        max-width: 420px;
+        height: 100%;
+        background: linear-gradient(180deg, #090a15 0%, #131529 100%);
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        overflow: hidden; 
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+    }
+
+    @media (min-height: 700px) and (min-width: 450px) {
+        .phone-wrapper {
+            position: relative;
+            height: 850px;
+            border-radius: 35px;
+            border: 8px solid #1e213a;
+        }
+    }
+    
+    .hidden-screen { display: none !important; }
+
+    /* ==========================================================================
+       💎 2. Core UI Components 
+       ========================================================================== */
+    .premium-card {
+        background: var(--bg-card-glass);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-glass);
+        border-radius: 20px;
+        padding: 18px;
+        margin-bottom: 18px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    input[type="number"], input[type="text"], input[type="tel"], input[type="password"], input[type="email"] {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 14px 16px;
+        border-radius: 14px;
+        font-size: 14px;
+        color: white;
+        margin-bottom: 16px;
+        outline: none;
+        transition: border 0.3s;
+    }
+
+    input:focus {
+        border-color: var(--accent-purple);
+    }
+
+    label {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .btn-action {
+        width: 100%;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
+    }
+
+    /* ==========================================================================
+       🔐 3. Authentication Forms Layout
+       ========================================================================== */
+    .auth-container {
+        width: 100%; height: 100%;
+        background: radial-gradient(circle at top, #1e1b4b 0%, #090a15 100%);
+        display: flex; flex-direction: column; justify-content: center; padding: 25px; overflow-y: auto;
+    }
+
+    .auth-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        padding: 35px 20px;
+        text-align: center;
+    }
+
+    /* ==========================================================================
+       📊 4. Dashboard Header & Infrastructure
+       ========================================================================== */
+    .app-header {
+        background: linear-gradient(135deg, #131429 0%, #090a15 100%);
+        border-bottom: 1px solid var(--border-glass);
+        padding: 16px;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        z-index: 999;
+    }
+
+    .header-top { 
+        display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .menu-trigger-btn {
+        width: 38px; height: 38px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        display: flex; justify-content: center; align-items: center;
+        cursor: pointer; color: white;
+    }
+
+    .merchant-profile-snippet h2 {
+        font-size: 16px; font-weight: 600; color: #ffffff; margin-top: 10px;
+    }
+
+    .merchant-profile-snippet p {
+        font-size: 11px; color: var(--text-muted);
+    }
+
+    .app-body { 
+        flex: 1; overflow-y: auto; padding: 18px; 
+        padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); 
+    }
+
+    .balance-banner {
+        background: linear-gradient(135deg, #1e1b4b 0%, #111224 100%);
+        border: 1px solid rgba(108, 92, 231, 0.3);
+        border-radius: 24px; padding: 20px; text-align: center;
+        box-shadow: var(--purple-glow); margin-bottom: 20px;
+    }
+
+    .balance-banner span {
+        font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px;
+    }
+
+    .balance-banner h1 {
+        font-size: 32px; font-weight: 800; color: #ffffff; margin-top: 4px;
+    }
+
+    /* ==========================================================================
+       🏁 5. Interactive Futuristic QR & Grid Layout
+       ========================================================================== */
+    .qr-centralizer {
+        text-align: center; padding: 15px 0;
+    }
+
+    .qr-premium-frame {
+        position: relative;
+        background: white;
+        padding: 24px;
+        border-radius: 24px;
+        display: inline-block;
+        box-shadow: 0 15px 45px rgba(0,0,0,0.4);
+    }
+
+    #qrcodeContainer {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* 🛠️ QR कोड के बीचों बीच लोगो और रुपये का वाटरमार्क स्टाइल */
+    .qr-center-logo-hub {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 44px;
+        height: 44px;
+        background: #6c5ce7;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 3.5px solid white;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .qr-center-logo-hub i.fa-store {
+        font-size: 10px;
+        color: rgba(255,255,255,0.7);
+        margin-bottom: -2px;
+    }
+
+    .qr-center-logo-hub span.rupee-sym {
+        font-size: 15px;
+        font-weight: 800;
+        color: white;
+    }
+
+    .grid-2-columns {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+
+    /* Data Transaction Matrix Table */
+    .ledger-table {
+        width: 100%; border-collapse: collapse; margin-top: 10px;
+    }
+    .ledger-table th {
+        text-align: left; padding: 10px; font-size: 11px; color: var(--text-muted); text-transform: uppercase;
+    }
+    .ledger-table td {
+        padding: 12px 10px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* ==========================================================================
+       📱 6. Modern Navigation & Sidebar Structural 
+       ========================================================================== */
+    .nav-bar {
+        position: absolute; bottom: 0; left: 0; width: 100%; 
+        height: calc(76px + env(safe-area-inset-bottom, 0px));
+        background: #0d0f1d; border-top: 1px solid var(--border-glass);
+        display: flex; justify-content: space-around; align-items: center; z-index: 999; 
+        padding: 0 10px env(safe-area-inset-bottom, 0px) 10px;
+    }
+
+    .nav-link {
+        display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
+        text-decoration: none; font-size: 10px; font-weight: 500; width: 65px; gap: 5px;
+        transition: color 0.3s;
+    }
+    .nav-link i { font-size: 19px; }
+    .nav-link.active { color: var(--accent-purple); text-shadow: var(--purple-glow); }
+
+    .sidebar-menu {
+        position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
+        background: #0f1124; z-index: 9999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex; flex-direction: column; border-right: 1px solid var(--border-glass);
+    }
+    .sidebar-menu.open { left: 0; }
+    .sidebar-header { background: rgba(255,255,255,0.02); padding: 35px 20px; text-align: center; }
+    .sidebar-links { padding: 15px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; flex: 1; }
+    .sidebar-links a {
+        display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: var(--text-muted);
+        text-decoration: none; font-size: 13.5px; font-weight: 500; border-radius: 12px;
+    }
+    .sidebar-links a:hover { background: rgba(255,255,255,0.04); color: white; }
+    .sidebar-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 998; }
+
+    .toggle-text {
+        font-size: 12.5px; color: var(--accent-purple); margin-top: 20px; cursor: pointer; text-decoration: underline;
+    }
+</style>
 </head>
 <body>
 
-<div id="merchantAuthSection" class="auth-wrapper">
-    <div class="auth-card">
-        <h2 id="authTitle">दुकानदार लॉगिन (Merchant Login)</h2>
+<div class="phone-wrapper">
+
+    <!-- MERCHANT AUTHENTICATION HUB -->
+    <div id="merchantAuthSection" class="auth-container">
+        <div class="auth-card">
+            <!-- Brand Hub Display Icon -->
+            <div style="width: 75px; height: 75px; background: rgba(108, 92, 231, 0.15); border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; border: 1px solid var(--accent-purple);">
+                <i class="fa-solid fa-store" style="font-size:36px; color:var(--accent-purple); filter: drop-shadow(var(--purple-glow));"></i>
+            </div>
+            
+            <div id="loginForm">
+                <h2 style="font-size: 20px; margin-bottom: 5px;">दुकानदार लॉगिन</h2>
+                <p style="font-size:12px; color:var(--text-muted); margin-bottom:24px;">Merchant Business Control Panel</p>
+                
+                <input type="tel" id="loginMobile" placeholder="मोबाइल नंबर (10 Digits)" maxlength="10">
+                <input type="password" id="loginPass" placeholder="सुरक्षित पासवर्ड">
+                <button class="btn-action" onclick="merchantLogin()">लॉगिन करें / Sign In</button>
+                <p onclick="toggleAuth(true)" class="toggle-text">नया दुकानदार? रजिस्ट्रेशन करें</p>
+            </div>
+
+            <div id="registerForm" class="hidden-screen">
+                <h2 style="font-size: 20px; margin-bottom: 20px;">मर्चेंट पार्टनर रजिस्ट्रेशन</h2>
+                <input type="text" id="regShopName" placeholder="दुकान का नाम (Shop Name)">
+                <input type="text" id="regAddress" placeholder="दुकान का पूरा पता">
+                <input type="tel" id="regMobile" placeholder="मोबाइल नंबर (10 Digits)" maxlength="10">
+                <input type="email" id="regEmail" placeholder="ईमेल आईडी">
+                <input type="password" id="regPass" placeholder="मजबूत पासवर्ड बनाएं">
+                <button class="btn-action" style="background:var(--success-gradient);" onclick="merchantRegister()">अकाउंट बनाएं / Register</button>
+                <p onclick="toggleAuth(false)" class="toggle-text">पहले से अकाउंट है? लॉगिन करें</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN MERCHANT CONTAINER HOUSING CONTROL SHELLS -->
+    <div id="merchantDashboard" class="hidden-screen" style="width:100%; height:100%; display:flex; flex-direction:column; position:relative;">
         
-        <div id="loginForm">
-            <input type="tel" id="loginMobile" placeholder="मोबाइल नंबर (10 Digits)" maxlength="10">
-            <input type="password" id="loginPass" placeholder="पासवर्ड (Password)">
-            <button class="btn-main" onclick="merchantLogin()">लॉगिन करें (Sign In)</button>
-            <p onclick="toggleAuth(true)" class="toggle-text">नया दुकानदार? यहाँ रजिस्ट्रेशन करें</p>
+        <!-- SIDEBAR NAVIGATION MENU SLIDER -->
+        <div id="merchantSidebar" class="sidebar-menu">
+            <div class="sidebar-header">
+                <div style="width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 10px auto; color: white; font-size: 24px;">
+                    <i class="fa-solid fa-building-circle-check"></i>
+                </div>
+                <h3 id="sideShopTitle" style="font-size:15px; font-weight:600;">Shop Name</h3>
+                <span id="sideShopPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
+            </div>
+            <div class="sidebar-links">
+                <a href="#" onclick="switchMerchantTab('home')"><i class="fa-solid fa-chart-pie"></i> डैशबोर्ड / Overview</a>
+                <a href="#" onclick="switchMerchantTab('qr')"><i class="fa-solid fa-qrcode"></i> मेरा QR कोड / My QR</a>
+                <a href="#" onclick="switchMerchantTab('rules')"><i class="fa-solid fa-sliders"></i> बिज़नेस लिमिट / Limits</a>
+                <a href="#" onclick="switchMerchantTab('history')"><i class="fa-solid fa-clock-rotate-left"></i> पेमेंट इतिहास / History</a>
+                <hr style="opacity:0.05; margin:10px 0;">
+                <a href="#" onclick="merchantLogout()" style="color:var(--danger);"><i class="fa-solid fa-power-off"></i> लॉगआउट / Exit Portal</a>
+            </div>
+        </div>
+        <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
+
+        <!-- PORTAL INTERFACE APP HEADER -->
+        <div class="app-header">
+            <div class="header-top">
+                <div class="menu-trigger-btn" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars-staggered"></i></div>
+                <div style="font-size: 13px; font-weight: 700; color: var(--accent-purple); letter-spacing: 0.5px; text-transform: uppercase;">Merchant Engine</div>
+                <div class="menu-trigger-btn" onclick="location.reload()"><i class="fa-solid fa-rotate"></i></div>
+            </div>
+            <div class="merchant-profile-snippet">
+                <h2 id="lblShopName">Loading Outlet Store...</h2>
+                <p id="lblMerchantPhone">+91 ----------</p>
+            </div>
         </div>
 
-        <div id="registerForm" class="hidden">
-            <input type="text" id="regShopName" placeholder="दुकान का नाम (Shop Name)">
-            <input type="text" id="regAddress" placeholder="दुकान का पता (Address)">
-            <input type="tel" id="regMobile" placeholder="मोबाइल नंबर (10 Digits)" maxlength="10">
-            <input type="email" id="regEmail" placeholder="ईमेल आईडी (Email)">
-            <input type="password" id="regPass" placeholder="सुरक्षित पासवर्ड बनाएं">
-            <button class="btn-main" style="background:#2ecc71;" onclick="merchantRegister()">अकाउंट बनाएं (Register)</button>
-            <p onclick="toggleAuth(false)" class="toggle-text">पहले से अकाउंट है? लॉगिन करें</p>
+        <!-- SCROLLABLE TAB STRUCTURE FRAMEWORKS -->
+        <div class="app-body">
+
+            <!-- TAB BLOCK 1: OVERVIEW INDEX -->
+            <div id="merchant-tab-home" class="merchant-tab-content">
+                <div class="balance-banner">
+                    <span>प्राप्त कुल डिजिटल एसेट</span>
+                    <h1 id="lblMerchantBalance">0</h1>
+                </div>
+
+                <div class="premium-card">
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><i class="fa-solid fa-bell" style="color:var(--gold);"></i> त्वरित जानकारी</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); line-height: 1.6;">ग्राहक द्वारा आपकी दुकान पर एसेट ट्रांसफर करने पर बैलेंस यहाँ लाइव अपडेट होता है। क्यूआर प्रिंट करने के लिए नीचे QR विकल्प पर जाएँ।</p>
+                </div>
+            </div>
+
+            <!-- TAB BLOCK 2: SYSTEM RULE CONFIGURATION METRICS -->
+            <div id="merchant-tab-rules" class="merchant-tab-content hidden-screen">
+                <div class="premium-card">
+                    <h3 style="font-size:15px; margin-bottom:12px;"><i class="fa-solid fa-sliders" style="color:var(--accent-purple);"></i> बिज़नेस लिमिट सेटिंग्स</h3>
+                    
+                    <div class="grid-2-columns">
+                        <div>
+                            <label>एक बार की लिमिट</label>
+                            <input type="number" id="setPerTxnLimit" value="5000">
+                        </div>
+                        <div>
+                            <label>एक महीने की लिमिट</label>
+                            <input type="number" id="setMonthlyLimit" value="20000">
+                        </div>
+                    </div>
+                    
+                    <label style="margin-top:5px;">न्यूनतम बिल राशि (Min Bill Value ₹)</label>
+                    <input type="number" id="setMinBill" value="100">
+                    
+                    <button class="btn-action" style="margin-top: 5px;" onclick="saveMerchantRules()">रूल्स अपडेट करें / Save Rules</button>
+                </div>
+            </div>
+
+            <!-- TAB BLOCK 3: MODERN DYNAMIC LOGO CENTERED QR GENERATOR -->
+            <div id="merchant-tab-qr" class="merchant-tab-content hidden-screen">
+                <div class="premium-card qr-centralizer">
+                    <h3 style="font-size:15px; margin-bottom:4px;">दुकान का डिजिटल पेमेंट QR</h3>
+                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:20px;">यूजर ऐप से स्कैन कर कॉइन ट्रांसफर कर सकते हैं</p>
+                    
+                    <!-- DYNAMIC RENDER HUB FOR SMART CODE CANVAS -->
+                    <div class="qr-premium-frame">
+                        <div id="qrcodeContainer">
+                            <div id="shopQrCanvas"></div>
+                            
+                            <!-- 🛠️ क्यूआर कोड के बिल्कुल बीचों-बीच रहली डिजिटल एसेट का लोगो + रुपया सिम्बल -->
+                            <div class="qr-center-logo-hub">
+                                <i class="fa-solid fa-store"></i>
+                                <span class="rupee-sym">₹</span>
+                            </div>
+                        </div>
+                        <h4 id="qrShopNameLabel" style="margin: 14px 0 2px 0; font-size: 16px; color: #1e213a; font-weight: 700;">Shop Name</h4>
+                        <p id="qrShopPhoneLabel" style="font-size: 11px; color: #7f8c8d; font-weight: 500;">+91 ----------</p>
+                    </div>
+
+                    <div class="grid-2-columns" style="margin-top:20px;">
+                        <button class="btn-action" style="background:#27ae60; padding:12px; font-size:13px;" onclick="window.print()"><i class="fa-solid fa-print"></i> प्रिंट आउट लें</button>
+                        <button class="btn-action" style="background:#e67e22; padding:12px; font-size:13px;" onclick="switchMerchantTab('rules')"><i class="fa-solid fa-gear"></i> लिमिट बदलें</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB BLOCK 4: REALTIME HISTORY TRANSACTION MATRIX -->
+            <div id="merchant-tab-history" class="merchant-tab-content hidden-screen">
+                <div class="premium-card">
+                    <h3 style="font-size:14px; margin-bottom:10px;"><i class="fa-solid fa-clock-rotate-left" style="color:var(--success);"></i> हालिया प्राप्त पेमेंट्स</h3>
+                    <table class="ledger-table">
+                        <thead>
+                            <tr><th>यूजर मोबाइल</th><th>प्राप्त एसेट्स</th></tr>
+                        </thead>
+                        <tbody id="merchantTxBody">
+                            <tr><td colspan="2" style="text-align:center; color:var(--text-muted); padding:30px 0;">कोई लेनदेन नहीं मिला।</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
+
+        <!-- FUTURISTIC APP STYLE NAVIGATION FOOTER PILL BAR -->
+        <nav class="nav-bar">
+            <a href="#" class="nav-link active" id="m-nav-home" onclick="switchMerchantTab('home')"><i class="fa-solid fa-chart-pie"></i><span>होम</span></a>
+            <a href="#" class="nav-link" id="m-nav-qr" onclick="switchMerchantTab('qr')"><i class="fa-solid fa-qrcode"></i><span>QR कोड</span></a>
+            <a href="#" class="nav-link" id="m-nav-rules" onclick="switchMerchantTab('rules')"><i class="fa-solid fa-sliders"></i><span>लिमिट सेटिंग्स</span></a>
+            <a href="#" class="nav-link" id="m-nav-history" onclick="switchMerchantTab('history')"><i class="fa-solid fa-clock-rotate-left"></i><span>इतिहास</span></a>
+        </nav>
+
     </div>
 </div>
 
-<div id="merchantDashboard" class="dashboard-wrapper hidden">
-    <div class="dash-header">
-        <div>
-            <h2 id="lblShopName">Shop Name</h2>
-            <span id="lblMerchantPhone" style="opacity:0.8; font-size:12px;">+91 0000000000</span>
-        </div>
-        <div class="m-balance">
-            <span style="font-size:10px; display:block; opacity:0.8;">प्राप्त कुल एसेट</span>
-            <i class="fa-solid fa-store"></i> <span id="lblMerchantBalance">0</span>
-        </div>
-    </div>
+<!-- BACKEND CONTROLLER MATRIX SCRIPT -->
+<script type="module">
+    // नोट: मर्चेंट जेएस लॉजिक को फायरबेस रिप्रजेंटेशन मॉडल के साथ बाँधने के लिए हुक पैरामीटर:
+    window.toggleAuth = (showRegister) => {
+        document.getElementById('loginForm').classList.toggle('hidden-screen', showRegister);
+        document.getElementById('registerForm').classList.toggle('hidden-screen', !showRegister);
+    };
 
-    <div class="card settings-box">
-        <h3><i class="fa-solid fa-sliders"></i> बिज़नेस लिमिट सेटिंग्स</h3>
-        <p style="font-size:11px; color:#666; margin-top:-5px;">एक यूजर एक बार में या एक महीने में अधिकतम कितने सिक्के भुना सकता है:</p>
+    window.toggleSidebar = (open) => {
+        document.getElementById('merchantSidebar').classList.toggle('open', open);
+        document.getElementById('sidebarOverlay').classList.toggle('hidden-screen', !open);
+    };
+
+    // 🛠️ टैब स्विचिंग फंक्शनलिटी 
+    window.switchMerchantTab = (tabId) => {
+        window.toggleSidebar(false);
+        document.querySelectorAll('.merchant-tab-content').forEach(t => t.classList.add('hidden-screen'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
         
-        <div class="grid-inputs">
-            <div>
-                <label>एक बार की लिमिट (Per Txn Limit)</label>
-                <input type="number" id="setPerTxnLimit" value="5000">
-            </div>
-            <div>
-                <label>एक महीने की लिमिट (Per Month Limit)</label>
-                <input type="number" id="setMonthlyLimit" value="20000">
-            </div>
-        </div>
-        
-        <label style="margin-top:10px; display:block; font-size: 12px; font-weight: 600;">न्यूनतम बिल राशि (Min Purchase Bill Amount ₹)</label>
-        <input type="number" id="setMinBill" value="100" placeholder="उदा. ₹100 की खरीदारी पर ही एसेट मान्य">
-        
-        <button class="btn-main" style="padding:10px; font-size:13px; margin-top:10px; background:#4e54c8;" onclick="saveMerchantRules()">रूल्स अपडेट करें (Save Rules)</button>
-    </div>
+        const activeNav = document.getElementById('m-nav-' + tabId);
+        if (activeNav) activeNav.classList.add('active');
 
-  <div class="card qr-box">
-        <h3><i class="fa-solid fa-qrcode"></i> आपकी दुकान का QR कोड</h3>
-        <p style="font-size:11px; color:#666;">यूजर इस QR कोड को स्कैन करके सीधे आपको कॉइन ट्रांसफर कर सकता है</p>
-        
-        <div id="qrPrintArea" style="background: white; padding: 15px; border-radius: 15px; display: inline-block;">
-            <div id="qrcodeContainer">
-                <img id="shopQrImg" src="" alt="Shop QR Code" style="width:160px; height:160px; display:block; margin:0 auto;">
-            </div>
-            <h4 id="qrShopNameLabel" style="margin: 10px 0 0 0; font-size: 16px; color: #2c3e50;"></h4>
-            <p id="qrShopPhoneLabel" style="margin: 2px 0 0 0; font-size: 12px; color: #666;"></p>
-        </div>
+        const currentTab = document.getElementById('merchant-tab-' + tabId);
+        if(currentTab) currentTab.classList.remove('hidden-screen');
+    };
 
-        <div class="qr-action-buttons" style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
-            <button class="btn-main" style="background: #27ae60; margin: 0; padding: 10px 15px; font-size: 13px;" onclick="shareShopQR()">
-                <i class="fa-solid fa-share-nodes"></i> क्यूआर शेयर करें
-            </button>
-            <button class="btn-main" style="background: #e67e22; margin: 0; padding: 10px 15px; font-size: 13px;" onclick="downloadQRAsPDF()">
-                <i class="fa-solid fa-file-pdf"></i> PDF / प्रिंट लें
-            </button>
-        </div>
-    </div>
+    // 🛠️ डायनामिक QR कोड जनरेटर विथ लोगो इंजेक्ट स्ट्रक्चर
+    window.generateMerchantPaymentQRCodeEngine = (mobileNumber, shopName) => {
+        const qrContainer = document.getElementById("shopQrCanvas");
+        qrContainer.innerHTML = ""; // पुराना QR साफ करें
 
-    <div class="card tx-box">
-        <h3><i class="fa-solid fa-clock-rotate-left"></i> हालिया 5 पेमेंट्स (Recent 5 Transactions)</h3>
-        <table>
-            <thead>
-                <tr><th>यूजर मोबाइल</th><th>प्राप्त एसेट्स</th><th>समय (Date)</th></tr>
-            </thead>
-            <tbody id="merchantTxBody">
-                <tr><td colspan="3" style="text-align:center; color:#999;">कोई लेनदेन नहीं मिला।</td></tr>
-            </tbody>
-        </table>
-    </div>
+        // कस्टम पे-लोड स्ट्रिंग जो यूज़र के स्कैनर से हूबहू मैच खाएगी
+        const merchantPayloadString = "REHLI-PAY:" + mobileNumber;
 
-    <button class="btn-main" style="background:#e74c3c; width:90%; margin: 20px auto; display:block;" onclick="merchantLogout()">पोर्टल से बाहर निकलें (Logout)</button>
-</div>
+        new QRCode(qrContainer, {
+            text: merchantPayloadString,
+            width: 170,
+            height: 170,
+            colorDark : "#090a15",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
 
-<script type="module" src="merchant.js"></script>
+        // लेबल असाइनमेंट
+        document.getElementById('qrShopNameLabel').innerText = shopName;
+        document.getElementById('qrShopPhoneLabel').innerText = "+91 " + mobileNumber;
+    };
 
+    // सिमुलेशन या टेस्टिंग हुक के लिए उदाहरण (इसे मर्चेंट सक्सेस लॉगिन इवेंट पर कॉल करें):
+    // generateMerchantPaymentQRCodeEngine("9999999999", "Prajapati Digital Store");
+
+</script>
 </body>
 </html>
