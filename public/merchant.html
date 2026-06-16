@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Premium External Utility Libraries for QR, Image and PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -35,8 +36,7 @@
 
     * {
         box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+        margin: 0; padding: 0;
         font-family: 'Poppins', sans-serif;
         -webkit-tap-highlight-color: transparent;
     }
@@ -69,7 +69,7 @@
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
-    input[type="number"], input[type="text"], input[type="tel"], input[type="password"], input[type="email"], input[type="month"], select {
+    input[type="number"], input[type="text"], input[type="tel"], input[type="password"], input[type="email"], input[type="date"], select {
         width: 100%; background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 14px 16px; border-radius: 14px; font-size: 14px; color: white; margin-bottom: 16px; outline: none;
     }
@@ -129,19 +129,22 @@
     .balance-banner h1 { font-size: 32px; font-weight: 800; color: #ffffff; margin-top: 4px; }
 
     /* ==========================================================================
-       🏁 2. Downloadable App QR Component Styles
+       🏁 2. Dynamic Centered Logo QR System
        ========================================================================== */
     .qr-centralizer { text-align: center; padding: 10px 0; }
 
-    /* 🛠️ डाउनलोड होने वाले मुख्य रसीद फ्रेम का डिज़ाइन */
     .qr-premium-frame {
         position: relative; background: #ffffff; padding: 25px; border-radius: 24px;
         display: inline-block; box-shadow: 0 15px 45px rgba(0,0,0,0.4); width: 100%; max-width: 320px;
     }
 
-    /* डाउनलोड के दौरान दिखने वाला ब्रांड हेडर */
     .qr-download-brand-header {
-        display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; color: #090a15;
+        display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; color: #090a15;
+    }
+
+    /* 🛠️ आपका कस्टम लोगो इमेज स्टाइल */
+    .app-main-logo-img {
+        width: 44px; height: 44px; object-fit: cover; border-radius: 10px;
     }
 
     #qrcodeContainer { position: relative; display: inline-block; padding: 10px; background: #fff; }
@@ -181,7 +184,7 @@
         display: flex; flex-direction: column; border-right: 1px solid var(--border-glass);
     }
     .sidebar-menu.open { left: 0; }
-    .sidebar-header { background: rgba(255,255,255,0.02); padding: 35px 20px; text-align: center; }
+    .sidebar-header { background: rgba(255,255,255,0.02); padding: 25px 15px; text-align: center; }
     .sidebar-links { padding: 15px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; flex: 1; }
     .sidebar-links a { display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: var(--text-muted); text-decoration: none; font-size: 13.5px; font-weight: 500; border-radius: 12px; }
     .sidebar-links a:hover { background: rgba(255,255,255,0.04); color: white; }
@@ -194,6 +197,7 @@
 
 <div class="phone-wrapper">
 
+    <!-- GLOBAL CUSTOM ALERT PORTAL -->
     <div id="customAlert" class="alert-overlay hidden-screen">
         <div class="alert-card">
             <div id="alertIcon" style="font-size: 45px; margin-bottom: 12px;">🎁</div>
@@ -203,15 +207,17 @@
         </div>
     </div>
 
+    <!-- MERCHANT AUTHENTICATION HUB -->
     <div id="merchantAuthSection" class="auth-container">
         <div class="auth-card">
-            <div style="width: 75px; height: 75px; background: rgba(108, 92, 231, 0.15); border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; border: 1px solid var(--accent-purple);">
-                <i class="fa-solid fa-store" style="font-size:36px; color:var(--accent-purple); filter: drop-shadow(var(--purple-glow));"></i>
+            <!-- 🛠️ लॉगिन स्क्रीन में आपका कस्टम लोगो इंजेक्ट किया गया -->
+            <div id="authBrand" style="margin-bottom:24px; text-align:center;">
+                <img src="https://lh3.googleusercontent.com/d/1_x3d8V88af999ed7ac8be_rehli_logo" alt="App Logo" class="app-main-logo-img" style="width:75px; height:75px; margin-bottom:10px; border-radius:18px;" onerror="this.src='https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9'">
+                <h2 style="font-size: 21px; font-weight:700; background: linear-gradient(to right, #fff, var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Rehli Digital Asset</h2>
+                <p style="font-size:11px; color:var(--accent-purple); text-transform:uppercase; letter-spacing:1px; margin-top:2px;">दुकानदार पोर्टल</p>
             </div>
             
             <div id="loginForm">
-                <h2 style="font-size: 20px; margin-bottom: 5px;">दुकानदार लॉगिन</h2>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:24px;">Merchant Business Control Panel</p>
                 <input type="tel" id="loginMobile" placeholder="मोबाइल नंबर (10 Digits)" maxlength="10">
                 <input type="password" id="loginPass" placeholder="सुरक्षित पासवर्ड">
                 <button class="btn-action" onclick="merchantLogin()">लॉगिन करें / Sign In</button>
@@ -219,7 +225,7 @@
             </div>
 
             <div id="registerForm" class="hidden-screen">
-                <h2 style="font-size: 20px; margin-bottom: 20px;">मर्चेंट पार्टनर रजिस्ट्रेशन</h2>
+                <h2 style="font-size: 18px; margin-bottom: 20px; color:white;">मर्चेंट पार्टनर रजिस्ट्रेशन</h2>
                 <input type="text" id="regShopName" placeholder="दुकान का नाम (Shop Name)">
                 <input type="text" id="regAddress" placeholder="दुकान का पूरा पता">
                 <input type="tel" id="regMobile" placeholder="मोबाइल नंबर (10 Digits)" maxlength="10">
@@ -231,13 +237,14 @@
         </div>
     </div>
 
+    <!-- MAIN MERCHANT CORE DASHBOARD PANEL -->
     <div id="merchantDashboard" class="hidden-screen" style="width:100%; height:100%; display:flex; flex-direction:column; position:relative;">
         
+        <!-- SIDEBAR SLIDER WITH LOGO -->
         <div id="merchantSidebar" class="sidebar-menu">
             <div class="sidebar-header">
-                <div style="width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 10px auto; color: white; font-size: 24px;">
-                    <i class="fa-solid fa-building-circle-check"></i>
-                </div>
+                <!-- 🛠️ साइडबार में लोगो इंजेक्ट किया गया -->
+                <img src="https://lh3.googleusercontent.com/d/1_x3d8V88af999ed7ac8be_rehli_logo" alt="App Logo" class="app-main-logo-img" style="width:55px; height:55px; margin-bottom:8px; border-radius:12px;" onerror="this.src='https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9'">
                 <h3 id="sideShopTitle" style="font-size:15px; font-weight:600; color:white;">Shop Name</h3>
                 <span id="sideShopPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
             </div>
@@ -253,6 +260,7 @@
         </div>
         <div id="sidebarOverlay" class="sidebar-overlay hidden-screen" onclick="toggleSidebar(false)"></div>
 
+        <!-- PORTAL INTERFACE APP HEADER -->
         <div class="app-header">
             <div class="header-top">
                 <div class="menu-trigger-btn" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars-staggered"></i></div>
@@ -265,8 +273,10 @@
             </div>
         </div>
 
+        <!-- SCREEN VIEWS BODY -->
         <div class="app-body">
 
+            <!-- TAB 1: HOME OVERVIEW -->
             <div id="merchant-tab-home" class="merchant-tab-content">
                 <div class="balance-banner">
                     <span>प्राप्त कुल डिजिटल एसेट</span>
@@ -278,6 +288,7 @@
                 </div>
             </div>
 
+            <!-- TAB 2: RULES CONFIG -->
             <div id="merchant-tab-rules" class="merchant-tab-content hidden-screen">
                 <div class="premium-card">
                     <h3 style="font-size:15px; margin-bottom:12px;"><i class="fa-solid fa-sliders" style="color:var(--accent-purple);"></i> बिज़नेस लिमिट सेटिंग्स</h3>
@@ -297,12 +308,15 @@
                 </div>
             </div>
 
+            <!-- TAB 3: QR ENGINE VIEW WITH PDF/IMG GENERATOR -->
             <div id="merchant-tab-qr" class="merchant-tab-content hidden-screen">
                 <div class="premium-card qr-centralizer" style="background:transparent; border:none; box-shadow:none;">
                     
+                    <!-- 🛠️ डाउनलोड होने वाला प्रीमियम मर्चेंट रसीद कार्ड -->
                     <div id="captureQrReceiptBlock" class="qr-premium-frame">
+                        <!-- 🛠️ हेडर में आपका लोगो इंजेक्ट किया गया है -->
                         <div class="qr-download-brand-header">
-                            <i class="fa-solid fa-layer-group" style="color:#6c5ce7; font-size:22px;"></i>
+                            <img src="https://lh3.googleusercontent.com/d/1_x3d8V88af999ed7ac8be_rehli_logo" alt="Logo" style="width:42px; height:42px; border-radius:8px; object-fit:cover;" onerror="this.src='https://lh3.googleusercontent.com/d/1lUFX8N2ehHTjsAFeYv0T09OxcApSDiS9'">
                             <div style="text-align:left;">
                                 <h4 style="font-size:14px; font-weight:700; color:#090a15; letter-spacing:0.5px; line-height:1.2;">REHLI DIGITAL ASSET</h4>
                                 <small style="font-size:8px; color:#6c5ce7; font-weight:700; letter-spacing:1px; text-transform:uppercase; display:block;">Official Merchant Partner</small>
@@ -325,6 +339,7 @@
                         </div>
                     </div>
 
+                    <!-- डाउनलोड और प्रिंट के विकल्प -->
                     <div class="grid-2-columns" style="margin-top:20px;">
                         <button class="btn-action" style="background:#27ae60; padding:12px; font-size:13px;" onclick="downloadMerchantQRStorageNode('image')"><i class="fa-solid fa-image"></i> इमेज डाउनलोड</button>
                         <button class="btn-action" style="background:#e67e22; padding:12px; font-size:13px;" onclick="downloadMerchantQRStorageNode('pdf')"><i class="fa-solid fa-file-pdf"></i> PDF डाउनलोड</button>
@@ -332,19 +347,30 @@
                 </div>
             </div>
 
+            <!-- TAB 4: ADVANCED TRANSACTION HISTORIES VIEW -->
             <div id="merchant-tab-history" class="merchant-tab-content hidden-screen">
                 <div class="premium-card">
                     <h3 style="font-size:14px; margin-bottom:12px;"><i class="fa-solid fa-clock-rotate-left" style="color:var(--success);"></i> पेमेंट्स लेजर बुक</h3>
                     
-                    <label>माह के अनुसार फ़िल्टर करें (Select Month)</label>
-                    <input type="month" id="filterTransactionMonth" onchange="loadMerchantTransactionsHistory(this.value)">
+                    <!-- 🛠️ एडवांस्ड डेट रेंज फ़िल्टर (कब से कब तक) + सर्च बटन -->
+                    <div class="grid-2-columns" style="margin-bottom: 8px;">
+                        <div>
+                            <label>कब से (From Date)</label>
+                            <input type="date" id="filterFromDate">
+                        </div>
+                        <div>
+                            <label>कब तक (To Date)</label>
+                            <input type="date" id="filterToDate">
+                        </div>
+                    </div>
+                    <button class="btn-action" style="padding:10px; font-size:13.5px; margin-bottom:16px; background:var(--success-gradient);" onclick="executeAdvancedDateRangeSearch()"><i class="fa-solid fa-magnifying-glass"></i> ट्रांजैक्शन सर्च करें</button>
 
                     <table class="ledger-table">
                         <thead>
                             <tr><th>यूजर मोबाइल</th><th>प्राप्त एसेट्स</th></tr>
                         </thead>
                         <tbody id="merchantTxBody">
-                            <tr><td colspan="2" style="text-align:center; color:var(--text-muted); padding:30px 0;">कोई लेनदेन नहीं मिला।</td></tr>
+                            <tr><td colspan="2" style="text-align:center; color:var(--text-muted); padding:30px 0;">तारीख चुनकर सर्च बटन पर क्लिक करें।</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -352,6 +378,7 @@
 
         </div>
 
+        <!-- TAB NAVIGATION SYSTEM BAR -->
         <nav class="nav-bar">
             <a href="#" class="nav-link active" id="m-nav-home" onclick="switchMerchantTab('home')"><i class="fa-solid fa-chart-pie"></i><span>होम</span></a>
             <a href="#" class="nav-link" id="m-nav-qr" onclick="switchMerchantTab('qr')"><i class="fa-solid fa-qrcode"></i><span>QR कोड</span></a>
@@ -362,6 +389,7 @@
     </div>
 </div>
 
+<!-- BACKEND CONTROLLER INTEGRATION HUB -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -399,10 +427,13 @@
         
         const activeNav = document.getElementById('m-nav-' + tabId);
         if (activeNav) activeNav.classList.add('active');
+        
+        // इतिहास टैब पर डिफ़ॉल्ट रूप से आज की तारीख सेट करें
         if (tabId === 'history') {
-            const currentMonthStr = new Date().toISOString().substring(0, 7);
-            document.getElementById('filterTransactionMonth').value = currentMonthStr;
-            loadMerchantTransactionsHistory(currentMonthStr);
+            const todayStr = new Date().toISOString().substring(0, 10);
+            document.getElementById('filterFromDate').value = todayStr;
+            document.getElementById('filterToDate').value = todayStr;
+            loadMerchantTransactionsHistory(todayStr, todayStr);
         }
 
         const currentTab = document.getElementById('merchant-tab-' + tabId);
@@ -417,7 +448,6 @@
     };
     window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
 
-    // 🚀 लाइव IP एड्रेस एक्सट्रैक्टर फंक्शन
     async function fetchPublicIPAddressNode() {
         try {
             const response = await fetch('https://api.ipify.org?format=json');
@@ -426,7 +456,6 @@
         } catch (e) { return "0.0.0.0"; }
     }
 
-    // 🛠️ 1. मर्चेंट पार्टनर रजिस्ट्रेशन
     window.merchantRegister = async () => {
         const sName = document.getElementById('regShopName').value.trim();
         const sAddress = document.getElementById('regAddress').value.trim();
@@ -455,7 +484,6 @@
         } catch(e) { window.showCustomAlert("त्रुटि", "डेटाबेस एरर।", "error"); }
     };
 
-    // 🛠️ 2. मर्चेंट लॉगिन
     window.merchantLogin = async () => {
         const lMobile = document.getElementById('loginMobile').value.trim();
         const lPass = document.getElementById('loginPass').value.trim();
@@ -491,37 +519,47 @@
         } catch(e) { window.showCustomAlert("Error", "सेव करने में विफल।", "error"); }
     };
 
-    // 🛠️ 3. केवल 10 ट्रांजैक्शन एवं मंथ-वाइज एडवांस्ड फ़िल्टर लेजर लॉजिक
-    async function loadMerchantTransactionsHistory(targetMonthStr) {
+    // 🛠️ सर्च बटन ट्रिगर फ़ंक्शन
+    window.executeAdvancedDateRangeSearch = () => {
+        const fromDt = document.getElementById('filterFromDate').value;
+        const toDt = document.getElementById('filterToDate').value;
+        if(!fromDt || !toDt) return window.showCustomAlert("त्रुटि", "कृपया दोनों तारीखों का चयन करें।", "error");
+        loadMerchantTransactionsHistory(fromDt, toDt);
+    };
+
+    // 🛠️ 3. "कब से कब तक" एडवांस्ड फ़िल्टर लेजर लॉजिक (केवल टॉप 10 रिकॉर्ड्स)
+    async function loadMerchantTransactionsHistory(fromDate, toDate) {
         try {
             const txBody = document.getElementById('merchantTxBody');
             const q = query(collection(db, "merchant_transactions"), where("merchantMobile", "==", activeMerchantMobile));
             const snap = await getDocs(q);
             
             txBody.innerHTML = "";
-            let matchCounter = 0;
-
             let rowCollector = [];
+
+            // तारीखों को ऑब्जेक्ट कम्पेरिजन मोड में कनवर्ट करें
+            const startDate = new Date(fromDate + "T00:00:00");
+            const endDate = new Date(toDate + "T23:59:59");
 
             snap.forEach(docNode => {
                 const tx = docNode.data();
-                const txTimestamp = tx.timestamp || ""; // format: ISO String "2026-06-16T..."
+                const txTimestamp = tx.timestamp || ""; 
+                const currentTxDate = new Date(txTimestamp);
                 
-                // अगर माह फ़िल्टर लगा है, तो मैच करें (उदा: "2026-06")
-                if(targetMonthStr && !txTimestamp.startsWith(targetMonthStr)) {
-                    return; // इस ट्रांजैक्शन को छोड़ें
+                // 🛠️ तारीख "कब से कब तक" कंडीशन चेक
+                if(currentTxDate >= startDate && currentTxDate <= endDate) {
+                    rowCollector.push(tx);
                 }
-                rowCollector.push(tx);
             });
 
-            // डेट के अनुसार न्यूएस्ट फर्स्ट शॉर्ट करें
+            // डेट के अनुसार न्यूएस्ट फर्स्ट (ताज़ा ट्रांजैक्शन ऊपर) सॉर्ट करें
             rowCollector.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-            // 🌟 फ़िल्टर के बाद केवल शीर्ष 10 रिकॉर्ड (Only 10 Transactions Limit) दिखाएं
+            // 🌟 फ़िल्टर के बाद केवल शीर्ष 10 रिकॉर्ड (Only Top 10 Records Constraint)
             const slicedTenRecords = rowCollector.slice(0, 10);
 
             if(slicedTenRecords.length === 0) {
-                txBody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:var(--text-muted); padding:30px 0;">इस माह कोई लेनदेन रिकॉर्ड नहीं है।</td></tr>`;
+                txBody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:var(--text-muted); padding:30px 0;">इस समयावधि में कोई लेनदेन रिकॉर्ड नहीं है।</td></tr>`;
                 return;
             }
 
@@ -535,10 +573,9 @@
         } catch(e) { console.error(e); }
     }
 
-    // 🛠️ 4. रसीद जनरेशन डाउनलोड मैकेनिज्म (Image / PDF Converter)
+    // 🛠 *4. रसीद जनरेशन डाउनलोड मैकेनिज्म (Image / PDF Converter)
     window.downloadMerchantQRStorageNode = (formatType) => {
         const targetNodeElement = document.getElementById('captureQrReceiptBlock');
-        
         window.showCustomAlert("प्रोसेसिंग.. 🔄", "आपका रसीद कार्ड तैयार किया जा रहा है, कृपया रुकें।", "success");
 
         html2canvas(targetNodeElement, { useCORS: true, scale: 3 }).then(canvas => {
@@ -546,13 +583,11 @@
             const base64ImageStr = canvas.toDataURL('image/png');
 
             if(formatType === 'image') {
-                // इमेज डाउनलोडर
                 const anchorTrigger = document.createElement('a');
                 anchorTrigger.href = base64ImageStr;
                 anchorTrigger.download = `${document.getElementById('qrShopNameLabel').innerText}_QR.png`;
                 anchorTrigger.click();
             } else {
-                // jspdf पीडीएफ जनरेटर
                 const { jsPDF } = window.jspdf;
                 const pdfDocument = new jsPDF('p', 'mm', 'a4');
                 pdfDocument.addImage(base64ImageStr, 'PNG', 15, 20, 110, 140);
@@ -589,7 +624,7 @@
             await initializeMerchantNotificationGateway(true);
             window.showCustomAlert("सफल 👍", "लाइव बिज़नेस पुश अलर्ट एक्टिवेट कर दिए गए हैं।", "success");
         } else {
-            window.showCustomAlert("असमर्थ", "ब्राउज़र सेटिंग्स से नोटिफिकेशन अलाउ करें।", "error");
+            window.showCustomAlert("असामर्थ", "ब्राउज़र सेटिंग्स से नोटिफिकेशन अलाउ करें।", "error");
         }
     };
 
