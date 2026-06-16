@@ -44,35 +44,27 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        overflow: hidden;
         background-color: var(--bg-main);
-    }
-
-    body {
         display: flex;
         justify-content: center;
         align-items: center;
-        color: var(--light-text);
     }
 
+    /* 🛠️ ऐप को स्क्रीन के बिल्कुल सेंटर (Center) में लाने के लिए फ़िक्स */
     .phone-wrapper {
         width: 100%;
         max-width: 420px;
         height: 100%;
         background: linear-gradient(180deg, #090a15 0%, #131529 100%);
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
         overflow: hidden; 
         display: flex;
         flex-direction: column;
         box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        position: relative;
     }
 
     @media (min-height: 700px) and (min-width: 450px) {
         .phone-wrapper {
-            position: relative;
             height: 850px;
             border-radius: 35px;
             border: 8px solid #1e213a;
@@ -132,6 +124,29 @@
         font-weight: 600;
         cursor: pointer;
         box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
+    }
+
+    /* Alert Boxes */
+    .alert-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(5, 6, 12, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .alert-card {
+        background: #131529;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        max-width: 320px;
+        border-radius: 24px;
+        padding: 25px;
+        text-align: center;
     }
 
     /* ==========================================================================
@@ -226,7 +241,7 @@
         display: inline-block;
     }
 
-    /* 🛠️ QR कोड के बीचों बीच लोगो और रुपये का वाटरमार्क स्टाइल */
+    /* QR कोड के बीचों बीच लोगो और रुपये का वाटरमार्क स्टाइल */
     .qr-center-logo-hub {
         position: absolute;
         top: 50%;
@@ -269,6 +284,7 @@
     }
     .ledger-table td {
         padding: 12px 10px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.04);
+        color: white;
     }
 
     /* ==========================================================================
@@ -292,7 +308,7 @@
 
     .sidebar-menu {
         position: absolute; top: 0; left: -100%; width: 290px; height: 100%;
-        background: #0f1124; z-index: 9999; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #0f1124; z-index: 9999; transition: all 0.3s ease;
         display: flex; flex-direction: column; border-right: 1px solid var(--border-glass);
     }
     .sidebar-menu.open { left: 0; }
@@ -314,10 +330,19 @@
 
 <div class="phone-wrapper">
 
+    <!-- GLOBAL CUSTOM ALERT PORTAL -->
+    <div id="customAlert" class="alert-overlay hidden-screen">
+        <div class="alert-card">
+            <div id="alertIcon" style="font-size: 45px; margin-bottom: 12px;">🎁</div>
+            <h3 id="alertTitle" style="font-size: 19px; margin-bottom: 8px;">Status</h3>
+            <p id="alertMsg" style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Loading...</p>
+            <button class="btn-alert-close btn-action" onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
     <!-- MERCHANT AUTHENTICATION HUB -->
     <div id="merchantAuthSection" class="auth-container">
         <div class="auth-card">
-            <!-- Brand Hub Display Icon -->
             <div style="width: 75px; height: 75px; background: rgba(108, 92, 231, 0.15); border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; border: 1px solid var(--accent-purple);">
                 <i class="fa-solid fa-store" style="font-size:36px; color:var(--accent-purple); filter: drop-shadow(var(--purple-glow));"></i>
             </div>
@@ -354,7 +379,7 @@
                 <div style="width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 10px auto; color: white; font-size: 24px;">
                     <i class="fa-solid fa-building-circle-check"></i>
                 </div>
-                <h3 id="sideShopTitle" style="font-size:15px; font-weight:600;">Shop Name</h3>
+                <h3 id="sideShopTitle" style="font-size:15px; font-weight:600; color:white;">Shop Name</h3>
                 <span id="sideShopPhone" style="font-size:11px; color:var(--text-muted);">+91 ----------</span>
             </div>
             <div class="sidebar-links">
@@ -373,7 +398,7 @@
             <div class="header-top">
                 <div class="menu-trigger-btn" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars-staggered"></i></div>
                 <div style="font-size: 13px; font-weight: 700; color: var(--accent-purple); letter-spacing: 0.5px; text-transform: uppercase;">Merchant Engine</div>
-                <div class="menu-trigger-btn" onclick="location.reload()"><i class="fa-solid fa-rotate"></i></div>
+                <div class="menu-trigger-btn" onclick="merchantLogout()"><i class="fa-solid fa-power-off" style="color:var(--danger);"></i></div>
             </div>
             <div class="merchant-profile-snippet">
                 <h2 id="lblShopName">Loading Outlet Store...</h2>
@@ -431,7 +456,7 @@
                         <div id="qrcodeContainer">
                             <div id="shopQrCanvas"></div>
                             
-                            <!-- 🛠️ क्यूआर कोड के बिल्कुल बीचों-बीच रहली डिजिटल एसेट का लोगो + रुपया सिम्बल -->
+                            <!-- क्यूआर कोड के बिल्कुल बीचों-बीच रहली डिजिटल एसेट का लोगो + रुपया सिम्बल -->
                             <div class="qr-center-logo-hub">
                                 <i class="fa-solid fa-store"></i>
                                 <span class="rupee-sym">₹</span>
@@ -476,9 +501,29 @@
     </div>
 </div>
 
-<!-- BACKEND CONTROLLER MATRIX SCRIPT -->
+<!-- ==========================================================================
+     🚀 7. FIREBASE CORE BACKEND & INTEGRATION INTERFACES
+     ========================================================================== -->
 <script type="module">
-    // नोट: मर्चेंट जेएस लॉजिक को फायरबेस रिप्रजेंटेशन मॉडल के साथ बाँधने के लिए हुक पैरामीटर:
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // 🛠️ आपका फ़ायरबेस कॉन्फ़िगरेशन (यूजर ऐप से सिंक्रनाइज़्ड)
+    const firebaseConfig = {
+        apiKey: "AIzaSyAuqo9MoZ9lr4STXztO36n0ASqHOytdAeI",
+        authDomain: "rehli-digital-asset.firebaseapp.com",
+        projectId: "rehli-digital-asset",
+        storageBucket: "rehli-digital-asset.firebasestorage.app",
+        messagingSenderId: "779415089179",
+        appId: "1:779415089179:web:4f6654088af999ed7ac8be"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let activeMerchantMobile = localStorage.getItem('merchantMobile') || null;
+
+    // UI Auth Toggle
     window.toggleAuth = (showRegister) => {
         document.getElementById('loginForm').classList.toggle('hidden-screen', showRegister);
         document.getElementById('registerForm').classList.toggle('hidden-screen', !showRegister);
@@ -489,7 +534,6 @@
         document.getElementById('sidebarOverlay').classList.toggle('hidden-screen', !open);
     };
 
-    // 🛠️ टैब स्विचिंग फंक्शनलिटी 
     window.switchMerchantTab = (tabId) => {
         window.toggleSidebar(false);
         document.querySelectorAll('.merchant-tab-content').forEach(t => t.classList.add('hidden-screen'));
@@ -502,12 +546,151 @@
         if(currentTab) currentTab.classList.remove('hidden-screen');
     };
 
-    // 🛠️ डायनामिक QR कोड जनरेटर विथ लोगो इंजेक्ट स्ट्रक्चर
-    window.generateMerchantPaymentQRCodeEngine = (mobileNumber, shopName) => {
-        const qrContainer = document.getElementById("shopQrCanvas");
-        qrContainer.innerHTML = ""; // पुराना QR साफ करें
+    window.showCustomAlert = (t, m, type) => {
+        document.getElementById('alertTitle').innerText = t;
+        document.getElementById('alertMsg').innerText = m;
+        document.getElementById('alertIcon').innerText = type === 'success' ? "🎉" : "⚠️";
+        document.getElementById('customAlert').classList.remove('hidden-screen');
+    };
+    window.closeAlert = () => document.getElementById('customAlert').classList.add('hidden-screen');
 
-        // कस्टम पे-लोड स्ट्रिंग जो यूज़र के स्कैनर से हूबहू मैच खाएगी
+    // 🛠️ 1. मर्चेंट रजिस्ट्रेशन लॉजिक (डेटाबेस इन्सर्ट)
+    window.merchantRegister = async () => {
+        const sName = document.getElementById('regShopName').value.trim();
+        const sAddress = document.getElementById('regAddress').value.trim();
+        const sMobile = document.getElementById('regMobile').value.trim();
+        const sEmail = document.getElementById('regEmail').value.trim();
+        const sPass = document.getElementById('regPass').value.trim();
+
+        if(!sName || !sAddress || sMobile.length !== 10 || !sPass) {
+            return window.showCustomAlert("त्रुटि", "कृपया फॉर्म में मांगी गई पूरी जानकारी सही-सही भरें।", "error");
+        }
+
+        try {
+            const mRef = doc(db, "merchants", sMobile);
+            const mSnap = await getDoc(mRef);
+            if(mSnap.exists()) {
+                return window.showCustomAlert("रजिस्ट्रेशन रिजेक्ट", "यह मोबाइल नंबर पहले से ही मर्चेंट लिस्ट में रजिस्टर्ड है।", "error");
+            }
+
+            await setDoc(mRef, {
+                shopName: sName, address: sAddress, mobile: sMobile, email: sEmail, password: sPass,
+                balance: 0, perTxnLimit: 5000, monthlyLimit: 20000, minBillAmount: 100, regDate: new Date().toISOString()
+            });
+
+            window.showCustomAlert("बधाई हो! 🎉", "आपका मर्चेंट अकाउंट सफलतापूर्वक बन गया है। अब लॉगिन करें।", "success");
+            window.toggleAuth(false);
+        } catch(e) { window.showCustomAlert("सर्वर त्रुटि", "डेटाबेस में स्टोर करने में विफल।", "error"); }
+    };
+
+    // 🛠️ 2. मर्चेंट लॉगिन लॉजिक
+    window.merchantLogin = async () => {
+        const lMobile = document.getElementById('loginMobile').value.trim();
+        const lPass = document.getElementById('loginPass').value.trim();
+
+        if(lMobile.length !== 10 || !lPass) {
+            return window.showCustomAlert("त्रुटि", "कृपया सही मोबाइल नंबर और पासवर्ड डालें।", "error");
+        }
+
+        try {
+            const mSnap = await getDoc(doc(db, "merchants", lMobile));
+            if(!mSnap.exists()) {
+                return window.showCustomAlert("लॉगिन विफल", "यह नंबर मर्चेंट रिकॉर्ड में नहीं मिला। पहले रजिस्टर करें।", "error");
+            }
+
+            const data = mSnap.data();
+            if(data.password !== lPass) {
+                return window.showCustomAlert("पासवर्ड गलत ⚠️", "कृपया अपना सही मर्चेंट पासवर्ड डालें।", "error");
+            }
+
+            localStorage.setItem('merchantMobile', lMobile);
+            activeMerchantMobile = lMobile;
+            window.showCustomAlert("लॉगिन सफल ✅", "मर्चेंट बिज़नेस डैशबोर्ड पर आपका स्वागत है।", "success");
+            await syncMerchantDashboardEngine();
+        } catch(e) { window.showCustomAlert("Error", "सर्वर से कनेक्टिविटी टूटी।", "error"); }
+    };
+
+    // 🛠️ 3. डायनामिक रूल्स (Limits) अपडेट लॉजिक
+    window.saveMerchantRules = async () => {
+        if(!activeMerchantMobile) return;
+        const pLimit = Number(document.getElementById('setPerTxnLimit').value);
+        const mLimit = Number(document.getElementById('setMonthlyLimit').value);
+        const mBill = Number(document.getElementById('setMinBill').value);
+
+        try {
+            await setDoc(doc(db, "merchants", activeMerchantMobile), {
+                perTxnLimit: pLimit, monthlyLimit: mLimit, minBillAmount: mBill
+            }, { merge: true });
+            window.showCustomAlert("सफलतापूर्वक अपडेट 👍", "आपकी दुकान के बिज़नेस रूल्स बदल दिए गए हैं।", "success");
+        } catch(e) { window.showCustomAlert("Error", "नियम सेव करने में विफल।", "error"); }
+    };
+
+    // 🛠️ 4. डैशबोर्ड डेटा और ट्रांजैक्शन सिंकिंग इंजन
+    async function syncMerchantDashboardEngine() {
+        if(!activeMerchantMobile) {
+            document.getElementById('merchantAuthSection').classList.remove('hidden-screen');
+            document.getElementById('merchantDashboard').classList.add('hidden-screen');
+            return;
+        }
+
+        document.getElementById('merchantAuthSection').classList.add('hidden-screen');
+        document.getElementById('merchantDashboard').classList.remove('hidden-screen');
+
+        try {
+            const snap = await getDoc(doc(db, "merchants", activeMerchantMobile));
+            if(!snap.exists()) return merchantLogout();
+
+            const mData = snap.data();
+            document.getElementById('lblShopName').innerText = mData.shopName || "Digital Outlet";
+            document.getElementById('lblMerchantPhone').innerText = "+91 " + activeMerchantMobile;
+            document.getElementById('lblMerchantBalance').innerText = (mData.balance || 0).toLocaleString();
+            
+            document.getElementById('sideShopTitle').innerText = mData.shopName || "Outlet";
+            document.getElementById('sideShopPhone').innerText = "+91 " + activeMerchantMobile;
+
+            // इनपुट बॉक्स में पहले से सेट वैल्यूज सिंक करें
+            document.getElementById('setPerTxnLimit').value = mData.perTxnLimit || 5000;
+            document.getElementById('setMonthlyLimit').value = mData.monthlyLimit || 20000;
+            document.getElementById('setMinBill').value = mData.minBillAmount || 100;
+
+            // लाइव प्रीमियम मिडल-लोगो क्यूआर कोड जनरेट करें
+            generateMerchantPaymentQRCodeEngine(activeMerchantMobile, mData.shopName);
+
+            // हालिया लेनदेन (Transactions History) लोड करें
+            await loadMerchantTransactionsHistory();
+
+        } catch(e) { console.error(e); }
+    }
+
+    // हालिया पेमेंट्स लोड करने का लॉजिक
+    async function loadMerchantTransactionsHistory() {
+        try {
+            const txBody = document.getElementById('merchantTxBody');
+            const q = query(collection(db, "merchant_transactions"), where("merchantMobile", "==", activeMerchantMobile));
+            const snap = await getDocs(q);
+            
+            txBody.innerHTML = "";
+            if(snap.empty) {
+                txBody.innerHTML = `<tr><td colspan="2" style="text-align:center; color:var(--text-muted); padding:30px 0;">कोई लेनदेन नहीं मिला।</td></tr>`;
+                return;
+            }
+
+            snap.forEach(docNode => {
+                const tx = docNode.data();
+                txBody.innerHTML += `
+                    <tr>
+                        <td>+91 ${tx.userMobile ? tx.userMobile.slice(0,4)+'***'+tx.userMobile.slice(-3) : '--------'}</td>
+                        <td style="color:var(--rupee-color); font-weight:600;">+${tx.amount || 0} 🪙</td>
+                    </tr>`;
+            });
+        } catch(e) { console.error(e); }
+    }
+
+    // 🛠️ बीचों-बीच लोगो वाला QR कोड जनरेटर इंजन
+    function generateMerchantPaymentQRCodeEngine(mobileNumber, shopName) {
+        const qrContainer = document.getElementById("shopQrCanvas");
+        qrContainer.innerHTML = ""; 
+
         const merchantPayloadString = "REHLI-PAY:" + mobileNumber;
 
         new QRCode(qrContainer, {
@@ -519,13 +702,20 @@
             correctLevel : QRCode.CorrectLevel.H
         });
 
-        // लेबल असाइनमेंट
         document.getElementById('qrShopNameLabel').innerText = shopName;
         document.getElementById('qrShopPhoneLabel').innerText = "+91 " + mobileNumber;
+    }
+
+    window.merchantLogout = () => {
+        localStorage.clear();
+        activeMerchantMobile = null;
+        location.reload();
     };
 
-    // सिमुलेशन या टेस्टिंग हुक के लिए उदाहरण (इसे मर्चेंट सक्सेस लॉगिन इवेंट पर कॉल करें):
-    // generateMerchantPaymentQRCodeEngine("9999999999", "Prajapati Digital Store");
+    // ऐप लोड इवेंट हुक
+    window.addEventListener('DOMContentLoaded', async () => {
+        await syncMerchantDashboardEngine();
+    });
 
 </script>
 </body>
