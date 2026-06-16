@@ -1266,7 +1266,7 @@
 
             clickTargetZone.addEventListener('click', (event) => {
                 let activeUnsyncedCoins = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
-                activeUnsyncedCoins += 10; 
+                activeUnsyncedCoins += 1; 
                 localStorage.setItem('tap_local_unbound_coins', activeUnsyncedCoins);
 
                 document.getElementById('lblLocalUnsyncedTapTokens').innerText = activeUnsyncedCoins.toLocaleString();
