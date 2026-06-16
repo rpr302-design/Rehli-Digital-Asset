@@ -943,11 +943,44 @@
                         <hr style="opacity:0.05; margin:12px 0;">
                         <div style="font-size:12px; line-height:1.7; color:var(--text-muted); display:flex; flex-direction:column; gap:14px; text-align:justify;">
                             <p>1. <b>Conversion Ratio Matrix:</b> Under the current system, the internal calculation of 100 Assets is benchmarked equivalent to ₹1 Indian Rupee (INR). This ratio is strictly for the platform's internal valuation and rewards program.</p>
-                            <p>2. <b>Asset Value Volatility:</b> The net value, purchasing power, or valuation of the digital assets (Coins/Assets) collected by the user <b>can be modified, reduced, or updated at any time</b> based on server maintenance costs, administrative policies, or technical transitions.</p>
-                            <p>3. <b>No Cash Guarantee:</b> This platform does not provide any legal guarantee, binding promise, or absolute claim to any user that the assets accumulated within the app will be mandatorily disbursed in the form of hard cash in the future.</p>
-                            <p>4. <b>PIN Privacy & Cyber Security:</b> In accordance with the guidelines issued by the Cyber Crime Cell and law enforcement agencies, never share your 4-digit Security PIN with any third party. The user shall be solely responsible for any unauthorized transactions resulting from a compromised PIN.</p>
-                            <p>5. <b>Anti-Fraud & Referral Policy:</b> If a user is found utilizing unethical methods, clone apps, automated scripts, emulators, or fake numbers to inject fraudulent referrals into the system, their account will be terminated immediately without any prior notice.</p>
-                            <p>6. <b>IP Address Logging:</b> For cyber security enforcement and administrative transparency, the user's public IP address is securely logged during registration and login to deter fraudulent, illegal, or malicious network activities.</p>
+            
+            <p>2. <b>Asset Value Volatility:</b> The net value, purchasing power, or valuation of the digital assets (Coins/Assets) collected by the user <b>can be modified, reduced, or updated at any time</b> based on server maintenance costs, administrative policies, or technical transitions.</p>
+            
+            <p>3. <b>No Cash Guarantee:</b> This platform does not provide any legal guarantee, binding promise, or absolute claim to any user that the assets accumulated within the app will be mandatorily disbursed in the form of hard cash in the future.</p>
+            
+            <p>4. <b>Non-Earning Program:</b> This app or website does not compel, induce, or invite any individual to earn guaranteed income or profit through any form of investment. This is purely a digital utility reward program.</p>
+            
+            <p>5. <b>PIN Privacy & Cyber Security:</b> In accordance with the guidelines issued by the Cyber Crime Cell and law enforcement agencies, never share your 4-digit Security PIN with any third party, friends, or unknown callers. The user shall be solely responsible for any unauthorized transactions resulting from a compromised PIN.</p>
+            
+            <p>6. <b>Anti-Fraud & Referral Policy:</b> If a user is found utilizing unethical methods, clone apps, automated scripts, emulators, or fake numbers to inject fraudulent referrals into the system, their account will be terminated immediately without any prior notice.</p>
+            
+            <p>7. <b>One Device, One Account Rule:</b> To maintain system integrity, only one account is permitted to operate per mobile device. All accounts attempting fraud by frequently switching multiple numbers on a single device will be permanently banned.</p>
+            
+            <p>8. <b>Merchant Transaction Boundaries:</b> All asset transfers executed with registered store owners (Merchants) are strictly voluntary. The app administration shall not be held liable for assets transferred due to technical errors or incorrect mobile numbers.</p>
+            
+            <p>9. <b>Mystery Box Cooldown Uncertainty:</b> Rewards generated from the Magic Mystery Box are managed by random selection algorithms. There is no claim or guarantee of receiving a fixed or identical reward amount for any user.</p>
+            
+            <p>10. <b>Data Accuracy & Profile Lock:</b> Users must provide their authentic legal name, date of birth, and credentials in the profile section. In compliance with regulatory standards, rewards may be withheld if misleading information is detected.</p>
+            
+            <p>11. <b>Strict Prohibition of Gambling/Betting:</b> This platform does not support or promote gambling, betting, gaming scams, or lottery models. The assets provided here are purely promotional rewards for watching videos and inviting genuine users.</p>
+            
+            <p>12. <b>Technical Faults & Server Downtime:</b> In the event of data discrepancy caused by Firebase Cloud failures, internet connectivity issues, database loss, or server downtime, the administration reserves the absolute right to restore or reset the asset balance ledger.</p>
+            
+            <p>13. <b>IP Address Logging:</b> For cyber security enforcement and administrative transparency, the user's public IP address is securely logged during registration and login to deter fraudulent, illegal, or malicious network activities.</p>
+            
+            <p>14. <b>Authenticity of Promoted Streams:</b> All content displayed within promoted videos or advertisements belongs to third-party creators. Users must view them at their own discretion; the platform management holds no accountability for third-party claims.</p>
+            
+            <p>15. <b>Account Inactivity Clause:</b> If a user fails to log into the application for 90 consecutive days, the account may be deemed inactive for security reasons, and the accumulated asset balance may be subject to reset.</p>
+            
+            <p>16. <b>Compliance with Judicial Guidelines:</b> This application strictly adheres to the regulations of local administrative governance, police directives, and the Information Technology Act (IT Act, 2000). Any suspicious activity will be reported directly to law enforcement agencies.</p>
+            
+            <p>17. <b>Right to Modify or Terminate Services:</b> The platform administration reserves the absolute right to modify, suspend, or permanently terminate this promotional reward structure at any given time without any legal liabilities.</p>
+            
+            <p>18. <b>User Code of Conduct:</b> Using abusive language, spreading misleading rumors, or threatening the administration inside the app, via support systems, or on public social media handles will result in the immediate revocation of the user's license.</p>
+            
+            <p>19. <b>Validity of Promotional Bonuses:</b> Welcome bonuses (50k Assets + ₹500 Cash) and Profile Completion rewards are limited-time incentives valid only for authentic unique profiles. The administrator reserves the right to alter these offers at will.</p>
+            
+            <p>20. <b>Legal Jurisdiction:</b> Any dispute, interpretation, or legal proceedings arising out of the terms, conditions, or use of this application shall be subject exclusively to the jurisdiction of the local courts and the local Cyber Cell framework.</p>
                         </div>
                     </div>
                 </div>
@@ -1157,7 +1190,7 @@
                     const localUnsynced = Number(localStorage.getItem('tap_local_unbound_coins') || 0);
                     const totalLiveAssets = cloudBal + localUnsynced;
 
-                    const infoText = `एसेट विवरण:\n• सर्वर वॉलेट बैलेंस: ${cloudBal.toLocaleString()} ASSETS\n• लोकल टैप अर्निंग बैलेंस: ${localUnsynced.toLocaleString()} ASSETS\n• वर्तमान कुल लाइव एसेट्स: ${totalLiveAssets.toLocaleString()} ASSETS\n\nनकद विवरण:\n• वेरिफाइड रुपया खाता बैलेंस: ₹ ${rupeeBal.toLocaleString()}`;
+                    const infoText = `एसेट विवरण:\n• वॉलेट बैलेंस: ${cloudBal.toLocaleString()} ASSETS\n• टैप अर्निंग बैलेंस: ${localUnsynced.toLocaleString()} ASSETS\n• वर्तमान कुल लाइव एसेट्स: ${totalLiveAssets.toLocaleString()} ASSETS\n\nनकद विवरण:\n• वेरिफाइड रुपया खाता बैलेंस: ₹ ${rupeeBal.toLocaleString()}`;
                     window.showCustomAlert("वॉलेट अकाउंट ब्रेकअप 💳", infoText, "success");
                 }
             } catch (e) {
@@ -1547,7 +1580,7 @@
                     await setDoc(userDocRef, { balance: currentBalance + cachedValue }, { merge: true });
                     await setDoc(doc(db, "users", targetMobile, "used_keys", cachedKey), { amount: cachedValue, claimedAt: new Date().toISOString() });
 
-                    window.showCustomAlert("सफल / Processed", "Asset आपके ऐतिहासिक लेजर में सुरक्षित जोड़ दिए गए हैं।", "success");
+                    window.showCustomAlert("सफल / Processed", "Asset सुरक्षित जोड़ दिए गए हैं।", "success");
                     window.triggerCelebrationFallingAnimation();
                 }
 
@@ -1765,7 +1798,7 @@
             const sliceSubList = globalCachedLeaderboardMatrix[stageIndex] || [];
 
             if(sliceSubList.length === 0) {
-                container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>इस स्टेज की कंडीशन में फिलहाल कोई योद्धा मौजूद नहीं है।</div>";
+                container.innerHTML = "<div style='font-size:12px; color:var(--text-muted); text-align:center; padding:30px;'>No players ranked in this tier.</div>";
                 return;
             }
 
@@ -2020,7 +2053,7 @@
                 }, { merge: true });
 
                 const unitLabel = targetBox.rewardType === "currency" ? "₹ Cash" : "Assets";
-                window.showCustomAlert("बॉक्स खुल गया! 🎉", `सफलतापूर्वक प्राप्त हुए +${formatSmartAmount(rVal)} ${unitLabel}.`, "success");
+                window.showCustomAlert("Box opened! 🎉", `Successfully received+${formatSmartAmount(rVal)} ${unitLabel}.`, "success");
                 window.triggerCelebrationFallingAnimation(); 
                 selectedTargetBoxIndexToUnlock = null;
                 await synchronizeUserDashboardStateEngine();
