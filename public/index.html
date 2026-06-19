@@ -2390,15 +2390,14 @@
             }
         };
 
-     window.handleSocialTaskExecution = async (pKey) => {
+    window.handleSocialTaskExecution = async (pKey) => {
     try {
         const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
         const taskSnap = await getDoc(taskRef);
-        if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल media बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
 
         const socialLinks = {
             'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
-            'facebook': 'https://www.facebook.com/share/18iFthER4W', 
+            'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
             'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
             'telegram': 'https://t.me/RehliDigitalAsset',                  
             'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
@@ -2406,29 +2405,18 @@
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🚀 एंड्रॉइड ऐप (WebView) के लिए डायरेक्ट पर्सनल ऐप ओपनर लॉजिक
-        if (pKey === 'youtube') {
-            window.location.href = "intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;package=com.google.android.youtube;end";
-        } 
-        else if (pKey === 'facebook') {
-            window.location.href = "fb://facewebmodal/f?href=" + encodeURIComponent(targetUrl);
-        } 
-        else if (pKey === 'instagram') {
-            // इंस्टाग्राम ऐप में डायरेक्ट प्रोफाइल या रील्स खोलने के लिए इंटेंट
-            window.location.href = "intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end";
-        } 
-        else if (pKey === 'telegram') {
-            window.location.href = "tg://resolve?domain=RehliDigitalAsset";
-        } 
-        else if (pKey === 'whatsapp') {
-            window.location.href = "whatsapp://chat?code=0029VbCj2Cq6xCSWNt518g2T";
-        } 
-        else {
-            // किसी भी अन्य लिंक को डिवाइस के डिफ़ॉल्ट बाहरी ब्राउज़र में खोलने के लिए
-            window.location.href = "intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;end";
+        // 🚀 1. लिंक को WebView से बाहर उसकी पर्सनल ऐप या सिस्टम ब्राउज़र में भेजने का यूनिवर्सल फिक्स
+        // '_system' या '_blank' का उपयोग WebView को बाहरी ऐप्स को ट्रिगर करने पर मजबूर करता है
+        window.open(targetUrl, '_system') || window.open(targetUrl, '_blank');
+
+        // 🔍 2. चेक करें कि क्या यूजर यह टास्क पहले ही पूरा कर चुका है
+        if (taskSnap.exists() && taskSnap.data().status === "completed") {
+            // यदि पहले से पूर्ण है, तो सिर्फ लिंक खुलेगा (जो ऊपर खुल चुका है), एसेट नहीं जुड़ेंगे और कोड यहीं रुक जाएगा
+            console.log("टारगेट लिंक सफलतापूर्वक खोला गया। रिवॉर्ड पहले ही लिया जा चुका है, इसलिए दोबारा एसेट नहीं जोड़े गए।");
+            return; 
         }
 
-        // 💰 रिवॉर्ड प्रोसेसिंग लॉजिक (पुराने जैसा ही रहेगा ताकि कॉइन्स सुरक्षित मिलें)
+        // 💰 3. रिवॉर्ड प्रोसेसिंग लॉजिक (यह सिर्फ पहली बार क्लिक करने पर ही रन होगा)
         const uRef = doc(db, "users", userSessionMobile);
         const uSnap = await getDoc(uRef);
         
@@ -2438,9 +2426,9 @@
         window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
         window.triggerCelebrationFallingAnimation();
         await synchronizeUserDashboardStateEngine();
-    } catch (err) { console.error(err); }
+        
+    } catch (err) { console.error("सोशल टास्क प्रोसेसिंग में समस्या आई: ", err); }
 };
-
 
       window.generateAndShareModernReferralLink = async () => {
             try {
