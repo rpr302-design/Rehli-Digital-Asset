@@ -2390,7 +2390,7 @@
             }
         };
 
-        window.handleSocialTaskExecution = async (pKey) => {
+       window.handleSocialTaskExecution = async (pKey) => {
     try {
         const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
         const taskSnap = await getDoc(taskRef);
@@ -2406,11 +2406,29 @@
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🎯 WebView फिक्स: एरर देने वाले intent:// कोड को हटाकर यूनिवर्सल https:// लिंक का उपयोग किया गया है
-        // _blank एट्रिब्यूट आपके कनवर्टर को निर्देश देगा कि लिंक को ऐप के अंदर न खोलकर बाहर ट्रांसफर करे
-        window.open(targetUrl, '_blank');
+        // 🚀 एंड्रॉइड ऐप (WebView) के लिए डायरेक्ट पर्सनल ऐप ओपनर लॉजिक
+        if (pKey === 'youtube') {
+            window.location.href = "intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;package=com.google.android.youtube;end";
+        } 
+        else if (pKey === 'facebook') {
+            window.location.href = "fb://facewebmodal/f?href=" + encodeURIComponent(targetUrl);
+        } 
+        else if (pKey === 'instagram') {
+            // इंस्टाग्राम ऐप में डायरेक्ट प्रोफाइल या रील्स खोलने के लिए इंटेंट
+            window.location.href = "intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end";
+        } 
+        else if (pKey === 'telegram') {
+            window.location.href = "tg://resolve?domain=RehliDigitalAsset";
+        } 
+        else if (pKey === 'whatsapp') {
+            window.location.href = "whatsapp://chat?code=0029VbCj2Cq6xCSWNt518g2T";
+        } 
+        else {
+            // किसी भी अन्य लिंक को डिवाइस के डिफ़ॉल्ट बाहरी ब्राउज़र में खोलने के लिए
+            window.location.href = "intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;end";
+        }
 
-        // 💰 रिवॉर्ड प्रोसेसिंग लॉजिक (फायरबेस लेजर)
+        // 💰 रिवॉर्ड प्रोसेसिंग लॉजिक (पुराने जैसा ही रहेगा ताकि कॉइन्स सुरक्षित मिलें)
         const uRef = doc(db, "users", userSessionMobile);
         const uSnap = await getDoc(uRef);
         
@@ -2422,43 +2440,32 @@
         await synchronizeUserDashboardStateEngine();
     } catch (err) { console.error(err); }
 };
-       window.generateAndShareModernReferralLink = async () => {
-    try {
-        const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
-        if (userSnapshot.exists()) {
-            const userData = userSnapshot.data();
-            if (!userData.profileCompleted) {
-                window.showCustomAlert("प्रोफाइल अधूरी है! ⚠️", "रेफरल LINK शेयर करने से पहले कृपया अपनी प्रोफाइल पूरी करें और सुरक्षा पिन बनाएं।", "error");
-                setTimeout(() => { switchAppTab('profile'); }, 1500);
-                return;
-            }
-        }
-
-        const fullUserName = document.getElementById('sideMenuUser').innerText.trim();
-        let prefix = "";
-        let cleanName = fullUserName.replace(/\s+/g, '');
-
-        if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
-            prefix = cleanName.substring(0, 4);
-        }
-        while (prefix.length < 4) {
-            let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-        }
-
-        const finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
-        
-        const baseAppUrl = "https://rehli-digital-asset.firebaseapp.com/"; 
-        const link = baseAppUrl + "?ref=" + finalDynamicCode;
-        
-        const shareMessage = `*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: ${link}`;
-
-        // 🎯 यूनिवर्सल एपीआई फिक्स: यह कनवर्टर ऐप में ERR_UNKNOWN_URL_SCHEME का एरर नहीं देगा
-        // _blank लगाने से यह आपके कनवर्टर को सीधे फोन के मुख्य व्हाट्सएप ऐप को ट्रिगर करने का निर्देश देता है
-        window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(shareMessage), "_blank");
-
-    } catch (err) { console.error("Referral link checking error: ", err); }
-};
+      window.generateAndShareModernReferralLink = async () => {
+            try {
+                const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
+                if (userSnapshot.exists()) {
+                    const userData = userSnapshot.data();
+                   if (!userData.profileCompleted) {
+                        window.showCustomAlert("प्रोफाइल अधूरी है! ⚠️", "रेफरल LINK शेयर करने से पहले कृपया अपनी प्रोफाइल पूरी करें और सुरक्षा पिन बनाएं।", "error");
+                        setTimeout(() => { switchAppTab('profile'); }, 1500);
+                        return;
+                    }
+                }
+                const fullUserName = document.getElementById('sideMenuUser').innerText.trim();
+                let prefix = "";
+                let cleanName = fullUserName.replace(/\s+/g, '');
+                if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
+                   prefix = cleanName.substring(0, 4);
+                }
+                while (prefix.length < 4) {
+                    let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+                }
+                const finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
+                const link = window.location.origin + window.location.pathname + "?ref=" + finalDynamicCode;                
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
+            } catch (err) { console.error("Referral link checking error: ", err); }
+        }; 
 
         window.switchAppTab = (targetTabId) => {
             window.toggleSidebar(false);
