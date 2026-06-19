@@ -2441,36 +2441,44 @@
     } catch (err) { console.error(err); }
 };
 
-        window.generateAndShareModernReferralLink = async () => {
-            try {
-                const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
-                if (userSnapshot.exists()) {
-                    const userData = userSnapshot.data();
-                    if (!userData.profileCompleted) {
-                        window.showCustomAlert("प्रोफाइल अधूरी है! ⚠️", "रेफरल LINK शेयर करने से पहले कृपया अपनी प्रोफाइल पूरी करें और सुरक्षा पिन बनाएं।", "error");
-                        setTimeout(() => { switchAppTab('profile'); }, 1500);
-                        return;
-                    }
-                }
+       window.generateAndShareModernReferralLink = async () => {
+    try {
+        const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
+        if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+            if (!userData.profileCompleted) {
+                window.showCustomAlert("प्रोफाइल अधूरी है! ⚠️", "रेफरल LINK शेयर करने से पहले कृपया अपनी प्रोफाइल पूरी करें और सुरक्षा पिन बनाएं।", "error");
+                setTimeout(() => { switchAppTab('profile'); }, 1500);
+                return;
+            }
+        }
 
-                const fullUserName = document.getElementById('sideMenuUser').innerText.trim();
-                let prefix = "";
-                let cleanName = fullUserName.replace(/\s+/g, '');
+        const fullUserName = document.getElementById('sideMenuUser').innerText.trim();
+        let prefix = "";
+        let cleanName = fullUserName.replace(/\s+/g, '');
 
-                if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
-                    prefix = cleanName.substring(0, 4);
-                }
-                while (prefix.length < 4) {
-                    let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                    prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-                }
+        if (cleanName && cleanName !== "LoadingUser..." && cleanName !== "SmartUser") {
+            prefix = cleanName.substring(0, 4);
+        }
+        while (prefix.length < 4) {
+            let randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            prefix += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+        }
 
-                const finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
-                const link = window.location.origin + window.location.pathname + "?ref=" + finalDynamicCode;
-                
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: " + link)}`, '_blank');
-            } catch (err) { console.error("Referral link checking error: ", err); }
-        };
+        const finalDynamicCode = prefix.toUpperCase() + userSessionMobile.slice(-4);
+        
+        // 🌐 WebView फिक्स: ऐप के अंदर पाथ गड़बड़ न हो, इसलिए लाइव यूआरएल का बेस डोमेन सेट करें
+        // (यदि आपकी साइट का यूआरएल कुछ और है, तो नीचे वाले डोमेन को बदल सकते हैं)
+        const baseAppUrl = "https://rehli-digital-asset.firebaseapp.com/"; 
+        const link = baseAppUrl + "?ref=" + finalDynamicCode;
+        
+        const shareMessage = `*Rehli Digital Network* 💎\nमेरे लिंक से जुड़ें और अपना प्रोफाइल चालू करके बिल्कुल FREE में तुरंत +10000 Assets का स्वागत वेलकम बोनस रिवॉर्ड प्राप्त करें: ${link}`;
+
+        // 🚀 व्हाट्सएप पर्सनल ऐप ओपनर लॉजिक (एंड्रॉइड इंटेंट स्कीम)
+        window.location.href = "whatsapp://send?text=" + encodeURIComponent(shareMessage);
+
+    } catch (err) { console.error("Referral link checking error: ", err); }
+};
 
         window.switchAppTab = (targetTabId) => {
             window.toggleSidebar(false);
