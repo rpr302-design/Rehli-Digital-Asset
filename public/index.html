@@ -2390,7 +2390,7 @@
             }
         };
 
-    window.handleSocialTaskExecution = async (pKey) => {
+   window.handleSocialTaskExecution = async (pKey) => {
     try {
         const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
         const taskSnap = await getDoc(taskRef);
@@ -2405,18 +2405,40 @@
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🚀 1. लिंक को WebView से बाहर उसकी पर्सनल ऐप या सिस्टम ब्राउज़र में भेजने का यूनिवर्सल फिक्स
-        // '_system' या '_blank' का उपयोग WebView को बाहरी ऐप्स को ट्रिगर करने पर मजबूर करता है
-        window.open(targetUrl, '_system') || window.open(targetUrl, '_blank');
+        // 🚀 1. मोबाइल ऐप्स को सीधे ट्रिगर करने के लिए विशेष डीप-लिंक प्रोटोकॉल मैकेनिज्म
+        if (pKey === 'youtube') {
+            // यह सीधे यूट्यूब की ऑफिशियल ऐप को फोन में ओपन करेगा
+            window.location.href = "intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;package=com.google.android.youtube;end";
+        } 
+        else if (pKey === 'facebook') {
+            // यह फेसबुक ऐप के Facewebmodal को ट्रिगर करेगा ताकि बिना लॉगिन मांगे सीधे आपका पेज खुले
+            window.location.href = "fb://facewebmodal/f?href=" + encodeURIComponent(targetUrl);
+        } 
+        else if (pKey === 'instagram') {
+            // यह सीधे इंस्टाग्राम ऐप में आपकी प्रोफाइल खोलेगा
+            window.location.href = "intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end";
+        } 
+        else if (pKey === 'telegram') {
+            // यह सीधे टेलीग्राम ऐप को कमांड भेजेगा
+            window.location.href = "tg://resolve?domain=RehliDigitalAsset";
+        } 
+        else if (pKey === 'whatsapp') {
+            // यह सीधे व्हाट्सएप ऐप के अंदर आपके चैनल को ओपन करेगा
+            window.location.href = "whatsapp://chat?code=0029VbCj2Cq6xCSWNt518g2T";
+        } 
+        else {
+            // फॉलबैक: अगर कुछ काम न करे तो बाहरी ब्राउज़र में भेजें
+            window.open(targetUrl, '_system');
+        }
 
-        // 🔍 2. चेक करें कि क्या यूजर यह टास्क पहले ही पूरा कर चुका है
+        // 🔍 2. चेक करें कि क्या यूजर यह सोशल टास्क पहले ही पूरा कर चुका है
         if (taskSnap.exists() && taskSnap.data().status === "completed") {
-            // यदि पहले से पूर्ण है, तो सिर्फ लिंक खुलेगा (जो ऊपर खुल चुका है), एसेट नहीं जुड़ेंगे और कोड यहीं रुक जाएगा
-            console.log("टारगेट लिंक सफलतापूर्वक खोला गया। रिवॉर्ड पहले ही लिया जा चुका है, इसलिए दोबारा एसेट नहीं जोड़े गए।");
+            // यदि पहले से पूर्ण है, तो सिर्फ ऐप खुलेगी (जो ऊपर खुल चुकी है), दोबारा एसेट नहीं जुड़ेंगे
+            console.log("लिंक ऐप में भेजा गया। रिवॉर्ड पहले ही लिया जा चुका है।");
             return; 
         }
 
-        // 💰 3. रिवॉर्ड प्रोसेसिंग लॉजिक (यह सिर्फ पहली बार क्लिक करने पर ही रन होगा)
+        // 💰 3. रिवॉर्ड प्रोसेसिंग लेजर (यह सिर्फ पहली बार क्लिक करने पर ही काम करेगा)
         const uRef = doc(db, "users", userSessionMobile);
         const uSnap = await getDoc(uRef);
         
@@ -2427,7 +2449,7 @@
         window.triggerCelebrationFallingAnimation();
         await synchronizeUserDashboardStateEngine();
         
-    } catch (err) { console.error("सोशल टास्क प्रोसेसिंग में समस्या आई: ", err); }
+    } catch (err) { console.error("सोशल री-डायरेक्शन एरर: ", err); }
 };
 
       window.generateAndShareModernReferralLink = async () => {
