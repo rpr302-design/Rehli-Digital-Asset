@@ -2390,56 +2390,48 @@
             }
         };
 
-       window.handleSocialTaskExecution = async (pKey) => {
-    try {
-        const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
-        const taskSnap = await getDoc(taskRef);
-        if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल media बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
+      window.handleSocialTaskExecution = async (pKey) => {
+            try {
+                const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
+                const taskSnap = await getDoc(taskRef);
 
-        const socialLinks = {
-            'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
-            'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
-            'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
-            'telegram': 'https://t.me/RehliDigitalAsset',                  
-            'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
-        };
+                if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल media बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
+                const socialLinks = {
 
-        const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
-        
-        // 🚀 एंड्रॉइड ऐप (WebView) के लिए डायरेक्ट पर्सनल ऐप ओपनर लॉजिक
-        if (pKey === 'youtube') {
-            window.location.href = "intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;package=com.google.android.youtube;end";
-        } 
-        else if (pKey === 'facebook') {
-            window.location.href = "fb://facewebmodal/f?href=" + encodeURIComponent(targetUrl);
-        } 
-        else if (pKey === 'instagram') {
-            // इंस्टाग्राम ऐप में डायरेक्ट प्रोफाइल या रील्स खोलने के लिए इंटेंट
-            window.location.href = "intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end";
-        } 
-        else if (pKey === 'telegram') {
-            window.location.href = "tg://resolve?domain=RehliDigitalAsset";
-        } 
-        else if (pKey === 'whatsapp') {
-            window.location.href = "whatsapp://chat?code=0029VbCj2Cq6xCSWNt518g2T";
-        } 
-        else {
-            // किसी भी अन्य लिंक को डिवाइस के डिफ़ॉल्ट बाहरी ब्राउज़र में खोलने के लिए
-            window.location.href = "intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;end";
-        }
+                    'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
 
-        // 💰 रिवॉर्ड प्रोसेसिंग लॉजिक (पुराने जैसा ही रहेगा ताकि कॉइन्स सुरक्षित मिलें)
-        const uRef = doc(db, "users", userSessionMobile);
-        const uSnap = await getDoc(uRef);
-        
-        await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 10000 }, { merge: true });
-        await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
-        
-        window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
-        window.triggerCelebrationFallingAnimation();
-        await synchronizeUserDashboardStateEngine();
-    } catch (err) { console.error(err); }
-};
+                    'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
+
+                    'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
+
+                    'telegram': 'https://t.me/RehliDigitalAsset',                  
+
+                    'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
+                };
+
+                if (socialLinks[pKey]) { window.open(socialLinks[pKey], '_blank'); } 
+
+                else { window.open("https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg", '_blank'); }
+
+                const uRef = doc(db, "users", userSessionMobile);
+
+                const uSnap = await getDoc(uRef);                
+
+                await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 10000 }, { merge: true });
+
+                await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
+
+                window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
+
+                window.triggerCelebrationFallingAnimation();
+
+                await synchronizeUserDashboardStateEngine();
+
+            } catch (err) { console.error(err); }
+
+        }; 
+
+
       window.generateAndShareModernReferralLink = async () => {
             try {
                 const userSnapshot = await getDoc(doc(db, "users", userSessionMobile));
