@@ -2398,7 +2398,7 @@
 
                 const socialLinks = {
                     'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
-                    'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
+                    'facebook': 'https://www.facebook.com/share/18iFthER4W', 
                     'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
                     'telegram': 'https://t.me/RehliDigitalAsset',                  
                     'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
@@ -2412,7 +2412,7 @@
                 
                 await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 10000 }, { merge: true });
                 await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
-                window.showCustomAlert("🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
+                window.showCustomAlert("🎉", "सफलतापूर्वक +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
                 window.triggerCelebrationFallingAnimation();
                 await synchronizeUserDashboardStateEngine();
             } catch (err) { console.error(err); }
