@@ -2390,62 +2390,34 @@
             }
         };
 
-window.handleSocialTaskExecution = async (pKey) => {
-    try {
-        const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
-        const taskSnap = await getDoc(taskRef);
+ window.handleSocialTaskExecution = async (pKey) => {
+            try {
+                const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
+                const taskSnap = await getDoc(taskRef);
+                if (taskSnap.exists()) return window.showCustomAlert("पहले से पूर्ण है", "यह सोशल media बोनस आपके द्वारा पहले ही क्लैम किया जा चुका है।", "error");
 
-        const socialLinks = {
-            'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
-            'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
-            'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
-            'telegram': 'https://t.me/RehliDigitalAsset',                  
-            'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
+                const socialLinks = {
+                    'youtube': 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg',
+                    'facebook': 'https://www.facebook.com/share/18iFthER4W/', 
+                    'instagram': 'https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg',   
+                    'telegram': 'https://t.me/RehliDigitalAsset',                  
+                    'whatsapp': 'https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T'  
+                };
+
+                if (socialLinks[pKey]) { window.open(socialLinks[pKey], '_blank'); } 
+                else { window.open("https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg", '_blank'); }
+
+                const uRef = doc(db, "users", userSessionMobile);
+                const uSnap = await getDoc(uRef);
+                
+                await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 10000 }, { merge: true });
+                await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
+                window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
+                window.triggerCelebrationFallingAnimation();
+                await synchronizeUserDashboardStateEngine();
+            } catch (err) { console.error(err); }
         };
 
-        const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
-        
-        // 🚀 यूनिवर्सल यूआरएल स्कीम जो Niotron के नए ब्लॉक्स के साथ परफेक्ट री-डायरेक्ट करेगी
-        if (pKey === 'youtube') {
-            window.location.href = "https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg";
-        } 
-        else if (pKey === 'facebook') {
-            window.location.href = "fb://page/18iFthER4W";
-        } 
-        else if (pKey === 'instagram') {
-            window.location.href = "instagram://user?username=rehlidigitalasset";
-        } 
-        else if (pKey === 'telegram') {
-            window.location.href = "tg://resolve?domain=RehliDigitalAsset";
-        } 
-        else if (pKey === 'whatsapp') {
-            window.location.href = "whatsapp://chat?code=0029VbCj2Cq6xCSWNt518g2T";
-        } 
-        else {
-            window.location.href = targetUrl;
-        }
-
-        // 🔍 चेक करें कि क्या रिवॉर्ड पहले ही लिया जा चुका है
-        if (taskSnap.exists() && taskSnap.data().status === "completed") {
-            console.log("टास्क पहले से पूर्ण है। केवल लिंक ओपन किया गया।");
-            return; 
-        }
-
-        // 💰 सिर्फ पहली बार क्लिक करने पर ही रिवॉर्ड जुड़ेगा
-        const uRef = doc(db, "users", userSessionMobile);
-        const uSnap = await getDoc(uRef);
-        
-        await setDoc(uRef, { balance: (uSnap.data().balance || 0) + 10000 }, { merge: true });
-        await setDoc(taskRef, { status: "completed", claimedAt: new Date().toISOString() });
-        
-        window.showCustomAlert("टास्क रिवॉर्ड जुड़ गया! 🎉", "सफलतापूर्वक सोशल टास्क के +10000 Assets आपके वॉलेट में क्रेडिट कर दिए गए हैं।", "success");
-        window.triggerCelebrationFallingAnimation();
-        await synchronizeUserDashboardStateEngine();
-        
-    } catch (err) { 
-        console.error("सोशल टास्क एरर: ", err);
-    }
-};
 
       window.generateAndShareModernReferralLink = async () => {
             try {
