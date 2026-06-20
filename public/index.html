@@ -2391,6 +2391,7 @@
         };
 
    window.handleSocialTaskExecution = async (pKey) => {
+   window.handleSocialTaskExecution = async (pKey) => {
     try {
         const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
         const taskSnap = await getDoc(taskRef);
@@ -2405,40 +2406,35 @@
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🚀 1. मोबाइल ऐप्स को सीधे ट्रिगर करने के लिए विशेष डीप-लिंक प्रोटोकॉल मैकेनिज्म
+        // 🚀 Niotron और Android App के लिए सबसे सुरक्षित डायरेक्ट ऐप ओपनर प्रोटोकॉल
+        // यह सीधे ऐप्स को कमांड भेजेगा, जिससे Niotron का ErrorOccurred सर्किट तुरंत एक्टिव होगा
         if (pKey === 'youtube') {
-            // यह सीधे यूट्यूब की ऑफिशियल ऐप को फोन में ओपन करेगा
             window.location.href = "intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;package=com.google.android.youtube;end";
         } 
         else if (pKey === 'facebook') {
-            // यह फेसबुक ऐप के Facewebmodal को ट्रिगर करेगा ताकि बिना लॉगिन मांगे सीधे आपका पेज खुले
             window.location.href = "fb://facewebmodal/f?href=" + encodeURIComponent(targetUrl);
         } 
         else if (pKey === 'instagram') {
-            // यह सीधे इंस्टाग्राम ऐप में आपकी प्रोफाइल खोलेगा
             window.location.href = "intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end";
         } 
         else if (pKey === 'telegram') {
-            // यह सीधे टेलीग्राम ऐप को कमांड भेजेगा
             window.location.href = "tg://resolve?domain=RehliDigitalAsset";
         } 
         else if (pKey === 'whatsapp') {
-            // यह सीधे व्हाट्सएप ऐप के अंदर आपके चैनल को ओपन करेगा
             window.location.href = "whatsapp://chat?code=0029VbCj2Cq6xCSWNt518g2T";
         } 
         else {
-            // फॉलबैक: अगर कुछ काम न करे तो बाहरी ब्राउज़र में भेजें
-            window.open(targetUrl, '_system');
+            // यदि कोई अन्य बटन हो तो सामान्य रूप से लोड हो ताकि ऐप फ्रीज न हो
+            window.location.href = targetUrl;
         }
 
-        // 🔍 2. चेक करें कि क्या यूजर यह सोशल टास्क पहले ही पूरा कर चुका है
+        // 🔍 चेक करें कि क्या यूजर टास्क पहले ही पूरा कर चुका है
         if (taskSnap.exists() && taskSnap.data().status === "completed") {
-            // यदि पहले से पूर्ण है, तो सिर्फ ऐप खुलेगी (जो ऊपर खुल चुकी है), दोबारा एसेट नहीं जुड़ेंगे
-            console.log("लिंक ऐप में भेजा गया। रिवॉर्ड पहले ही लिया जा चुका है।");
+            console.log("लिंक सफलतापूर्वक ऐप में भेजा गया। रिवॉर्ड पहले ही लिया जा चुका है।");
             return; 
         }
 
-        // 💰 3. रिवॉर्ड प्रोसेसिंग लेजर (यह सिर्फ पहली बार क्लिक करने पर ही काम करेगा)
+        // 💰 सिर्फ पहली बार क्लिक करने पर रिवॉर्ड मिलेगा
         const uRef = doc(db, "users", userSessionMobile);
         const uSnap = await getDoc(uRef);
         
@@ -2449,8 +2445,13 @@
         window.triggerCelebrationFallingAnimation();
         await synchronizeUserDashboardStateEngine();
         
-    } catch (err) { console.error("सोशल री-डायरेक्शन एरर: ", err); }
+    } catch (err) { 
+        console.error(err);
+        // किसी भी एरर की स्थिति में टारगेट लिंक को नॉर्मली ओपन कर दें ताकि बटन्स फंसे नहीं
+        window.location.href = 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
+    }
 };
+
 
       window.generateAndShareModernReferralLink = async () => {
             try {
