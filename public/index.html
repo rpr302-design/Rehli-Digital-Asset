@@ -2405,28 +2405,13 @@ window.handleSocialTaskExecution = async (pKey) => {
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🚀 इंस्टाग्राम की तरह ही फुली-वर्किंग यूनिवर्सल एंड्रॉइड इंटेंट्स (बैक बटन फिक्स के साथ)
-        if (pKey === 'youtube') {
-            window.location.replace("intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;end");
-        } 
-        else if (pKey === 'facebook') {
-            window.location.replace("intent://www.facebook.com/share/18iFthER4W/#Intent;scheme=https;end");
-        } 
-        else if (pKey === 'instagram') {
-            window.location.replace("intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end");
-        } 
-        else if (pKey === 'telegram') {
-            window.location.replace("intent://telegram.me/RehliDigitalAsset#Intent;scheme=https;end");
-        } 
-        else if (pKey === 'whatsapp') {
-            window.location.replace("intent://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T#Intent;scheme=https;end");
-        } 
-        else {
-            window.location.replace("intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;end");
-        }
+        // 🚀 एरर 601 (No corresponding activity) को रोकने के लिए शुद्ध और सीधा तरीका
+        // यह यूआरएल सीधे Niotron के ErrorOccurred (http) ब्लॉक को ट्रिगर करेगा और बाहर खुलेगा
+        window.location.replace(targetUrl);
 
         // 🔍 चेक करें कि क्या रिवॉर्ड पहले ही लिया जा चुका है
         if (taskSnap.exists() && taskSnap.data().status === "completed") {
+            console.log("टास्क पहले से पूर्ण है। केवल लिंक ओपन किया गया।");
             return; 
         }
 
