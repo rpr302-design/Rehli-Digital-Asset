@@ -2405,25 +2405,24 @@ window.handleSocialTaskExecution = async (pKey) => {
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🚀 डायरेक्ट एंड्रॉइड इंटेंट: यह Niotron को बायपास करके सीधे बाहर ब्राउज़र/ऐप में लिंक खोलेगा
+        // 🚀 इंस्टाग्राम की तरह ही फुली-वर्किंग यूनिवर्सल एंड्रॉइड इंटेंट्स (बैक बटन फिक्स के साथ)
         if (pKey === 'youtube') {
-            window.location.href = "intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;package=com.google.android.youtube;end";
+            window.location.replace("intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;end");
         } 
         else if (pKey === 'facebook') {
-            window.location.href = "intent://www.facebook.com/share/18iFthER4W/#Intent;scheme=https;package=com.facebook.katana;end";
+            window.location.replace("intent://www.facebook.com/share/18iFthER4W/#Intent;scheme=https;end");
         } 
         else if (pKey === 'instagram') {
-            window.location.href = "intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end";
+            window.location.replace("intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end");
         } 
         else if (pKey === 'telegram') {
-            window.location.href = "intent://telegram.me/RehliDigitalAsset#Intent;scheme=https;package=org.telegram.messenger;end";
+            window.location.replace("intent://telegram.me/RehliDigitalAsset#Intent;scheme=https;end");
         } 
         else if (pKey === 'whatsapp') {
-            window.location.href = "intent://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T#Intent;scheme=https;package=com.whatsapp;end";
+            window.location.replace("intent://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T#Intent;scheme=https;end");
         } 
         else {
-            // क्रोम ब्राउज़र के लिए डायरेक्ट फ़ॉलबैक
-            window.location.href = "intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;end";
+            window.location.replace("intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;end");
         }
 
         // 🔍 चेक करें कि क्या रिवॉर्ड पहले ही लिया जा चुका है
