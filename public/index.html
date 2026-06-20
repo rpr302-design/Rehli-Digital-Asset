@@ -2390,7 +2390,7 @@
             }
         };
 
- window.handleSocialTaskExecution = async (pKey) => {
+window.handleSocialTaskExecution = async (pKey) => {
     try {
         const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
         const taskSnap = await getDoc(taskRef);
@@ -2405,30 +2405,29 @@
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🚀 Niotron WebView के PageLoaded ब्लॉक के लिए फुली-ऑप्टिमाइज्ड नॉर्मल लिंक्स
-        // यह यूआरएल लोड होते ही Niotron इसे रोककर सीधे असली ऐप (यूट्यूब/फेसबुक आदि) खोल देगा
+        // 🚀 डायरेक्ट एंड्रॉइड इंटेंट: यह Niotron को बायपास करके सीधे बाहर ब्राउज़र/ऐप में लिंक खोलेगा
         if (pKey === 'youtube') {
-            window.location.href = "https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg";
+            window.location.href = "intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;package=com.google.android.youtube;end";
         } 
         else if (pKey === 'facebook') {
-            window.location.href = "https://www.facebook.com/share/18iFthER4W/";
+            window.location.href = "intent://www.facebook.com/share/18iFthER4W/#Intent;scheme=https;package=com.facebook.katana;end";
         } 
         else if (pKey === 'instagram') {
-            window.location.href = "https://www.instagram.com/rehlidigitalasset?igsh=OXdtZXdyZxo0aWg";
+            window.location.href = "intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end";
         } 
         else if (pKey === 'telegram') {
-            window.location.href = "https://t.me/RehliDigitalAsset";
+            window.location.href = "intent://telegram.me/RehliDigitalAsset#Intent;scheme=https;package=org.telegram.messenger;end";
         } 
         else if (pKey === 'whatsapp') {
-            window.location.href = "https://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T";
+            window.location.href = "intent://whatsapp.com/channel/0029VbCj2Cq6xCSWNt518g2T#Intent;scheme=https;package=com.whatsapp;end";
         } 
         else {
-            window.location.href = targetUrl;
+            // क्रोम ब्राउज़र के लिए डायरेक्ट फ़ॉलबैक
+            window.location.href = "intent://" + targetUrl.replace(/^https?:\/\//, "") + "#Intent;scheme=https;end";
         }
 
         // 🔍 चेक करें कि क्या रिवॉर्ड पहले ही लिया जा चुका है
         if (taskSnap.exists() && taskSnap.data().status === "completed") {
-            console.log("टास्क पहले से पूर्ण है। केवल लिंक ओपन किया गया।");
             return; 
         }
 
