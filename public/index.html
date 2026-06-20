@@ -2390,8 +2390,7 @@
             }
         };
 
-
-   window.handleSocialTaskExecution = async (pKey) => {
+window.handleSocialTaskExecution = async (pKey) => {
     try {
         const taskRef = doc(db, "users", userSessionMobile, "social_tasks", pKey);
         const taskSnap = await getDoc(taskRef);
@@ -2406,16 +2405,15 @@
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🚀 Niotron और Android App के लिए सबसे सुरक्षित डायरेक्ट ऐप ओपनर प्रोटोकॉल
-        // यह सीधे ऐप्स को कमांड भेजेगा, जिससे Niotron का ErrorOccurred सर्किट तुरंत एक्टिव होगा
+        // 🚀 यूनिवर्सल यूआरएल स्कीम जो Niotron के नए ब्लॉक्स के साथ परफेक्ट री-डायरेक्ट करेगी
         if (pKey === 'youtube') {
-            window.location.href = "intent://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg#Intent;scheme=https;package=com.google.android.youtube;end";
+            window.location.href = "https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg";
         } 
         else if (pKey === 'facebook') {
-            window.location.href = "fb://facewebmodal/f?href=" + encodeURIComponent(targetUrl);
+            window.location.href = "fb://page/18iFthER4W";
         } 
         else if (pKey === 'instagram') {
-            window.location.href = "intent://instagram.com/_u/rehlidigitalasset#Intent;package=com.instagram.android;scheme=https;end";
+            window.location.href = "instagram://user?username=rehlidigitalasset";
         } 
         else if (pKey === 'telegram') {
             window.location.href = "tg://resolve?domain=RehliDigitalAsset";
@@ -2424,17 +2422,16 @@
             window.location.href = "whatsapp://chat?code=0029VbCj2Cq6xCSWNt518g2T";
         } 
         else {
-            // यदि कोई अन्य बटन हो तो सामान्य रूप से लोड हो ताकि ऐप फ्रीज न हो
             window.location.href = targetUrl;
         }
 
-        // 🔍 चेक करें कि क्या यूजर टास्क पहले ही पूरा कर चुका है
+        // 🔍 चेक करें कि क्या रिवॉर्ड पहले ही लिया जा चुका है
         if (taskSnap.exists() && taskSnap.data().status === "completed") {
-            console.log("लिंक सफलतापूर्वक ऐप में भेजा गया। रिवॉर्ड पहले ही लिया जा चुका है।");
+            console.log("टास्क पहले से पूर्ण है। केवल लिंक ओपन किया गया।");
             return; 
         }
 
-        // 💰 सिर्फ पहली बार क्लिक करने पर रिवॉर्ड मिलेगा
+        // 💰 सिर्फ पहली बार क्लिक करने पर ही रिवॉर्ड जुड़ेगा
         const uRef = doc(db, "users", userSessionMobile);
         const uSnap = await getDoc(uRef);
         
@@ -2446,12 +2443,9 @@
         await synchronizeUserDashboardStateEngine();
         
     } catch (err) { 
-        console.error(err);
-        // किसी भी एरर की स्थिति में टारगेट लिंक को नॉर्मली ओपन कर दें ताकि बटन्स फंसे नहीं
-        window.location.href = 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
+        console.error("सोशल टास्क एरर: ", err);
     }
 };
-
 
       window.generateAndShareModernReferralLink = async () => {
             try {
