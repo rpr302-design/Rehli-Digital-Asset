@@ -2405,13 +2405,22 @@ window.handleSocialTaskExecution = async (pKey) => {
 
         const targetUrl = socialLinks[pKey] || 'https://www.youtube.com/channel/UCqADLDqhD-XWp_nknztsmPg';
         
-        // 🚀 एरर 601 (No corresponding activity) को रोकने के लिए शुद्ध और सीधा तरीका
-        // यह यूआरएल सीधे Niotron के ErrorOccurred (http) ब्लॉक को ट्रिगर करेगा और बाहर खुलेगा
-        window.location.replace(targetUrl);
+        // 🔥 ब्रह्मास्त्र तरीका: यह वेबव्यू को हर हाल में लिंक बाहर (क्रोम या असली ऐप) खोलने पर मजबूर करेगा
+        if (navigator.userAgent.includes("wv") || navigator.userAgent.includes("Android")) {
+            // ऐप के अंदर होने पर यह सीधे सिस्टम ब्राउज़र/ऐप को ट्रिगर करेगा
+            window.open(targetUrl, '_system');
+            
+            // फॉलबैक: यदि _system काम न करे तो यह लिंक को पूरी तरह से बाहर पुश कर देगा
+            setTimeout(() => {
+                window.open(targetUrl, '_blank');
+            }, 100);
+        } else {
+            // सामान्य क्रोम ब्राउज़र में चलने के लिए
+            window.open(targetUrl, '_blank');
+        }
 
         // 🔍 चेक करें कि क्या रिवॉर्ड पहले ही लिया जा चुका है
         if (taskSnap.exists() && taskSnap.data().status === "completed") {
-            console.log("टास्क पहले से पूर्ण है। केवल लिंक ओपन किया गया।");
             return; 
         }
 
