@@ -1198,20 +1198,57 @@
             }
         };
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            parseIncomingUrlParametersForAutoReferrals();
-            setupTapToEarnHardwareController();
-            if (userSessionMobile) {
-                renderApplicationShellInterface(true);
-                await synchronizeUserDashboardStateEngine();
-                
-                if (Notification.permission === 'granted') {
-                    await initializePushNotificationGateway(false); 
-                }
-            } else {
-                renderApplicationShellInterface(false);
+       window.addEventListener('DOMContentLoaded', async () => {
+    parseIncomingUrlParametersForAutoReferrals();
+    setupTapToEarnHardwareController();
+    
+    if (userSessionMobile) {
+        renderApplicationShellInterface(true);
+        await synchronizeUserDashboardStateEngine();
+        
+        // 🌐 1. क्रोम ब्राउज़र के लिए पुराना तरीका (वैसा ही रहेगा)
+        if (Notification.permission === 'granted') {
+            await initializePushNotificationGateway(false); 
+        }
+
+        // 🚀 2. एंड्रॉइड ऐप (Niotron) के लिए नया तरीका
+        // यह चेक करेगा कि क्या यूजर हमारे एंड्रॉइड ऐप के अंदर है
+        if (navigator.userAgent.includes("wv") || navigator.userAgent.includes("Android")) {
+            console.log("यूजर एंड्रॉइड ऐप में है, टोकन चेक कर रहे हैं...");
+            // यदि आपने Niotron में GetToken वाला ब्लॉक लगाया है, तो यह लाइन उसे ट्रिगर करने में मदद करेगी
+            if (window.AndroidApp && typeof window.AndroidApp.getFCMToken === "function") {
+                window.AndroidApp.getFCMToken();
             }
-        });
+        }
+
+    } else {
+        renderApplicationShellInterface(false);
+    }
+});
+
+// 🔥 यह जादुई फंक्शन Niotron ऐप से आने वाले टोकन को लपकेगा और सीधे आपके फायरबेस में सेव कर देगा
+window.saveAndroidNotificationToken = async (androidToken) => {
+    try {
+        if (!userSessionMobile) {
+            console.log("यूजर लॉगइन नहीं है, टोकन बाद में सेव होगा।");
+            return;
+        }
+
+        // आपके फायरबेस में यूजर्स कलेक्शन का रेफरेंस (डॉक्यूमेंट आईडी यूजर का मोबाइल नंबर है)
+        const userRef = doc(db, "users", userSessionMobile);
+        
+        // टोकन को डेटाबेस में यूजर के प्रोफाइल डेटा के साथ मर्ज (सेव) करना
+        await setDoc(userRef, { 
+            fcmToken: androidToken,
+            deviceType: "Android_App",
+            lastUpdated: new Date().toISOString()
+        }, { merge: true });
+
+        console.log("एंड्रॉइड ऐप का टोकन फायरबेस में सफलतापूर्वक सेव हो गया! 🎉");
+    } catch (err) {
+        console.error("ऐप टोकन सेव करने में एरर: ", err);
+    }
+};
 
         // ==========================================================================
         // 🔄 7. SWIPE NAVIGATION CONTEXT DISPATCHER
